@@ -1,5 +1,5 @@
 {
-  "name": "vsystem-web",
+  "name": "incident-reporting-web",
   "version": "1.0.0",
   "description": "My good Nuxt.js project",
   "author": "jericopulvera",
@@ -11,7 +11,9 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.3.4",
+    "@nuxtjs/auth": "^4.5.3",
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/dotenv": "^1.3.0",
     "chance": "^1.0.16",
     "nuxt": "^2.2.0",
     "nuxt-leaflet": "0.0.10",
@@ -19,8 +21,8 @@
     "vue2-leaflet": "^1.1.1"
   },
   "devDependencies": {
-    "cross-env": "^5.0.1",
     "autoprefixer": "^7.1.6",
-    "tailwindcss": "^0.1.3"
+    "cross-env": "^5.0.1",
+    "tailwindcss": "^0.7.2"
   }
 }

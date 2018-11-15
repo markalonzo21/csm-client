@@ -1,1 +1,0 @@
-now --public && now alias
