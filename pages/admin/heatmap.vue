@@ -5,6 +5,11 @@
         <option :value="null">Select Type</option>
         <option v-for="type in reportTypes" :key="type._id" :value="type._id" v-text="type.name"></option>
       </select>
+      <!--
+          <select v-model="type" required class="p-2">
+        <option :value="null">Select Type</option>
+        <option v-for="type in reportTypes" :key="type._id" :value="type._id" v-text="type.name"></option>
+      </select>-->
       <span class="ml-2" v-if="loadingHeats">LOADING HEATS</span>
     </div>
     <div id="map-wrap" style="height: 500px; width: 100%;" class="mt-4">
@@ -22,8 +27,8 @@
           <LeafletHeatmap
             v-if="reports.length > 0 && !loadingHeats"
             :lat-lng="heats"
-            :radius="25"
-            :min-opacity=".75"
+            :radius="15"
+            :min-opacity="0.75"
             :blur="15"
           ></LeafletHeatmap>
         </l-map>
@@ -45,10 +50,11 @@ export default {
   data() {
     const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
     return {
+      loadingHeats: false,
       center: [14.59804, 120.98385],
       zoom: 13,
       minZoom: 13,
-      maxZoom: 15,
+      maxZoom: 18,
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
       reports: [],
@@ -88,7 +94,7 @@ export default {
 
       this.loadingHeats = true
 
-      this.$axios.$get(`/admin/reports/${value}`).then(response => {
+      this.$axios.$get(`/admin/reports/${value}/false`).then(response => {
         this.reports = response.data
         this.loadingHeats = false
       })

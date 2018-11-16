@@ -42,12 +42,12 @@ export default {
   methods: {
     generateFakeData() {
       this.form.location.coordinates.lat = this.$chance.latitude({
-        min: 14,
-        max: 18,
+        min: 14.5565,
+        max: 14.63956,
       })
       this.form.location.coordinates.lng = this.$chance.longitude({
-        min: 120.5,
-        max: 122,
+        min: 120.89287,
+        max: 121.07483,
       })
     },
     report() {
@@ -63,7 +63,8 @@ export default {
         })
         .then(response => {
           this.loadingSubmitReport = false
-          this.$router.push(`/reports/${response.data._id}`)
+          this.generateFakeData()
+          // this.$router.push(`/reports/${response.data._id}`)
         })
         .catch(err => {
           if (err.response.code === 422) {
