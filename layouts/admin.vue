@@ -6,7 +6,7 @@
           <nuxt-link
             class="font-semibold text-xl tracking-tight cursor-pointer text-white no-underline"
             to="/"
-          >ADMIN LOGO</nuxt-link>
+          >COMMAND CENTER</nuxt-link>
         </div>
       </div>
     </nav>

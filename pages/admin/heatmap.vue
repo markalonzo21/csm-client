@@ -5,11 +5,11 @@
         <option :value="null">Select Type</option>
         <option v-for="type in reportTypes" :key="type._id" :value="type._id" v-text="type.name"></option>
       </select>
-      <!--
-          <select v-model="type" required class="p-2">
-        <option :value="null">Select Type</option>
-        <option v-for="type in reportTypes" :key="type._id" :value="type._id" v-text="type.name"></option>
-      </select>-->
+      <select v-model="resolvedOrUnresolved" required class="p-2">
+        <option value="both">Both</option>
+        <option value="resolved">Resolved Only</option>
+        <option value="unresolved">Unresolved Only</option>
+      </select>
       <span class="ml-2" v-if="loadingHeats">LOADING HEATS</span>
     </div>
     <div id="map-wrap" style="height: 500px; width: 100%;" class="mt-4">
@@ -44,6 +44,7 @@ export default {
       return {
         reportTypes: response.data,
         type: null,
+        resolvedOrUnresolved: "both",
       }
     })
   },
@@ -93,11 +94,25 @@ export default {
       }
 
       this.loadingHeats = true
+      this.searchReports(value, this.resolvedOrUnresolved)
+    },
+    resolvedOrUnresolved(value) {
+      if (value === null) {
+        return
+      }
 
-      this.$axios.$get(`/admin/reports/${value}/false`).then(response => {
-        this.reports = response.data
-        this.loadingHeats = false
-      })
+      this.loadingHeats = true
+      this.searchReports(this.type, value)
+    },
+  },
+  methods: {
+    searchReports(type, resolvedOrUnresolved) {
+      this.$axios
+        .$get(`/admin/reports/${type}/${resolvedOrUnresolved}`)
+        .then(response => {
+          this.reports = response.data
+          this.loadingHeats = false
+        })
     },
   },
 }
