@@ -11,13 +11,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="cursor-pointer" @click.prevent="$router.push('/reports/1')">
+        <tr
+          class="cursor-pointer"
+          @click.prevent="$router.push(`/reports/${report._id}`)"
+          v-for="report in reports"
+          :key="report._id"
+        >
           <td>
-            <a class="rowlink">Fire Outbreak</a>
+            <a class="rowlink" v-text="report.reportType.name"></a>
           </td>
-          <td>14.12414, 121,41241</td>
-          <td>Nov. 11, 2018 10:30 PM</td>
-          <td>Nov. 12, 2018 12:30 AM</td>
+          <td v-html="report.location.coordinates">14.12414, 121,41241</td>
+          <td v-text="report.createdAt">Nov. 11, 2018 10:30 PM</td>
+          <td v-text="report.resolvedAt ? report.resolvedAt : 'Unresolved'"></td>
         </tr>
       </tbody>
     </table>
@@ -26,10 +31,14 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  }
-};
+  asyncData({ $axios, error }) {
+    return $axios.$get("/reports").then(response => {
+      return {
+        reports: response.data,
+      }
+    })
+  },
+}
 </script>
 
 <style scoped>

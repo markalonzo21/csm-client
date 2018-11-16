@@ -2,6 +2,7 @@
   <section class="container mx-auto">
     <form @submit.prevent="login"
           class="p-4 m-4 flex flex-col items-center justify-center">
+      <h3>LOGIN PAGE</h3>
       <input type="text"
              class="my-2 p-2"
              v-model="form.email"
@@ -13,7 +14,7 @@
              placeholder="Enter Password">
 
       <button type="submit"
-              class="p-2 my-2 border bg-black text-white rounded font-hairline"
+              class="p-2 my-2 border bg-black text-white rounded font-hairline "
               :disabled="loading">
         {{ loading ? 'Logging in...' : 'Login'}}</button>
     </form>
@@ -24,6 +25,7 @@
 <script>
 export default {
   auth: false,
+  layout: 'auth',
   data() {
     return {
       loading: false,

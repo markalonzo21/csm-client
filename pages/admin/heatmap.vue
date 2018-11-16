@@ -1,6 +1,10 @@
 <template>
   <div class="container mx-auto">
-    <div id="map-wrap" style="height: 500px; width: 100%;" class="mt-8">
+    <select v-model="type" required class="p-2 mt-4">
+      <option :value="null">Select Type</option>
+      <option v-for="type in reportTypes" :key="type._id" :value="type._id" v-text="type.name"></option>
+    </select>
+    <div id="map-wrap" style="height: 500px; width: 100%;" class="mt-4">
       <no-ssr>
         <l-map
           :center="center"
@@ -20,16 +24,24 @@
 <script>
 export default {
   layout: "admin",
+  asyncData({ $axios }) {
+    return $axios.$get("/report-types").then(response => {
+      return {
+        reportTypes: response.data,
+        type: null,
+      }
+    })
+  },
   data() {
-    const bounds = [120.89287, 14.63956, 121.07483, 14.5565];
+    const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
     return {
       center: [14.59804, 120.98385],
       zoom: 13,
       minZoom: 13,
       maxZoom: 15,
       maxBounds: bounds,
-      maxBoundsViscosity: 1.0
-    };
+      maxBoundsViscosity: 1.0,
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -38,17 +50,17 @@ export default {
           this.maxBounds = new L.LatLngBounds(
             new L.LatLng(14.63956, 120.89287),
             new L.LatLng(14.5565, 121.07483)
-          );
+          )
 
           this.$refs.map.mapObject.on("drag", () => {
             this.$refs.map.mapObject.panInsideBounds(this.maxBounds, {
-              animate: false
-            });
-          });
-          clearInterval(check);
+              animate: false,
+            })
+          })
+          clearInterval(check)
         }
-      }, 100);
-    });
-  }
-};
+      }, 100)
+    })
+  },
+}
 </script>
