@@ -16,6 +16,14 @@
           ref="map"
         >
           <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+          <LeafletHeatmap
+            v-if="reports.length > 0 && !loadingHeats"
+            :lat-lng="heats"
+            :radius="60"
+            :min-opacity=".75"
+            :max-zoom="10"
+            :blur="60"
+          ></LeafletHeatmap>
         </l-map>
       </no-ssr>
     </div>
@@ -41,7 +49,15 @@ export default {
       maxZoom: 15,
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
+      reports: [],
     }
+  },
+  computed: {
+    heats() {
+      return this.reports.map(report => {
+        return [report.location.coordinates[1], report.location.coordinates[0]]
+      })
+    },
   },
   mounted() {
     this.$nextTick(() => {
@@ -61,6 +77,20 @@ export default {
         }
       }, 100)
     })
+  },
+  watch: {
+    type(value) {
+      if (value === null) {
+        return
+      }
+
+      this.loadingHeats = true
+
+      this.$axios.$get(`/admin/reports/${value}`).then(response => {
+        this.reports = response.data
+        this.loadingHeats = false
+      })
+    },
   },
 }
 </script>

@@ -1,6 +1,6 @@
-const pkg = require("./package");
-import dotenv from "dotenv";
-dotenv.config();
+const pkg = require("./package")
+import dotenv from "dotenv"
+dotenv.config()
 
 module.exports = {
   mode: "universal",
@@ -13,9 +13,9 @@ module.exports = {
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: pkg.description }
+      { hid: "description", name: "description", content: pkg.description },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
   /*
@@ -32,7 +32,8 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: "~/plugins/vue-chance.js", ssr: false }
+    { src: "~/plugins/vue-chance.js", ssr: false },
+    { src: "~/plugins/vue2-leaflet-heatmap.js", ssr: false },
     // { src: "~/plugins/leaflet-heat.js", ssr: false }
   ],
 
@@ -44,19 +45,19 @@ module.exports = {
     "@nuxtjs/axios",
     "@nuxtjs/auth",
     "@nuxtjs/dotenv",
-    "nuxt-leaflet"
+    "nuxt-leaflet",
   ],
 
   /*
    ** Axios module configuration
    */
   axios: {
-    https: process.NODE_ENV === "production" ? true : false
+    https: process.NODE_ENV === "production" ? true : false,
     // debug: true,
   },
 
   router: {
-    middleware: ["auth"]
+    middleware: ["auth"],
   },
 
   auth: {
@@ -66,20 +67,20 @@ module.exports = {
           login: {
             url: "/auth/login",
             method: "post",
-            propertyName: "data.token"
+            propertyName: "data.token",
           },
           logout: {
             url: "/auth/logout",
-            method: "post"
+            method: "post",
           },
           user: {
             url: "/auth/me",
             method: "get",
-            propertyName: "data"
-          }
-        }
-      }
-    }
+            propertyName: "data",
+          },
+        },
+      },
+    },
   },
 
   /*
@@ -89,6 +90,6 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
-  }
-};
+    extend(config, ctx) {},
+  },
+}
