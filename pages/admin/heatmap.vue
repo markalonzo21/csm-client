@@ -1,9 +1,12 @@
 <template>
   <div class="container mx-auto">
-    <select v-model="type" required class="p-2 mt-4">
-      <option :value="null">Select Type</option>
-      <option v-for="type in reportTypes" :key="type._id" :value="type._id" v-text="type.name"></option>
-    </select>
+    <div class="mt-4">
+      <select v-model="type" required class="p-2">
+        <option :value="null">Select Type</option>
+        <option v-for="type in reportTypes" :key="type._id" :value="type._id" v-text="type.name"></option>
+      </select>
+      <span class="ml-2" v-if="loadingHeats">LOADING HEATS</span>
+    </div>
     <div id="map-wrap" style="height: 500px; width: 100%;" class="mt-4">
       <no-ssr>
         <l-map
@@ -19,10 +22,9 @@
           <LeafletHeatmap
             v-if="reports.length > 0 && !loadingHeats"
             :lat-lng="heats"
-            :radius="60"
+            :radius="25"
             :min-opacity=".75"
-            :max-zoom="10"
-            :blur="60"
+            :blur="15"
           ></LeafletHeatmap>
         </l-map>
       </no-ssr>
