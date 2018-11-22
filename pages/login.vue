@@ -38,12 +38,19 @@ export default {
           }
         })
         .then(response => {
+          this.socketConnect()
           this.$router.replace('/')
           this.loading = false
         })
         .catch(errors => {
           this.loading = false
         })
+    },
+    socketConnect() {
+      this.$socket.query.token = localStorage
+        .getItem('auth._token.local')
+        .replace('Bearer ', '')
+      this.$socket.connect()
     }
   }
 }

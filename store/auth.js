@@ -19,6 +19,7 @@ export const getters = {
 export const actions = {
   logout() {
     this.$auth.logout().then(() => {
+      this.$socket.disconnect()
       this.$router.replace('/login')
     })
   }
