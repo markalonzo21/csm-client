@@ -1,4 +1,4 @@
-export default function(ctx, inject) {
+export default function (ctx, inject) {
   // Load Chance
   var Chance = require('chance')
 
