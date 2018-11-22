@@ -1,6 +1,6 @@
 export const getters = {
   userDashboardLink(state) {
-    if (state.user.role.slug === 'admin') {
+    if (state.user.role.slug === 'administrator') {
       return '/admin'
     }
 
