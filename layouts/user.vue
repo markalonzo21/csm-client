@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="flex items-center justify-between flex-wrap bg-grey p-4">
+    <nav class="flex items-center justify-between flex-wrap bg-blue-light p-4">
       <div class="container mx-auto">
         <div class="flex items-center justify-between flex-no-shrink text-white mr-6">
           <nuxt-link
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  middleware: 'user',
+  middleware: 'isUser',
   methods: {
     logout() {
       this.$auth.logout().then(() => {

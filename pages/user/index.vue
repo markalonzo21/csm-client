@@ -13,7 +13,7 @@
       <tbody>
         <tr
           class="cursor-pointer"
-          @click.prevent="$router.push(`/reports/${report._id}`)"
+          @click.prevent="$router.push(`/user/reports/${report._id}`)"
           v-for="report in reports"
           :key="report._id"
         >
@@ -26,18 +26,39 @@
         </tr>
       </tbody>
     </table>
+    <button
+      class="btn btn-info m-6"
+      :disabled="isReportsLoading"
+      @click.prevent="loadMoreReports"
+    >Load More</button>
   </section>
 </template>
 
 <script>
 export default {
   middleware: 'isUser',
+  layout: 'user',
   asyncData({ $axios, error }) {
     return $axios.$get('/reports').then(response => {
       return {
-        reports: response.data
+        reports: response.data,
+        isLoadMoreVisible: !(response.data.length < 10),
+        isReportsLoading: false
       }
     })
+  },
+  methods: {
+    loadMoreReports() {
+      this.isReportsLoading = true
+      this.$axios
+        .$get(`/reports?skip=${this.reports.length}`)
+        .then(response => {
+          response.data.forEach(report => {
+            this.reports.push(report)
+          })
+          this.isReportsLoading = false
+        })
+    }
   }
 }
 </script>

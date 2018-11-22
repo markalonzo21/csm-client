@@ -19,17 +19,18 @@
 
 <script>
 export default {
+  layout: 'user',
   asyncData({ $axios, params, isServer }) {
     return $axios.$get(`/reports/${params.id}`).then(response => {
       return {
-        report: response.data,
+        report: response.data
       }
     })
   },
   methods: {
     milestoneIsCompleted(id) {
       return this.report.responses.includes(id)
-    },
-  },
+    }
+  }
 }
 </script>

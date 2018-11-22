@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="flex items-center justify-between flex-wrap bg-blue-light p-4">
+    <nav class="flex items-center justify-between flex-wrap bg-grey p-4">
       <div class="container mx-auto">
         <div class="flex items-center justify-between flex-no-shrink text-white mr-6">
           <nuxt-link
@@ -8,6 +8,7 @@
             to="/"
           >LOGO</nuxt-link>
           <router-link
+            v-if="$auth.loggedIn"
             class="no-underline text-white"
             :to="$store.getters['auth/userDashboardLink']"
           >Dashboard</router-link>
