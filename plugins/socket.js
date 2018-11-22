@@ -1,7 +1,14 @@
 import io from 'socket.io-client'
 
 export default function(ctx, inject) {
-  const socket = io(process.env.API_URL, {
+  console.log({ API_URL: process.env.API_URL })
+
+  const API_URL =
+    process.env.API_URL === undefined
+      ? 'https://incident-reporting-api.now.sh'
+      : process.env.API_URL
+
+  const socket = io(API_URL, {
     reconnect: true,
     forceNew: true,
     transports: ['websocket'],

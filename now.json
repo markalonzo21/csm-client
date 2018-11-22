@@ -1,0 +1,7 @@
+{
+  "name": "i-report",
+  "alias": "i-report.now.sh",
+  "env": {
+    "API_URL": "https://incident-reporting-api.now.sh"
+  }
+}

@@ -1,7 +1,7 @@
 {
-  "name": "incident-reporting-web",
+  "name": "i-report",
   "version": "1.0.0",
-  "description": "My good Nuxt.js project",
+  "description": "Generic Reporting System",
   "author": "jericopulvera",
   "private": true,
   "scripts": {
