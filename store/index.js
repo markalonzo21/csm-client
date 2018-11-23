@@ -1,3 +1,3 @@
 export const state = () => ({
-  loading: false,
+  loading: false
 })

@@ -1,59 +1,9 @@
 <template>
-  <section class="container mx-auto">
-    <div class="p-4">Reports</div>
-    <table>
-      <thead>
-        <tr>
-          <td>Type</td>
-          <td>Location</td>
-          <td>Created At</td>
-          <td>Resolved At</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          class="cursor-pointer"
-          @click.prevent="$router.push(`/reports/${report._id}`)"
-          v-for="report in reports"
-          :key="report._id"
-        >
-          <td>
-            <a class="rowlink" v-text="report.reportType.name"></a>
-          </td>
-          <td v-html="report.location.coordinates">14.12414, 121,41241</td>
-          <td v-text="report.createdAt">Nov. 11, 2018 10:30 PM</td>
-          <td v-text="report.resolvedAt ? report.resolvedAt : 'Unresolved'"></td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+  <div class="container p-4">THIS IS THE HOME PAGE FOR ALL</div>
 </template>
-
 <script>
 export default {
-  asyncData({ $axios, error }) {
-    return $axios.$get("/reports").then(response => {
-      return {
-        reports: response.data,
-      }
-    })
-  },
+  auth: false
 }
 </script>
 
-<style scoped>
-table {
-  position: relative;
-  border-collapse: separate;
-  border-spacing: 15px 15px;
-}
-
-.rowlink::before {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 1.5em; /* don't forget to set the height! */
-}
-</style>
