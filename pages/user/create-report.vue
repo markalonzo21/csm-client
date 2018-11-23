@@ -20,19 +20,20 @@
 
 <script>
 export default {
+  layout: 'user',
   asyncData({ $axios, error }) {
-    return $axios.$get("/report-types").then(response => {
+    return $axios.$get('/report-types').then(response => {
       return {
         loadingSubmitReport: false,
         reportTypes: response.data,
         form: {
           type: response.data[0]._id,
-          description: "Please Help!",
+          description: 'Please Help!',
           location: {
-            type: "Point",
-            coordinates: { lng: null, lat: null },
-          },
-        },
+            type: 'Point',
+            coordinates: { lng: null, lat: null }
+          }
+        }
       }
     })
   },
@@ -43,11 +44,11 @@ export default {
     generateFakeData() {
       this.form.location.coordinates.lat = this.$chance.latitude({
         min: 14.5565,
-        max: 14.63956,
+        max: 14.63956
       })
       this.form.location.coordinates.lng = this.$chance.longitude({
         min: 120.89287,
-        max: 121.07483,
+        max: 121.07483
       })
     },
     report() {
@@ -56,10 +57,10 @@ export default {
       // Validate Location
 
       this.$axios
-        .$post("/reports", {
+        .$post('/reports', {
           description: this.form.description,
           type: this.form.type,
-          location: JSON.stringify(this.form.location),
+          location: JSON.stringify(this.form.location)
         })
         .then(response => {
           this.loadingSubmitReport = false
@@ -75,7 +76,7 @@ export default {
 
           this.loadingSubmitReport = false
         })
-    },
-  },
+    }
+  }
 }
 </script>
