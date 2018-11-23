@@ -2,7 +2,18 @@
   <div class="container mx-auto py-4">
     <div class="flex mb-4" v-if="report">
       <div class="w-1/2 flex flex-col items-start justify-center p-2">
-        <h3 class="mb-1">Respondent: respondent1@gmail.com</h3>
+        <h3 class="mb-1">Report: {{ report._id }}</h3>
+        <h3 class="mb-1">Report Type: {{ report.reportType.name }}</h3>
+        <h3 class="mb-1">Report Description: {{ report.description }}</h3>
+        <h3
+          class="mb-1"
+        >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }}</h3>
+        <h3 class="mb-1">Assigned To:
+          <template
+            v-if="report.assignedTo"
+          >{{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}</template>
+          <span v-else>None</span>
+        </h3>
         <h3 class="my-2">Milestones</h3>
         <div
           class="my-2"
@@ -27,7 +38,15 @@ export default {
       }
     })
   },
+  mounted() {
+    this.initSocketListeners()
+  },
   methods: {
+    initSocketListeners() {
+      this.$socket.on('respondent-assigned', data => {
+        this.report.assignedTo = data
+      })
+    },
     milestoneIsCompleted(id) {
       return this.report.responses.includes(id)
     }

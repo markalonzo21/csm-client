@@ -1,6 +1,6 @@
 <template>
   <div class="container py-4">
-    <div class="active-report">
+    <div class="active-report" v-if="activeReport">
       <h3>Active Report</h3>
       <hr>
       <h4 class="mb-1">Report: {{ activeReport._id }}</h4>

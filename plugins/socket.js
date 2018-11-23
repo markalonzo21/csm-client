@@ -1,8 +1,6 @@
 import io from 'socket.io-client'
 
 export default function(ctx, inject) {
-  console.log({ API_URL: process.env.API_URL })
-
   const API_URL =
     process.env.API_URL === undefined
       ? 'https://incident-reporting-api.now.sh'
