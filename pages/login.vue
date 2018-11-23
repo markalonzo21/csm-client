@@ -16,9 +16,12 @@
 <script>
 export default {
   auth: false,
-  middleware: 'guestOnly',
   layout: 'auth',
-  data() {
+  asyncData({ store, redirect }) {
+    if (store.state.auth.loggedIn) {
+      return redirect('/')
+    }
+
     return {
       loading: false,
       form: {
@@ -38,7 +41,6 @@ export default {
           }
         })
         .then(response => {
-          console.log('wtf?')
           this.$nextTick(() => {
             this.$router.push('/')
             this.socketConnect()
