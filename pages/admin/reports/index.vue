@@ -6,6 +6,7 @@
         <tr>
           <td>Type</td>
           <td>Location</td>
+          <td>Assigned To</td>
           <td>Created At</td>
           <td>Resolved At</td>
         </tr>
@@ -13,14 +14,15 @@
       <tbody>
         <tr
           class="cursor-pointer"
-          @click.prevent="$router.push(`/user/reports/${report._id}`)"
           v-for="report in reports"
           :key="report._id"
+          @click.prevent="$router.push(`/admin/reports/${report._id}`)"
         >
           <td>
             <a class="rowlink" v-text="report.reportType.name"></a>
           </td>
           <td v-html="report.location.coordinates">14.12414, 121,41241</td>
+          <td v-text="report.assignedTo ? `${report.assignedTo.firstName} ${report.assignedTo.lastName}` : 'Unassigned'">Some Name</td>
           <td v-text="report.createdAt">Nov. 11, 2018 10:30 PM</td>
           <td v-text="report.resolvedAt ? report.resolvedAt : 'Unresolved'"></td>
         </tr>
@@ -37,10 +39,10 @@
 
 <script>
 export default {
-  middleware: 'isUser',
-  layout: 'user',
+  layout: 'admin',
+  middleware: 'isAdmin',
   asyncData({ $axios, error }) {
-    return $axios.$get('/reports').then(response => {
+    return $axios.$get('/admin/reports').then(response => {
       return {
         reports: response.data,
         isLoadMoreVisible: !(response.data.length < 10),
@@ -52,7 +54,7 @@ export default {
     loadMoreReports() {
       this.isReportsLoading = true
       this.$axios
-        .$get(`/reports?skip=${this.reports.length}`)
+        .$get(`/admin/reports?skip=${this.reports.length}`)
         .then(response => {
           response.data.forEach(report => {
             this.reports.push(report)

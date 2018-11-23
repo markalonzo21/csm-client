@@ -8,6 +8,7 @@
             to="/"
           >COMMAND CENTER</nuxt-link>
           <router-link class="no-underline text-white" to="/admin">Dashboard</router-link>
+          <router-link class="no-underline text-white" to="/admin/reports">Reports</router-link>
           <button
             type="button"
             @click.prevent="$store.dispatch('auth/logout')"
