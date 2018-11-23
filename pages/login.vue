@@ -16,6 +16,7 @@
 <script>
 export default {
   auth: false,
+  middleware: 'guestOnly',
   layout: 'auth',
   data() {
     return {
@@ -29,7 +30,6 @@ export default {
   methods: {
     login() {
       this.loading = true
-
       this.$auth
         .loginWith('local', {
           data: {
@@ -38,9 +38,12 @@ export default {
           }
         })
         .then(response => {
-          this.socketConnect()
-          this.$router.replace('/')
-          this.loading = false
+          console.log('wtf?')
+          this.$nextTick(() => {
+            this.$router.push('/')
+            this.socketConnect()
+            this.loading = false
+          })
         })
         .catch(errors => {
           this.loading = false

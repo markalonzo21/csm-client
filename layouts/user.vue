@@ -7,7 +7,7 @@
             class="font-semibold text-xl tracking-tight cursor-pointer text-white no-underline"
             to="/"
           >LOGO</nuxt-link>
-          <router-link to="/create-report" class="no-underline text-white">Create Report</router-link>
+          <router-link to="/user/create-report" class="no-underline text-white">Create Report</router-link>
           <router-link class="no-underline text-white" to="/user">Dashboard</router-link>
           <button type="button" @click.prevent="logout" class="no-underline text-white">Logout</button>
         </div>

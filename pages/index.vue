@@ -2,6 +2,8 @@
   <div class="container p-4">THIS IS THE HOME PAGE FOR ALL</div>
 </template>
 <script>
-export default {}
+export default {
+  auth: false
+}
 </script>
 

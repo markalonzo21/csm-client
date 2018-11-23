@@ -7,16 +7,23 @@
             class="font-semibold text-xl tracking-tight cursor-pointer text-white no-underline"
             to="/"
           >LOGO</nuxt-link>
-          <router-link
-            v-if="$auth.loggedIn"
-            class="no-underline text-white"
-            :to="$store.getters['auth/userDashboardLink']"
-          >Dashboard</router-link>
-          <button
-            type="button"
-            @click.prevent="$store.dispatch('auth/logout')"
-            class="no-underline text-white"
-          >Logout</button>
+          <div v-if="$auth.loggedIn">
+            <router-link
+              class="no-underline text-white"
+              :to="$store.getters['auth/userDashboardLink']"
+            >Dashboard</router-link>
+            <button
+              type="button"
+              @click.prevent="$store.dispatch('auth/logout')"
+              class="no-underline text-white"
+            >Logout</button>
+          </div>
+          <div v-else>
+            <router-link
+              class="no-underline text-white"
+              to="/login"
+            >Login</router-link>
+          </div>
         </div>
       </div>
     </nav>
