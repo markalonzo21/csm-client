@@ -27,6 +27,8 @@
   "devDependencies": {
     "autoprefixer": "^7.1.6",
     "cross-env": "^5.0.1",
+    "node-sass": "^4.10.0",
+    "sass-loader": "^7.1.0",
     "tailwindcss": "^0.7.2"
   }
 }

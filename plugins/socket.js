@@ -21,6 +21,8 @@ export default function(ctx, inject) {
 
   socket.on('connect', () => {
     if (process.env.NODE_ENV === 'development') console.log('socket connected')
+
+    // socket.emit('join', { _id: ctx.store.state.auth.user._id })
   })
 
   socket.on('error', err => {

@@ -19,10 +19,7 @@
             >Logout</button>
           </div>
           <div v-else>
-            <router-link
-              class="no-underline text-white"
-              to="/login"
-            >Login</router-link>
+            <router-link class="no-underline text-white" to="/login">Login</router-link>
           </div>
         </div>
       </div>
