@@ -1,5 +1,11 @@
+import Vue from 'vue'
+
 export const getters = {
   userDashboardLink(state) {
+    if (!state.user) {
+      return '/'
+    }
+
     if (!state.user.role) {
       return '/'
     }
@@ -19,8 +25,10 @@ export const getters = {
 export const actions = {
   logout() {
     this.$auth.logout().then(() => {
-      this.$socket.disconnect()
-      this.$router.replace('/')
+      Vue.nextTick(() => {
+        this.$socket.disconnect()
+        this.$router.replace('/')
+      })
     })
   }
 }

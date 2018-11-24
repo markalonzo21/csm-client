@@ -1,13 +1,13 @@
 export default function({ store, redirect }) {
   if (!store.state.auth.loggedIn) {
-    return
+    redirect('/')
   }
 
-  if (!store.state.auth.user) {
-    return
+  if (!store.state.auth.user.role) {
+    redirect('/')
   }
 
-  if (store.state.auth.user && store.state.auth.user.role.slug !== 'user') {
+  if (store.state.auth.user.role.slug !== 'user') {
     redirect('/')
   }
 }

@@ -38,13 +38,13 @@
 </template>
 <script>
 export default {
-  layout: "admin",
+  layout: 'admin',
   asyncData({ $axios }) {
-    return $axios.$get("/report-types").then(response => {
+    return $axios.$get('/report-types').then(response => {
       return {
         reportTypes: response.data,
         type: null,
-        resolvedOrUnresolved: "both",
+        resolvedOrUnresolved: 'both'
       }
     })
   },
@@ -58,7 +58,7 @@ export default {
       maxZoom: 18,
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
-      reports: [],
+      reports: []
     }
   },
   computed: {
@@ -66,7 +66,7 @@ export default {
       return this.reports.map(report => {
         return [report.location.coordinates[1], report.location.coordinates[0]]
       })
-    },
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -77,9 +77,9 @@ export default {
             new L.LatLng(14.5565, 121.07483)
           )
 
-          this.$refs.map.mapObject.on("drag", () => {
+          this.$refs.map.mapObject.on('drag', () => {
             this.$refs.map.mapObject.panInsideBounds(this.maxBounds, {
-              animate: false,
+              animate: false
             })
           })
           clearInterval(check)
@@ -103,7 +103,7 @@ export default {
 
       this.loadingHeats = true
       this.searchReports(this.type, value)
-    },
+    }
   },
   methods: {
     searchReports(type, resolvedOrUnresolved) {
@@ -113,7 +113,7 @@ export default {
           this.reports = response.data
           this.loadingHeats = false
         })
-    },
-  },
+    }
+  }
 }
 </script>

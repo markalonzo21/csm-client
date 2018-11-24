@@ -1,5 +1,6 @@
 <template>
   <section class="container mx-auto">
+    <router-link to="/admin/reports/heatmap" class="p-4">Go To Reports Heatmap</router-link>
     <div class="p-4">Reports</div>
     <table>
       <thead>
