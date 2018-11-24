@@ -1,4 +1,63 @@
-.test-class {
-  padding: 10px;
-  background-color: red;
+body * {
+  font-family: $lato;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+//Margins
+.mb10 {
+  margin-bottom: 10px;
+}
+
+//Buttons
+.btn.btnsignin {
+  border-color: transparent;
+  margin-right: 10px;
+  transition: all ease 300ms;
+  &:hover,
+  &:focus,
+  &:active {
+    background: transparent;
+  border-color: transparent;
+  color: #2eb2e2;
+  transition: all ease 300ms;
+  outline: none;
+  box-shadow: none;
+  }
+}
+.btn.btnblue {
+  border: 1px solid #2989d8;
+  background: linear-gradient(to right, #2989d8 0%, #34c3e5 100%);
+  color: $white;
+  transition: all ease 300ms;
+  &:hover,
+  &:focus,
+  &:active {
+    background: transparent;
+    color: #2eb2e2;
+    transition: all ease 300ms;
+  }
+}
+
+//Style
+.auth {
+  .modal-header {
+    border-color: transparent;
+  }
+  .tiny {
+    font-size: 10px;
+    font-weight: 700;
+    color: #2eb2e2;
+  }
+  .registration {
+    form .row {
+      margin-left: -7.5px;
+      margin-right: -7.5px;
+    }
+    form .field {
+      padding: 0 7.5px;
+    }
+  }
 }
