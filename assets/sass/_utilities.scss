@@ -6,31 +6,66 @@ body * {
   width: 100%;
 }
 
+.tiny {
+  font-size: 10px;
+  font-weight: 700;
+  color: $irs__aqua;
+}
+
+.basic__dark {
+  font-size: 14px;
+  color: $black;
+}
+
+.title__blue--large {
+  font-size: 36px;
+  font-weight: 700;
+  color: $irs__blue--dark;
+  font-family: $oswald;
+}
+
 //Margins
+.mrgnauto {
+  margin: 0 auto;
+}
 .mb10 {
   margin-bottom: 10px;
+}
+.mb20 {
+  margin-bottom: 20px;
+}
+.mb30 {
+  margin-bottom: 30px;
 }
 
 //Buttons
 .btn.btnsignin {
   border-color: transparent;
   margin-right: 10px;
+  font-size: 14px;
+  color: $black;
   transition: all ease 300ms;
   &:hover,
   &:focus,
   &:active {
     background: transparent;
-  border-color: transparent;
-  color: #2eb2e2;
-  transition: all ease 300ms;
-  outline: none;
-  box-shadow: none;
+    border-color: transparent;
+    color: $irs__aqua;
+    transition: all ease 300ms;
+    outline: none;
+    box-shadow: none;
   }
 }
 .btn.btnblue {
-  border: 1px solid #2989d8;
-  background: linear-gradient(to right, #2989d8 0%, #34c3e5 100%);
+  width: 125px;
+  height: 40px;
+  line-height: 27px;
+  border: 1px solid $irs__aqua;
+  border-radius: 10px;
+  background: linear-gradient(to right, #2989d8 0%, $irs__aqua 100%);
+  font-size: 14px;
   color: $white;
+  border-radius: 10px;
   transition: all ease 300ms;
   &:hover,
   &:focus,
@@ -42,22 +77,17 @@ body * {
 }
 
 //Style
-.auth {
-  .modal-header {
-    border-color: transparent;
+.banner {
+  padding: 60px 0;
+  background-image: url('/img/bg.jpg');
+  .row {
+    display: flex;
+    align-items: center;
   }
-  .tiny {
-    font-size: 10px;
-    font-weight: 700;
-    color: #2eb2e2;
-  }
-  .registration {
-    form .row {
-      margin-left: -7.5px;
-      margin-right: -7.5px;
-    }
-    form .field {
-      padding: 0 7.5px;
+  .btn.btnblue {
+    &:hover {
+      border-color: $white;
+      color: $white;
     }
   }
 }
