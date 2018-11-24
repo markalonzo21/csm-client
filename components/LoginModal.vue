@@ -12,6 +12,7 @@
       <small>
         <a class="tiny pull-right mb20" href="#">Forgot password</a>
       </small>
+      <div class="clearfix"></div>
       <button
         type="submit"
         class="btn btnblue w-100 text-uppercase"

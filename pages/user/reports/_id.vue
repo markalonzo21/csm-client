@@ -2,7 +2,7 @@
   <div class="container mx-auto py-4">
     <div v-if="report">
       <div class="col-md-6">
-        <h3>Report Details</h3>
+        <h3 class="title__blue">Report Details</h3>
         <hr>
         <h4 class="mb-1">Report: {{ report._id }}</h4>
         <h4 class="mb-1">Report Type: {{ report.reportType.name }}</h4>
@@ -17,7 +17,7 @@
           <template v-else>None</template>
         </h4>
         <hr>
-        <h3 class="mb-1">Milestones</h3>
+        <h3 class="title__blue">Milestones</h3>
         <div
           class="my-2"
           v-for="(milestone, index) in report.reportType.milestones"
