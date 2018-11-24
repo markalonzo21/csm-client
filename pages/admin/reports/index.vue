@@ -22,7 +22,9 @@
             <a class="rowlink" v-text="report.reportType.name"></a>
           </td>
           <td v-html="report.location.coordinates">14.12414, 121,41241</td>
-          <td v-text="report.assignedTo ? `${report.assignedTo.firstName} ${report.assignedTo.lastName}` : 'Unassigned'">Some Name</td>
+          <td
+            v-text="report.assignedTo ? `${report.assignedTo.firstName} ${report.assignedTo.lastName}` : 'Unassigned'"
+          >Some Name</td>
           <td v-text="report.createdAt">Nov. 11, 2018 10:30 PM</td>
           <td v-text="report.resolvedAt ? report.resolvedAt : 'Unresolved'"></td>
         </tr>
@@ -50,7 +52,15 @@ export default {
       }
     })
   },
+  mounted() {
+    this.initSocketListeners()
+  },
   methods: {
+    initSocketListeners() {
+      this.$socket.on('new-report', report => {
+        this.reports.unshift(report)
+      })
+    },
     loadMoreReports() {
       this.isReportsLoading = true
       this.$axios

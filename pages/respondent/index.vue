@@ -1,18 +1,19 @@
 <template>
   <div class="container py-4">
-    <div class="active-report" v-if="activeReport">
+    <div class="active-report" v-if="report">
       <h3>Active Report</h3>
       <hr>
-      <h4 class="mb-1">Report: {{ activeReport._id }}</h4>
-      <h4 class="mb-1">Report Type: {{ activeReport.reportType.name }}</h4>
-      <h4 class="mb-1">Report Description: {{ activeReport.description }}</h4>
+      <h4 class="mb-1">Report: {{ report._id }}</h4>
+      <h4 class="mb-1">Report Type: {{ report.reportType.name }}</h4>
+      <h4 class="mb-1">Report Description: {{ report.description }}</h4>
       <h4
         class="mb-1"
-      >Reported By: {{ activeReport.reportedBy.firstName }} {{ activeReport.reportedBy.lastName }}</h4>
-      <h4 class="mb-1">Milestones</h4>
+      >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }}</h4>
+      <hr>
+      <h3 class="mb-1">Milestones</h3>
       <div
-        class="my-2 row"
-        v-for="(milestone, index) in activeReport.reportType.milestones"
+        class="my-2"
+        v-for="(milestone, index) in report.reportType.milestones"
         :key="milestone._id"
       >
         {{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - DONE' : '' }}
@@ -34,23 +35,31 @@ export default {
   asyncData({ $axios, store, params, error }) {
     return $axios.$get(`/respondent/active-report`).then(response => {
       return {
-        activeReport: response.data,
+        report: response.data,
         loadingMarkAsDone: false
       }
     })
   },
   computed: {
     isResolved() {
-      if (!this.activeReport) {
+      if (!this.report) {
         return true
       }
       return (
-        this.activeReport.reportType.milestones.length ===
-        this.activeReport.responses.length
+        this.report.reportType.milestones.length ===
+        this.report.responses.length
       )
     }
   },
+  mounted() {
+    this.initSocketListeners()
+  },
   methods: {
+    initSocketListeners() {
+      this.$socket.on('respondent-assigned', report => {
+        this.report = report
+      })
+    },
     isShowMarkButtonVisible(milestoneId, index) {
       if (this.milestoneIsCompleted(milestoneId)) {
         return false
@@ -67,11 +76,12 @@ export default {
       return true
     },
     milestoneIsCompleted(id) {
-      return this.activeReport.responses.includes(id)
+      return this.report.responses.includes(id)
     },
     isNotYetMarkable(index) {
-      const milestoneBeforeThisMilestone = this.activeReport.reportType
-        .milestones[index - 1]
+      const milestoneBeforeThisMilestone = this.report.reportType.milestones[
+        index - 1
+      ]
 
       if (this.milestoneIsCompleted(milestoneBeforeThisMilestone._id)) {
         return false
@@ -83,16 +93,16 @@ export default {
       this.loadingMarkAsDone = true
       this.$axios
         .$post('/respondent/respond', {
-          reportId: this.activeReport._id,
+          reportId: this.report._id,
           milestoneId: id
         })
         .then(response => {
-          this.activeReport.responses.push(id)
+          this.report.responses.push(id)
           this.loadingMarkAsDone = false
 
           if (this.isResolved) {
             alert('incident is resolved!')
-            this.activeReport = null
+            this.report = null
           }
         })
         .catch(error => {

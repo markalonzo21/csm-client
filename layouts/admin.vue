@@ -1,22 +1,24 @@
 <template>
   <div>
-    <nav class="flex items-center justify-between flex-wrap bg-green p-4">
-      <div class="container mx-auto">
-        <div class="flex items-center justify-between flex-no-shrink text-white mr-6">
-          <nuxt-link
-            class="font-semibold text-xl tracking-tight cursor-pointer text-white no-underline"
-            to="/"
-          >COMMAND CENTER</nuxt-link>
-          <router-link class="no-underline text-white" to="/admin">Dashboard</router-link>
-          <router-link class="no-underline text-white" to="/admin/reports">Reports</router-link>
-          <button
-            type="button"
-            @click.prevent="$store.dispatch('auth/logout')"
-            class="no-underline text-white"
-          >Logout</button>
-        </div>
+    <navbar class="bg-white">
+      <div class="container">
+        <router-link class="navbar-brand" slot="brand" to="/">Insert Logo</router-link>
+        <navbar-nav right>
+          <li>
+            <router-link class="text-blue-light" to="/admin/reports">Reports</router-link>
+          </li>
+          <li>
+            <router-link class="text-blue-light" to="/admin">{{ $auth.user.role.name }} Dashboard</router-link>
+          </li>
+          <li>
+            <a
+              class="text-blue-light cursor-pointer"
+              @click="$store.dispatch('auth/logout')"
+            >Log Out</a>
+          </li>
+        </navbar-nav>
       </div>
-    </nav>
+    </navbar>
     <nuxt/>
   </div>
 </template>

@@ -1,33 +1,52 @@
 <template>
-  <div>
-    <nav class="flex items-center justify-between flex-wrap bg-grey p-4">
-      <div class="container mx-auto">
-        <div class="flex items-center justify-between flex-no-shrink text-white mr-6">
-          <nuxt-link
-            class="font-semibold text-xl tracking-tight cursor-pointer text-white no-underline"
-            to="/"
-          >LOGO</nuxt-link>
-          <div v-if="$auth.loggedIn">
+  <section>
+    <navbar class="user-menu">
+      <div class="container">
+        <router-link class="navbar-brand" slot="brand" to="/">Insert Logo</router-link>
+        <navbar-nav right v-if="!$auth.loggedIn">
+          <li>
+            <btn
+              class="btnsignin text-uppercase"
+              @click="$store.commit('TOGGLE_LOGIN_MODAL')"
+            >Sign In</btn>
+          </li>
+          <btn
+            class="btnblue text-uppercase"
+            @click="$store.commit('TOGGLE_REGISTRATION_MODAL')"
+          >Register</btn>
+        </navbar-nav>
+        <navbar-nav right v-else>
+          <li>
             <router-link
-              class="no-underline text-white"
+              class="text-blue-light"
               :to="$store.getters['auth/userDashboardLink']"
-            >Dashboard</router-link>
-            <button
-              type="button"
-              @click.prevent="$store.dispatch('auth/logout')"
-              class="no-underline text-white"
-            >Logout</button>
-          </div>
-          <div v-else>
-            <router-link class="no-underline text-white" to="/login">Login</router-link>
-          </div>
-        </div>
+            >{{ $auth.user.role.name }} Dashboard</router-link>
+          </li>
+          <li>
+            <a
+              class="text-blue-light cursor-pointer"
+              @click="$store.dispatch('auth/logout')"
+            >Log Out</a>
+          </li>
+        </navbar-nav>
       </div>
-    </nav>
+    </navbar>
+    <LoginModal/>
+    <RegistrationModal/>
     <nuxt/>
-  </div>
+  </section>
 </template>
 
 <script>
-export default {}
+import LoginModal from '~/components/LoginModal'
+import RegistrationModal from '~/components/RegistrationModal'
+
+export default {
+  components: {
+    LoginModal,
+    RegistrationModal
+  }
+}
 </script>
+
+<style scoped></style>

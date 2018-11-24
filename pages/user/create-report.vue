@@ -65,7 +65,7 @@ export default {
         .then(response => {
           this.loadingSubmitReport = false
           this.generateFakeData()
-          // this.$router.push(`/reports/${response.data._id}`)
+          this.$router.push(`/user/reports/${response.data._id}`)
         })
         .catch(err => {
           if (err.response.code === 422) {
