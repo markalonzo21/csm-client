@@ -23,10 +23,20 @@ body * {
   color: $irs__blue--dark;
   font-family: $oswald;
 }
+.title__blue {
+  font-size: 24px;
+  color: $irs__blue--dark;
+}
 
 //Margins
 .mrgnauto {
   margin: 0 auto;
+}
+.mt0 {
+  margin-top: 0;
+}
+.mt60 {
+  margin-top: 60px;
 }
 .mb10 {
   margin-bottom: 10px;
@@ -36,6 +46,22 @@ body * {
 }
 .mb30 {
   margin-bottom: 30px;
+}
+.mb45 {
+  margin-bottom: 45px;
+}
+
+//Paddings
+.p0 {
+  padding: 0 !important;
+}
+*.clrpadding {
+  padding-left: 7.5px !important;
+  padding-right: 7.5px !important;
+}
+*.clrmargin {
+  margin-left: -7.5px !important;
+  margin-right: -7.5px !important;
 }
 
 //Buttons
@@ -75,6 +101,29 @@ body * {
     transition: all ease 300ms;
   }
 }
+.btn.btnmore {
+  font-size: 14px;
+  font-weight: 700;
+  color: #9da7b1;
+  transition: all ease 300ms;
+  svg {
+    fill: #9da7b1;
+    height: 14px;
+    vertical-align: middle;
+    transition: all ease 300ms;
+  }
+  &:hover,
+  &:focus,
+  &:active {
+    color: $black;
+    box-shadow: none;
+    transition: all ease 300ms;
+    svg {
+      fill: $black;
+      transition: all ease 300ms;
+    }
+  }
+}
 
 //Style
 .banner {
@@ -91,3 +140,38 @@ body * {
     }
   }
 }
+.main-content {
+  padding: 70px 0;
+  .news {
+    .panel {
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+    .panel-heading {
+      max-height: 153px;
+      overflow: hidden;
+      img {
+        object-fit: cover;
+      }
+    }
+    .panel-body {
+      min-height: 80px;
+    }
+    .panel-footer {
+      border-color: transparent;
+      background: transparent;
+      display: inline-block;
+      width: 100%;
+    }
+  }
+  .user-dashboard {
+    table {
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+  }
+  .report {
+    .panel {
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+  }
+}
+
