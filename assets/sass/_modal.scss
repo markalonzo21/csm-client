@@ -1,0 +1,65 @@
+.modal.login {
+  .modal-dialog {
+    width: 480px;
+    margin: 0 auto;
+  }
+  .modal-content {
+    padding: 30px;
+    .close {
+      display: none;
+    }
+  }
+  .modal-header {
+    border-color: transparent;
+  }
+  .modal-body {
+    .form-control {
+      font-size: 14px;
+      color: $irs__gray--dark;
+      border: 1px solid $irs__gray--light;
+      transition: all ease 300ms;
+      &:focus {
+        border-color: $irs__aqua;
+        transition: all ease 300ms;
+      }
+    }
+  }
+}
+.modal.registration {
+  .modal-dialog {
+    width: 480px;
+    margin: 0 auto;
+  }
+  .modal-content {
+    padding: 30px;
+    .close {
+      display: none;
+    }
+  }
+  .modal-header {
+    border-color: transparent;
+    .modal-title {
+      font-size: 24px;
+      color: $irs__gray--dark;
+    }
+  }
+  .modal-body {
+    .form-control {
+      font-size: 14px;
+      color: $irs__gray--dark;
+      border: 1px solid $irs__gray--light;
+      transition: all ease 300ms;
+      &:focus {
+        border-color: $irs__aqua;
+        transition: all ease 300ms;
+      }
+    }
+    form .row {
+      margin-left: -7.5px;
+      margin-right: -7.5px;
+    }
+    form .field {
+      padding: 0 7.5px;
+    }
+  }
+}
