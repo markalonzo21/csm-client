@@ -58,7 +58,7 @@ export default {
             this.loading = false
             this.socketConnect()
 
-            // window.location.reload()
+            window.location.reload()
           })
         })
         .catch(errors => {

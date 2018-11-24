@@ -8,7 +8,7 @@
       <h4 class="mb-1">Report Description: {{ report.description }}</h4>
       <h4
         class="mb-1"
-      >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }}</h4>
+      >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h4>
       <hr>
       <h3 class="mb-1">Milestones</h3>
       <div

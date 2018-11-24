@@ -8,7 +8,10 @@
             <router-link class="text-blue-light" to="/user/create-report">Create Report</router-link>
           </li>
           <li>
-            <router-link class="text-blue-light" to="/user">{{ $auth.user.role.name }} Dashboard</router-link>
+            <router-link
+              class="text-blue-light"
+              to="/user"
+            >{{ $auth.user.role ? $auth.user.role.name : '' }} Dashboard</router-link>
           </li>
           <li>
             <a

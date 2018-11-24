@@ -20,7 +20,7 @@
             <router-link
               class="text-blue-light"
               :to="$store.getters['auth/userDashboardLink']"
-            >{{ $auth.user.role.name }} Dashboard</router-link>
+            >{{ $auth.user.role ? $auth.user.role.name : '' }} Dashboard</router-link>
           </li>
           <li>
             <a

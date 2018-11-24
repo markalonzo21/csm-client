@@ -1,5 +1,9 @@
 export const getters = {
   userDashboardLink(state) {
+    if (!state.user.role) {
+      return '/'
+    }
+
     if (state.user.role.slug === 'administrator') {
       return '/admin'
     }
@@ -16,7 +20,7 @@ export const actions = {
   logout() {
     this.$auth.logout().then(() => {
       this.$socket.disconnect()
-      this.$router.replace('/login')
+      this.$router.replace('/')
     })
   }
 }

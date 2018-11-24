@@ -8,7 +8,7 @@
             <router-link
               class="text-blue-light"
               to="/respondent"
-            >{{ $auth.user.role.name }} Dashboard</router-link>
+            >{{ $auth.user.role ? $auth.user.role.name : '' }} Dashboard</router-link>
           </li>
           <li>
             <a

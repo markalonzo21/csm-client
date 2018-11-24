@@ -8,7 +8,7 @@
       <h4 class="mb-1">Report Description: {{ report.description }}</h4>
       <h4
         class="mb-1"
-      >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }}</h4>
+      >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h4>
       <h4 class="mb-1">Assigned To:
         <template
           v-if="report.assignedTo"
@@ -42,7 +42,7 @@ export default {
   methods: {
     initSocketListeners() {
       this.$socket.on('respondent-assigned', report => {
-        this.report.assignedTo = report.assignedTo
+        this.report = report
       })
       this.$socket.on('milestone-completed', milestoneId => {
         this.report.responses.push(milestoneId)

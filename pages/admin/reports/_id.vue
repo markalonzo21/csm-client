@@ -3,7 +3,9 @@
     <h3 class="mb-1">Report: {{ report._id }}</h3>
     <h3 class="mb-1">Report Type: {{ report.reportType.name }}</h3>
     <h3 class="mb-1">Report Description: {{ report.description }}</h3>
-    <h3 class="mb-1">Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }}</h3>
+    <h3
+      class="mb-1"
+    >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h3>
     <h3 class="mb-1">Assigned To:
       <template
         v-if="report.assignedTo"
