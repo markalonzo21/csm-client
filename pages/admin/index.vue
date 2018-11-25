@@ -1,5 +1,4 @@
 <template>
-<div class="main-content">
   <section class="admin container-fluid">
     <h1 class="title__black--large mt0">Dashboard</h1>
     <h3>Today {{ $moment().format('MMM DD, YYYY') }}</h3>
@@ -8,10 +7,7 @@
         <div class="panel">
           <div class="panel-body">
             <h2 class="title__white--large">300</h2>
-            <span class="title__white--mid">
-              REGISTERED REPORTERS
-            </span>
-          
+            <span class="title__white--mid">REGISTERED REPORTERS</span>
           </div>
         </div>
       </div>
@@ -19,10 +15,7 @@
         <div class="panel">
           <div class="panel-body">
             <h2 class="title__white--large">15</h2>
-            <span class="title__white--mid">
-              UNASSIGNED REPORTS
-            </span>
-          
+            <span class="title__white--mid">UNASSIGNED REPORTS</span>
           </div>
         </div>
       </div>
@@ -30,10 +23,7 @@
         <div class="panel">
           <div class="panel-body">
             <h2 class="title__white--large">300</h2>
-            <span class="title__white--mid">
-              ON GOING REPORTS
-            </span>
-          
+            <span class="title__white--mid">ON GOING REPORTS</span>
           </div>
         </div>
       </div>
@@ -41,10 +31,7 @@
         <div class="panel">
           <div class="panel-body">
             <h2 class="title__white--large">300</h2>
-            <span class="title__white--mid">
-              AVAILABLE RESPONDENTS
-            </span>
-          
+            <span class="title__white--mid">AVAILABLE RESPONDENTS</span>
           </div>
         </div>
       </div>
@@ -74,13 +61,8 @@
         </div>
       </div>
       <div class="col-md-6">
-<<<<<<< HEAD
         <h3 class="title__gray--small">HEAT MAP</h3>
         <div class="mt-4">
-=======
-        <div class="my-4">
-          <span style="font-size: 12px;  margin-bottom: 10px; font-weight: 500px;">HEAT MAP</span>
->>>>>>> 23cdbe375c76b85799f6e3f83887ab245bd10102
           <select v-model="type" required class="p-2">
             <option :value="null">Select Type</option>
             <option
@@ -122,7 +104,6 @@
       </div>
     </div>
   </section>
-  </div>
 </template>
 
 <script>

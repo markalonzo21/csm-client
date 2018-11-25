@@ -2,7 +2,7 @@
   <div class="main-content">
     <section class="user-dashboard container mx-auto">
       <h1 class="title__blue--large mt0">Reports</h1>
-      <table class="text-center w-100" v-if="report">
+      <table class="text-center w-100">
         <thead>
           <tr>
             <td>Type</td>
@@ -19,74 +19,67 @@
             :key="report._id"
           >
             <td>
-              <a
-                class="rowlink btn btnblue"
-                style="width: 100%;"
-                v-text="report.reportType.name"
-              ></a>
+              <a class="rowlink btn btnblue" style="width: 100%;" v-text="report.reportType.name"></a>
             </td>
             <td v-html="report.location.coordinates">14.12414, 121,41241</td>
             <td v-text="report.createdAt">Nov. 11, 2018 10:30 PM</td>
-            <td
-              v-text="report.resolvedAt ? report.resolvedAt : 'Unresolved'"
-            ></td>
+            <td v-text="report.resolvedAt ? report.resolvedAt : 'Unresolved'"></td>
           </tr>
         </tbody>
-          <button
+        <button
           class="btn btn-info m-6"
           :disabled="isReportsLoading"
           v-if="isLoadMoreVisible"
           @click.prevent="loadMoreReports"
-        >
-          Load More
-        </button>
+        >Load More</button>
       </table>
     </section>
   </div>
 </template>
 
 <script>
-  export default {
-    middleware: "isUser",
-    layout: "user",
-    asyncData({ $axios, error }) {
-      return $axios.$get("/reports").then(response => {
-        return {
-          reports: response.data,
-          isLoadMoreVisible: !(response.data.length < 10),
-          isReportsLoading: false
-        };
-      });
-    },
-    methods: {
-      loadMoreReports() {
-        this.isReportsLoading = true;
-        this.$axios
-          .$get(`/reports?skip=${this.reports.length}`)
-          .then(response => {
-            response.data.forEach(report => {
-              this.reports.push(report);
-            });
-            this.isReportsLoading = false;
-          });
+export default {
+  middleware: 'isUser',
+  layout: 'user',
+  asyncData({ $axios, error }) {
+    return $axios.$get('/reports').then(response => {
+      return {
+        reports: response.data,
+        isLoadMoreVisible: !(response.data.length < 10),
+        isReportsLoading: false
       }
+    })
+  },
+  methods: {
+    loadMoreReports() {
+      this.isReportsLoading = true
+      this.$axios
+        .$get(`/reports?skip=${this.reports.length}`)
+        .then(response => {
+          this.isLoadMoreVisible = !(response.data.length < 10)
+          response.data.forEach(report => {
+            this.reports.push(report)
+          })
+          this.isReportsLoading = false
+        })
     }
-  };
+  }
+}
 </script>
 
 <style scoped>
-  table {
-    position: relative;
-    border-collapse: separate;
-    border-spacing: 15px 15px;
-  }
+table {
+  position: relative;
+  border-collapse: separate;
+  border-spacing: 15px 15px;
+}
 
-  .rowlink::before {
-    content: "";
-    display: block;
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1.5em; /* don't forget to set the height! */
-  }
+.rowlink::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5em; /* don't forget to set the height! */
+}
 </style>
