@@ -23,6 +23,7 @@
 
 <script>
 import ReportsHistory from '~/components/ReportsHistory'
+import ChatBox from '~/components/ChatBox'
 
 export default {
   layout: 'respondent',
