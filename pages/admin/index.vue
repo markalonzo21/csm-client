@@ -74,13 +74,8 @@
         </div>
       </div>
       <div class="col-md-6">
-<<<<<<< HEAD
         <h3 class="title__gray--small">HEAT MAP</h3>
         <div class="mt-4">
-=======
-        <div class="my-4">
-          <span style="font-size: 12px;  margin-bottom: 10px; font-weight: 500px;">HEAT MAP</span>
->>>>>>> 23cdbe375c76b85799f6e3f83887ab245bd10102
           <select v-model="type" required class="p-2">
             <option :value="null">Select Type</option>
             <option
