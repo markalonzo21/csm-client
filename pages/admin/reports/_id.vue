@@ -15,7 +15,7 @@
           <template v-else>
             <button
               @click.prevent="showAssignModal"
-              class="underline cursor-pointer text-blue"
+              class="btn btnblue" style="width: auto;"
             >Assign Respondent</button>
           </template>
         </h3>
@@ -62,7 +62,7 @@
         <div slot="footer">
           <button
             @click.prevent="assignRespondent"
-            class="btn btn-primary"
+            class="btn btnblue" style="width: auto;"
             :disabled="!selectedRespondent"
           >Assign</button>
         </div>

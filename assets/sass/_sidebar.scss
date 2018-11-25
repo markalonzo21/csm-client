@@ -10,11 +10,11 @@
 #page-content-wrapper {
   width: 100%;
   // position: absolute;
-  padding: 20px;
   // padding-top: 75px;
   // height: 100vh;
 }
 #wrapper.toggled #page-content-wrapper {
+  padding-top: 6%;
   position: relative;
   margin-right: -200px;
 }
@@ -25,7 +25,7 @@
 }
 
 #wrapper.toggled {
-  padding-left: 200px;
+  padding-left: 13%;
 }
 
 #sidebar-wrapper {
@@ -46,7 +46,7 @@
 }
 
 #wrapper.toggled #sidebar-wrapper {
-  width: 200px;
+  width: 175px;
 }
 
 .sidebar-nav {

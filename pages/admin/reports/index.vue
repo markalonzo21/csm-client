@@ -1,6 +1,6 @@
 <template>
   <section class="admin-dashboard container mx-auto">
-    <h1 class="title__blue">Reports</h1>
+    <h1 class="title__black--large">Reports</h1>
     <table class="text-center w-100">
       <thead>
         <tr>
