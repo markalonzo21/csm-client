@@ -1,7 +1,7 @@
 <template>
 <div class="main-content">
   <div class="container p-2" style="height: 80vh;">
-    <div v-if="report">
+    <div class="row" v-if="report">
       <div class="col-md-6">
         <h3 class="mb-1">Report: {{ report._id }}</h3>
         <h3 class="mb-1">Report Type: {{ report.reportType.name }}</h3>
