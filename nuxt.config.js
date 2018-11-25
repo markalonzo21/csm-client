@@ -47,7 +47,13 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dotenv', 'nuxt-leaflet'],
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    '@nuxtjs/dotenv',
+    'nuxt-leaflet',
+    '@nuxtjs/moment'
+  ],
 
   /*
    ** Axios module configuration
