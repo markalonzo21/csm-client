@@ -1,6 +1,6 @@
 <template>
   <section class="admin container-fluid">
-    <h1 class="title__black--large mt0">Dashboard</h1>
+    <h1 class="title__black--large">Dashboard</h1>
     <h3>Today {{ $moment().format('MMM DD, YYYY') }}</h3>
     <div class="row">
       <div class="col-md-3">
@@ -37,7 +37,30 @@
       </div>
     </div>
     <div class="row mt-5">
-      <div class="col-md-6">
+      <div class="col-md-4">
+        <h3 class="title__gray--small">ASSETS</h3>
+        <div class="row" style="margin: 0;">
+          <!-- HEADING -->
+          <div class="col-md-4 border p-4">
+            <strong>Type</strong>
+          </div>
+          <div class="col-md-4 border-t border-b p-4">
+            <strong>Responder</strong>
+          </div>
+          <div class="col-md-4 border p-4">
+            <strong>Status</strong>
+          </div>
+        </div>
+        <!-- BODY -->
+        <div style="max-height: 333px; overflow-y: scroll;" class="border-b">
+          <div class="row" style="margin: 0;" v-for="n in 15">
+            <div class="col-md-4 border-b border-r border-l p-4">Type</div>
+            <div class="col-md-4 border-b p-4">Responder</div>
+            <div class="col-md-4 border-b border-r border-l p-4">Status</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
         <h3 class="title__gray--small">RECENT REPORTS</h3>
         <div class="row" style="margin: 0;">
           <!-- HEADING -->
@@ -60,7 +83,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <h3 class="title__gray--small">HEAT MAP</h3>
         <div class="mt-4">
           <select v-model="type" required class="p-2">
