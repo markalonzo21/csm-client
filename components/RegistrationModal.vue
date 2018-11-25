@@ -1,23 +1,23 @@
 <template>
   <modal v-model="registrationModal" size="sm" :footer="false" class="registration text-center">
-    <span slot="title" class="text-uppercase">Registration</span>
+    <span slot="title" class="text-uppercase">Register</span>
     <form @submit.prevent="login" class="">
       <div class="row">
         <div class="col-md-6 field">
-          <input class="form-control mb10" type="text" placeholder="First Name*">
+          <input class="form-control mb20" type="text" placeholder="First Name*">
         </div>
         <div class="col-md-6 field">
-          <input class="form-control mb10" type="text" placeholder="Last Name*">
+          <input class="form-control mb20" type="text" placeholder="Last Name*">
         </div>
         <div class="col-md-12 field">
-          <input class="form-control mb10" type="email" placeholder="Email*">
+          <input class="form-control mb20" type="email" placeholder="Email*">
         </div>
         <div class="col-md-12 field">
-          <input class="form-control mb10" type="text" placeholder="Mobile Number*">
+          <input class="form-control mb20" type="text" placeholder="Mobile Number*">
         </div>
         <div class="col-md-6 field">
           <multi-select
-            class="w-100 mb10"
+            class="w-100 mb20"
             v-model="gender"
             :options="genderOptions"
             :limit="1"
@@ -34,23 +34,23 @@
           >
         </div>
         <div class="col-md-12 field">
-          <textarea class="form-control mb10" cols="10" rows="5" placeholder="Address*"></textarea>
+          <textarea class="form-control mb20" cols="10" rows="5" placeholder="Address*"></textarea>
         </div>
         <div class="col-md-12 field">
-          <input type="password" class="form-control mb10" placeholder="Password*">
+          <input type="password" class="form-control mb20" placeholder="Password*">
         </div>
         <div class="col-md-12 field">
-          <input type="password" class="form-control mb10" placeholder="Confirm Password*">
+          <input type="password" class="form-control mb20" placeholder="Confirm Password*">
         </div>
         <div class="col-md-12 field">
           <p class="basic">
-            <input type="checkbox" class="mb10" value="">Terms and conditions
+            <input type="checkbox" class="mb20" value="">Terms and conditions
           </p>
         </div>
       </div>
       <button
         type="submit"
-        class="btn btnblue w-100 text-uppercase mb10"
+        class="btn btnblue w-100 text-uppercase mb20"
         :disabled="loading"
       >{{ loading ? "Logging in..." : "Sign Up" }}</button>
     </form>

@@ -1,17 +1,18 @@
 <template>
   <modal v-model="loginModal" size="sm" :footer="false" class="login text-center">
-    <span slot="title">Insert Logo</span>
+    <span slot="title"><img src="img/insertlogo.png" alt="" class="img-responsive mrgnauto"></span>
     <form @submit.prevent="login" class="">
-      <input type="text" class="form-control mb10" placeholder="Email" v-model="form.email">
+      <input type="text" class="form-control mb20" placeholder="Email" v-model="form.email">
       <input
         type="password"
-        class="form-control mb10"
+        class="form-control mb20"
         placeholder="Enter Password"
         v-model="form.password"
       >
       <small>
-        <a class="tiny pull-right mb10" href="#">Forgot password</a>
+        <a class="tiny pull-right mb20" href="#">Forgot password</a>
       </small>
+      <div class="clearfix"></div>
       <button
         type="submit"
         class="btn btnblue w-100 text-uppercase"

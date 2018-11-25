@@ -1,8 +1,8 @@
 <template>
   <div>
-    <navbar class="bg-white">
+    <navbar class="user-menu">
       <div class="container">
-        <router-link class="navbar-brand" slot="brand" to="/">Insert Logo</router-link>
+        <router-link class="navbar-brand" slot="brand" to="/"><img src="img/insertlogo.png" alt="" class="responsive mrgnauto"></router-link>
         <navbar-nav right>
           <li>
             <router-link class="text-blue-light" to="/user/create-report">Create Report</router-link>
