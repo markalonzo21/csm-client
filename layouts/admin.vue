@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar class="bg-white">
+    <navbar class="user-menu">
       <div class="container">
         <router-link class="navbar-brand" slot="brand" to="/">
           <img src="img/insertlogo.png" alt="" class="responsive mrgnauto">

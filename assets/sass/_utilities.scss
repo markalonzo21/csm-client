@@ -17,6 +17,14 @@ body * {
   color: $black;
 }
 
+.title__white--large {
+  font-size: 36px;
+  color: $white;
+}
+.title__white--mid {
+  font-size: 18;
+  color: $white;
+}
 .title__blue--large {
   font-size: 36px;
   font-weight: 700;
@@ -26,6 +34,12 @@ body * {
 .title__blue {
   font-size: 24px;
   color: $irs__blue--dark;
+}
+
+.title__black {
+  font-size: 24px;
+  color: $black;
+  font-family: $oswald;
 }
 
 //Margins
@@ -101,6 +115,15 @@ body * {
     transition: all ease 300ms;
   }
 }
+.btn.btnwhite {
+  width: 125px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2eb2e2;
+  line-height: 27px;
+  background-color: $white;
+}
 .btn.btnmore {
   font-size: 14px;
   font-weight: 700;
@@ -125,53 +148,9 @@ body * {
   }
 }
 
-//Style
-.banner {
-  padding: 60px 0;
-  background-image: url('/img/bg.jpg');
-  .row {
-    display: flex;
-    align-items: center;
-  }
-  .btn.btnblue {
-    &:hover {
-      border-color: $white;
-      color: $white;
-    }
-  }
+.bgblue {
+  background: linear-gradient(to right, #2989d8 0%, $irs__aqua 100%);
 }
-.main-content {
-  padding: 70px 0;
-  .news {
-    .panel {
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    }
-    .panel-heading {
-      max-height: 153px;
-      overflow: hidden;
-      img {
-        object-fit: cover;
-      }
-    }
-    .panel-body {
-      min-height: 80px;
-    }
-    .panel-footer {
-      border-color: transparent;
-      background: transparent;
-      display: inline-block;
-      width: 100%;
-    }
-  }
-  .user-dashboard {
-    table {
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    }
-  }
-  .report {
-    .panel {
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    }
-  }
-}
+
+
 
