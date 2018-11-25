@@ -63,6 +63,9 @@ export default {
   mounted() {
     this.initSocketListeners()
   },
+  beforeDestroy() {
+    this.$socket.off('respondent-assigned')
+  },
   methods: {
     initSocketListeners() {
       this.$socket.on('respondent-assigned', report => {

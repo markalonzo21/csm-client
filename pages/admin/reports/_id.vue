@@ -111,6 +111,9 @@ export default {
   mounted() {
     this.initSocketListeners()
   },
+  beoreDestroy() {
+    this.$socket.off('milestone-completed')
+  },
   methods: {
     initSocketListeners() {
       this.$socket.on('milestone-completed', milestoneId => {

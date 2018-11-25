@@ -54,6 +54,10 @@ export default {
   mounted() {
     this.initSocketListeners()
   },
+  beforeDestroy() {
+    this.$socket.off('respondent-assigned')
+    this.$socket.off('milestone-completed')
+  },
   methods: {
     initSocketListeners() {
       this.$socket.on('respondent-assigned', report => {

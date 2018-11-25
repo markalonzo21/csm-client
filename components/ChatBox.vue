@@ -30,6 +30,9 @@ export default {
   mounted() {
     this.getMessages()
   },
+  beforeDestroy() {
+    this.$socket.off('new-message')
+  },
   methods: {
     getMessages() {
       this.$axios.$get(`/messages?reportId=${this.reportId}`).then(response => {
