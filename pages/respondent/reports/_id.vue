@@ -1,6 +1,6 @@
 <template>
   <div class="container py-4">
-    <div class="active-report" v-if="report">
+    <div class="active-report">
       <div class="col-md-6">
         <h3>Active Report</h3>
         <hr>

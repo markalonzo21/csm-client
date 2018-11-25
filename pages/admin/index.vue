@@ -37,30 +37,7 @@
       </div>
     </div>
     <div class="row mt-5">
-      <div class="col-md-6">
-        <h3 class="title__gray--small">RECENT REPORTS</h3>
-        <div class="row" style="margin: 0;">
-          <!-- HEADING -->
-          <div class="col-md-4 border p-4">
-            <strong>Type</strong>
-          </div>
-          <div class="col-md-4 border-t border-b p-4">
-            <strong>Responder</strong>
-          </div>
-          <div class="col-md-4 border p-4">
-            <strong>Status</strong>
-          </div>
-        </div>
-        <!-- BODY -->
-        <div style="max-height: 333px; overflow-y: scroll;" class="border-b">
-          <div class="row" style="margin: 0;" v-for="n in 15">
-            <div class="col-md-4 border-b border-r border-l p-4">Type</div>
-            <div class="col-md-4 border-b p-4">Responder</div>
-            <div class="col-md-4 border-b border-r border-l p-4">Status</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
+      <div class="col-md-12">
         <h3 class="title__gray--small">HEAT MAP</h3>
         <div class="mt-4">
           <select v-model="type" required class="p-2">
@@ -133,9 +110,16 @@ export default {
   },
   computed: {
     heats() {
-      return this.reports.map(report => {
-        return [report.location.coordinates[1], report.location.coordinates[0]]
-      })
+      return this.reports
+        .filter(report => {
+          return report.location.coordinates[0] !== null
+        })
+        .map(report => {
+          return [
+            report.location.coordinates[1],
+            report.location.coordinates[0]
+          ]
+        })
     }
   },
   mounted() {
@@ -153,9 +137,7 @@ export default {
             })
           })
 
-          setTimeout(() => {
-            this.searchReports(null, 'both')
-          }, 3000)
+          this.searchReports(null, 'both')
           clearInterval(check)
         }
       }, 100)

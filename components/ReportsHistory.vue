@@ -13,7 +13,7 @@
       <tbody>
         <tr
           class="cursor-pointer"
-          @click.prevent="$router.push(`/user/reports/${report._id}`)"
+          @click.prevent="$router.push(`/${$auth.user.role.slug}/reports/${report._id}`)"
           v-for="report in reports"
           :key="report._id"
         >
