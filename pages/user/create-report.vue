@@ -73,7 +73,7 @@ export default {
     }
   },
   mounted() {
-    // this.generateFakeData();
+    this.generateFakeData()
   },
   methods: {
     generateFakeData() {
@@ -99,7 +99,7 @@ export default {
         })
         .then(response => {
           this.loadingSubmitReport = false
-          // this.generateFakeData();
+          this.generateFakeData()
           this.$router.push(`/user/reports/${response.data._id}`)
         })
         .catch(err => {
