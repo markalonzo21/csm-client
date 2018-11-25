@@ -1,0 +1,58 @@
+//Style
+.banner {
+  padding: 60px 0;
+  background-image: url("/img/bg.jpg");
+  .row {
+    display: flex;
+    align-items: center;
+  }
+  .btn.btnblue {
+    &:hover {
+      border-color: $white;
+      color: $white;
+    }
+  }
+}
+.main-content {
+  padding: 70px 0;
+  .news {
+    .panel {
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+    .panel-heading {
+      max-height: 153px;
+      overflow: hidden;
+      img {
+        object-fit: cover;
+      }
+    }
+    .panel-body {
+      min-height: 80px;
+    }
+    .panel-footer {
+      border-color: transparent;
+      background: transparent;
+      display: inline-block;
+      width: 100%;
+    }
+  }
+  .user-dashboard,
+  .admin-dashboard {
+    table {
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+  }
+  .report {
+    .panel {
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+  }
+  .responder-dashboard {
+    .panel {
+      border-radius: 24px;
+    }
+    .panel-body {
+      padding: 100px 30px 30px;
+    }
+  }
+}
