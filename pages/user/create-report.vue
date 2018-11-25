@@ -7,13 +7,8 @@
             <h1 class="title__blue">What will you report?</h1>
             <form
               @submit.prevent="report">
-              <input
-                type="text"
-                class="my-2 p-2 border"
-                v-model="form.description"
-                placeholder="Description"
-              />
-              <select v-model="form.type" required class="py-2 my-2">
+              <label for="" class="title__gray--small" style="font-size:14px;">Category</label><br />
+              <select v-model="form.type" required class="form-control mb20">
                 <option
                   v-for="type in reportTypes"
                   :key="type._id"
@@ -21,12 +16,36 @@
                   v-text="type.name"
                 ></option>
               </select>
-              <pre class="my-2 p-2 flex items-start">
+              <label for="" class="title__gray--small" style="font-size:14px;">Type</label><br />
+              <select v-model="form.type" required class="form-control mb20">
+                <option
+                  v-for="type in reportTypes"
+                  :key="type._id"
+                  :value="type._id"
+                  v-text="type.name"
+                ></option>
+              </select>
+              <input
+                type="text"
+                class="form-control mb20"
+                v-model="form.description"
+                placeholder="Description"
+              />
+              <select v-model="form.type" required class="form-control mb20">
+                <option
+                  v-for="type in reportTypes"
+                  :key="type._id"
+                  :value="type._id"
+                  v-text="type.name"
+                ></option>
+              </select>
+              <pre class="my-2 p-2 flex items-start mb20">
                 latitude: {{ form.location.coordinates.lat }}, longitude: {{
                   form.location.coordinates.lng
                 }}
             </pre
               >
+              <textarea name="" id="" cols="30" rows="10" class="form-control mb20" placeholder="Notes"></textarea>
               <button
                 type="submit"
                 class="btn btnblue"
