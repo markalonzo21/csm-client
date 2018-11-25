@@ -28,7 +28,9 @@
       }
     }
     .panel-body {
-      min-height: 80px;
+      min-height: 136px;
+      max-height: 136px;
+      overflow: hidden;
     }
     .panel-footer {
       border-color: transparent;
