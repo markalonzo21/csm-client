@@ -2,7 +2,7 @@
   <div class="main-content">
     <section class="user-dashboard container mx-auto">
       <h1 class="title__blue--large mt0">Reports</h1>
-      <table class="text-center w-100">
+      <table class="text-center w-100" v-if="report">
         <thead>
           <tr>
             <td>Type</td>
@@ -32,15 +32,15 @@
             ></td>
           </tr>
         </tbody>
+          <button
+          class="btn btn-info m-6"
+          :disabled="isReportsLoading"
+          v-if="isLoadMoreVisible"
+          @click.prevent="loadMoreReports"
+        >
+          Load More
+        </button>
       </table>
-      <button
-        class="btn btn-info m-6"
-        :disabled="isReportsLoading"
-        v-if="isLoadMoreVisible"
-        @click.prevent="loadMoreReports"
-      >
-        Load More
-      </button>
     </section>
   </div>
 </template>

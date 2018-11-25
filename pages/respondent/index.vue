@@ -12,45 +12,8 @@
             </div>
           </div>
         </div>
-        <div class="col-md-8">
-          <section class="user-dashboard mx-auto">
-            <h1 class="title__blue--large mt0">Reports</h1>
-            <table class="text-center w-100">
-              <thead>
-                <tr>
-                  <td>Type</td>
-                  <td>Location</td>
-                  <td>Created At</td>
-                  <td>Resolved At</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  class="cursor-pointer"
-                  @click.prevent="$router.push(`/respondent/reports/${report._id}`)"
-                  v-for="report in reports"
-                  :key="report._id"
-                >
-                  <td>
-                    <a
-                      class="rowlink btn btnblue"
-                      style="width: 100%;"
-                      v-text="report.reportType.name"
-                    ></a>
-                  </td>
-                  <td v-html="report.location.coordinates">14.12414, 121,41241</td>
-                  <td v-text="report.createdAt">Nov. 11, 2018 10:30 PM</td>
-                  <td v-text="report.resolvedAt ? report.resolvedAt : 'Unresolved'"></td>
-                </tr>
-              </tbody>
-            </table>
-            <button
-              class="btn btn-info m-6"
-              :disabled="isReportsLoading"
-              v-if="isLoadMoreVisible"
-              @click.prevent="loadMoreReports"
-            >Load More</button>
-          </section>
+        <div class="col-md-8 right-content">
+          
         </div>
       </div>
     </section>
@@ -58,32 +21,7 @@
 </template>
 
 <script>
-export default {
-  layout: 'respondent',
-  middleware: 'isRespondent',
-  asyncData({ $axios, error }) {
-    return $axios.$get('/reports').then(response => {
-      return {
-        reports: response.data,
-        isLoadMoreVisible: !(response.data.length < 10),
-        isReportsLoading: false
-      }
-    })
-  },
-  methods: {
-    loadMoreReports() {
-      this.isReportsLoading = true
-      this.$axios
-        .$get(`/reports?skip=${this.reports.length}`)
-        .then(response => {
-          response.data.forEach(report => {
-            this.reports.push(report)
-          })
-          this.isReportsLoading = false
-        })
-    }
-  }
-}
+export default {};
 </script>
 
 <style scoped>
@@ -140,7 +78,7 @@ export default {
         <ChatBox :reportId="report._id"/>
       </div>
     </div>
-  </div>
+  </div> 
 </template>
 
 // <script>

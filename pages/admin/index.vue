@@ -1,45 +1,57 @@
 <template>
-  <section>
-    <h4>Dashboard</h4>
-    <br>
-    <h6>Today {{ $moment().format('MMM DD, YYYY') }}</h6>
+<div class="main-content">
+  <section class="admin container-fluid">
+    <h1 class="title__black--large mt0">Dashboard</h1>
+    <h3>Today {{ $moment().format('MMM DD, YYYY') }}</h3>
     <div class="row">
       <div class="col-md-3">
         <div class="panel">
           <div class="panel-body">
-            <span>300</span>
+            <h2 class="title__white--large">300</h2>
+            <span class="title__white--mid">
+              REGISTERED REPORTERS
+            </span>
+          
           </div>
-          <div class="panel-footer">REGISTERED REPORTERS</div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="panel">
           <div class="panel-body">
-            <span>15</span>
+            <h2 class="title__white--large">15</h2>
+            <span class="title__white--mid">
+              UNASSIGNED REPORTS
+            </span>
+          
           </div>
-          <div class="panel-footer">UNASSIGNED REPORTS</div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="panel">
           <div class="panel-body">
-            <span>300</span>
+            <h2 class="title__white--large">300</h2>
+            <span class="title__white--mid">
+              ON GOING REPORTS
+            </span>
+          
           </div>
-          <div class="panel-footer">ON GOING REPORTS</div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="panel">
           <div class="panel-body">
-            <span>300</span>
+            <h2 class="title__white--large">300</h2>
+            <span class="title__white--mid">
+              AVAILABLE RESPONDENTS
+            </span>
+          
           </div>
-          <div class="panel-footer">AVAILABLE RESPONDENTS</div>
         </div>
       </div>
     </div>
     <div class="row mt-5">
       <div class="col-md-6">
-        <h6>RECENT REPORTS</h6>
+        <h3 class="title__gray--small">RECENT REPORTS</h3>
         <div class="row" style="margin: 0;">
           <!-- HEADING -->
           <div class="col-md-4 border" style="padding: 10px;">
@@ -62,7 +74,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <h6>HEAT MAP</h6>
+        <h3 class="title__gray--small">HEAT MAP</h3>
         <div class="mt-4">
           <select v-model="type" required class="p-2">
             <option :value="null">Select Type</option>
@@ -105,6 +117,7 @@
       </div>
     </div>
   </section>
+  </div>
 </template>
 
 <script>
@@ -197,9 +210,6 @@ export default {
 .panel {
   background-image: linear-gradient(to right, #354fa3, #34c3e5);
   color: white;
-}
-.panel span {
-  font-size: 52px;
 }
 .panel-footer {
   border: none;
