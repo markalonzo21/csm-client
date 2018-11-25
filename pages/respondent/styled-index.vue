@@ -8,7 +8,7 @@
             <div class="panel-body">
               <h2 class="title__white--large text-uppercase mb0">Petnapping</h2>
               <h3 class="title__white--mid mb20">Security Management</h3>
-              <a href="#" class="btn btnwhite text-uppercase">Respond</a>
+              <a href="#" class="btn btnwhite text-uppercase" @click="respondModal=true">Respond</a>
             </div>
           </div>
         </div>
@@ -17,16 +17,49 @@
         </div>
       </div>
     </section>
+    <modal v-model="respondModal" size="sm" :footer="false" class="login">
+      <span slot="title">
+        <h4 class="title__black text-uppercase text-center">Report Details</h4>
+      </span>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td class="bluetext text-left">Date</td>
+            <td class="text-right">11/21/18</td>
+          </tr>
+          <tr>
+            <td class="bluetext text-left">Category</td>
+            <td class="text-right">Lorem ipsum dolor sit amet.</td>
+          </tr>
+          <tr>
+            <td class="bluetext text-left">Type</td>
+            <td class="text-right">Lorem ipsum dolor sit amet.</td>
+          </tr>
+          <tr>
+            <td class="bluetext text-left">Reporter</td>
+            <td class="text-right">Juan Dela Cruz</td>
+          </tr>
+        </tbody>
+      </table>
+      <span class="bluetext">Notes</span>
+      <br>
+      <p class="basic">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, et.</p>
+      <a href="#" class="btn btnblue text-uppercase" style="width: 100%">Contact Reporter</a>
+    </modal>
   </div>
 </template>
 
-
 <script>
+import ChatBox from '~/components/ChatBox'
 import ReportsHistory from '~/components/ReportsHistory'
-
 export default {
   layout: 'respondent',
   middleware: 'isRespondent',
+  data() {
+    return {
+      respondModal: false
+    }
+  },
   components: {
     ChatBox,
     ReportsHistory
@@ -113,29 +146,44 @@ export default {
           }
         })
         .catch(error => {
+          console.log(error.response.data)
           this.loadingMarkAsDone = false
         })
     }
   }
 }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!--<template>
+   <div class="container py-4">
+    <div class="active-report">
+      <div class="col-md-6">
+        <h3>Active Report</h3>
+        <hr>
+        <h4 class="mb-1">Report: {{ report._id }}</h4>
+        <h4 class="mb-1">Report Type: {{ report.reportType.name }}</h4>
+        <h4 class="mb-1">Report Description: {{ report.description }}</h4>
+        <h4
+          class="mb-1"
+        >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h4>
+        <hr>
+        <h3 class="mb-1">Milestones</h3>
+        <div
+          class="my-2"
+          v-for="(milestone, index) in report.reportType.milestones"
+          :key="milestone._id"
+        >
+          {{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - DONE' : '' }}
+          <button
+            :disabled="loadingMarkAsDone"
+            class="btn btn-primary"
+            v-if="isShowMarkButtonVisible(milestone._id, index)"
+            @click.prevent="markAsDone(milestone._id)"
+          >Mark as done</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <ChatBox :reportId="report._id"/>
+      </div>
+    </div>
+  </div>
+</template>
