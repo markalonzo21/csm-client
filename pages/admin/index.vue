@@ -54,28 +54,33 @@
         <h3 class="title__gray--small">RECENT REPORTS</h3>
         <div class="row" style="margin: 0;">
           <!-- HEADING -->
-          <div class="col-md-4 border" style="padding: 10px;">
+          <div class="col-md-4 border p-4">
             <strong>Type</strong>
           </div>
-          <div class="col-md-4 border-top border-bottom" style="padding: 10px;">
+          <div class="col-md-4 border-t border-b p-4">
             <strong>Responder</strong>
           </div>
-          <div class="col-md-4 border" style="padding: 10px;">
+          <div class="col-md-4 border p-4">
             <strong>Status</strong>
           </div>
         </div>
         <!-- BODY -->
-        <div style="max-height: 333px; overflow-y: scroll;">
+        <div style="max-height: 333px; overflow-y: scroll;" class="border-b">
           <div class="row" style="margin: 0;" v-for="n in 15">
-            <div class="col-md-4 border-bottom border-right border-left" style="padding: 10px;">Type</div>
-            <div class="col-md-4 border-bottom" style="padding: 10px;">Responder</div>
-            <div class="col-md-4 border-bottom border-right border-left">Status</div>
+            <div class="col-md-4 border-b border-r border-l p-4">Type</div>
+            <div class="col-md-4 border-b p-4">Responder</div>
+            <div class="col-md-4 border-b border-r border-l p-4">Status</div>
           </div>
         </div>
       </div>
       <div class="col-md-6">
+<<<<<<< HEAD
         <h3 class="title__gray--small">HEAT MAP</h3>
         <div class="mt-4">
+=======
+        <div class="my-4">
+          <span style="font-size: 12px;  margin-bottom: 10px; font-weight: 500px;">HEAT MAP</span>
+>>>>>>> 23cdbe375c76b85799f6e3f83887ab245bd10102
           <select v-model="type" required class="p-2">
             <option :value="null">Select Type</option>
             <option
@@ -167,9 +172,9 @@ export default {
             })
           })
 
-          // setTimeout(() => {
-          //   this.searchReports(null, 'both')
-          // }, 3000)
+          setTimeout(() => {
+            this.searchReports(null, 'both')
+          }, 3000)
           clearInterval(check)
         }
       }, 100)
