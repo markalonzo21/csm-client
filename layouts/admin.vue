@@ -42,8 +42,13 @@
           </ul>
         </div>
       </section>
-      <div id="page-content-wrapper">
+      <div id="page-content-wrapper" class="main-content">
         <nuxt/>
+      </div>
+    </div>
+    <div class="footer bgblue">
+      <div class="container">
+        <small class="basic">&copy; 2018 Powered by Systems Terasoft Inc</small>
       </div>
     </div>
   </div>
