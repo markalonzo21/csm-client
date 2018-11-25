@@ -15,7 +15,7 @@
           </li>
           <li>
             <a
-              class="text-blue-light cursor-pointer"
+              class="bluetext cursor-pointer"
               @click="$store.dispatch('auth/logout')"
             >Log Out</a>
           </li>
