@@ -1,4 +1,5 @@
 <template>
+<div class="main-content">
   <div class="container mx-auto py-4">
     <div v-if="report">
       <div class="col-md-6">
@@ -28,6 +29,7 @@
         <ChatBox :reportId="report._id"/>
       </div>
     </div>
+  </div>
   </div>
 </template>
 

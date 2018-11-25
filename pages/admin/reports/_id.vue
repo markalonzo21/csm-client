@@ -1,4 +1,5 @@
 <template>
+<div class="main-content">
   <div class="container p-2" style="height: 80vh;">
     <div v-if="report">
       <div class="col-md-6">
@@ -68,6 +69,7 @@
         </div>
       </modal>
     </div>
+  </div>
   </div>
 </template>
 
