@@ -7,15 +7,6 @@
         </router-link>
         <navbar-nav right>
           <li>
-            <router-link class="text-blue-light" to="/admin/reports">Reports</router-link>
-          </li>
-          <li>
-            <router-link
-              class="text-blue-light"
-              to="/admin"
-            >{{ $auth.user.role ? $auth.user.role.name : '' }} Dashboard</router-link>
-          </li>
-          <li>
             <a
               class="text-blue-light cursor-pointer"
               @click="$store.dispatch('auth/logout')"
@@ -24,22 +15,30 @@
         </navbar-nav>
       </div>
     </navbar>
-    <div id="wrapper" :class="$store.state.drawer ? 'toggled' : ''">
+    <div id="wrapper" class="toggled">
       <section class="sidebar-section">
         <div id="sidebar-wrapper">
           <ul class="sidebar-nav">
             <li>
-              <nuxt-link to="/">
+              <nuxt-link to="/admin">
                 <b>
                   <!-- <easy-svg icon="dashboard" addClass="sidebar-icon mr-2"></easy-svg> -->
                   <span class="sidebar-text pt-1">Dashboard</span>
                 </b>
               </nuxt-link>
             </li>
-            <router-link to="/users" class="pointer" tag="li">
-              <!-- <easy-svg icon="user" addClass="sidebar-icon  mr-2"></easy-svg> -->
-              <span class="sidebar-text">Users</span>
-            </router-link>
+            <li>
+              <nuxt-link to="/admin/reports">
+                <b>
+                  <!-- <easy-svg icon="dashboard" addClass="sidebar-icon mr-2"></easy-svg> -->
+                  <span class="sidebar-text pt-1">Reports</span>
+                </b>
+              </nuxt-link>
+            </li>
+            <!-- <router-link to="/users" class="pointer" tag="li"> -->
+            <!-- <easy-svg icon="user" addClass="sidebar-icon  mr-2"></easy-svg> -->
+            <!-- <span class="sidebar-text">Users</span> -->
+            <!-- </router-link> -->
           </ul>
         </div>
       </section>
