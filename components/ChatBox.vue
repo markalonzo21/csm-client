@@ -10,9 +10,9 @@
       </div>
     </div>
     <form class="input-group" @submit.prevent="sendMessage">
-      <input type="text" class="form-control" v-model="message">
+      <input type="text" class="form-control" v-model="message" :disabled="isResolved">
       <div class="input-group-btn">
-        <button type="submit" class="btn btn-default">Send</button>
+        <button type="submit" class="btn btn-default" :disabled="isResolved">Send</button>
       </div>
     </form>
   </div>
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  props: ['reportId'],
+  props: ['reportId', 'isResolved'],
   data() {
     return {
       messages: [],

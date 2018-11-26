@@ -1,8 +1,9 @@
 <template>
-  <div class="container py-4">
-    <div class="active-report">
+<div class="main-content">
+  <div class="container mx-auto py-4">
+    <div v-if="report">
       <div class="col-md-6">
-        <h3>Active Report</h3>
+        <h3 class="title__blue">Report Details</h3>
         <hr>
         <h4 class="mb-1">Report: {{ report._id }}</h4>
         <h4 class="mb-1">Report Type: {{ report.reportType.name }}</h4>
@@ -10,125 +11,48 @@
         <h4
           class="mb-1"
         >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h4>
+        <h4 class="mb-1">Assigned To:
+          <template
+            v-if="report.assignedTo"
+          >{{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}</template>
+          <template v-else>None</template>
+        </h4>
         <hr>
-        <h3 class="mb-1">Milestones</h3>
+        <h3 class="title__blue">Milestones</h3>
         <div
           class="my-2"
           v-for="(milestone, index) in report.reportType.milestones"
           :key="milestone._id"
-        >
-          {{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - DONE' : '' }}
-          <button
-            :disabled="loadingMarkAsDone"
-            class="btn btn-primary"
-            v-if="isShowMarkButtonVisible(milestone._id, index)"
-            @click.prevent="markAsDone(milestone._id)"
-          >Mark as done</button>
-        </div>
+        >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - DONE' : '' }}</div>
       </div>
       <div class="col-md-6">
-        <ChatBox :reportId="report._id"/>
+        <ChatBox :reportId="report._id" :isResolved="report.resolvedAt"/>
       </div>
     </div>
   </div>
+  </div>
 </template>
-
 
 <script>
 import ChatBox from '~/components/ChatBox'
-
 export default {
   layout: 'respondent',
-  middleware: 'isRespondent',
   components: {
     ChatBox
   },
-  asyncData({ $axios, store, params, error }) {
-    return $axios.$get(`/respondent/active-report`).then(response => {
+  asyncData({ $axios, params, isServer }) {
+    return $axios.$get(`/reports/${params.id}`).then(response => {
       return {
-        report: response.data,
-        loadingMarkAsDone: false
+        report: response.data
       }
+    }).catch(err => {
+      error({ status: 404, message: 'Report not found!' })
     })
   },
-  computed: {
-    isResolved() {
-      if (!this.report) {
-        return true
-      }
-      return (
-        this.report.reportType.milestones.length ===
-        this.report.responses.length
-      )
-    }
-  },
-  mounted() {
-    this.initSocketListeners()
-  },
-  beforeDestroy() {
-    this.$socket.off('respondent-assigned')
-  },
   methods: {
-    initSocketListeners() {
-      this.$socket.on('respondent-assigned', report => {
-        this.$notify({
-          type: 'info',
-          title: 'You have been assigned!',
-          content: `You're assigned to an incident.`
-        })
-        this.report = report
-      })
-    },
-    isShowMarkButtonVisible(milestoneId, index) {
-      if (this.milestoneIsCompleted(milestoneId)) {
-        return false
-      }
-
-      if (index === 0) {
-        return true
-      }
-
-      if (this.isNotYetMarkable(index)) {
-        return false
-      }
-
-      return true
-    },
     milestoneIsCompleted(id) {
       return this.report.responses.includes(id)
-    },
-    isNotYetMarkable(index) {
-      const milestoneBeforeThisMilestone = this.report.reportType.milestones[
-        index - 1
-      ]
-
-      if (this.milestoneIsCompleted(milestoneBeforeThisMilestone._id)) {
-        return false
-      }
-
-      return true
-    },
-    markAsDone(id) {
-      this.loadingMarkAsDone = true
-      this.$axios
-        .$post('/respondent/respond', {
-          reportId: this.report._id,
-          milestoneId: id
-        })
-        .then(response => {
-          this.report.responses.push(id)
-          this.loadingMarkAsDone = false
-
-          if (this.isResolved) {
-            alert('incident is resolved!')
-            this.report = null
-          }
-        })
-        .catch(error => {
-          this.loadingMarkAsDone = false
-        })
     }
   }
 }
 </script>
-
