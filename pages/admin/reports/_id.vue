@@ -20,6 +20,16 @@
             >Assign Respondent</button>
           </template>
         </h3>
+        <h3>Photos</h3>
+        <div class="row">
+          <div class="col-md-3" v-for="photo in report.photos">
+            <div class="panel">
+              <div class="panel-body">
+                <img :src="showPhoto(photo)" alt="image" class="image-responsive">
+              </div>
+            </div>
+          </div>
+        </div>
         <h3 class="mb-1">Milestones</h3>
         <div
           class="my-2"
@@ -117,6 +127,9 @@ export default {
     this.$socket.off('milestone-completed')
   },
   methods: {
+    showPhoto(photo) {
+      return `${process.env.API_URL}/${photo}`
+    },
     initSocketListeners() {
       this.$socket.on('milestone-completed', milestoneId => {
         const updateName = this.report.reportType.milestones.find(

@@ -26,6 +26,12 @@
                   v-text="type.name"
                 ></option>
               </select>
+              <label for="" class="title__gray--small" style="font-size:14px;">Upload Photos</label>
+              <br>
+              <input type="file" accept="image/*" class="form-control" multiple @change="processFile($event)">
+              <br>
+              <label for="" class="title__gray--small" style="font-size:14px;">Notes</label>
+              <br>
               <textarea
                 cols="30"
                 rows="10"
@@ -58,7 +64,8 @@ export default {
           location: {
             type: 'Point',
             coordinates: { lng: null, lat: null }
-          }
+          },
+          photos: []
         }
       }
     })
@@ -74,8 +81,22 @@ export default {
   },
   mounted() {
     this.generateFakeData()
-  },
-  methods: {
+  }
+,  methods: {
+    processFile(event) {
+      this.form.photos = []
+
+      const files = event.target.files
+
+      if (files.length > 3) {
+        alert('Maximum of 3 photos')
+        return
+      }
+
+      for (var i = 0; i < files.length; i++) {
+        this.form.photos.push(files[i])
+      }
+    },
     generateFakeData() {
       this.form.location.coordinates.lat = this.$chance.latitude({
         min: 14.5565,
@@ -89,14 +110,19 @@ export default {
     report() {
       this.loadingSubmitReport = true
 
-      // Validate Location
+      // Validate Location1
+      let formData = new FormData()
+
+      formData.append('description', this.form.description)
+      formData.append('type', this.form.type)
+      formData.append('location', JSON.stringify(this.form.location))
+
+      this.form.photos.forEach(photo => {
+        formData.append('photos[]', photo)
+      })
 
       this.$axios
-        .$post('/reports', {
-          description: this.form.description,
-          type: this.form.type,
-          location: JSON.stringify(this.form.location)
-        })
+        .$post('/reports', formData)
         .then(response => {
           this.loadingSubmitReport = false
           this.generateFakeData()

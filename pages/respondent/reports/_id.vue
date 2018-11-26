@@ -18,6 +18,11 @@
           <template v-else>None</template>
         </h4>
         <hr>
+        <h4>Images</h4>
+        <div class="row">
+          <img :src="showPhoto(photo)" alt="image" v-for="photo in report.photos">
+        </div>
+        <hr>
         <h3 class="title__blue">Milestones</h3>
         <div
           class="my-2"
@@ -50,6 +55,9 @@ export default {
     })
   },
   methods: {
+    showPhoto(photo) {
+      return `${process.env.API_URL}/${photo}`
+    },
     milestoneIsCompleted(id) {
       return this.report.responses.includes(id)
     }
