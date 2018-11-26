@@ -26,9 +26,11 @@
                   v-text="type.name"
                 ></option>
               </select>
-              <label for="" class="title__gray--small" style="font-size:14px;">Upload Photos</label>
-              <br>
-              <input type="file" accept="image/*" class="form-control" multiple @change="processFile($event)">
+              <div class="upload-btn-wrapper w-100 mb20">
+                <button class="btnupload w-100">Upload Photos</button>
+                <!-- <label for="" class="title__gray--small" style="font-size:14px;"></label> -->
+                <input type="file" accept="image/*"  multiple @change="processFile($event)">
+              </div>
               <br>
               <label for="" class="title__gray--small" style="font-size:14px;">Notes</label>
               <br>
@@ -141,3 +143,4 @@ export default {
   }
 }
 </script>
+
