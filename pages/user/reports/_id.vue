@@ -1,45 +1,45 @@
 <template>
-<div class="main-content">
-  <div class="container mx-auto py-4">
-    <div v-if="report">
-      <div class="col-md-6">
-        <h3 class="title__blue">Report Details</h3>
-        <hr>
-        <h4 class="mb-1">Report: {{ report._id }}</h4>
-        <h4 class="mb-1">Report Type: {{ report.reportType.name }}</h4>
-        <h4 class="mb-1">Report Description: {{ report.description }}</h4>
-        <h4
-          class="mb-1"
-        >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h4>
-        <h4 class="mb-1">Assigned To:
-          <template
-            v-if="report.assignedTo"
-          >{{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}</template>
-          <template v-else>None</template>
-        </h4>
-        <hr>
-        <h3>Photos</h3>
-        <div class="row">
-          <div class="col-md-3" v-for="photo in report.photos">
-            <div class="panel">
-              <div class="panel-body">
-                <img :src="showPhoto(photo)" alt="image" class="image-responsive">
+  <div class="main-content">
+    <div class="container mx-auto py-4">
+      <div v-if="report">
+        <div class="col-md-6">
+          <h3 class="title__blue">Report Details</h3>
+          <hr>
+          <h4 class="mb-1">Report: {{ report._id }}</h4>
+          <h4 class="mb-1">Report Type: {{ report.reportType.name }}</h4>
+          <h4 class="mb-1">Report Description: {{ report.description }}</h4>
+          <h4
+            class="mb-1"
+          >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h4>
+          <h4 class="mb-1">Assigned To:
+            <template
+              v-if="report.assignedTo"
+            >{{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}</template>
+            <template v-else>None</template>
+          </h4>
+          <hr>
+          <h3>Photos</h3>
+          <div class="row">
+            <div class="col-md-3" v-for="photo in report.photos">
+              <div class="panel">
+                <div class="panel-body">
+                  <img :src="showPhoto(photo)" alt="image" class="image-responsive">
+                </div>
               </div>
             </div>
           </div>
+          <h3 class="title__blue">Milestones</h3>
+          <div
+            class="my-2"
+            v-for="(milestone, index) in report.reportType.milestones"
+            :key="milestone._id"
+          >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - DONE' : '' }}</div>
         </div>
-        <h3 class="title__blue">Milestones</h3>
-        <div
-          class="my-2"
-          v-for="(milestone, index) in report.reportType.milestones"
-          :key="milestone._id"
-        >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - DONE' : '' }}</div>
-      </div>
-      <div class="col-md-6">
-        <ChatBox :reportId="report._id"/>
+        <div class="col-md-6">
+          <ChatBox :reportId="report._id"/>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -98,6 +98,9 @@ export default {
     },
     milestoneIsCompleted(id) {
       return this.report.responses.includes(id)
+    },
+    showPhoto(photo) {
+      return `${process.env.API_URL}/${photo}`
     }
   }
 }
