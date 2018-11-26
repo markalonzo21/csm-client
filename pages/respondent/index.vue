@@ -58,7 +58,6 @@
 import ChatBox from '~/components/ChatBox'
 import ReportsHistory from '~/components/ReportsHistory'
 export default {
-  layout: 'respondent',
   middleware: 'isRespondent',
   data() {
     return {

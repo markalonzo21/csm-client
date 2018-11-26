@@ -152,6 +152,7 @@
 </template>
 <script>
   export default {
-    auth: false
+    auth: false,
+    layout: 'public'
   };
 </script>

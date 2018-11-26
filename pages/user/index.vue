@@ -10,7 +10,6 @@
 import ReportsHistory from '~/components/ReportsHistory'
 export default {
   middleware: 'isUser',
-  layout: 'user',
   components: {
     ReportsHistory
   }

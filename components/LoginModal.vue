@@ -1,5 +1,5 @@
 <template>
-  <modal v-model="loginModal" size="sm" :footer="false" class="login text-center">
+  <modal v-model="loginModal" size="sm" :footer="false" class="login text-center mt-32">
     <span slot="title"><img src="img/insertlogo.png" alt="" class="img-responsive mrgnauto"></span>
     <form @submit.prevent="login" class="">
       <input type="text" class="form-control mb20" placeholder="Email" v-model="form.email">
@@ -54,13 +54,10 @@ export default {
           }
         })
         .then(response => {
-          this.$nextTick(() => {
-            this.$store.commit('TOGGLE_LOGIN_MODAL')
-            this.loading = false
-            this.socketConnect()
-
-            window.location.reload()
-          })
+          this.loading = false
+          this.socketConnect()
+          this.$router.push(`/${this.$auth.user.role.slug.replace('istrator', '')}`)
+          this.$store.commit('TOGGLE_LOGIN_MODAL')
         })
         .catch(errors => {
           this.loading = false

@@ -68,12 +68,8 @@ module.exports = {
   },
 
   auth: {
-    redirect: {
-      login: '/',
-      logout: '/',
-      callback: '/',
-      home: '/'
-    },
+    redirect: false,
+    watchLoggedIn: false,
     strategies: {
       local: {
         endpoints: {

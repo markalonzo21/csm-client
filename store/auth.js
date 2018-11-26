@@ -1,7 +1,25 @@
 import Vue from 'vue'
 
 export const getters = {
-  userDashboardLink(state) {
+  isRoleUser(state) {
+    if (state.loggedIn) {
+      return state.user.role.slug === 'user'
+    }
+    return false
+  },
+  isRoleRespondent(state) {
+    if (state.loggedIn) {
+      return state.user.role.slug === 'respondent'
+    }
+    return false
+  },
+  isRoleAdmin(state) {
+    if (state.loggedIn) {
+      return state.user.role.slug === 'administrator'
+    }
+    return false
+  },
+  dashboardLink(state) {
     if (!state.user) {
       return '/'
     }
@@ -23,12 +41,17 @@ export const getters = {
 }
 
 export const actions = {
-  logout() {
+  logout({ commit }) {
+    commit('LOGOUT_USER')
     this.$auth.logout().then(() => {
-      Vue.nextTick(() => {
-        this.$socket.disconnect()
-        this.$router.replace('/')
-      })
+      this.$socket.disconnect()
+      this.$router.replace('/')
     })
+  }
+}
+
+export const mutations = {
+  LOGOUT_USER (state) {
+    state.strategy = 'local'
   }
 }

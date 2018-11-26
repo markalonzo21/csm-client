@@ -20,7 +20,7 @@
         <hr>
         <h4>Images</h4>
         <div class="row">
-          <img :src="showPhoto(photo)" alt="image" v-for="photo in report.photos">
+          <img :src="showPhoto(photo)" alt="image" v-for="photo in report.photos" class="h-24 w-full">
         </div>
         <hr>
         <h3 class="title__blue">Milestones</h3>
@@ -41,7 +41,6 @@
 <script>
 import ChatBox from '~/components/ChatBox'
 export default {
-  layout: 'respondent',
   components: {
     ChatBox
   },

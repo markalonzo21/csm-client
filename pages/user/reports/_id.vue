@@ -23,7 +23,7 @@
             <div class="col-md-3" v-for="photo in report.photos">
               <div class="panel">
                 <div class="panel-body">
-                  <img :src="showPhoto(photo)" alt="image" class="image-responsive">
+                  <img :src="showPhoto(photo)" alt="image" class="h-24 w-full">
                 </div>
               </div>
             </div>
@@ -46,7 +46,6 @@
 <script>
 import ChatBox from '~/components/ChatBox'
 export default {
-  layout: 'user',
   components: {
     ChatBox
   },

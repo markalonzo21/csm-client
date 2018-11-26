@@ -38,7 +38,6 @@
 import ChatBox from '~/components/ChatBox'
 
 export default {
-  layout: 'respondent',
   middleware: 'isRespondent',
   components: {
     ChatBox

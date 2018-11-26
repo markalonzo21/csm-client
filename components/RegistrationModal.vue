@@ -1,5 +1,5 @@
 <template>
-  <modal v-model="registrationModal" size="sm" :footer="false" class="registration text-center">
+  <modal v-model="registrationModal" size="sm" :footer="false" class="registration text-center mt-32">
     <span slot="title" class="text-uppercase">Register</span>
     <form @submit.prevent="login" class="">
       <div class="row">
