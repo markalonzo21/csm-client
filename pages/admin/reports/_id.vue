@@ -128,7 +128,8 @@ export default {
   },
   methods: {
     showPhoto(photo) {
-      return `${process.env.API_URL}/${photo}`
+      const baseUrl = process.env.API_URL ? process.env.API_URL : 'https://incident-reporting-api.now.sh'
+      return `${baseUrl}/${photo}`
     },
     initSocketListeners() {
       this.$socket.on('milestone-completed', milestoneId => {

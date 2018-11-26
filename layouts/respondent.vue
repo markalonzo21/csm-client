@@ -2,7 +2,7 @@
   <div>
     <navbar class="user-menu">
       <div class="container">
-        <router-link class="navbar-brand" slot="brand" to="/"><img src="img/insertlogo.png" alt="" class="responsive mrgnauto"></router-link>
+        <router-link class="navbar-brand" slot="brand" to="/"><img src="/img/insertlogo.png" alt="" class="responsive mrgnauto"></router-link>
         <navbar-nav right>
           <li>
             <router-link

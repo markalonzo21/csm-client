@@ -18,6 +18,16 @@
           <template v-else>None</template>
         </h4>
         <hr>
+        <h3>Photos</h3>
+        <div class="row">
+          <div class="col-md-3" v-for="photo in report.photos">
+            <div class="panel">
+              <div class="panel-body">
+                <img :src="showPhoto(photo)" alt="image" class="image-responsive">
+              </div>
+            </div>
+          </div>
+        </div>
         <h3 class="title__blue">Milestones</h3>
         <div
           class="my-2"
