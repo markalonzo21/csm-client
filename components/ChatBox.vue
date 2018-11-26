@@ -1,18 +1,34 @@
 <template>
-  <div class="my-4">
+  <div class="my-4 chatbox">
     <div
-      class="border w-full bg-white relative overflow-y-scroll"
+      class="chatbody border w-full bg-white relative overflow-y-auto"
       style="height: 350px; max-height: 350px;"
     >
-      <div class="m-2 border p-4" v-for="message in messages" :key="message._id">
+      <!-- <div class="m-2 border p-4" v-for="message in messages" :key="message._id">
         <strong>{{ message.user.role.name }}: &nbsp;</strong>
         {{ message.content }}
+      </div> -->
+      <div class="me">
+        <p class="basic">Hello!</p>
       </div>
+      <div class="clearfix"></div>
+      <div class="chatmate">
+        <p class="basic">Please help! There is an emergency here!</p>
+      </div>
+      <div class="clearfix"></div>
+      <div class="me">
+        <p class="basic">Ok! Stay calm. Help is on the way okay?</p>
+      </div>
+      <div class="clearfix"></div>
+      <div class="chatmate">
+        <p class="basic">Ok. Thank you!</p>
+      </div>
+      <div class="clearfix"></div>
     </div>
     <form class="input-group" @submit.prevent="sendMessage">
       <input type="text" class="form-control" v-model="message" :disabled="isResolved">
       <div class="input-group-btn">
-        <button type="submit" class="btn btn-default" :disabled="isResolved">Send</button>
+        <button type="submit" class="btn btnblue" :disabled="isResolved">Send</button>
       </div>
     </form>
   </div>
