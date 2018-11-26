@@ -98,7 +98,10 @@ export default {
     },
     milestoneIsCompleted(id) {
       return this.report.responses.includes(id)
-    }
+    },
+    showPhoto(photo) {
+      return `${process.env.API_URL}/${photo}`
+    },
   }
 }
 </script>
