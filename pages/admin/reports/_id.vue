@@ -1,6 +1,5 @@
 <template>
-<div class="main-content">
-  <div class="container p-2" style="height: 80vh;">
+  <div class="container p-2" style="height: 80vh; width: 100%;">
     <div class="row" v-if="report">
       <div class="col-md-6">
         <h3 class="mb-1">Report: {{ report._id }}</h3>
@@ -79,7 +78,6 @@
         </div>
       </modal>
     </div>
-  </div>
   </div>
 </template>
 

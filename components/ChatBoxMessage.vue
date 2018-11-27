@@ -1,6 +1,6 @@
 <template>
   <div>
-  <div class="me" :class="isSender ? 'me' : 'chatmate'">
+  <div class="" :class="isSender ? 'me' : 'chatmate'">
     <p class="basic"><strong v-if="!isSender">{{ message.user.role.name }}:&nbsp;</strong> {{ message.content }}</p>
   </div>
   <div class="clearfix"></div>
