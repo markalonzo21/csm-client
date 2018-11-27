@@ -18,7 +18,7 @@
           <template v-else>None</template>
         </h4>
         <hr>
-        <h4>Images</h4>
+        <h4>Photos</h4>
         <div class="row">
           <img :src="showPhoto(photo)" alt="image" v-for="photo in report.photos" class="h-24 w-24">
         </div>
@@ -28,7 +28,15 @@
           class="my-2"
           v-for="(milestone, index) in report.reportType.milestones"
           :key="milestone._id"
-        >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - DONE' : '' }}</div>
+        >
+          {{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - DONE' : '' }}
+          <button
+            :disabled="loadingMarkAsDone"
+            class="btn btn-primary"
+            v-if="isShowMarkButtonVisible(milestone._id, index)"
+            @click.prevent="$store.dispatch('respondent/markAsDone', milestone._id)"
+          >Mark as done</button>
+        </div>
       </div>
       <div class="col-md-6">
         <ChatBox :reportId="report._id" :isResolved="report.resolvedAt"/>
@@ -44,22 +52,72 @@ export default {
   components: {
     ChatBox
   },
-  asyncData({ $axios, params, isServer }) {
-    return $axios.$get(`/reports/${params.id}`).then(response => {
-      return {
-        report: response.data
-      }
+  async fetch ({ $axios, store, params, error }) {
+    await $axios.$get(`/reports/${params.id}`).then(response => {
+      store.commit('respondent/SET_ACTIVE_REPORT', response.data)
     }).catch(err => {
       error({ status: 404, message: 'Report not found!' })
     })
+  },
+  data() {
+    return {
+      loadingMarkAsDone: false
+    }
+  },
+  computed: {
+    report() {
+      return this.$store.state.respondent.report
+    }
+  },
+  mounted() {
+    this.initSocketListeners()
+  },
+  beforeDestroy() {
+    this.$socket.off('respondent-assigned')
   },
   methods: {
     showPhoto(photo) {
       const baseUrl = process.env.API_URL ? process.env.API_URL : 'https://incident-reporting-api.now.sh'
       return `${baseUrl}/${photo}`
     },
+    initSocketListeners() {
+      this.$socket.on('respondent-assigned', report => {
+        this.$notify({
+          type: 'info',
+          title: 'You have been assigned!',
+          content: `You're assigned to an incident.`
+        })
+        this.$store.commit('respondent/SET_ACTIVE_REPORT', report)
+      })
+    },
+    isShowMarkButtonVisible(milestoneId, index) {
+      if (this.milestoneIsCompleted(milestoneId)) {
+        return false
+      }
+
+      if (index === 0) {
+        return true
+      }
+
+      if (this.isNotYetMarkable(index)) {
+        return false
+      }
+
+      return true
+    },
     milestoneIsCompleted(id) {
       return this.report.responses.includes(id)
+    },
+    isNotYetMarkable(index) {
+      const milestoneBeforeThisMilestone = this.report.reportType.milestones[
+        index - 1
+      ]
+
+      if (this.milestoneIsCompleted(milestoneBeforeThisMilestone._id)) {
+        return false
+      }
+
+      return true
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <section class="container select-none">
-    <modal v-model="isRespondentModalVisible" title="Create Respondent" :footer="false">
-      <form @submit.prevent="createUser" class="clearfix">
+    <modal v-model="isCreateRespondentModalVisible" title="Create Respondent" :footer="false">
+      <form @submit.prevent="createRespondent" class="clearfix">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="first name" v-model="form.firstName" required>
         </div>
@@ -31,7 +31,7 @@
         <div class="form-group text-center">
           <label for="">Actionable Report Type</label>
           <div v-for="reportCategory in reportCategories">
-            <h5 class="font-bold">{{ reportCategory.name }}</h5>
+            <h5 class="font-bold" v-if="reportCategory.reportTypes.length > 0">{{ reportCategory.name }}</h5>
             <div class="checkbox" v-for="reportType in reportCategory.reportTypes">
               <label>
                 <input type="checkbox" v-model="form.reportTypes" :value="reportType._id">
@@ -47,8 +47,8 @@
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Respondents</h3>
-      <button class="btn btn-primary float-right my-6" @click.prevent="isRespondentModalVisible = true">
-        Create User
+      <button class="btn btn-primary float-right my-6" @click.prevent="isCreateRespondentModalVisible = true">
+        Create Respondent
       </button>
     </div>
     <table class="table-bordered w-full">
@@ -94,7 +94,7 @@
     layout: 'admin',
     data () {
       return {
-        isRespondentModalVisible: false,
+        isCreateRespondentModalVisible: false,
         loadingGetRespondents: false,
         respondents: [],
         reportCategories: [],
@@ -136,14 +136,14 @@
           this.loadingGetRespondents = false
         })
       },
-      createUser() {
+      createRespondent() {
         this.loadingCreateUser = true
         this.form.mobile = `0${this.form.mobile}`
         this.$axios.$post('/admin/respondents', this.form).then(response => {
           this.generateFakeData()
           this.respondents.push(response.data)
           this.loadingCreateUser = false
-          this.isRespondentModalVisible = false
+          this.isCreateRespondentModalVisible = false
         })
       }
     }

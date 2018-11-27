@@ -23,6 +23,20 @@
             </b>
           </nuxt-link>
         </li>
+        <li>
+          <nuxt-link to="/admin/report-categories">
+            <b>
+              <span class="sidebar-text pt-1">Report Categories</span>
+            </b>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link to="/admin/report-types">
+            <b>
+              <span class="sidebar-text pt-1">Report Types</span>
+            </b>
+          </nuxt-link>
+        </li>
       </ul>
     </div>
   </section>
