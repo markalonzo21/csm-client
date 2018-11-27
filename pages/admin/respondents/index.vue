@@ -78,7 +78,6 @@
           </td>
           <td>{{ respondent.createdAt }}</td>
           <td>
-            <button class="m-2 btn btn-primary">Show</button>
             <button class="m-2 btn btn-info" disabled>Edit</button>
             <button class="m-2 btn btn-danger" disabled>Delete</button>
           </td>

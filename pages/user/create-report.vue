@@ -86,8 +86,20 @@ export default {
   },
   mounted() {
     this.generateFakeData()
+    this.getGeolocation()
   },
   methods: {
+    getGeolocation() {
+      this.$getLocation({
+        enableHighAccuracy: true,
+        timeout: Infinity,
+        maximumAge: 0
+      })
+      .then(coordinates => {
+        this.form.location.coordinates.lng = coordinates.lng
+        this.form.location.coordinates.lat = coordinates.lat
+      });
+    },
     processFile(event) {
       this.form.photos = []
 

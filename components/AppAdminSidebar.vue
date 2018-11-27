@@ -17,13 +17,6 @@
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/admin/respondents">
-            <b>
-              <span class="sidebar-text pt-1">Respondents</span>
-            </b>
-          </nuxt-link>
-        </li>
-        <li>
           <nuxt-link to="/admin/report-categories">
             <b>
               <span class="sidebar-text pt-1">Report Categories</span>
@@ -34,6 +27,20 @@
           <nuxt-link to="/admin/report-types">
             <b>
               <span class="sidebar-text pt-1">Report Types</span>
+            </b>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link to="/admin/response-types">
+            <b>
+              <span class="sidebar-text pt-1">Response Types</span>
+            </b>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link to="/admin/respondents">
+            <b>
+              <span class="sidebar-text pt-1">Respondents</span>
             </b>
           </nuxt-link>
         </li>
