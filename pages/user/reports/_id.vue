@@ -23,7 +23,7 @@
             <div class="col-md-3" v-for="photo in report.photos">
               <div class="panel">
                 <div class="panel-body">
-                  <img :src="showPhoto(photo)" alt="image" class="h-24 w-full">
+                  <img :src="showPhoto(photo)" alt="image" class="h-24 w-24">
                 </div>
               </div>
             </div>
@@ -99,7 +99,8 @@ export default {
       return this.report.responses.includes(id)
     },
     showPhoto(photo) {
-      return `${process.env.API_URL}/${photo}`
+      const baseUrl = process.env.API_URL ? process.env.API_URL : 'https://incident-reporting-api.now.sh'
+      return `${baseUrl}/${photo}`
     }
   }
 }

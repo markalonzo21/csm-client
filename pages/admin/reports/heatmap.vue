@@ -23,7 +23,7 @@
           :maxBoundsViscosity="maxBoundsViscosity"
           ref="map"
         >
-          <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+          <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
           <LeafletHeatmap
             v-if="reports.length > 0 && !loadingHeats"
             :lat-lng="heats"

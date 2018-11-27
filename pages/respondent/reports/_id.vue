@@ -20,7 +20,7 @@
         <hr>
         <h4>Images</h4>
         <div class="row">
-          <img :src="showPhoto(photo)" alt="image" v-for="photo in report.photos" class="h-24 w-full">
+          <img :src="showPhoto(photo)" alt="image" v-for="photo in report.photos" class="h-24 w-24">
         </div>
         <hr>
         <h3 class="title__blue">Milestones</h3>
@@ -55,7 +55,8 @@ export default {
   },
   methods: {
     showPhoto(photo) {
-      return `${process.env.API_URL}/${photo}`
+      const baseUrl = process.env.API_URL ? process.env.API_URL : 'https://incident-reporting-api.now.sh'
+      return `${baseUrl}/${photo}`
     },
     milestoneIsCompleted(id) {
       return this.report.responses.includes(id)

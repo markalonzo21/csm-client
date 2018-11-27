@@ -16,32 +16,7 @@
       </div>
     </navbar>
     <div id="wrapper" class="toggled">
-      <section class="sidebar-section">
-        <div id="sidebar-wrapper">
-          <ul class="sidebar-nav">
-            <li>
-              <nuxt-link to="/admin">
-                <b>
-                  <!-- <easy-svg icon="dashboard" addClass="sidebar-icon mr-2"></easy-svg> -->
-                  <span class="sidebar-text pt-1">Dashboard</span>
-                </b>
-              </nuxt-link>
-            </li>
-            <li>
-              <nuxt-link to="/admin/reports">
-                <b>
-                  <!-- <easy-svg icon="dashboard" addClass="sidebar-icon mr-2"></easy-svg> -->
-                  <span class="sidebar-text pt-1">Reports</span>
-                </b>
-              </nuxt-link>
-            </li>
-            <!-- <router-link to="/users" class="pointer" tag="li"> -->
-            <!-- <easy-svg icon="user" addClass="sidebar-icon  mr-2"></easy-svg> -->
-            <!-- <span class="sidebar-text">Users</span> -->
-            <!-- </router-link> -->
-          </ul>
-        </div>
-      </section>
+      <AppAdminSidebar/>
       <div id="page-content-wrapper" class="main-content">
         <nuxt/>
       </div>
@@ -54,8 +29,13 @@
   </div>
 </template>
 
+
 <script>
+import AppAdminSidebar from '~/components/AppAdminSidebar'
 export default {
-  middleware: 'isAdmin'
+  middleware: 'isAdmin',
+  components: {
+    AppAdminSidebar
+  }
 }
 </script>

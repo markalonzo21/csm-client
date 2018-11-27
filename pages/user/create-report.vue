@@ -32,7 +32,7 @@
               </div>
               <div class="row">
                 <div class="col-md-4" v-for="photo in form.photos">
-                  <img :src="photo.src" alt="photo" class="h-24 w-full">
+                  <img :src="photo.src" alt="photo" class="h-24 w-24">
                 </div>
               </div>
               <br>
@@ -112,7 +112,7 @@ export default {
     },
     generateFakeData() {
       this.form.location.coordinates.lat = this.$chance.latitude({
-        min: 14.5565,
+        min: 14.5965,
         max: 14.63956
       })
       this.form.location.coordinates.lng = this.$chance.longitude({

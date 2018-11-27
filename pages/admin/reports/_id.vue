@@ -25,7 +25,7 @@
           <div class="col-md-3" v-for="photo in report.photos">
             <div class="panel">
               <div class="panel-body">
-                <img :src="showPhoto(photo)" alt="image" class="h-24 w-full">
+                <img :src="showPhoto(photo)" alt="image" class="h-24 w-24">
               </div>
             </div>
           </div>
@@ -50,7 +50,7 @@
               :maxBoundsViscosity="map.maxBoundsViscosity"
               ref="map"
             >
-              <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+              <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
               <l-marker :lat-lng="map.center"></l-marker>
             </l-map>
           </no-ssr>

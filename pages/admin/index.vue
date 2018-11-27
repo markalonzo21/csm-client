@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="row mt-5">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <h3 class="title__gray--small">HEAT MAP</h3>
         <div class="mt-4">
           <select v-model="type" required class="p-2">
