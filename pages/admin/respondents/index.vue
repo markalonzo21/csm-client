@@ -1,5 +1,5 @@
 <template>
-  <section class="container select-none">
+  <section class="container select-none" style="width: 100%">
     <modal v-model="isCreateRespondentModalVisible" title="Create Respondent" :footer="false">
       <form @submit.prevent="createRespondent" class="clearfix">
         <div class="form-group">

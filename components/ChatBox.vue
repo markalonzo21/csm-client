@@ -1,21 +1,20 @@
 <template>
-  <div class="my-4 chatbox">
-    <div
-      class="chatbody border w-full bg-white relative overflow-y-auto"
-      style="height: 350px; max-height: 350px;"
-      ref="messagesContainer"
-    >
-      <div  class="text-center">
-        Chatbox
-      </div>
+  <div class="panel chatbox pull-right">
+    <div class="panel-heading bgblue">
+      <span class="pull-right"></span>
+    </div>
+    <div class="panel-body chatbody overflow-y-auto" style="height: auto; max-height: 350px;"
+      ref="messagesContainer">
       <ChatBoxMessage  v-for="(message, index) in messages" :key="`${index}-${message._id}`" :message="message" />
     </div>
-    <form class="input-group" @submit.prevent="sendMessage">
-      <input type="text" class="form-control" v-model="message" :disabled="isResolved || loadingSendMessage">
+    <div class="panel-footer">
+      <form class="input-group" @submit.prevent="sendMessage">
+      <input type="text" class="form-control" placeholder="Write something here ..." v-model="message" :disabled="isResolved || loadingSendMessage">
       <div class="input-group-btn">
-        <button type="submit" class="btn btnblue" :disabled="isResolved || loadingSendMessage">{{ loadingSendMessage ? 'Sending...' : 'Send' }}</button>
+        <button type="submit" class="btn chatsubmit text-uppercase" :disabled="isResolved || loadingSendMessage">{{ loadingSendMessage ? 'Sending...' : 'Send' }}</button>
       </div>
     </form>
+    </div>
   </div>
 </template>
 

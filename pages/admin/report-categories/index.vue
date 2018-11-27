@@ -1,5 +1,5 @@
 <template>
-  <section class="container select-none">
+  <section class="container select-none" style="width: 100%">
     <modal v-model="isCreateReportCategoryModalVisible" title="Create Report Category" :footer="false">
       <form @submit.prevent="createReportCategory" class="clearfix">
         <div class="form-group">

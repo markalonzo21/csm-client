@@ -1,4 +1,22 @@
 .chatbox {
+  max-width: 385px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .16), 0 3px 6px rgba(0, 0, 0, .23) !important;
+  .panel-heading {
+    height: 50px;
+    span {
+      position: relative;
+      &:after {
+        content: "-";
+        font-weight: 700;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        font-size: 40px;
+        right: 0;
+        line-height: 20px;
+      }
+    }
+  }
   .btn.btnblue {
     border-radius: 0;
   }
@@ -25,14 +43,14 @@
 
   .chatbody {
     padding: 10px;
-    background-color: #e4e4e4;
+    border: 1px solid #eee;
     .basic {
       overflow-wrap: break-word;
     }
     .me,
     .chatmate {
       width: auto;
-      max-width: 350px;
+      max-width: 250px;
       padding: 10px;
       margin-bottom: 10px;
       border-radius: 8px;
@@ -43,10 +61,22 @@
       float: right;
     }
     .chatmate {
-      background: linear-gradient(to right, #2989d8 0%, $irs__aqua 100%);
+      background: #2eb2e2;
       color: $white;
       float: left;
     }
 
+  }
+
+  .panel-footer {
+    background-color: $white;
+    border-top: none;
+    .form-control {
+      border-radius: 20px !important;
+    }
+    .chatsubmit {
+      font-size: 12px;
+      color: #2eb2e2;
+    }
   }
 }

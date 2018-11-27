@@ -1,5 +1,5 @@
 <template>
-  <section class="container select-none">
+  <section class="container select-none" style="width: 100%">
     <modal v-model="isCreateResponseTypeModalVisible" title="Create Response Type" :footer="false">
       <form @submit.prevent="createResponseType" class="clearfix">
         <div class="form-group">
