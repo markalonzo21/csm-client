@@ -7,7 +7,7 @@
           <div class="panel bgblue" v-if="report">
             <div class="panel-body">
               <h2 class="title__white--large text-uppercase mb0" v-text="report.reportType.name">Petnapping</h2>
-              <h3 class="title__white--mid mb20" v-text="report.reportType.category.name">Security Management</h3>
+              <h3 class="title__white--mid mb20" v-text="report.reportType.reportCategory.name">Security Management</h3>
               <router-link class="btn btnwhite text-uppercase" :to="`/respondent/reports/active-report`">Respond</router-link>
             </div>
           </div>

@@ -44,6 +44,7 @@
                 v-model="form.description"
                 class="form-control mb20"
                 placeholder="Description"
+                required="true"
               ></textarea>
               <button type="submit" class="btn btnblue" :disabled="loadingSubmitReport">{{ loadingSubmitReport ? 'Loading...' : 'Submit' }}</button>
             </form>
