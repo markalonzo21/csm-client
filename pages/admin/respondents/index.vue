@@ -122,6 +122,7 @@
         this.form.mobile = `92${(new Date().getTime()).toString().substr(5)}`
         this.form.password = '123123123'
         this.form.password_confirmation = '123123123'
+        this.form.reportTypes = []
       },
       getReportTypes() {
         this.$axios.$get('/report-categories').then(response => {
@@ -142,6 +143,7 @@
           this.generateFakeData()
           this.respondents.push(response.data)
           this.loadingCreateUser = false
+          this.isRespondentModalVisible = false
         })
       }
     }

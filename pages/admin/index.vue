@@ -6,7 +6,7 @@
       <div class="col-md-3">
         <div class="panel">
           <div class="panel-body">
-            <h2 class="title__white--large">300</h2>
+            <h2 class="title__white--large" v-text="dashboardDetails.registeredReporters">300</h2>
             <span class="title__white--mid">REGISTERED REPORTERS</span>
           </div>
         </div>
@@ -14,7 +14,7 @@
       <div class="col-md-3">
         <div class="panel">
           <div class="panel-body">
-            <h2 class="title__white--large">15</h2>
+            <h2 class="title__white--large" v-text="dashboardDetails.unassignedReports">15</h2>
             <span class="title__white--mid">UNASSIGNED REPORTS</span>
           </div>
         </div>
@@ -22,7 +22,7 @@
       <div class="col-md-3">
         <div class="panel">
           <div class="panel-body">
-            <h2 class="title__white--large">300</h2>
+            <h2 class="title__white--large" v-text="dashboardDetails.ongoingReports">300</h2>
             <span class="title__white--mid">ON GOING REPORTS</span>
           </div>
         </div>
@@ -30,7 +30,7 @@
       <div class="col-md-3">
         <div class="panel">
           <div class="panel-body">
-            <h2 class="title__white--large">300</h2>
+            <h2 class="title__white--large" v-text="dashboardDetails.availableRespondents">300</h2>
             <span class="title__white--mid">AVAILABLE RESPONDENTS</span>
           </div>
         </div>
@@ -87,12 +87,17 @@
 export default {
   layout: 'admin',
   asyncData({ $axios }) {
-    return $axios.$get('/report-types').then(response => {
-      return {
-        reportTypes: response.data,
-        type: null,
-        resolvedOrUnresolved: 'both'
-      }
+
+    const getReportTypes = $axios.$get('/report-types')
+    const getDashboardDetails = $axios.$get('/admin/dashboard')
+
+    return Promise.all([getReportTypes, getDashboardDetails]).then(([reportTypes, dashboardDetails]) => {
+        return {
+          reportTypes: reportTypes.data,
+          dashboardDetails: dashboardDetails.data,
+          resolvedOrUnresolved: 'both',
+          type: null,
+        }
     })
   },
   data() {
