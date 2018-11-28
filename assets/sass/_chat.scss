@@ -107,6 +107,7 @@
   }
   .panel-body {
     padding: 10px !important;
+    min-height: 350px;
     overflow-y: auto;
     transition: height ease 300ms;
 
