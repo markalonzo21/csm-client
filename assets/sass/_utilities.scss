@@ -68,6 +68,9 @@ body * {
   margin-top: 0;
 }
 
+.mt20 {
+  margin-top: 20px;
+}
 .mt30 {
   margin-top: 30px;
 }
@@ -191,4 +194,8 @@ body * {
 
 .bgblue {
   background: linear-gradient(to right, #2989d8 0%, $irs__aqua 100%);
+}
+
+.ofwbw {
+  overflow-wrap: break-word;
 }
