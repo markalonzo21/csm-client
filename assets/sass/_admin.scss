@@ -1,0 +1,67 @@
+//Asign Modal
+.assign-modal {
+  .modal-content {
+    padding: 20px 40px;
+  }
+  .title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #888;
+  }
+  .details {
+    font-size: 16px;
+    font-weight: normal;
+    color: #333;
+  }
+}
+
+//Reports
+.tabular-view {
+  padding-top: 2%;
+  .nav-tabs {
+    li a {
+      font-size: 16px;
+      color: #888;
+      transition: all ease 300ms;
+      &:hover {
+        color: $white;
+        background-color: #2eb2e2;
+        transition: all ease 300ms;
+      }
+    }
+    .active a,
+    .active a:focus {
+      color: $white;
+      background-color: #2eb2e2;
+    }
+  }
+  
+  .btn.btnblueplain {
+    font-size: 12px;
+    color: $white;
+    background-color: $irs__blue--dark;
+    border-radius: 0;
+  }
+  .search {
+    margin-top: 2%;
+    margin-bottom: 1%;
+    .form-control {
+      border-radius: 0;
+    }
+  }
+  .table {
+    *.redtext {
+      color: #dd2727;
+    }
+    th {
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
+    }
+    td {
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+  }
+}
