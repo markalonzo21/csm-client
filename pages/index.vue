@@ -147,6 +147,19 @@
             </div>
         </div>
       </div>
+      <div class="ads mt30">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 item" v-for="n in 3">
+              <div class="panel">
+                <div class="panel-heading">
+                    <img src="/img/ads.jpg" alt="" class="img-responsive mrgnauto">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 </template>

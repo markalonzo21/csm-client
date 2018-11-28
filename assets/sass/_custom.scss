@@ -100,3 +100,19 @@
 .user-report {
 
 }
+
+//RESPONDENT ACTIVE REPORT
+.respondent.active-report {
+  .tabular-view {
+    .title__black {
+      font-size: 14px;
+    }
+    .panel {
+      margin-bottom: 130px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+    .btn.btnblue {
+      width: 100%;
+    }
+  }
+}
