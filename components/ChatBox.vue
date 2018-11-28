@@ -1,10 +1,9 @@
 <template>
-  <div class="panel chatbox pull-right">
-    <div class="panel-heading bgblue">
+  <div class="panel chatbox" :class="{ expanded: showChat }">
+    <div class="panel-heading bgblue" @click="showChat = !showChat">
       <span class="pull-right"></span>
     </div>
-    <div class="panel-body chatbody overflow-y-auto" style="height: auto; max-height: 350px;"
-      ref="messagesContainer">
+    <div class="panel-body chatbody overflow-y-auto" ref="messagesContainer">
       <ChatBoxMessage  v-for="(message, index) in messages" :key="`${index}-${message._id}`" :message="message" />
     </div>
     <div class="panel-footer">
@@ -29,6 +28,7 @@ export default {
   },
   data() {
     return {
+      showChat: false,
       loadingSendMessage: false,
       messages: [],
       message: ''
