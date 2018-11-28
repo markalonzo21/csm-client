@@ -127,6 +127,7 @@ export default {
   },
   asyncData({ $axios, store, params, error }) {
     return $axios.$get(`/admin/reports/${params.id}`).then(response => {
+      console.log(response.data.location)
       const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
       const lat = response.data.location
         ? response.data.location.coordinates[1]

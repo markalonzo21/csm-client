@@ -10,6 +10,11 @@
     "start": "nuxt start",
     "generate": "nuxt generate"
   },
+  "standard": {
+    "globals": [
+      "alert"
+    ]
+  },
   "dependencies": {
     "@nuxtjs/auth": "^4.5.3",
     "@nuxtjs/axios": "^5.3.6",

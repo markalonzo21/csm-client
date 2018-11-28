@@ -1,6 +1,6 @@
 import io from 'socket.io-client'
 
-export default function(ctx, inject) {
+export default function (ctx, inject) {
   const API_URL =
     process.env.API_URL === undefined
       ? 'https://incident-reporting-api.now.sh'
@@ -11,8 +11,8 @@ export default function(ctx, inject) {
     forceNew: true,
     transports: ['websocket'],
     query: {
-      token: localStorage.getItem('auth._token.local')
-        ? localStorage.getItem('auth._token.local').replace('Bearer ', '')
+      token: window.localStorage.getItem('auth._token.local')
+        ? window.localStorage.getItem('auth._token.local').replace('Bearer ', '')
         : ''
     }
   })
@@ -24,6 +24,7 @@ export default function(ctx, inject) {
   })
 
   socket.on('error', err => {
+    console.log(err)
     socket.disconnect()
   })
 
