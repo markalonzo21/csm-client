@@ -3,11 +3,7 @@ export default function({ store, redirect }) {
     redirect('/')
   }
 
-  if (!store.state.auth.user.role) {
-    redirect('/')
-  }
-
-  if (store.state.auth.user.role.slug !== 'respondent') {
+  if (!store.getters['auth/isRoleRespondent']) {
     redirect('/')
   }
 }

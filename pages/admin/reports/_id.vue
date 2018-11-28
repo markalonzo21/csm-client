@@ -1,6 +1,5 @@
 <template>
-<div class="main-content">
-  <div class="container p-2" style="height: 80vh;">
+  <div class="container p-2" style="height: 80vh; width: 100%;">
     <div class="row" v-if="report">
       <div class="col-md-6">
         <h3 class="mb-1">Report: {{ report._id }}</h3>
@@ -9,17 +8,19 @@
         <h3
           class="mb-1"
         >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h3>
-        <h3 class="mb-1">Assigned To:
-          <template
+        <template
             v-if="report.assignedTo"
-          >{{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}</template>
-          <template v-else>
+          >
+        <h3 class="mb-1">Assigned To:
+          {{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}
+        </h3>
+        </template>
+        <template v-else>
             <button
               @click.prevent="showAssignModal"
-              class="btn btnblue" style="width: auto;"
-            >Assign Respondent</button>
+              class="btn btnblue mt30" style="width: auto;"
+            >Assign Responder</button>
           </template>
-        </h3>
         <h3>Photos</h3>
         <div class="row">
           <div class="col-md-3" v-for="photo in report.photos">
@@ -58,28 +59,60 @@
         <hr>
         <ChatBox :reportId="report._id"/>
       </div>
-      <modal
+      <modal class="assign-modal" :header="false"
         v-model="isAssignModalVisible"
         :class="{ 'pointer-events-none': loadingAssignRespondent }"
       >
-        <select required v-model="selectedRespondent" class="form-control">
-          <option :value="null">Select Respondent</option>
-          <option
-            v-for="respondent in availableRespondents"
-            :value="respondent._id"
-            :key="respondent._id"
-          >{{ respondent.firstName }} {{ respondent.lastName }}</option>
-        </select>
-        <div slot="footer">
+        <table class="table">
+          <tr>
+            <td class="title">Order No.</td>
+            <td class="details">AA-1234567-2018</td>
+          </tr>
+          <tr>
+            <td class="title">Category</td>
+            <td class="details">Security Management</td>
+          </tr>
+          <tr>
+            <td class="title">Type</td>
+            <td class="details">Theft</td>
+          </tr>
+          <tr>
+            <td class="title">Reporter</td>
+            <td class="details">Andrei Nicolo Francisco</td>
+          </tr>
+        </table>
+        <div class="location-info mb20">
+          <span class="title">Location</span><br />
+          <span class="details">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquam debitis nostrum labore facilis sit, incidunt recusandae temporibus fuga nihil!</span>
+        </div>
+        <div class="notes-info mb20">
+          <span class="title">Notes</span><br />
+          <span class="details">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquam debitis nostrum labore facilis sit, incidunt recusandae temporibus fuga nihil!</span>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <label for="" class="title">Responder</label>
+          </div>
+          <div class="col-md-9">
+            <select required v-model="selectedRespondent" class="form-control">
+              <option :value="null">Select Respondent</option>
+              <option
+                v-for="respondent in availableRespondents"
+                :value="respondent._id"
+                :key="respondent._id"
+              >{{ respondent.firstName }} {{ respondent.lastName }}</option>
+            </select>
+          </div>
+        </div>
+        <div slot="footer" class="text-center">
           <button
             @click.prevent="assignRespondent"
             class="btn btnblue" style="width: auto;"
             :disabled="!selectedRespondent"
-          >Assign</button>
+          >Assign Responder</button>
         </div>
       </modal>
     </div>
-  </div>
   </div>
 </template>
 

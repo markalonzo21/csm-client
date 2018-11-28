@@ -1,7 +1,7 @@
 <template>
   <div class="main-content">
-    <div class="container mx-auto py-4">
-      <div v-if="report">
+    <div class="user-report container">
+      <div class="row flex" v-if="report">
         <div class="col-md-6">
           <h3 class="title__blue">Report Details</h3>
           <hr>

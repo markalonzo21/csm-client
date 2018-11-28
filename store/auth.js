@@ -20,11 +20,7 @@ export const getters = {
     return false
   },
   dashboardLink(state) {
-    if (!state.user) {
-      return '/'
-    }
-
-    if (!state.user.role) {
+    if (!state.loggedIn) {
       return '/'
     }
 
@@ -51,7 +47,7 @@ export const actions = {
 }
 
 export const mutations = {
-  LOGOUT_USER (state) {
+  LOGOUT_USER(state) {
     state.strategy = 'local'
   }
 }
