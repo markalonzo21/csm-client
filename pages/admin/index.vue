@@ -87,21 +87,23 @@
 export default {
   layout: 'admin',
   asyncData({ $axios }) {
-
     const getReportTypes = $axios.$get('/report-types')
     const getDashboardDetails = $axios.$get('/admin/dashboard')
 
-    return Promise.all([getReportTypes, getDashboardDetails]).then(([reportTypes, dashboardDetails]) => {
+    return Promise.all([getReportTypes, getDashboardDetails]).then(
+      ([reportTypes, dashboardDetails]) => {
         return {
           reportTypes: reportTypes.data,
           dashboardDetails: dashboardDetails.data,
           resolvedOrUnresolved: 'both',
-          type: null,
+          type: null
         }
-    })
+      }
+    )
   },
   data() {
-    const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
+    // const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
+    const bounds = [97.16309, 23.32208, 143.74512, 2.02107]
     return {
       loadingHeats: true,
       center: [14.59804, 120.98385],
@@ -135,6 +137,10 @@ export default {
             new L.LatLng(14.63956, 120.89287),
             new L.LatLng(14.5565, 121.07483)
           )
+          // this.maxBounds = new L.LatLngBounds(
+          //   new L.LatLng(23.32208, 97.16309),
+          //   new L.LatLng(2.02107, 143.74512)
+          // )
 
           this.$refs.map.mapObject.on('drag', () => {
             this.$refs.map.mapObject.panInsideBounds(this.maxBounds, {
