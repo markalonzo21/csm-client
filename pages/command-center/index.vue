@@ -1,7 +1,19 @@
 <template>
-  <div></div>
+  <div>
+    CONTENT HERE
+  </div>
 </template>
-
 <script>
-export default {}
+export default {
+  layout: 'command-center',
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+
+  },
+}
+
 </script>
