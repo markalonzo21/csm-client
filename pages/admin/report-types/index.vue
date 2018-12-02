@@ -6,7 +6,7 @@
           <input type="text" class="form-control" placeholder="Name" v-model="form.name" required>
         </div>
         <div class="form-group">
-          <textarea type="text" class="form-control" placeholder="Description" v-model="form.description"></textarea>
+          <textarea cols="30" rows="10" class="form-control" placeholder="Description" v-model="form.description"></textarea>
         </div>
 
         <div class="form-group">
@@ -34,13 +34,13 @@
           </div>
         </div>
 
-        <button class="btn btn-primary float-right" :disabled="loadingCreateReportType">{{ loadingCreateReportType ? 'Loading' : 'Save' }}</button>
+        <button class="btn btnblue float-right" :disabled="loadingCreateReportType">{{ loadingCreateReportType ? 'Loading' : 'Save' }}</button>
 
       </form>
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Respondents</h3>
-      <button class="btn btn-primary float-right my-6" @click.prevent="isCreateReportTypeModalVisible = true">
+      <button class="btn btnblue float-right my-6" style="width: auto" @click.prevent="isCreateReportTypeModalVisible = true">
         Create Report Type
       </button>
     </div>

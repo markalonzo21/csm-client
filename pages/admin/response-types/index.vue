@@ -7,14 +7,14 @@
         </div>
         <div class="form-group">
           <textarea
-            type="text"
+            cols="30" rows="10"
             class="form-control"
             placeholder="Description"
             v-model="form.description"
           ></textarea>
         </div>
         <button
-          class="btn btn-primary float-right"
+          class="btn btnblue float-right"
           :disabled="loadingCreateResponseType"
         >{{ loadingCreateResponseType ? 'Loading' : 'Save' }}</button>
       </form>
@@ -22,7 +22,7 @@
     <div class="clearfix">
       <h3 class="float-left">Response Types</h3>
       <button
-        class="btn btn-primary float-right my-6"
+        class="btn btnblue float-right my-6" style="width: auto"
         @click.prevent="isCreateResponseTypeModalVisible = true"
       >Create Response Type</button>
     </div>

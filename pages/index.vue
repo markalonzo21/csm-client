@@ -10,7 +10,7 @@
                 This website is an Incident Reporting App and Web Software, wherein you can manage and track incidents in a quick and effective way, inform the right people directly and effortlessly in just one click away
               </p>
             </div>
-            <a href="#" class="btn btnblue text-uppercase">Report</a>
+            <a href="" class="btn btnblue text-uppercase">Report</a>
           </div>
           <div class="col-md-8 right-content">
             <img

@@ -3,7 +3,7 @@
     <navbar class="user-menu navbar-fixed-top">
       <div class="container">
         <router-link class="navbar-brand" slot="brand" to="/">
-          <img src="/img/insertlogo.png" alt="" class="responsive mrgnauto">
+          <img src="/img/megaworld-logo.png" alt="" class="responsive mrgnauto">
         </router-link>
         <navbar-nav right>
           <li>
