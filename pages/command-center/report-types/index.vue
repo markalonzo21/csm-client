@@ -1,0 +1,206 @@
+<template>
+  <section class="container select-none" style="width: 100%">
+    <modal v-model="isCreateReportTypeModalVisible" title="Create Report Type" :footer="false">
+      <form @submit.prevent="createReportType" class="clearfix">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Name" v-model="form.name" required>
+        </div>
+        <!-- <div class="form-group">
+          <textarea
+            type="text"
+            class="form-control"
+            placeholder="Description"
+            v-model="form.description"
+          ></textarea>
+        </div>-->
+        <div class="form-group">
+          <select class="form-control" v-model="form.reportCategory" required>
+            <option
+              v-for="reportCategory in reportCategories"
+              :value="reportCategory._id"
+              v-text="reportCategory.name"
+            ></option>
+          </select>
+        </div>
+        <div class="form-group text-center">
+          <label for="">Set Milestones - Muxt Be In Order</label>
+          <div class="row">
+            <h5>Selection</h5>
+            <div class="checkbox-inline" v-for="responseType in responseTypes">
+              <label>
+                <input type="checkbox" :value="responseType._id" @change="milestoneSelected">
+                {{ responseType.name }}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <h5>Ordered List</h5>
+            <draggable v-model="form.milestones">
+              <div
+                class="p-2 border"
+                v-for="(milestoneId, index) in form.milestones"
+                :key="milestoneId"
+              >{{ index + 1 }}. {{ getMilestoneName(milestoneId) }}</div>
+            </draggable>
+          </div>
+        </div>
+        <button
+          class="btn btn-primary float-right"
+          :disabled="loadingCreateReportType"
+        >{{ loadingCreateReportType ? 'Loading' : 'Save' }}</button>
+      </form>
+    </modal>
+    <div class="clearfix">
+      <h3 class="float-left">Report Types</h3>
+      <button
+        class="btn btn-primary float-right my-6"
+        @click.prevent="isCreateReportTypeModalVisible = true"
+      >Create Report Type</button>
+    </div>
+    <hr>
+    <!-- <table class="table-bordered w-full">
+      <thead>
+        <tr>
+          <td>Name</td>
+          <td>Description</td>
+          <td>Category</td>
+          <td>Milestones</td>
+          <td>Created At</td>
+          <td>Actions</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="reportType in reportTypes">
+          <td>{{ reportType.name }}</td>
+          <td>{{ reportType.description }}</td>
+          <td>{{ reportType.reportCategory.name }}</td>
+          <td>
+            <ul class="list-reset">
+              <li v-for="item in reportType.milestones">{{ item.name }}</li>
+            </ul>
+          </td>
+          <td>{{ reportType.createdAt }}</td>
+          <td>
+            <button class="m-2 btn btn-info" disabled>Edit</button>
+            <button class="m-2 btn btn-danger" disabled>Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>-->
+    <a-table bordered :dataSource="reportTypes" :columns="columns">
+      <template slot="operation" slot-scope="text, record">
+        <a-button type="primary" disabled>Edit</a-button>
+        <a-button type="danger" disabled>Delete</a-button>
+      </template>
+    </a-table>
+  </section>
+</template>
+
+
+<script>
+import draggable from 'vuedraggable'
+
+export default {
+  layout: 'command-center',
+  components: {
+    draggable
+  },
+  data() {
+    return {
+      isCreateReportTypeModalVisible: false,
+      loadingCreateReportType: false,
+      reportTypes: [],
+      reportCategories: [],
+      responseTypes: [],
+      selectedResponseTypes: [],
+      columns: [
+        {
+          title: 'name',
+          dataIndex: 'name',
+          width: '80%',
+          scopedSlots: { customRender: 'name' }
+        },
+        {
+          title: 'operation',
+          dataIndex: 'operation',
+          scopedSlots: { customRender: 'operation' }
+        }
+      ],
+      form: {
+        name: '',
+        description: '',
+        reportCategory: '',
+        milestones: []
+      }
+    }
+  },
+  mounted() {
+    this.getReportTypes()
+    this.getReportCategories()
+    this.getResponseTypes()
+    this.generateFakeData()
+  },
+  watch: {
+    selectedResponseTypes(value) {
+      console.log(value)
+      this.form.milestones.push(value)
+    }
+  },
+  methods: {
+    getMilestoneName(id) {
+      return this.responseTypes.find(type => type._id === id).name
+    },
+    generateFakeData() {
+      this.form.name = this.$chance.word()
+      this.form.description = this.$chance.paragraph()
+    },
+    getReportTypes() {
+      this.$axios.$get('/report-types').then(response => {
+        this.reportTypes = response.data
+      })
+    },
+    getReportCategories() {
+      this.$axios.$get('/report-categories').then(response => {
+        this.reportCategories = response.data
+        this.form.reportCategory = response.data[0]._id
+      })
+    },
+    getResponseTypes() {
+      this.$axios.$get('/response-types').then(response => {
+        this.responseTypes = response.data
+      })
+    },
+    milestoneSelected(event) {
+      if (event.target.checked) {
+        this.form.milestones.push(event.target.value)
+      } else {
+        const milestoneIndex = this.form.milestones.findIndex(milestoneId => {
+          return milestoneId === event.target.value
+        })
+
+        if (milestoneIndex !== -1) {
+          this.form.milestones.splice(milestoneIndex, 1)
+        }
+      }
+    },
+    createReportType() {
+      this.loadingCreateReportType = true
+      this.$axios.$post('/report-types', this.form).then(response => {
+        this.generateFakeData()
+        this.reportTypes.push(response.data)
+        this.loadingCreateReportType = false
+        this.isCreateReportTypeModalVisible = false
+      })
+    }
+  }
+}
+</script>
+
+<style scoped>
+td {
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+</style>

@@ -10,13 +10,18 @@
       ref="map"
     >
       <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+      <l-marker
+        :lat-lng="[report.location.coordinates[1], report.location.coordinates[0]]"
+        v-for="report in reports"
+        :key="report._id"
+      ></l-marker>
     </l-map>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['area'],
+  props: ['area', 'reports'],
   mounted() {
     this.$nextTick(() => {
       if (this.area) {

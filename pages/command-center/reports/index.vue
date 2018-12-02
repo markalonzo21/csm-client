@@ -54,7 +54,7 @@
         <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
       </tab>
     </tabs>-->
-    <h1 class="title__black--large">Reports</h1>
+    <!-- <h1 class="title__black--large">Reports</h1>
     <table class="text-center w-100">
       <thead>
         <tr>
@@ -70,7 +70,7 @@
           class="cursor-pointer"
           v-for="report in reports"
           :key="report._id"
-          @click.prevent="$router.push(`/admin/reports/${report._id}`)"
+          @click.prevent="$router.push(`/command-center/reports/${report._id}`)"
         >
           <td>
             <a class="btn btnblue" style="width: 100%;" v-text="report.reportType.name"></a>
@@ -89,18 +89,49 @@
       :disabled="isReportsLoading"
       v-if="isLoadMoreVisible"
       @click.prevent="loadMoreReports"
-    >Load More</button>
+    >Load More</button>-->
+
+    <div class="clearfix">
+      <h3 class="float-left">Reports</h3>
+    </div>
+    <a-table bordered :dataSource="reports" :columns="columns">
+      <template slot="operation" slot-scope="text, record">
+        <a-button type="primary">
+          <router-link :to="`/command-center/reports/${record._id}`">Show</router-link>
+        </a-button>
+        <a-button type="danger" disabled>Cancel</a-button>
+      </template>
+    </a-table>
   </section>
 </template>
 
 <script>
 export default {
-  layout: 'admin',
+  layout: 'command-center',
   middleware: 'isAdmin',
   asyncData({ $axios, error }) {
     return $axios.$get('/admin/reports').then(response => {
       return {
         reports: response.data,
+        columns: [
+          {
+            title: 'Type',
+            dataIndex: 'reportType.name'
+          },
+          {
+            title: 'Assigned To',
+            dataIndex: 'assignedTo.email'
+          },
+          {
+            title: 'Created At',
+            dataIndex: 'createdAt'
+          },
+          {
+            title: 'Operation',
+            dataIndex: 'operation',
+            scopedSlots: { customRender: 'operation' }
+          }
+        ],
         isLoadMoreVisible: !(response.data.length < 10),
         isReportsLoading: false
       }
@@ -118,7 +149,7 @@ export default {
     loadMoreReports() {
       this.isReportsLoading = true
       this.$axios
-        .$get(`/admin/reports?skip=${this.reports.length}`)
+        .$get(`/admin/reports?command-center=${this.reports.length}`)
         .then(response => {
           response.data.forEach(report => {
             this.reports.push(report)

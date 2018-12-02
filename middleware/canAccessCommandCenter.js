@@ -3,7 +3,7 @@ export default function({ store, redirect }) {
     redirect('/')
   }
 
-  if (!store.getters['auth/isRoleUser']) {
+  if (!store.getters['auth/canAccessCommandCenter']) {
     redirect('/')
   }
 }

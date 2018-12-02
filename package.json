@@ -30,7 +30,6 @@
     "uiv": "^0.28.0",
     "vue-browser-geolocation": "^1.5.0",
     "vue-fixed-header": "^2.0.2",
-    "vue-social-sharing": "^2.3.3",
     "vue2-leaflet": "^1.1.1",
     "vue2-leaflet-heatmap": "^1.0.3",
     "vuedraggable": "^2.16.0"
