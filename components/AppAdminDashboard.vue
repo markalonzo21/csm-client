@@ -13,7 +13,7 @@
       </div>
       <div class="col-md-3">
         <div class="panel">
-          <div class="panel-body">
+          <div class="panel-body invert-gradient">
             <h2 class="title__white--large" v-text="dashboardDetails.unassignedReports">15</h2>
             <span class="title__white--mid">UNASSIGNED REPORTS</span>
           </div>
@@ -29,7 +29,7 @@
       </div>
       <div class="col-md-3">
         <div class="panel">
-          <div class="panel-body">
+          <div class="panel-body invert-gradient">
             <h2 class="title__white--large" v-text="dashboardDetails.availableRespondents">300</h2>
             <span class="title__white--mid">AVAILABLE RESPONDENTS</span>
           </div>
@@ -38,24 +38,7 @@
     </div>
     <div class="row mt-5">
       <div class="col-md-6">
-        <h3 class="title__gray--small">HEAT MAP</h3>
-        <div class="mt-4">
-          <select v-model="type" required class="p-2">
-            <option :value="null">Select Type</option>
-            <option
-              v-for="type in reportTypes"
-              :key="type._id"
-              :value="type._id"
-              v-text="type.name"
-            ></option>
-          </select>
-          <select v-model="resolvedOrUnresolved" required class="p-2">
-            <option value="both">Both</option>
-            <option value="resolved">Resolved Only</option>
-            <option value="unresolved">Unresolved Only</option>
-          </select>
-          <span class="ml-2" v-if="loadingHeats">LOADING HEATS</span>
-        </div>
+        <h3 class="title__gray--small">INCIDENT HEAT MAP</h3>
         <div id="map-wrap" style="height: 380px; width: 100%;">
           <no-ssr>
             <l-map
@@ -78,6 +61,38 @@
             </l-map>
           </no-ssr>
         </div>
+        <div class="my-4">
+          <select v-model="type" required class="p-2">
+            <option :value="null">Select Type</option>
+            <option
+              v-for="type in reportTypes"
+              :key="type._id"
+              :value="type._id"
+              v-text="type.name"
+            ></option>
+          </select>
+          <select v-model="resolvedOrUnresolved" required class="p-2">
+            <option value="both">Both</option>
+            <option value="resolved">Resolved Only</option>
+            <option value="unresolved">Unresolved Only</option>
+          </select>
+          <span class="ml-2" v-if="loadingHeats">LOADING HEATS</span>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <h3 class="title__gray--small">REPORTS</h3>
+        <a-table bordered :dataSource="reports" :columns="columns">
+          <template slot="createdAt" slot-scope="text, report">
+            {{  report.createdAt ? $moment(report.createdAt).format('H:mm A - MMM. DD, YYYY') : '' }}
+          </template>
+          <template slot="operation" slot-scope="text, report">
+            <a-button type="primary">
+              <router-link :to="`/command-center/reports/${report._id}`">Show</router-link>
+            </a-button>
+            <a-button type="danger" disabled>Cancel</a-button>
+          </template>
+        </a-table>
       </div>
     </div>
   </section>
@@ -97,12 +112,33 @@ export default {
       maxZoom: 18,
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
-      reports: [],
       // Details
       reportTypes: [],
       dashboardDetails: [],
       resolvedOrUnresolved: 'both',
-      type: null
+      type: null,
+      reports: [],
+      isReportsLoading: false,
+      columns: [
+        {
+          title: 'Type',
+          dataIndex: 'reportType.name'
+        },
+        {
+          title: 'Assigned To',
+          dataIndex: 'assignedTo.email'
+        },
+        {
+          title: 'Created At',
+          dataIndex: 'createdAt',
+          scopedSlots: { customRender: 'createdAt' },
+        },
+        {
+          title: 'Operation',
+          dataIndex: 'operation',
+          scopedSlots: { customRender: 'operation' }
+        }
+      ],
     }
   },
   computed: {
@@ -155,6 +191,11 @@ export default {
         }
       }, 100)
     })
+
+    this.initSocketListeners()
+  },
+  beforeDestroy() {
+    this.$socket.off('new-report')
   },
   watch: {
     type(value) {
@@ -175,6 +216,23 @@ export default {
     }
   },
   methods: {
+    initSocketListeners() {
+      this.$socket.on('new-report', report => {
+        this.searchReports(this.type, this.resolvedOrUnresolved)
+      })
+    },
+    loadReports() {
+      this.isReportsLoading = true
+      this.$axios
+        .$get(`/admin/reports?skip=${this.reports.length}`)
+        .then(response => {
+          response.data.forEach(report => {
+            this.reports.push(report)
+          })
+          this.isLoadMoreVisible = !(response.data.length < 10)
+          this.isReportsLoading = false
+        })
+    },
     searchReports(type, resolvedOrUnresolved) {
       this.$axios
         .$get(`/admin/reports/${type}/${resolvedOrUnresolved}`)
@@ -188,13 +246,21 @@ export default {
 </script>
 
 <style scoped>
-.panel {
+.panel-body {
   background-image: linear-gradient(to right, #354fa3, #34c3e5);
   color: white;
+  border-radius: 0.5rem;
+}
+.invert-gradient {
+  background-image: linear-gradient(to right, #34c3e5, #354fa3) !important;
 }
 .panel-footer {
   border: none;
   background-image: inherit;
   font-weight: bold;
+}
+
+h3 {
+  margin-top: 0;
 }
 </style>

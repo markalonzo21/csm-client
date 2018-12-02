@@ -1,5 +1,5 @@
 <template>
-  <section class="container select-none" style="width: 100%">
+  <section class="w-full select-none" style="width: 100%">
     <modal
       v-model="isCreateReportCategoryModalVisible"
       title="Create Report Category"
@@ -25,11 +25,9 @@
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Report Categories</h3>
-      <button
-        class="btn btn-primary float-right my-6"
-        style="width: auto"
+      <a-button type="primary" class="float-right my-6"
         @click.prevent="isCreateReportCategoryModalVisible = true"
-      >Create Report Category</button>
+      >Create Report Category</a-button>
     </div>
     <hr>
     <a-table bordered :dataSource="reportCategories" :columns="columns">
@@ -73,13 +71,13 @@ export default {
       reportCategories: [],
       columns: [
         {
-          title: 'name',
+          title: 'Name',
           dataIndex: 'name',
           width: '80%',
           scopedSlots: { customRender: 'name' }
         },
         {
-          title: 'operation',
+          title: 'Operation',
           dataIndex: 'operation',
           scopedSlots: { customRender: 'operation' }
         }

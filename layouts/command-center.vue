@@ -34,7 +34,7 @@
                 class="capitalize"
                 :to="crumb.to"
                 v-if="index < crumbs.length "
-              >{{ crumb.text }}</router-link>
+              >{{ crumb.text.replace('-', ' ') }}</router-link>
             </a-breadcrumb-item>
             <!-- <a-breadcrumb-item v-for="crumb in crumbs" v-text="crumb.text" :to="crumb.to" :key="crumb.to"></a-breadcrumb-item> -->
           </a-breadcrumb>

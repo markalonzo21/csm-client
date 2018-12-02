@@ -1,5 +1,5 @@
 <template>
-  <section class="admin-dashboard container mx-auto row">
+  <section class="w-full">
     <!-- <tabs class="tabular-view">
       <tab title="All Categories">
         <div class="search pull-right">
@@ -93,11 +93,16 @@
 
     <div class="clearfix">
       <h3 class="float-left">Reports</h3>
+      <a-button type="primary" class="float-right invisible my-6">Hidden</a-button>
     </div>
+    <hr>
     <a-table bordered :dataSource="reports" :columns="columns">
-      <template slot="operation" slot-scope="text, record">
+      <template slot="createdAt" slot-scope="text, report">
+        {{  report.createdAt ? $moment(report.createdAt).format('H:mm A - MMM. DD, YYYY') : '' }}
+      </template>
+      <template slot="operation" slot-scope="text, report">
         <a-button type="primary">
-          <router-link :to="`/command-center/reports/${record._id}`">Show</router-link>
+          <router-link :to="`/command-center/reports/${report._id}`">Show</router-link>
         </a-button>
         <a-button type="danger" disabled>Cancel</a-button>
       </template>
@@ -124,7 +129,8 @@ export default {
           },
           {
             title: 'Created At',
-            dataIndex: 'createdAt'
+            dataIndex: 'createdAt',
+            scopedSlots: { customRender: 'createdAt' },
           },
           {
             title: 'Operation',
@@ -149,7 +155,7 @@ export default {
     loadMoreReports() {
       this.isReportsLoading = true
       this.$axios
-        .$get(`/admin/reports?command-center=${this.reports.length}`)
+        .$get(`/admin/reports?skip=${this.reports.length}`)
         .then(response => {
           response.data.forEach(report => {
             this.reports.push(report)

@@ -1,5 +1,5 @@
 <template>
-  <section class="container select-none" style="width: 100%">
+  <section class="w-full select-none" style="width: 100%">
     <modal v-model="isCreateResponseTypeModalVisible" title="Create Response Type" :footer="false">
       <form @submit.prevent="createResponseType" class="clearfix">
         <div class="form-group">
@@ -21,11 +21,11 @@
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Response Types</h3>
-      <button
-        class="btn btn-primary float-right my-6"
-        style="width: auto"
+      <a-button
+        type="primary"
+        class="float-right my-6"
         @click.prevent="isCreateResponseTypeModalVisible = true"
-      >Create Response Type</button>
+      >Create Response Type</a-button>
     </div>
     <hr>
     <a-table bordered :dataSource="responseTypes" :columns="columns">
@@ -69,13 +69,13 @@ export default {
       responseTypes: [],
       columns: [
         {
-          title: 'name',
+          title: 'Name',
           dataIndex: 'name',
           width: '80%',
           scopedSlots: { customRender: 'name' }
         },
         {
-          title: 'operation',
+          title: 'Operation',
           dataIndex: 'operation',
           scopedSlots: { customRender: 'operation' }
         }

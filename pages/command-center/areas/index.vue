@@ -1,7 +1,8 @@
 <template>
-  <div class="container" v-if="!loading">
+  <section class="w-full" v-if="!loading">
     <div class="clearfix">
-      <a-button type="primary" class="float-right" disabled>New Area</a-button>
+      <h3 class="float-left">Areas</h3>
+      <a-button type="primary" class="float-right my-6" disabled>Create Area</a-button>
     </div>
     <hr>
     <a-table bordered :dataSource="dataSource" :columns="columns">
@@ -11,7 +12,7 @@
         </a-button>
       </template>
     </a-table>
-  </div>
+  </section>
 </template>
 
 <script>

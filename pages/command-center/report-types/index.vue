@@ -1,5 +1,5 @@
 <template>
-  <section class="container select-none" style="width: 100%">
+  <section class="w-full select-none">
     <modal v-model="isCreateReportTypeModalVisible" title="Create Report Type" :footer="false">
       <form @submit.prevent="createReportType" class="clearfix">
         <div class="form-group">
@@ -52,10 +52,9 @@
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Report Types</h3>
-      <button
-        class="btn btn-primary float-right my-6"
+      <a-button type="primary" class="float-right my-6"
         @click.prevent="isCreateReportTypeModalVisible = true"
-      >Create Report Type</button>
+      >Create Report Type</a-button>
     </div>
     <hr>
     <!-- <table class="table-bordered w-full">
@@ -115,13 +114,13 @@ export default {
       selectedResponseTypes: [],
       columns: [
         {
-          title: 'name',
+          title: 'Name',
           dataIndex: 'name',
           width: '80%',
           scopedSlots: { customRender: 'name' }
         },
         {
-          title: 'operation',
+          title: 'Operation',
           dataIndex: 'operation',
           scopedSlots: { customRender: 'operation' }
         }

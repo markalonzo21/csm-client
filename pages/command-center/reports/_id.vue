@@ -2,9 +2,9 @@
   <div class="container p-2" style="height: 80vh; width: 100%;">
     <div class="row" v-if="report">
       <div class="col-md-6">
-        <h3 class="mb-1">Report: {{ report._id }}</h3>
-        <h3 class="mb-1">Report Type: {{ report.reportType.name }}</h3>
-        <h3 class="mb-1">Report Description: {{ report.description }}</h3>
+        <h3 class="mb-1">ID: {{ report._id }}</h3>
+        <h3 class="mb-1">Type: {{ report.reportType.name }}</h3>
+        <h3 class="mb-1">Description: {{ report.description }}</h3>
         <h3
           class="mb-1"
         >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h3>
@@ -21,7 +21,7 @@
             style="width: auto;"
           >Assign Responder</button>
         </template>
-        <h3>Photos</h3>
+        <h3 v-if="report.photos.length > 0">Photos</h3>
         <div class="row">
           <div class="col-md-3" v-for="photo in report.photos">
             <div class="panel">
@@ -36,7 +36,7 @@
           class="my-2"
           v-for="(milestone, index) in report.reportType.milestones"
           :key="milestone._id"
-        >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? '- Done' : '' }}</div>
+        >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? '- DONE' : '' }}</div>
       </div>
       <div class="col-md-6">
         <!-- REPORT MAP -->

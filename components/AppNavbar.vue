@@ -22,9 +22,9 @@
             <li v-if="$store.getters['auth/isRoleUser']">
               <router-link class="text-blue-light" to="/user/create-report">Create Report</router-link>
             </li>
-            <li v-if="$store.getters['auth/isRoleUser']">
+ <!--            <li v-if="$store.getters['auth/isRoleUser']">
               <router-link class="text-blue-light" to="/user/track-report">Track Report</router-link>
-            </li>
+            </li> -->
             <li>
               <router-link
                 class="text-blue-light"

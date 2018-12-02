@@ -55,11 +55,13 @@
     }
   }
   .responder-dashboard {
-    .panel {
-      border-radius: 24px;
-    }
-    .panel-body {
-      padding: 100px 30px 30px;
+    .left-content {
+      .panel {
+        border-radius: 24px;
+      }
+      .panel-body {
+        padding: 100px 30px 30px;
+      }
     }
   }
 }

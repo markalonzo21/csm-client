@@ -1,5 +1,5 @@
 <template>
-  <section class="container select-none" style="width: 100%">
+  <section class="w-full select-none" style="width: 100%">
     <modal v-model="isCreateResolversModalVisible" title="Create Resolvers" :footer="false">
       <form @submit.prevent="createResolvers" class="clearfix">
         <div class="form-group">
@@ -77,14 +77,17 @@
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Resolvers</h3>
-      <button
-        class="btn btn-primary float-right my-6"
+      <a-button type="primary"
+        class="float-right my-6"
         @click.prevent="isCreateResolversModalVisible = true"
-      >Create Resolvers</button>
+      >Create Resolvers</a-button>
     </div>
     <hr>
     <a-table bordered :dataSource="resolvers" :columns="columns">
-      <template slot="operation" slot-scope="text, record">
+      <template slot="createdAt" slot-scope="text, resolver">
+        {{  resolver.createdAt ? $moment(resolver.createdAt).format('H:mm A - MMM. DD, YYYY') : '' }}
+      </template>
+      <template slot="operation" slot-scope="text, resolver">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
       </template>
@@ -153,7 +156,8 @@ export default {
         },
         {
           title: 'Created At',
-          dataIndex: 'createdAt'
+          dataIndex: 'createdAt',
+          scopedSlots: { customRender: 'createdAt' }
         },
         {
           title: 'Operation',
