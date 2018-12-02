@@ -38,7 +38,7 @@
 </template>
 <script>
 export default {
-  layout: 'admin',
+  layout: 'command-center',
   asyncData({ $axios }) {
     return $axios.$get('/report-types').then(response => {
       return {

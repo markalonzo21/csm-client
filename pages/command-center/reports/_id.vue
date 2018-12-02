@@ -8,19 +8,19 @@
         <h3
           class="mb-1"
         >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h3>
-        <template
-            v-if="report.assignedTo"
-          >
-        <h3 class="mb-1">Assigned To:
-          {{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}
-        </h3>
+        <template v-if="report.assignedTo">
+          <h3 class="mb-1">
+            Assigned To:
+            {{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}
+          </h3>
         </template>
         <template v-else>
-            <button
-              @click.prevent="showAssignModal"
-              class="btn btnblue mt30" style="width: auto;"
-            >Assign Responder</button>
-          </template>
+          <button
+            @click.prevent="showAssignModal"
+            class="btn btn-primary mt30"
+            style="width: auto;"
+          >Assign Responder</button>
+        </template>
         <h3>Photos</h3>
         <div class="row">
           <div class="col-md-3" v-for="photo in report.photos">
@@ -36,7 +36,7 @@
           class="my-2"
           v-for="(milestone, index) in report.reportType.milestones"
           :key="milestone._id"
-        >{{ index + 1}}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? '- Done' : '' }}</div>
+        >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? '- Done' : '' }}</div>
       </div>
       <div class="col-md-6">
         <!-- REPORT MAP -->
@@ -59,36 +59,46 @@
         <hr>
         <ChatBox :reportId="report._id"/>
       </div>
-      <modal class="assign-modal" :header="false"
+      <modal
+        class="assign-modal"
+        :header="false"
         v-model="isAssignModalVisible"
         :class="{ 'pointer-events-none': loadingAssignRespondent }"
       >
-        <table class="table">
-          <tr>
-            <td class="title">Order No.</td>
-            <td class="details">AA-1234567-2018</td>
-          </tr>
-          <tr>
-            <td class="title">Category</td>
-            <td class="details">Security Management</td>
-          </tr>
-          <tr>
-            <td class="title">Type</td>
-            <td class="details">Theft</td>
-          </tr>
-          <tr>
-            <td class="title">Reporter</td>
-            <td class="details">Andrei Nicolo Francisco</td>
-          </tr>
-        </table>
-        <div class="location-info mb20">
-          <span class="title">Location</span><br />
-          <span class="details">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquam debitis nostrum labore facilis sit, incidunt recusandae temporibus fuga nihil!</span>
+        <!-- <table class="table">
+          <tbody>
+            <tr>
+              <td class="title">Order No.</td>
+              <td class="details">AA-1234567-2018</td>
+            </tr>
+            <tr>
+              <td class="title">Category</td>
+              <td class="details">Security Management</td>
+            </tr>
+            <tr>
+              <td class="title">Type</td>
+              <td class="details">Theft</td>
+            </tr>
+            <tr>
+              <td class="title">Reporter</td>
+              <td class="details">Andrei Nicolo Francisco</td>
+            </tr>
+          </tbody>
+        </table>-->
+        <!-- <div class="location-info mb20">
+          <span class="title">Location</span>
+          <br>
+          <span
+            class="details"
+          >Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquam debitis nostrum labore facilis sit, incidunt recusandae temporibus fuga nihil!</span>
         </div>
         <div class="notes-info mb20">
-          <span class="title">Notes</span><br />
-          <span class="details">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquam debitis nostrum labore facilis sit, incidunt recusandae temporibus fuga nihil!</span>
-        </div>
+          <span class="title">Notes</span>
+          <br>
+          <span
+            class="details"
+          >Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquam debitis nostrum labore facilis sit, incidunt recusandae temporibus fuga nihil!</span>
+        </div>-->
         <div class="row">
           <div class="col-md-3">
             <label for="" class="title">Responder</label>
@@ -107,7 +117,8 @@
         <div slot="footer" class="text-center">
           <button
             @click.prevent="assignRespondent"
-            class="btn btnblue" style="width: auto;"
+            class="btn btn-primary"
+            style="width: auto;"
             :disabled="!selectedRespondent"
           >Assign Responder</button>
         </div>
@@ -120,8 +131,8 @@
 import ChatBox from '~/components/ChatBox'
 
 export default {
-  layout: 'admin',
-  middleware: 'isAdmin',
+  layout: 'command-center',
+  // middleware: 'isAdmin',
   components: {
     ChatBox
   },
@@ -162,7 +173,9 @@ export default {
   },
   methods: {
     showPhoto(photo) {
-      const baseUrl = process.env.API_URL ? process.env.API_URL : 'https://incident-reporting-api.now.sh'
+      const baseUrl = process.env.API_URL
+        ? process.env.API_URL
+        : 'https://incident-reporting-api.now.sh'
       return `${baseUrl}/${photo}`
     },
     initSocketListeners() {

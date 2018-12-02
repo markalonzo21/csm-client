@@ -1,9 +1,11 @@
 <template>
-  <div  style="height: 68px;">
-  <fixed-header :fixed.sync="isFixed">
-      <navbar class="user-menu" :fixed-top="isFixed"  style="height: 68px;">
+  <div style="height: 68px;">
+    <fixed-header :fixed.sync="isFixed">
+      <navbar class="user-menu" :fixed-top="isFixed" style="height: 68px;">
         <div class="container">
-          <router-link class="navbar-brand" slot="brand" to="/"><img src="/img/megaworld-logo.png" alt="" class="responsive mrgnauto"></router-link>
+          <router-link class="navbar-brand" slot="brand" to="/">
+            <img src="/img/megaworld-logo.png" alt="" class="responsive mrgnauto">
+          </router-link>
           <navbar-nav right v-if="!$auth.loggedIn">
             <li>
               <btn
@@ -30,17 +32,13 @@
               >{{ $auth.user ? $auth.user.role.name : '' }} Dashboard</router-link>
             </li>
             <li>
-              <a
-                class="bluetext cursor-pointer"
-                @click="$store.dispatch('auth/logout')"
-              >Log Out</a>
+              <a class="bluetext cursor-pointer" @click="$store.dispatch('auth/logout')">Log Out</a>
             </li>
           </navbar-nav>
         </div>
       </navbar>
-  </fixed-header>
+    </fixed-header>
   </div>
-
 </template>
 
 <script>
@@ -50,7 +48,7 @@ export default {
   components: {
     FixedHeader
   },
-  data () {
+  data() {
     return {
       isFixed: false
     }

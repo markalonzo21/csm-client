@@ -26,14 +26,30 @@
                   v-text="type.name"
                 ></option>
               </select>
-              <div class="upload-btn-wrapper w-100 mb20 ">
+              <div class="upload-btn-wrapper w-100 mb20">
                 <button class="btnupload w-100">Upload Photos</button>
-                <input type="file" accept="image/*"  multiple @change="processFile($event)">
+                <input type="file" accept="image/*" multiple @change="processFile($event)">
               </div>
               <div class="row">
                 <div class="col-md-4" v-for="photo in form.photos">
                   <img :src="photo.src" alt="photo" class="h-24 w-24">
                 </div>
+              </div>
+              <label
+                for=""
+                class="title__gray--small"
+                style="font-size:14px;"
+              >Demo Area (For Testing Purposes Only)</label>
+              <div class="container" style="padding-left: 25px;">
+                <label class="radio">
+                  <input type="radio" v-model="area" value="">None
+                </label>
+                <label class="radio">
+                  <input type="radio" v-model="area" value="mckinleyHill">Mckinley Hill
+                </label>
+                <label class="radio">
+                  <input type="radio" v-model="area" value="mckinleyWest">Mckinley West
+                </label>
               </div>
               <br>
               <label for="" class="title__gray--small" style="font-size:14px;">Notes</label>
@@ -46,7 +62,11 @@
                 placeholder="Description"
                 required="true"
               ></textarea>
-              <button type="submit" class="btn btnblue" :disabled="loadingSubmitReport">{{ loadingSubmitReport ? 'Loading...' : 'Submit' }}</button>
+              <button
+                type="submit"
+                class="btn btnblue"
+                :disabled="loadingSubmitReport"
+              >{{ loadingSubmitReport ? 'Loading...' : 'Submit' }}</button>
             </form>
           </div>
         </div>
@@ -72,7 +92,8 @@ export default {
             coordinates: { lng: null, lat: null }
           },
           photos: []
-        }
+        },
+        area: ''
       }
     })
   },
@@ -95,11 +116,10 @@ export default {
         enableHighAccuracy: true,
         timeout: Infinity,
         maximumAge: 0
-      })
-      .then(coordinates => {
+      }).then(coordinates => {
         this.form.location.coordinates.lng = coordinates.lng
         this.form.location.coordinates.lat = coordinates.lat
-      });
+      })
     },
     processFile(event) {
       this.form.photos = []
@@ -117,7 +137,7 @@ export default {
         reader.onload = e => {
           this.form.photos.push({
             file: file,
-            src:  e.target.result
+            src: e.target.result
           })
         }
         reader.readAsDataURL(file)
@@ -133,14 +153,46 @@ export default {
         max: 121.07483
       })
     },
+    generateDemoFakeData(area) {
+      if (area === 'mckinleyHill') {
+        const bounds = L.latLngBounds(
+          L.latLng(14.53116, 121.04653),
+          L.latLng(14.53636, 121.0579)
+        )
+        this.randomWithinBounds(bounds)
+      }
+
+      if (area === 'mckinleyWest') {
+        const bounds = L.latLngBounds(
+          L.latLng(14.53986, 121.03887),
+          L.latLng(14.53467, 121.05024)
+        )
+        this.randomWithinBounds(bounds)
+      }
+    },
+    randomWithinBounds(bounds) {
+      var lat_min = bounds.getSouthWest().lat,
+        lat_range = bounds.getNorthEast().lat - lat_min,
+        lng_min = bounds.getSouthWest().lng,
+        lng_range = bounds.getNorthEast().lng - lng_min
+
+      this.form.location.coordinates.lat = lat_min + Math.random() * lat_range
+      this.form.location.coordinates.lng = lng_min + Math.random() * lng_range
+    },
     report() {
       this.loadingSubmitReport = true
 
-      // Validate Location1
+      // Validate Location
       let formData = new FormData()
 
       formData.append('description', this.form.description)
       formData.append('type', this.form.type)
+
+      // MckinleyHill Override
+      if (this.area != '') {
+        this.generateDemoFakeData(this.area)
+      }
+
       formData.append('location', JSON.stringify(this.form.location))
 
       this.form.photos.forEach(photo => {
@@ -150,7 +202,6 @@ export default {
       this.$axios
         .$post('/reports', formData)
         .then(response => {
-
           setTimeout(() => {
             this.loadingSubmitReport = false
             this.$router.push(`/user/reports/${response.data._id}`)

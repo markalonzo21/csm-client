@@ -28,10 +28,15 @@ module.exports = {
    */
   css: [
     '~/assets/css/tailwind.css',
+    '~/assets/css/antd.css',
     {
       src: '~/assets/sass/app.scss',
       lang: 'sass'
     }
+    // {
+    //   src: '~/assets/less/antd.less',
+    //   lang: 'less'
+    // }
   ],
 
   /*
@@ -40,6 +45,7 @@ module.exports = {
   plugins: [
     { src: '~/plugins/vue-chance.js', ssr: false },
     { src: '~/plugins/vue2-leaflet-heatmap.js', ssr: false },
+    { src: '~/plugins/ant', ssr: true },
     { src: '~/plugins/uiv.js', ssr: true },
     { src: '~/plugins/socket', ssr: false },
     { src: '~/plugins/vue-geolocation', ssr: false }
@@ -101,6 +107,6 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend (config, ctx) {}
+    extend(config, ctx) {}
   }
 }

@@ -20,6 +20,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/dotenv": "^1.3.0",
     "@nuxtjs/moment": "^1.0.0",
+    "ant-design-vue": "^1.1.9",
     "bootstrap": "^3.3.7",
     "chance": "^1.0.16",
     "moment": "^2.22.2",
@@ -29,7 +30,6 @@
     "uiv": "^0.28.0",
     "vue-browser-geolocation": "^1.5.0",
     "vue-fixed-header": "^2.0.2",
-    "vue-social-sharing": "^2.3.3",
     "vue2-leaflet": "^1.1.1",
     "vue2-leaflet-heatmap": "^1.0.3",
     "vuedraggable": "^2.16.0"
@@ -37,6 +37,8 @@
   "devDependencies": {
     "autoprefixer": "^7.1.6",
     "cross-env": "^5.0.1",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "node-sass": "^4.10.0",
     "sass-loader": "^7.1.0",
     "tailwindcss": "^0.7.2"

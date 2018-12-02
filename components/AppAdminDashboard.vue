@@ -1,7 +1,7 @@
 <template>
   <section class="admin container-fluid">
-    <h1 class="title__black--large">Dashboard</h1>
-    <h3>Today {{ $moment().format('MMM DD, YYYY') }}</h3>
+    <!-- <h1 class="title__black--large">Dashboard</h1> -->
+    <h3 style="margin-top: 0;">Today {{ $moment().format('MMM DD, YYYY') }}</h3>
     <div class="row">
       <div class="col-md-3">
         <div class="panel">
@@ -85,22 +85,7 @@
 
 <script>
 export default {
-  layout: 'admin',
-  asyncData({ $axios }) {
-    const getReportTypes = $axios.$get('/report-types')
-    const getDashboardDetails = $axios.$get('/admin/dashboard')
-
-    return Promise.all([getReportTypes, getDashboardDetails]).then(
-      ([reportTypes, dashboardDetails]) => {
-        return {
-          reportTypes: reportTypes.data,
-          dashboardDetails: dashboardDetails.data,
-          resolvedOrUnresolved: 'both',
-          type: null
-        }
-      }
-    )
-  },
+  layout: 'command-center',
   data() {
     // const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
     const bounds = [97.16309, 23.32208, 143.74512, 2.02107]
@@ -112,7 +97,12 @@ export default {
       maxZoom: 18,
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
-      reports: []
+      reports: [],
+      // Details
+      reportTypes: [],
+      dashboardDetails: [],
+      resolvedOrUnresolved: 'both',
+      type: null
     }
   },
   computed: {
@@ -130,6 +120,18 @@ export default {
     }
   },
   mounted() {
+    const getReportTypes = this.$axios.$get('/report-types')
+    const getDashboardDetails = this.$axios.$get('/admin/dashboard')
+
+    Promise.all([getReportTypes, getDashboardDetails]).then(
+      ([reportTypes, dashboardDetails]) => {
+        this.reportTypes = reportTypes.data
+        this.dashboardDetails = dashboardDetails.data
+        this.resolvedOrUnresolved = 'both'
+        this.type = null
+      }
+    )
+
     this.$nextTick(() => {
       const check = setInterval(() => {
         if (this.$refs.map) {

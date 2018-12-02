@@ -9,16 +9,16 @@
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Name" v-model="form.name" required>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <textarea
             cols="30" rows="10"
             class="form-control"
             placeholder="Description"
             v-model="form.description"
           ></textarea>
-        </div>
+        </div>-->
         <button
-          class="btn btnblue float-right"
+          class="btn btn-primary float-right"
           :disabled="loadingCreateReportCategory"
         >{{ loadingCreateReportCategory ? 'Loading' : 'Save' }}</button>
       </form>
@@ -26,11 +26,19 @@
     <div class="clearfix">
       <h3 class="float-left">Report Categories</h3>
       <button
-        class="btn btnblue float-right my-6" style="width: auto"
+        class="btn btn-primary float-right my-6"
+        style="width: auto"
         @click.prevent="isCreateReportCategoryModalVisible = true"
       >Create Report Category</button>
     </div>
-    <table class="table-bordered w-full">
+    <hr>
+    <a-table bordered :dataSource="reportCategories" :columns="columns">
+      <template slot="operation" slot-scope="text, record">
+        <a-button type="primary" disabled>Edit</a-button>
+        <a-button type="danger" disabled>Delete</a-button>
+      </template>
+    </a-table>
+    <!-- <table class="table-bordered w-full">
       <thead>
         <tr>
           <td>Name</td>
@@ -50,19 +58,32 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table>-->
   </section>
 </template>
 
 
 <script>
 export default {
-  layout: 'admin',
+  layout: 'command-center',
   data() {
     return {
       isCreateReportCategoryModalVisible: false,
       loadingCreateReportCategory: false,
       reportCategories: [],
+      columns: [
+        {
+          title: 'name',
+          dataIndex: 'name',
+          width: '80%',
+          scopedSlots: { customRender: 'name' }
+        },
+        {
+          title: 'operation',
+          dataIndex: 'operation',
+          scopedSlots: { customRender: 'operation' }
+        }
+      ],
       form: {
         name: '',
         description: ''
