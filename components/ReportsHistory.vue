@@ -1,6 +1,6 @@
 <template>
   <section class="user-dashboard mx-auto">
-    <h1 class="title__black mt0">Reports</h1>
+    <h1 class="title__black mt0 uppercase">Reports History</h1>
     <div v-if="reports.length > 0">
       <div class="panel" style="border: none;" v-for="report in reports">
         <div class="panel-body border h-32 rounded shadow  bg-white flex items-center">

@@ -3,7 +3,7 @@
     <section class="responder-dashboard container">
       <div class="row">
         <div class="col-md-4 left-content">
-          <h1 class="title__black mt0">Active Reports</h1>
+          <h1 class="title__black mt0 uppercase ml-2">Active Reports</h1>
           <div class="panel bgblue" v-if="report">
             <div class="panel-body" style="padding: 100px 30px 30px;">
               <h2 class="title__white--large text-uppercase mb0 ofwbw" v-text="report.reportType.name">Petnapping</h2>
