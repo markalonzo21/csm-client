@@ -1,6 +1,6 @@
 <template>
   <modal v-model="loginModal" size="sm" :footer="false" class="login text-center mt-32">
-    <span slot="title"><img src="img/insertlogo.png" alt="" class="img-responsive mrgnauto"></span>
+    <span slot="title"><img src="img/megaworld-logo.png" alt="" class="img-responsive mrgnauto"></span>
     <form @submit.prevent="login" class="">
       <input type="text" class="form-control mb20" placeholder="Email" v-model="form.email">
       <input

@@ -61,7 +61,7 @@
   color: #fff;
 }
 .sidebar-nav li a:hover {
-  color: #fff !important;
+  color: $irs__aqua;
   background: #191919 !important;
 }
 .sidebar-nav li:hover {
@@ -95,11 +95,6 @@ li.nav-section:hover {
   font-size: 14px;
 }
 
-.sidebar-nav li a:hover {
-  text-decoration: none;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.2);
-}
 
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
@@ -156,4 +151,15 @@ li.nav-section:hover {
 .dashboard-icon {
   font-size: 21px;
   margin-right: 6px;
+}
+
+.sidebar-nav li a.nuxt-link-exact-active {
+  color: $irs__aqua;
+}
+.sidebar-nav li a {
+  transition: all ease 300ms;
+  &:hover {
+    color: $irs__aqua;
+    transition: all ease 300ms;
+  }
 }

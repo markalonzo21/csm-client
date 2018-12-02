@@ -41,13 +41,13 @@
           </div>
         </div>
 
-        <button class="btn btn-primary float-right" :disabled="loadingCreateUser">{{ loadingCreateUser ? 'Loading' : 'Save' }}</button>
+        <button class="btn btnblue float-right" style="width: auto" :disabled="loadingCreateUser">{{ loadingCreateUser ? 'Loading' : 'Save' }}</button>
 
       </form>
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Respondents</h3>
-      <button class="btn btn-primary float-right my-6" @click.prevent="isCreateRespondentModalVisible = true">
+      <button class="btn btnblue float-right my-6" style="width: auto" @click.prevent="isCreateRespondentModalVisible = true">
         Create Respondent
       </button>
     </div>

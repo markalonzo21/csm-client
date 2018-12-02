@@ -3,7 +3,7 @@
   <fixed-header :fixed.sync="isFixed">
       <navbar class="user-menu" :fixed-top="isFixed"  style="height: 68px;">
         <div class="container">
-          <router-link class="navbar-brand" slot="brand" to="/"><img src="/img/insertlogo.png" alt="" class="responsive mrgnauto"></router-link>
+          <router-link class="navbar-brand" slot="brand" to="/"><img src="/img/megaworld-logo.png" alt="" class="responsive mrgnauto"></router-link>
           <navbar-nav right v-if="!$auth.loggedIn">
             <li>
               <btn
@@ -19,6 +19,9 @@
           <navbar-nav right v-else>
             <li v-if="$store.getters['auth/isRoleUser']">
               <router-link class="text-blue-light" to="/user/create-report">Create Report</router-link>
+            </li>
+            <li v-if="$store.getters['auth/isRoleUser']">
+              <router-link class="text-blue-light" to="/user/track-report">Track Report</router-link>
             </li>
             <li>
               <router-link
