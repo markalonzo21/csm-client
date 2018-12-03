@@ -98,7 +98,7 @@
     <hr>
     <a-table bordered :dataSource="reports" :columns="columns">
       <template slot="createdAt" slot-scope="text, report">
-        {{  report.createdAt ? $moment(report.createdAt).format('H:mm A - MMM. DD, YYYY') : '' }}
+        {{  report.createdAt ? $moment(report.createdAt).format('hh:mm A - MMM. DD, YYYY') : '' }}
       </template>
       <template slot="operation" slot-scope="text, report">
         <a-button type="primary">

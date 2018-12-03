@@ -8,7 +8,7 @@
             <div class="panel-body" style="padding: 100px 30px 30px;">
               <h2 class="title__white--large text-uppercase mb0 ofwbw" v-text="report.reportType.name">Petnapping</h2>
               <h3 class="title__white--mid mb20 ofwbw" v-text="report.reportType.reportCategory.name">Security Management</h3>
-              <router-link class="btn btnwhite text-uppercase" :to="`/respondent/reports/active-report`">Respond</router-link>
+              <router-link class="btn btnwhite text-uppercase" :to="`/${$auth.user.role.slug}/reports/${report._id}`">Respond</router-link>
             </div>
           </div>
           <div class="panel bgblue" v-else>

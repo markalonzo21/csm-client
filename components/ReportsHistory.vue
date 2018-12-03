@@ -1,12 +1,12 @@
 <template>
   <section class="user-dashboard mx-auto">
-    <h1 class="title__black mt0 uppercase">Reports History</h1>
+    <h1 class="title__black mt0 uppercase">Reports HHistory</h1>
     <div v-if="reports.length > 0">
       <div class="panel" style="border: none;" v-for="report in reports">
         <div class="panel-body border h-32 rounded shadow  bg-white flex items-center">
           <div class="col-sm-3">
             <strong>Date</strong>
-            <div>{{ $moment(report.createdAt).format('H:mm A - MMM. DD, YYYY') }}</div>
+            <div>{{ $moment(report.createdAt).format('hh:mm A - MMM. DD, YYYY') }}</div>
           </div>
           <div class="col-sm-3">
             <strong>Type</strong>
@@ -14,9 +14,9 @@
           </div>
           <div class="col-sm-3">
             <strong>Resolved Date</strong>
-            <div>{{ report.resolvedAt ? $moment(report.resolvedAt).format('H:mm A - MMM. DD, YYYY') : 'Unresolved' }}</div>
+            <div>{{ report.resolvedAt ? $moment(report.resolvedAt).format('hh:mm A - MMM. DD, YYYY') : 'Unresolved' }}</div>
           </div>
-          <button type="button" class="btn btnblue col-sm-3 focus:outline-none" @click.prevent="$router.push(`/user/reports/${report._id}`)">
+          <button type="button" class="btn btnblue col-sm-3 focus:outline-none" @click.prevent="$router.push(`/${$auth.user.role.slug}/reports/${report._id}`)">
             View More
           </button>
         </div>
@@ -78,7 +78,7 @@ table {
   height: 1.5em; /* don't forget to set the height! */
 }
 
-.col-sm-3 strong {
+strong {
   color: #34c3e5;
 }
 </style>

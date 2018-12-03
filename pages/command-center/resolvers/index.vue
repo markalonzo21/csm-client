@@ -85,7 +85,7 @@
     <hr>
     <a-table bordered :dataSource="resolvers" :columns="columns">
       <template slot="createdAt" slot-scope="text, resolver">
-        {{  resolver.createdAt ? $moment(resolver.createdAt).format('H:mm A - MMM. DD, YYYY') : '' }}
+        {{  resolver.createdAt ? $moment(resolver.createdAt).format('hh:mm A - MMM. DD, YYYY') : '' }}
       </template>
       <template slot="operation" slot-scope="text, resolver">
         <a-button type="primary" disabled>Edit</a-button>

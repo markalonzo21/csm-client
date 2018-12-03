@@ -109,7 +109,7 @@
         </ul>
       </template>
       <template slot="createdAt" slot-scope="text, respondent">
-        {{  respondent.createdAt ? $moment(respondent.createdAt).format('H:mm A - MMM. DD, YYYY') : '' }}
+        {{  respondent.createdAt ? $moment(respondent.createdAt).format('hh:mm A - MMM. DD, YYYY') : '' }}
       </template>
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>

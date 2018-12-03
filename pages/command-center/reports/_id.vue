@@ -36,7 +36,7 @@
           class="my-2"
           v-for="(milestone, index) in report.reportType.milestones"
           :key="milestone._id"
-        >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? '- DONE' : '' }}</div>
+        >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? '- COMPLETED' : '' }}</div>
       </div>
       <div class="col-md-6">
         <!-- REPORT MAP -->

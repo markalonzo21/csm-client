@@ -76,6 +76,7 @@ export default {
           // this.$store.commit('TOGGLE_LOGIN_MODAL')
         })
         .catch(errors => {
+          alert("Invalid Credentials!")
           this.loading = false
         })
     },

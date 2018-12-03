@@ -21,8 +21,8 @@
             <a class="rowlink" style="width: 100%;" v-text="report.reportType.name"></a>
           </td>
           <!-- <td v-html="report.location.coordinates">14.12414, 121,41241</td> -->
-          <td v-text="$moment(report.createdAt).format('H:mm A - MMM. DD, YYYY')">Nov. 11, 2018 10:30 PM</td>
-          <td v-text="report.resolvedAt ? $moment(report.resolvedAt).format('H:mm A - MMM. DD, YYYY') : 'Unresolved'"></td>
+          <td v-text="$moment(report.createdAt).format('hh:mm A - MMM. DD, YYYY')">Nov. 11, 2018 10:30 PM</td>
+          <td v-text="report.resolvedAt ? $moment(report.resolvedAt).format('hh:mm A - MMM. DD, YYYY') : 'Unresolved'"></td>
         </tr>
       </tbody>
       <button

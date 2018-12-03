@@ -1,43 +1,45 @@
 <template>
   <div class="main-content">
-    <div class="user-report container">
-      <div class="row flex" v-if="report">
-        <div class="col-md-6">
-          <h3 class="title__blue">Report Details</h3>
-          <hr>
-          <h4 class="mb-1">Report: {{ report._id }}</h4>
-          <h4 class="mb-1">Report Type: {{ report.reportType.name }}</h4>
-          <h4 class="mb-1">Report Description: {{ report.description }}</h4>
-          <h4
-            class="mb-1"
-          >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h4>
-          <h4 class="mb-1">Assigned To:
-            <template
-              v-if="report.assignedTo"
-            >{{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}</template>
-            <template v-else>None</template>
-          </h4>
-          <hr>
-          <h3>Photos</h3>
-          <div class="row">
-            <div class="col-md-3" v-for="photo in report.photos">
-              <div class="panel">
-                <div class="panel-body">
-                  <img :src="showPhoto(photo)" alt="image" class="h-24 w-24">
+    <div class="user-report container ">
+      <div class="row w-full" v-if="report">
+        <div class="col-md-12 flex flex-col items-center border p-12">
+          <div class="details">
+            <h3 class="title__blue">Report Details</h3>
+            <hr>
+            <h4 class="mb-1"><strong>Report ID:</strong> {{ report._id }}</h4>
+            <h4 class="mb-1"><strong>Type:</strong> {{ report.reportType.name }}</h4>
+            <h4 class="mb-1"><strong>Notes:</strong> {{ report.description }}</h4>
+            <h4
+              class="mb-1"
+            ><strong>Reported By:</strong> {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h4>
+            <h4 class="mb-1"><strong>Assigned To:</strong>
+              <template
+                v-if="report.assignedTo"
+              >{{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}</template>
+              <template v-else>None</template>
+            </h4>
+            <hr>
+            <h3 v-if="report.photos.length > 0">Photos</h3>
+            <div class="row">
+              <div class="col-md-3" v-for="photo in report.photos">
+                <div class="panel">
+                  <div class="panel-body">
+                    <img :src="showPhoto(photo)" alt="image" class="h-24 w-24">
+                  </div>
                 </div>
               </div>
             </div>
+            <h3 class="title__blue">Milestones</h3>
+            <div
+              class="my-2"
+              v-for="(milestone, index) in report.reportType.milestones"
+              :key="milestone._id"
+            >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - COMPLETED' : '' }}</div>
           </div>
-          <h3 class="title__blue">Milestones</h3>
-          <div
-            class="my-2"
-            v-for="(milestone, index) in report.reportType.milestones"
-            :key="milestone._id"
-          >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - DONE' : '' }}</div>
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6"> -->
           <ChatBox :reportId="report._id"/>
-        </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -105,3 +107,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  strong {
+    color: #34c3e5;
+  }
+</style>
