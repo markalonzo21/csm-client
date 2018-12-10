@@ -1,48 +1,58 @@
 <template>
-  <div style="height: 68px;">
-    <fixed-header :fixed.sync="isFixed">
-      <navbar class="user-menu" :fixed-top="isFixed" style="height: 68px;">
-        <div class="container">
-          <router-link class="navbar-brand" slot="brand" to="/">
-            <img src="/img/megaworld-logo.png" alt="" class="responsive mrgnauto">
-          </router-link>
-          <navbar-nav right v-if="!$auth.loggedIn">
-            <li>
-              <btn
-                class="btnsignin text-uppercase"
-                @click="$store.commit('TOGGLE_LOGIN_MODAL')"
-              >Sign In</btn>
-            </li>
+  <div class="h-65">
+    <navbar class="user-menu h-65" :fixed-top="true">
+      <div class="container h-65">
+        <router-link class="float-left pt-4 mr-6" slot="brand" to="/">
+          <img src="/img/megaworld-logo.png" alt class="responsive mrgnauto">
+        </router-link>
+        <navbar-nav left v-if="$auth.loggedIn">
+          <li v-if="$store.getters['auth/isRoleUser']">
+            <router-link class="text-blue-light" to="/new-report">New Report</router-link>
+          </li>
+          <li v-if="$store.getters['auth/isRoleUser']">
+            <router-link class="text-blue-light" to="/report-tracker">Report Tracker</router-link>
+          </li>
+        </navbar-nav>
+        <navbar-nav right v-if="$auth.loggedIn" class="select-none">
+          <dropdown tag="li">
+            <a class="dropdown-toggle" role="button">
+              {{ $auth.user.firstName }} {{ $auth.user.middleName }} {{ $auth.user.lastName }}
+              <span
+                class="caret"
+              ></span>
+            </a>
+            <template slot="dropdown">
+              <!-- <router-link to="/my-profile" tag="li">
+                <a class="button">My Profile</a>
+              </router-link>-->
+              <router-link to="/report-history" tag="li">
+                <a class="button">Report History</a>
+              </router-link>
+              <li>
+                <a role="button" @click.prevent="$store.dispatch('auth/logout')">Log Out</a>
+              </li>
+            </template>
+          </dropdown>
+        </navbar-nav>
+        <navbar-nav right v-else>
+          <li>
             <btn
-              class="btnblue text-uppercase"
-              @click="$store.commit('TOGGLE_REGISTRATION_MODAL')"
-            >Register</btn>
-          </navbar-nav>
-          <navbar-nav right v-else>
-            <li v-if="$store.getters['auth/isRoleUser']">
-              <router-link class="text-blue-light" to="/user/create-report">Create Report</router-link>
-            </li>
- <!--            <li v-if="$store.getters['auth/isRoleUser']">
-              <router-link class="text-blue-light" to="/user/track-report">Track Report</router-link>
-            </li> -->
-            <li>
-              <router-link
-                class="text-blue-light"
-                :to="$store.getters['auth/dashboardLink']"
-              >{{ $auth.user ? $auth.user.role.name : '' }} Dashboard</router-link>
-            </li>
-            <li>
-              <a class="bluetext cursor-pointer" @click="$store.dispatch('auth/logout')">Log Out</a>
-            </li>
-          </navbar-nav>
-        </div>
-      </navbar>
-    </fixed-header>
+              class="btnsignin text-uppercase"
+              @click="$store.commit('TOGGLE_LOGIN_MODAL')"
+            >Sign In</btn>
+          </li>
+          <btn
+            class="btnblue text-uppercase"
+            @click="$store.commit('TOGGLE_REGISTRATION_MODAL')"
+          >Register</btn>
+        </navbar-nav>
+      </div>
+    </navbar>
   </div>
 </template>
 
 <script>
-import FixedHeader from 'vue-fixed-header'
+import FixedHeader from "vue-fixed-header";
 
 export default {
   components: {
@@ -51,7 +61,14 @@ export default {
   data() {
     return {
       isFixed: false
-    }
+    };
   }
-}
+};
 </script>
+
+
+<style scoped>
+.h-65 {
+  height: 65px;
+}
+</style>

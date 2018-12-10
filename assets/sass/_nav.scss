@@ -4,6 +4,11 @@
   margin-bottom: 0 !important;
   border-radius: 0 !important;
   box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  .navbar-left {
+    padding: 8px 15px;
+    align-items: center;
+    display: flex;
+  }
   .navbar-right {
     padding: 8px 15px;
     align-items: center;
@@ -14,3 +19,9 @@
   }
 }
 
+// Override bootstrap dropdown default styling
+.nav .open > a,
+.nav .open > a:focus,
+.nav .open > a:hover {
+  background-color: transparent !important;
+}

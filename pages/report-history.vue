@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import ReportsHistory from '~/components/ReportsHistory'
+import ReportsHistory from "~/components/ReportsHistory";
 export default {
-  middleware: 'isUser',
+  middleware: "isUser",
   components: {
     ReportsHistory
   }
-}
+};
 </script>
 
 <style scoped>
@@ -24,7 +24,7 @@ table {
 }
 
 .rowlink::before {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   left: 0;
