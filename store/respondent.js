@@ -14,15 +14,14 @@ export const actions = {
     this.$axios
       .$post('/respondent/respond', {
         reportId: state.report._id,
-        milestoneId: id
+        responseId: id
       })
       .then(response => {
-        commit('NEW_RESPONSE', id)
+        commit('SET_ACTIVE_REPORT', response.data)
         commit('LOADING_MARK_AS_DONE', false)
 
-        if (state.report.reportType.milestones.length === state.report.responses.length) {
+        if (state.report.resolvedAt !== null) {
           alert('incident is resolved!')
-          this.$router.replace('/respondent')
           commit('SET_ACTIVE_REPORT', null)
         }
       })

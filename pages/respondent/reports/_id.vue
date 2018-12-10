@@ -26,13 +26,13 @@
       <h3 class="title__blue">Milestones</h3>
       <div
         class="my-2"
-        v-for="(milestone, index) in report.reportType.milestones"
-        :key="milestone._id"
+        v-for="(response, index) in report.responses"
+        :key="response._id"
       >
-        {{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - COMPLETED' : '' }}
+        {{ index + 1 }}. {{ response.responseType.name }} {{ milestoneIsCompleted(response) ? ' - COMPLETED' : '' }}
         <a class="cursor-pointer"
-          v-if="isShowMarkButtonVisible(milestone._id, index)"
-          @click.prevent="$store.dispatch('respondent/markAsDone', milestone._id)"
+          v-if="isShowMarkButtonVisible(response, index)"
+          @click.prevent="$store.dispatch('respondent/markAsDone', response._id)"
         >- Click to Mark as Completed</a>
       </div>
     </div>
@@ -88,8 +88,8 @@ export default {
         this.$store.commit('respondent/SET_ACTIVE_REPORT', report)
       })
     },
-    isShowMarkButtonVisible(milestoneId, index) {
-      if (this.milestoneIsCompleted(milestoneId)) {
+    isShowMarkButtonVisible(response, index) {
+      if (this.milestoneIsCompleted(response)) {
         return false
       }
 
@@ -103,15 +103,13 @@ export default {
 
       return true
     },
-    milestoneIsCompleted(id) {
-      return this.report.responses.includes(id)
+    milestoneIsCompleted(response) {
+      return response.resolvedAt !== null
     },
     isNotYetMarkable(index) {
-      const milestoneBeforeThisMilestone = this.report.reportType.milestones[
-        index - 1
-      ]
+      const previousResponse = this.report.responses[index - 1]
 
-      if (this.milestoneIsCompleted(milestoneBeforeThisMilestone._id)) {
+      if (this.milestoneIsCompleted(previousResponse)) {
         return false
       }
 

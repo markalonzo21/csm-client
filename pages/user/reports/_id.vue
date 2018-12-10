@@ -32,9 +32,11 @@
             <h3 class="title__blue">Milestones</h3>
             <div
               class="my-2"
-              v-for="(milestone, index) in report.reportType.milestones"
-              :key="milestone._id"
-            >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? ' - COMPLETED' : '' }}</div>
+              v-for="(response, index) in report.responses"
+              :key="response._id"
+            >{{ index + 1 }}. {{ response.responseType.name }}
+              <span v-if="response.resolvedAt !== null && response.confirmed">- Completed At {{ $moment(response.resolvedAt).format('hh:mm:ss A - MMM. DD, YYYY') }}</span>
+            </div>
           </div>
         </div>
         <!-- <div class="col-md-6"> -->
@@ -69,7 +71,7 @@ export default {
   },
   beforeDestroy() {
     this.$socket.off('respondent-assigned')
-    this.$socket.off('milestone-completed')
+    this.$socket.off('milestone-confirmed')
   },
   methods: {
     initSocketListeners() {
@@ -84,21 +86,19 @@ export default {
         this.report = report
       })
 
-      this.$socket.on('milestone-completed', milestoneId => {
-        const updateName = this.report.reportType.milestones.find(
-          milestone => milestone._id === milestoneId
-        ).name
+      this.$socket.on('milestone-confirmed', newResponse => {
+        let responseIndex = this.report.responses.findIndex(
+          response => response._id === newResponse._id
+        )
+
+        this.$set(this.report.responses, responseIndex, newResponse)
 
         this.$notify({
           type: 'info',
           title: 'Help Update!',
-          content: updateName
+          content: newResponse.name
         })
-        this.report.responses.push(milestoneId)
       })
-    },
-    milestoneIsCompleted(id) {
-      return this.report.responses.includes(id)
     },
     showPhoto(photo) {
       const baseUrl = process.env.API_URL ? process.env.API_URL : 'https://incident-reporting-api.now.sh'

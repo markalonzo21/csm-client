@@ -34,9 +34,13 @@
         <h3 class="mb-1">Milestones</h3>
         <div
           class="my-2"
-          v-for="(milestone, index) in report.reportType.milestones"
-          :key="milestone._id"
-        >{{ index + 1 }}. {{ milestone.name }} {{ milestoneIsCompleted(milestone._id) ? '- COMPLETED' : '' }}</div>
+          v-for="(response, index) in report.responses"
+          :key="response._id"
+        >{{ index + 1 }}. {{ response.responseType.name }} {{ milestoneIsCompleted(response._id) ? `- Completed at ${$moment(response.resolvedAt).format('hh:mm:ss A - MMM. DD, YYYY')}` : '' }}
+          <a class="cursor-pointer" @click.prevent="confirmResponse(response)" v-if="response.resolvedAt !== null && response.confirmed === false">
+            - Click to Confirm
+          </a>
+      </div>
       </div>
       <div class="col-md-6">
         <!-- REPORT MAP -->
@@ -179,21 +183,22 @@ export default {
       return `${baseUrl}/${photo}`
     },
     initSocketListeners() {
-      this.$socket.on('milestone-completed', milestoneId => {
-        const updateName = this.report.reportType.milestones.find(
-          milestone => milestone._id === milestoneId
-        ).name
+      this.$socket.on('milestone-completed', newResponse => {
+        let responseIndex = this.report.responses.findIndex(
+          response => response._id === newResponse._id
+        )
+
+        this.$set(this.report.responses, responseIndex, newResponse)
 
         this.$notify({
           type: 'info',
           title: 'Help Update!',
-          content: updateName
+          content: newResponse.name
         })
-        this.report.responses.push(milestoneId)
       })
     },
-    milestoneIsCompleted(id) {
-      return this.report.responses.includes(id)
+    milestoneIsCompleted(response) {
+      return response.resolvedAt !== null
     },
     showAssignModal() {
       this.isAssignModalVisible = true
@@ -209,6 +214,19 @@ export default {
         .$post(`admin/assign-respondent`, {
           reportId: this.report._id,
           respondentId: this.selectedRespondent
+        })
+        .then(response => {
+          this.isAssignModalVisible = false
+          this.report = response.data
+          this.availableRespondents = []
+          this.loadingAssignRespondent = false
+        })
+    },
+    confirmResponse(response) {
+      this.$axios
+        .$post(`/confirm-response`, {
+          reportId: this.report._id,
+          responseId: response._id
         })
         .then(response => {
           this.isAssignModalVisible = false
