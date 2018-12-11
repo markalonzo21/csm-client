@@ -1,8 +1,8 @@
 {
-  "name": "i-report",
-  "alias": "i-report.now.sh",
+  "name": "irs",
+  "alias": "irs.now.sh",
   "env": {
-    "API_URL": "https://incident-reporting-api.now.sh"
+    "API_URL": "https://irs-api.now.sh"
   },
   "scale" : {
     "sfo1": {
