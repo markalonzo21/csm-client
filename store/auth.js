@@ -64,7 +64,6 @@ export const mutations = {
     window.location.href = '/'
   },
   SET_USER(state, user) {
-    alert('wtf')
     console.log(user)
     state.user = user
   }

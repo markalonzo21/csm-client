@@ -57,23 +57,13 @@ export default {
         })
         .then(response => {
           this.loading = false
-
-          // this.$store.commit('auth/SET_USER', response.data.user)
-          // this.socketConnect()
-
           if (this.$store.getters['auth/canAccessCommandCenter']) {
             window.location.href = `/command-center`
-            // this.$router.push('/command-center')
+          } else if (this.$auth.user.role.slug === 'respondent') {
+            window.location.href = '/respondent'
           } else {
-            window.location.href = `/${this.$auth.user.role.slug.replace(
-              'istrator',
-              ''
-            )}`
-            // this.$router.replace(
-            //   `/${this.$auth.user.role.slug.replace('istrator', '')}`
-            // )
+            window.location.href = '/'
           }
-          // this.$store.commit('TOGGLE_LOGIN_MODAL')
         })
         .catch(errors => {
           alert("Invalid Credentials!")

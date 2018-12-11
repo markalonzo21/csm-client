@@ -25,7 +25,10 @@
               <!-- <router-link to="/my-profile" tag="li">
                 <a class="button">My Profile</a>
               </router-link>-->
-              <router-link to="/report-history" tag="li">
+              <router-link to="/respondent" tag="li" v-if="$auth.user.role.slug === 'respondent'">
+                <a class="button">Dashboard</a>
+              </router-link>
+              <router-link to="/report-history" tag="li" v-else>
                 <a class="button">Report History</a>
               </router-link>
               <li>
