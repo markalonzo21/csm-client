@@ -1,9 +1,9 @@
 <template>
   <modal v-model="loginModal" size="sm" :footer="false" class="login text-center mt-32">
     <span slot="title">
-      <img src="/img/megaworld-logo.png" alt="" class="img-responsive mrgnauto">
+      <img src="/img/megaworld-logo.png" alt class="img-responsive mrgnauto">
     </span>
-    <form @submit.prevent="login" class="">
+    <form @submit.prevent="login" class>
       <input type="text" class="form-control mb20" placeholder="Email" v-model="form.email">
       <input
         type="password"
@@ -29,10 +29,10 @@ export default {
   computed: {
     loginModal: {
       get() {
-        return this.$store.state.modals.login
+        return this.$store.state.modals.login;
       },
       set() {
-        return this.$store.commit('TOGGLE_LOGIN_MODAL')
+        return this.$store.commit("TOGGLE_LOGIN_MODAL");
       }
     }
   },
@@ -40,42 +40,42 @@ export default {
     return {
       loading: false,
       form: {
-        email: 'reporter1@gmail.com',
-        password: '123123123'
+        email: "reporter1@gmail.com",
+        password: "123123123"
       }
-    }
+    };
   },
   methods: {
     login() {
-      this.loading = true
+      this.loading = true;
       this.$auth
-        .loginWith('local', {
+        .loginWith("local", {
           data: {
             email: this.form.email,
             password: this.form.password
           }
         })
         .then(response => {
-          this.loading = false
-          if (this.$store.getters['auth/canAccessCommandCenter']) {
-            window.location.href = `/command-center`
-          } else if (this.$auth.user.role.slug === 'respondent') {
-            window.location.href = '/respondent'
+          this.loading = false;
+          if (this.$store.getters["auth/canAccessCommandCenter"]) {
+            window.location.href = `/command-center`;
+          } else if (this.$auth.user.role.slug === "responder") {
+            window.location.href = "/responder";
           } else {
-            window.location.href = '/'
+            window.location.href = "/";
           }
         })
         .catch(errors => {
-          alert("Invalid Credentials!")
-          this.loading = false
-        })
+          alert("Invalid Credentials!");
+          this.loading = false;
+        });
     },
     socketConnect() {
       this.$socket.query.token = localStorage
-        .getItem('auth._token.local')
-        .replace('Bearer ', '')
-      this.$socket.connect()
+        .getItem("auth._token.local")
+        .replace("Bearer ", "");
+      this.$socket.connect();
     }
   }
-}
+};
 </script>

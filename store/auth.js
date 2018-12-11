@@ -1,49 +1,14 @@
 export const getters = {
-  canAccessCommandCenter(state) {
-    if (state.loggedIn) {
-      if (['administrator', 'resolver'].includes(state.user.role.slug)) {
-        return true
-      }
+  hasPermission: state => permissionName => {
+    if (permissionName === null) {
+      return true
     }
 
-    return false
-  },
-  isRoleUser(state) {
-    if (state.loggedIn) {
-      return state.user.role.slug === 'user'
-    }
-    return false
-  },
-  isRoleRespondent(state) {
-    if (state.loggedIn) {
-      return state.user.role.slug === 'respondent'
-    }
-    return false
-  },
-  isRoleAdmin(state) {
-    if (state.loggedIn) {
-      return state.user.role.slug === 'administrator'
-    }
-    return false
-  },
-  dashboardLink(state) {
-    if (!state.loggedIn) {
-      return '/'
-    }
-
-    if (state.user.role.slug === 'administrator') {
-      return '/command-center'
-    }
-
-    if (state.user.role.slug === 'resolver') {
-      return '/command-center'
-    }
-
-    if (state.user.role.slug === 'respondent') {
-      return '/respondent'
-    }
-
-    return '/user'
+    return Boolean(
+      state.user.role.permissions.find(
+        permission => permission.name === permissionName
+      )
+    )
   }
 }
 

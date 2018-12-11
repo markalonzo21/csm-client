@@ -5,7 +5,9 @@
         <fixed-header :fixed.sync="isFixed">
           <a-layout-header :class="{ 'fixed': isFixed }" :style="{ zIndex: 99999, width: '100%' }">
             <div class="logo flex items-center content-center">
-              <img src="/img/megaworld-logo.png" class="p-4" alt="">
+              <router-link to="/">
+                <img src="/img/megaworld-logo.png" class="p-4" alt>
+              </router-link>
             </div>
             <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
               <a-dropdown :trigger="['click']" class="float-right text-white hover:text-grey">
@@ -36,7 +38,6 @@
                 v-if="index < crumbs.length "
               >{{ crumb.text.replace('-', ' ') }}</router-link>
             </a-breadcrumb-item>
-            <!-- <a-breadcrumb-item v-for="crumb in crumbs" v-text="crumb.text" :to="crumb.to" :key="crumb.to"></a-breadcrumb-item> -->
           </a-breadcrumb>
           <a-layout-content
             :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
@@ -49,10 +50,9 @@
   </a-layout>
 </template>
 <script>
-import FixedHeader from 'vue-fixed-header'
-import CommandCenterSidebar from '~/components/CommandCenterSidebar'
+import FixedHeader from "vue-fixed-header";
+import CommandCenterSidebar from "~/components/CommandCenterSidebar";
 export default {
-  middleware: 'canAccessCommandCenter',
   components: {
     FixedHeader,
     CommandCenterSidebar
@@ -60,28 +60,28 @@ export default {
   data() {
     return {
       isFixed: false
-    }
+    };
   },
   computed: {
     crumbs() {
-      let crumbs = this.$route.path.split('/')
-      let items = []
-      let route = ''
+      let crumbs = this.$route.path.split("/");
+      let items = [];
+      let route = "";
 
       for (let i = 1; i < crumbs.length; i++) {
-        let crumb = crumbs[i]
+        let crumb = crumbs[i];
 
-        route = route + '/' + crumbs[i]
+        route = route + "/" + crumbs[i];
 
         items.push({
           text: crumb,
           to: route
-        })
+        });
       }
-      return items
+      return items;
     }
   }
-}
+};
 </script>
 
 <style>

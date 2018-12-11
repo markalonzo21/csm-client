@@ -25,7 +25,9 @@
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Report Categories</h3>
-      <a-button type="primary" class="float-right my-6"
+      <a-button
+        type="primary"
+        class="float-right my-6"
         @click.prevent="isCreateReportCategoryModalVisible = true"
       >Create Report Category</a-button>
     </div>
@@ -63,7 +65,12 @@
 
 <script>
 export default {
-  layout: 'command-center',
+  layout: "command-center",
+  asyncData({ store, redirect }) {
+    if (!store.getters["auth/hasPermission"]("view report categories")) {
+      redirect("/");
+    }
+  },
   data() {
     return {
       isCreateReportCategoryModalVisible: false,
@@ -71,48 +78,48 @@ export default {
       reportCategories: [],
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          width: '80%',
-          scopedSlots: { customRender: 'name' }
+          title: "Name",
+          dataIndex: "name",
+          width: "80%",
+          scopedSlots: { customRender: "name" }
         },
         {
-          title: 'Operation',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
+          title: "Operation",
+          dataIndex: "operation",
+          scopedSlots: { customRender: "operation" }
         }
       ],
       form: {
-        name: '',
-        description: ''
+        name: "",
+        description: ""
       }
-    }
+    };
   },
   mounted() {
-    this.getReportCategories()
-    this.generateFakeData()
+    this.getReportCategories();
+    this.generateFakeData();
   },
   methods: {
     generateFakeData() {
-      this.form.name = `${this.$chance.word().toUpperCase()} Management`
-      this.form.description = this.$chance.paragraph()
+      this.form.name = `${this.$chance.word().toUpperCase()} Management`;
+      this.form.description = this.$chance.paragraph();
     },
     getReportCategories() {
-      this.$axios.$get('/report-categories').then(response => {
-        this.reportCategories = response.data
-      })
+      this.$axios.$get("/report-categories").then(response => {
+        this.reportCategories = response.data;
+      });
     },
     createReportCategory() {
-      this.loadingCreateReportCategory = true
-      this.$axios.$post('/report-categories', this.form).then(response => {
-        this.generateFakeData()
-        this.reportCategories.push(response.data)
-        this.loadingCreateReportCategory = false
-        this.isCreateReportCategoryModalVisible = false
-      })
+      this.loadingCreateReportCategory = true;
+      this.$axios.$post("/report-categories", this.form).then(response => {
+        this.generateFakeData();
+        this.reportCategories.push(response.data);
+        this.loadingCreateReportCategory = false;
+        this.isCreateReportCategoryModalVisible = false;
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>
