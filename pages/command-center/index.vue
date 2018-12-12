@@ -1,18 +1,23 @@
 <template>
   <div v-if="$auth.loggedIn">
-    <AppAdminDashboard v-if="$auth.user.role.slug === 'administrator'"/>
-    <AppResolverDashboard v-if="$auth.user.role.slug === 'resolver'"/>
+    <AppAdminDashboard/>
+    <!-- <AppResolverDashboard v-if="$auth.user.role.slug === 'resolver'"/> -->
   </div>
 </template>
 
 <script>
-import AppAdminDashboard from '~/components/AppAdminDashboard'
-import AppResolverDashboard from '~/components/AppResolverDashboard'
+import AppAdminDashboard from "~/components/AppAdminDashboard";
+import AppResolverDashboard from "~/components/AppResolverDashboard";
 export default {
-  layout: 'command-center',
+  layout: "command-center",
   components: {
     AppAdminDashboard,
     AppResolverDashboard
+  },
+  asyncData({ store, redirect }) {
+    if (!store.getters["auth/hasPermission"]("view dashboard")) {
+      redirect("/");
+    }
   }
-}
+};
 </script>

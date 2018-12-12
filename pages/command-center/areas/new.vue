@@ -3,7 +3,12 @@
 </template>
 
 <script>
-  export default {
-    layout: 'command-center'
+export default {
+  layout: "command-center",
+  asyncData({ store, redirect }) {
+    if (!store.getters["auth/hasPermission"]("create area")) {
+      redirect("/");
+    }
   }
+};
 </script>

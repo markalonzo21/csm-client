@@ -23,7 +23,7 @@
           </select>
         </div>
         <div class="form-group text-center">
-          <label for="">Set Milestones - Muxt Be In Order</label>
+          <label for>Set Milestones - Muxt Be In Order</label>
           <div class="row">
             <h5>Selection</h5>
             <div class="checkbox-inline" v-for="responseType in responseTypes">
@@ -52,7 +52,9 @@
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Report Types</h3>
-      <a-button type="primary" class="float-right my-6"
+      <a-button
+        type="primary"
+        class="float-right my-6"
         @click.prevent="isCreateReportTypeModalVisible = true"
       >Create Report Type</a-button>
     </div>
@@ -97,12 +99,17 @@
 
 
 <script>
-import draggable from 'vuedraggable'
+import draggable from "vuedraggable";
 
 export default {
-  layout: 'command-center',
+  layout: "command-center",
   components: {
     draggable
+  },
+  asyncData({ store, redirect }) {
+    if (!store.getters["auth/hasPermission"]("view report types")) {
+      redirect("/");
+    }
   },
   data() {
     return {
@@ -114,85 +121,85 @@ export default {
       selectedResponseTypes: [],
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          width: '80%',
-          scopedSlots: { customRender: 'name' }
+          title: "Name",
+          dataIndex: "name",
+          width: "80%",
+          scopedSlots: { customRender: "name" }
         },
         {
-          title: 'Operation',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
+          title: "Operation",
+          dataIndex: "operation",
+          scopedSlots: { customRender: "operation" }
         }
       ],
       form: {
-        name: '',
-        description: '',
-        reportCategory: '',
+        name: "",
+        description: "",
+        reportCategory: "",
         milestones: []
       }
-    }
+    };
   },
   mounted() {
-    this.getReportTypes()
-    this.getReportCategories()
-    this.getResponseTypes()
-    this.generateFakeData()
+    this.getReportTypes();
+    this.getReportCategories();
+    this.getResponseTypes();
+    this.generateFakeData();
   },
   watch: {
     selectedResponseTypes(value) {
-      console.log(value)
-      this.form.milestones.push(value)
+      console.log(value);
+      this.form.milestones.push(value);
     }
   },
   methods: {
     getMilestoneName(id) {
-      return this.responseTypes.find(type => type._id === id).name
+      return this.responseTypes.find(type => type._id === id).name;
     },
     generateFakeData() {
-      this.form.name = this.$chance.word()
-      this.form.description = this.$chance.paragraph()
+      this.form.name = this.$chance.word();
+      this.form.description = this.$chance.paragraph();
     },
     getReportTypes() {
-      this.$axios.$get('/report-types').then(response => {
-        this.reportTypes = response.data
-      })
+      this.$axios.$get("/report-types").then(response => {
+        this.reportTypes = response.data;
+      });
     },
     getReportCategories() {
-      this.$axios.$get('/report-categories').then(response => {
-        this.reportCategories = response.data
-        this.form.reportCategory = response.data[0]._id
-      })
+      this.$axios.$get("/report-categories").then(response => {
+        this.reportCategories = response.data;
+        this.form.reportCategory = response.data[0]._id;
+      });
     },
     getResponseTypes() {
-      this.$axios.$get('/response-types').then(response => {
-        this.responseTypes = response.data
-      })
+      this.$axios.$get("/response-types").then(response => {
+        this.responseTypes = response.data;
+      });
     },
     milestoneSelected(event) {
       if (event.target.checked) {
-        this.form.milestones.push(event.target.value)
+        this.form.milestones.push(event.target.value);
       } else {
         const milestoneIndex = this.form.milestones.findIndex(milestoneId => {
-          return milestoneId === event.target.value
-        })
+          return milestoneId === event.target.value;
+        });
 
         if (milestoneIndex !== -1) {
-          this.form.milestones.splice(milestoneIndex, 1)
+          this.form.milestones.splice(milestoneIndex, 1);
         }
       }
     },
     createReportType() {
-      this.loadingCreateReportType = true
-      this.$axios.$post('/report-types', this.form).then(response => {
-        this.generateFakeData()
-        this.reportTypes.push(response.data)
-        this.loadingCreateReportType = false
-        this.isCreateReportTypeModalVisible = false
-      })
+      this.loadingCreateReportType = true;
+      this.$axios.$post("/report-types", this.form).then(response => {
+        this.generateFakeData();
+        this.reportTypes.push(response.data);
+        this.loadingCreateReportType = false;
+        this.isCreateReportTypeModalVisible = false;
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

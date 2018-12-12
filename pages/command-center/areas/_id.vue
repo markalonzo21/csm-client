@@ -9,12 +9,12 @@
         <a-form-item label="Role">
           <a-select placeholder="Select a role" v-model="form.role" required>
             <a-select-option value="resolver">Resolver</a-select-option>
-            <a-select-option value="respondent">Respondent</a-select-option>
+            <a-select-option value="responder">Responder</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="User">
           <a-select v-model="form.user" required>
-            <a-select-option value="">Select a user</a-select-option>
+            <a-select-option value>Select a user</a-select-option>
             <a-select-option
               v-for="user in filteredUsers"
               :key="user._id"
@@ -35,8 +35,8 @@
         <a slot="lastName" slot-scope="text" href="javascript:;">{{text}}</a>
         <a slot="email" slot-scope="text" href="javascript:;">{{text}}</a>
       </a-table>
-      <h5>Respondents</h5>
-      <a-table :columns="columns" :dataSource="respondents">
+      <h5>Responders</h5>
+      <a-table :columns="columns" :dataSource="responders">
         <a slot="firstName" slot-scope="text" href="javascript:;">{{text}}</a>
         <a slot="lastName" slot-scope="text" href="javascript:;">{{text}}</a>
         <a slot="email" slot-scope="text" href="javascript:;">{{text}}</a>
@@ -46,24 +46,29 @@
 </template>
 
 <script>
-import AreaMap from '~/components/AreaMap'
+import AreaMap from "~/components/AreaMap";
 export default {
-  layout: 'command-center',
+  layout: "command-center",
   components: {
     AreaMap: AreaMap
   },
+  asyncData({ store, redirect }) {
+    if (!store.getters["auth/hasPermission"]("view areas")) {
+      redirect("/");
+    }
+  },
   mounted() {
     this.$axios.$get(`/areas/${this.$route.params.id}`).then(response => {
-      this.area = response.data.area
-      this.resolvers = response.data.resolvers
-      this.respondents = response.data.respondents
-      this.allAvailableUsers = response.data.allAvailableUsers
-      this.form.area = this.$route.params.id
-    })
+      this.area = response.data.area;
+      this.resolvers = response.data.resolvers;
+      this.responders = response.data.responders;
+      this.allAvailableUsers = response.data.allAvailableUsers;
+      this.form.area = this.$route.params.id;
+    });
 
     this.$nextTick(() => {
-      this.assignInitialValue()
-    })
+      this.assignInitialValue();
+    });
   },
   data() {
     return {
@@ -72,72 +77,72 @@ export default {
       isAddModalVisible: false,
       columns: [
         {
-          title: 'First Name',
-          dataIndex: 'firstName',
-          key: 'firstName'
+          title: "First Name",
+          dataIndex: "firstName",
+          key: "firstName"
         },
         {
-          title: 'Last Name',
-          dataIndex: 'lastName',
-          key: 'lastName'
+          title: "Last Name",
+          dataIndex: "lastName",
+          key: "lastName"
         },
         {
-          title: 'Email',
-          dataIndex: 'email',
-          key: 'email'
+          title: "Email",
+          dataIndex: "email",
+          key: "email"
         }
       ],
       allAvailableUsers: [],
       resolvers: [],
-      respondents: [],
+      responders: [],
       form: {
-        role: 'resolver',
-        user: '',
+        role: "resolver",
+        user: "",
         area: null
       }
-    }
+    };
   },
   watch: {
-    'form.role'(value) {
-      this.form.user = ''
+    "form.role"(value) {
+      this.form.user = "";
     }
   },
   computed: {
     filteredUsers() {
       if (!this.loading) {
         return this.allAvailableUsers.filter(user => {
-          return user.role.slug === this.form.role
-        })
+          return user.role.slug === this.form.role;
+        });
       }
-      return []
+      return [];
     }
   },
   methods: {
     assignInitialValue() {
       const lIsAvailable = setInterval(() => {
         if (L) {
-          this.loading = false
+          this.loading = false;
         }
-      }, 100)
+      }, 100);
     },
     handleSave() {
       if (this.form.user && this.form.role) {
-        this.$axios.$post('/areas/add-user', this.form).then(response => {
+        this.$axios.$post("/areas/add-user", this.form).then(response => {
           const index = this.allAvailableUsers.find(
             user => user._id === this.form.user
-          )
-          this.allAvailableUsers.splice(index, 1)
+          );
+          this.allAvailableUsers.splice(index, 1);
 
-          if (this.form.role === 'resolver') {
-            this.resolvers.push(response.data)
+          if (this.form.role === "resolver") {
+            this.resolvers.push(response.data);
           } else {
-            this.respondents.push(response.data)
+            this.responders.push(response.data);
           }
 
-          this.isAddModalVisible = false
-        })
+          this.isAddModalVisible = false;
+        });
       }
     }
   }
-}
+};
 </script>

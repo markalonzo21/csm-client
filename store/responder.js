@@ -4,15 +4,15 @@ export const state = () => ({
 })
 
 export const actions = {
-  getActiveReport ({ state, commit }) {
-    return this.$axios.$get(`/respondent/active-report`).then(response => {
+  getActiveReport({ state, commit }) {
+    return this.$axios.$get(`/responder/active-report`).then(response => {
       commit('SET_ACTIVE_REPORT', response.data)
     })
   },
-  markAsDone ({ state, commit }, id) {
+  markAsDone({ state, commit }, id) {
     commit('LOADING_MARK_AS_DONE', true)
     this.$axios
-      .$post('/respondent/respond', {
+      .$post('/responder/respond', {
         reportId: state.report._id,
         responseId: id
       })
@@ -33,13 +33,13 @@ export const actions = {
 }
 
 export const mutations = {
-  SET_ACTIVE_REPORT (state, report) {
+  SET_ACTIVE_REPORT(state, report) {
     state.report = report
   },
-  NEW_RESPONSE (state, milestoneId) {
+  NEW_RESPONSE(state, milestoneId) {
     state.report.responses.push(milestoneId)
   },
-  LOADING_MARK_AS_DONE (state, trueOrFalse) {
+  LOADING_MARK_AS_DONE(state, trueOrFalse) {
     state.loadingMarkAsDone = trueOrFalse
   }
 }

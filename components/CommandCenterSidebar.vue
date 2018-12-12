@@ -11,9 +11,11 @@
         :defaultSelectedKeys="[$route.path]"
         :defaultOpenKeys="defaultOpenKeys"
         :style="{ height: '100%', borderRight: 0 }"
-        v-if="$auth.user"
       >
-        <template v-for="item in list" v-if="item.roles.includes($auth.user.role.slug)">
+        <template
+          v-for="item in list"
+          v-if="$store.getters['auth/hasPermission'](item.permissionNeeded)"
+        >
           <a-menu-item
             v-if="!item.children"
             :key="item.link"
@@ -52,82 +54,78 @@ export default {
     defaultOpenKeys() {
       return this.list
         .filter(item => {
-          return this.$route.path.includes(item.link)
+          return this.$route.path.includes(item.link);
         })
-        .map(item => item.link)
+        .map(item => item.link);
     }
   },
   data() {
     return {
       list: [
         {
-          title: 'Dashboard',
-          icon: 'dashboard',
-          link: '/command-center',
-          roles: ['administrator', 'resolver']
+          title: "Dashboard",
+          icon: "dashboard",
+          link: "/command-center",
+          permissionNeeded: "view dashboard"
         },
-        // {
-        //   title: 'Area Management',
-        //   icon: 'global',
-        //   link: '/command-center/areas',
-        //   roles: ['administrator'],
-        //   children: [
-        //     {
-        //       title: 'Area List',
-        //       icon: 'bars',
-        //       link: '/command-center/areas'
-        //     },
-        //     {
-        //       title: 'New Area',
-        //       icon: 'plus-circle-o',
-        //       link: '/command-center/areas/new'
-        //     }
-        //   ]
-        // },
+
         {
-          title: 'Areas',
-          icon: 'bars',
-          link: '/command-center/areas',
-          roles: ['administrator']
+          title: "Roles",
+          icon: "bars",
+          link: "/command-center/roles",
+          permissionNeeded: "view roles"
         },
         {
-          title: 'Reports',
-          icon: 'bars',
-          link: '/command-center/reports',
-          roles: ['administrator']
+          title: "Users",
+          icon: "bars",
+          link: "/command-center/users",
+          permissionNeeded: "view users"
         },
         {
-          title: 'Report Categories',
-          icon: 'bars',
-          link: '/command-center/report-categories',
-          roles: ['administrator']
+          title: "Areas",
+          icon: "bars",
+          link: "/command-center/areas",
+          permissionNeeded: "view areas"
         },
         {
-          title: 'Report Types',
-          icon: 'bars',
-          link: '/command-center/report-types',
-          roles: ['administrator']
+          title: "Reports",
+          icon: "bars",
+          link: "/command-center/reports",
+          permissionNeeded: "view reports"
         },
         {
-          title: 'Response Types',
-          icon: 'bars',
-          link: '/command-center/response-types',
-          roles: ['administrator']
+          title: "Report Categories",
+          icon: "bars",
+          link: "/command-center/report-categories",
+          permissionNeeded: "view report categories"
         },
         {
-          title: 'Resolvers',
-          icon: 'bars',
-          link: '/command-center/resolvers',
-          roles: ['administrator']
+          title: "Report Types",
+          icon: "bars",
+          link: "/command-center/report-types",
+          permissionNeeded: "view report types"
         },
         {
-          title: 'Respondents',
-          icon: 'bars',
-          link: '/command-center/respondents',
-          roles: ['administrator']
+          title: "Response Types",
+          icon: "bars",
+          link: "/command-center/response-types",
+          permissionNeeded: "view response types"
         }
+
+        // {
+        //   title: "Resolvers",
+        //   icon: "bars",
+        //   link: "/command-center/resolvers",
+        //   permissionNeeded: ["administrator"]
+        // },
+        // {
+        //   title: "Responders",
+        //   icon: "bars",
+        //   link: "/command-center/responders",
+        //   permissionNeeded: ["administrator"]
+        // }
       ]
-    }
+    };
   }
-}
+};
 </script>

@@ -1,7 +1,7 @@
 <template>
   <section class="w-full select-none" style="width: 100%">
-    <modal v-model="isCreateResponderModalVisible" title="Create Responder" :footer="false">
-      <form @submit.prevent="createResponder" class="clearfix">
+    <modal v-model="isCreateUsersModalVisible" title="Create Users" :footer="false">
+      <form @submit.prevent="createUsers" class="clearfix">
         <div class="form-group">
           <input
             type="text"
@@ -69,21 +69,6 @@
             required
           >
         </div>
-        <div class="form-group text-center">
-          <label for>Actionable Report Type</label>
-          <div v-for="reportCategory in reportCategories">
-            <h5
-              class="font-bold"
-              v-if="reportCategory.reportTypes.length > 0"
-            >{{ reportCategory.name }}</h5>
-            <div class="checkbox" v-for="reportType in reportCategory.reportTypes">
-              <label>
-                <input type="checkbox" v-model="form.reportTypes" :value="reportType._id">
-                {{ reportType.name }}
-              </label>
-            </div>
-          </div>
-        </div>
         <button
           class="btn btn-primary float-right"
           :disabled="loadingCreateUser"
@@ -91,28 +76,20 @@
       </form>
     </modal>
     <div class="clearfix">
-      <h3 class="float-left">Responders</h3>
+      <h3 class="float-left">Users</h3>
       <a-button
         type="primary"
         class="float-right my-6"
-        @click.prevent="isCreateResponderModalVisible = true"
-      >Create Responder</a-button>
+        @click.prevent="isCreateUsersModalVisible = true"
+      >Create Users</a-button>
     </div>
     <hr>
-    <a-table bordered :dataSource="responders" :columns="columns">
-      <template slot="canRespondTo" slot-scope="text, record">
-        <ul class="list-reset">
-          <li
-            v-for="(item, index) in record.canRespondTo"
-            :key="`respond-${index}`"
-          >{{ index + 1 }}. {{ item.name }}</li>
-        </ul>
-      </template>
+    <a-table bordered :dataSource="users" :columns="columns">
       <template
         slot="createdAt"
-        slot-scope="text, responder"
-      >{{ responder.createdAt ? $moment(responder.createdAt).format('hh:mm A - MMM. DD, YYYY') : '' }}</template>
-      <template slot="operation" slot-scope="text, record">
+        slot-scope="text, resolver"
+      >{{ resolver.createdAt ? $moment(resolver.createdAt).format('hh:mm A - MMM. DD, YYYY') : '' }}</template>
+      <template slot="operation" slot-scope="text, resolver">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
       </template>
@@ -125,24 +102,18 @@
           <td>Last Name</td>
           <td>Email</td>
           <td>Mobile</td>
-          <td>Can Respond To</td>
           <td>Created At</td>
           <td>Actions</td>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="responder in responders">
-          <td>{{ responder.firstName }}</td>
-          <td>{{ responder.middleName }}</td>
-          <td>{{ responder.lastName }}</td>
-          <td>{{ responder.email }}</td>
-          <td>{{ responder.mobile }}</td>
-          <td>
-            <ul class="list-reset">
-              <li v-for="item in responder.canRespondTo">{{ item.name }}</li>
-            </ul>
-          </td>
-          <td>{{ responder.createdAt }}</td>
+        <tr v-for="resolver in users">
+          <td>{{ resolver.firstName }}</td>
+          <td>{{ resolver.middleName }}</td>
+          <td>{{ resolver.lastName }}</td>
+          <td>{{ resolver.email }}</td>
+          <td>{{ resolver.mobile }}</td>
+          <td>{{ resolver.createdAt }}</td>
           <td>
             <button class="m-2 btn btn-info" disabled>Edit</button>
             <button class="m-2 btn btn-danger" disabled>Delete</button>
@@ -159,9 +130,9 @@ export default {
   layout: "command-center",
   data() {
     return {
-      isCreateResponderModalVisible: false,
-      loadingGetResponders: false,
-      responders: [],
+      isCreateUsersModalVisible: false,
+      loadingGetUsers: false,
+      users: [],
       reportCategories: [],
       loadingCreateUser: false,
       columns: [
@@ -186,11 +157,6 @@ export default {
           dataIndex: "mobile"
         },
         {
-          title: "Can Respond To",
-          dataIndex: "canRespondTo",
-          scopedSlots: { customRender: "canRespondTo" }
-        },
-        {
           title: "Created At",
           dataIndex: "createdAt",
           scopedSlots: { customRender: "createdAt" }
@@ -213,7 +179,7 @@ export default {
   },
   mounted() {
     this.getReportTypes();
-    this.getResponders();
+    this.getUsers();
     this.generateFakeData();
   },
   methods: {
@@ -234,21 +200,21 @@ export default {
         this.reportCategories = response.data;
       });
     },
-    getResponders() {
-      this.loadingGetResponders = true;
-      this.$axios.$get("/admin/responders").then(response => {
-        this.responders = response.data;
-        this.loadingGetResponders = false;
+    getUsers() {
+      this.loadingGetUsers = true;
+      this.$axios.$get("/admin/users").then(response => {
+        this.users = response.data;
+        this.loadingGetUsers = false;
       });
     },
-    createResponder() {
+    createUsers() {
       this.loadingCreateUser = true;
       this.form.mobile = `0${this.form.mobile}`;
-      this.$axios.$post("/admin/responders", this.form).then(response => {
+      this.$axios.$post("/admin/users", this.form).then(response => {
         this.generateFakeData();
-        this.responders.push(response.data);
+        this.users.push(response.data);
         this.loadingCreateUser = false;
-        this.isCreateResponderModalVisible = false;
+        this.isCreateUsersModalVisible = false;
       });
     }
   }

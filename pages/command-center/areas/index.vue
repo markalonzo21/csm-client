@@ -17,33 +17,38 @@
 
 <script>
 export default {
-  layout: 'command-center',
+  layout: "command-center",
+  asyncData({ store, redirect }) {
+    if (!store.getters["auth/hasPermission"]("view areas")) {
+      redirect("/");
+    }
+  },
   data() {
     return {
       loading: true,
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          width: '80%',
-          scopedSlots: { customRender: 'name' }
+          title: "Name",
+          dataIndex: "name",
+          width: "80%",
+          scopedSlots: { customRender: "name" }
         },
         {
-          title: 'Operation',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
+          title: "Operation",
+          dataIndex: "operation",
+          scopedSlots: { customRender: "operation" }
         }
       ],
       dataSource: []
-    }
+    };
   },
   mounted() {
-    this.$axios.$get('/areas').then(response => {
-      this.dataSource = response.data
-      this.loading = false
-    })
+    this.$axios.$get("/areas").then(response => {
+      this.dataSource = response.data;
+      this.loading = false;
+    });
   }
-}
+};
 </script>
 <style>
 .editable-cell {

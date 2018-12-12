@@ -30,8 +30,8 @@
       <div class="col-md-3">
         <div class="panel">
           <div class="panel-body invert-gradient">
-            <h2 class="title__white--large" v-text="dashboardDetails.availableRespondents">300</h2>
-            <span class="title__white--mid">AVAILABLE RESPONDENTS</span>
+            <h2 class="title__white--large" v-text="dashboardDetails.availableResponders">300</h2>
+            <span class="title__white--mid">AVAILABLE RESPONDERS</span>
           </div>
         </div>
       </div>
@@ -83,9 +83,10 @@
       <div class="col-md-6">
         <h3 class="title__gray--small">REPORTS</h3>
         <a-table bordered :dataSource="reports" :columns="columns">
-          <template slot="createdAt" slot-scope="text, report">
-            {{  report.createdAt ? $moment(report.createdAt).format('hh:mm A - MMM. DD, YYYY') : '' }}
-          </template>
+          <template
+            slot="createdAt"
+            slot-scope="text, report"
+          >{{ report.createdAt ? $moment(report.createdAt).format('hh:mm A - MMM. DD, YYYY') : '' }}</template>
           <template slot="operation" slot-scope="text, report">
             <a-button type="primary">
               <router-link :to="`/command-center/reports/${report._id}`">Show</router-link>
@@ -100,10 +101,10 @@
 
 <script>
 export default {
-  layout: 'command-center',
+  layout: "command-center",
   data() {
     // const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
-    const bounds = [97.16309, 23.32208, 143.74512, 2.02107]
+    const bounds = [97.16309, 23.32208, 143.74512, 2.02107];
     return {
       loadingHeats: true,
       center: [14.59804, 120.98385],
@@ -115,58 +116,58 @@ export default {
       // Details
       reportTypes: [],
       dashboardDetails: [],
-      resolvedOrUnresolved: 'both',
+      resolvedOrUnresolved: "both",
       type: null,
       reports: [],
       isReportsLoading: false,
       columns: [
         {
-          title: 'Type',
-          dataIndex: 'reportType.name'
+          title: "Type",
+          dataIndex: "reportType.name"
         },
         {
-          title: 'Assigned To',
-          dataIndex: 'assignedTo.email'
+          title: "Assigned To",
+          dataIndex: "assignedTo.email"
         },
         {
-          title: 'Created At',
-          dataIndex: 'createdAt',
-          scopedSlots: { customRender: 'createdAt' },
+          title: "Created At",
+          dataIndex: "createdAt",
+          scopedSlots: { customRender: "createdAt" }
         },
         {
-          title: 'Operation',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
+          title: "Operation",
+          dataIndex: "operation",
+          scopedSlots: { customRender: "operation" }
         }
-      ],
-    }
+      ]
+    };
   },
   computed: {
     heats() {
       return this.reports
         .filter(report => {
-          return report.location.coordinates[0] !== null
+          return report.location.coordinates[0] !== null;
         })
         .map(report => {
           return [
             report.location.coordinates[1],
             report.location.coordinates[0]
-          ]
-        })
+          ];
+        });
     }
   },
   mounted() {
-    const getReportTypes = this.$axios.$get('/report-types')
-    const getDashboardDetails = this.$axios.$get('/admin/dashboard')
+    const getReportTypes = this.$axios.$get("/report-types");
+    const getDashboardDetails = this.$axios.$get("/admin/dashboard");
 
     Promise.all([getReportTypes, getDashboardDetails]).then(
       ([reportTypes, dashboardDetails]) => {
-        this.reportTypes = reportTypes.data
-        this.dashboardDetails = dashboardDetails.data
-        this.resolvedOrUnresolved = 'both'
-        this.type = null
+        this.reportTypes = reportTypes.data;
+        this.dashboardDetails = dashboardDetails.data;
+        this.resolvedOrUnresolved = "both";
+        this.type = null;
       }
-    )
+    );
 
     this.$nextTick(() => {
       const check = setInterval(() => {
@@ -174,75 +175,75 @@ export default {
           this.maxBounds = new L.LatLngBounds(
             new L.LatLng(14.63956, 120.89287),
             new L.LatLng(14.5565, 121.07483)
-          )
+          );
           // this.maxBounds = new L.LatLngBounds(
           //   new L.LatLng(23.32208, 97.16309),
           //   new L.LatLng(2.02107, 143.74512)
           // )
 
-          this.$refs.map.mapObject.on('drag', () => {
+          this.$refs.map.mapObject.on("drag", () => {
             this.$refs.map.mapObject.panInsideBounds(this.maxBounds, {
               animate: false
-            })
-          })
+            });
+          });
 
-          this.searchReports(null, 'both')
-          clearInterval(check)
+          this.searchReports(null, "both");
+          clearInterval(check);
         }
-      }, 100)
-    })
+      }, 100);
+    });
 
-    this.initSocketListeners()
+    this.initSocketListeners();
   },
   beforeDestroy() {
-    this.$socket.off('new-report')
+    this.$socket.off("new-report");
   },
   watch: {
     type(value) {
       if (value === null) {
-        return
+        return;
       }
 
-      this.loadingHeats = true
-      this.searchReports(value, this.resolvedOrUnresolved)
+      this.loadingHeats = true;
+      this.searchReports(value, this.resolvedOrUnresolved);
     },
     resolvedOrUnresolved(value) {
       if (value === null) {
-        return
+        return;
       }
 
-      this.loadingHeats = true
-      this.searchReports(this.type, value)
+      this.loadingHeats = true;
+      this.searchReports(this.type, value);
     }
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on('new-report', report => {
-        this.searchReports(this.type, this.resolvedOrUnresolved)
-      })
+      this.$socket.on("new-report", report => {
+        this.searchReports(this.type, this.resolvedOrUnresolved);
+      });
     },
     loadReports() {
-      this.isReportsLoading = true
+      this.isReportsLoading = true;
       this.$axios
         .$get(`/admin/reports?skip=${this.reports.length}`)
         .then(response => {
           response.data.forEach(report => {
-            this.reports.push(report)
-          })
-          this.isLoadMoreVisible = !(response.data.length < 10)
-          this.isReportsLoading = false
-        })
+            this.reports.push(report);
+          });
+          this.isLoadMoreVisible = !(response.data.length < 10);
+          this.isReportsLoading = false;
+        });
     },
     searchReports(type, resolvedOrUnresolved) {
       this.$axios
         .$get(`/admin/reports/${type}/${resolvedOrUnresolved}`)
         .then(response => {
-          this.reports = response.data
-          this.loadingHeats = false
-        })
+          this.reports = response.data;
+          this.loadingHeats = false;
+        });
     }
   }
-}
+};
 </script>
 
 <style scoped>

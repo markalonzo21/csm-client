@@ -38,9 +38,9 @@
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/admin/respondents">
+          <nuxt-link to="/admin/responders">
             <b>
-              <span class="sidebar-text pt-1">Respondents</span>
+              <span class="sidebar-text pt-1">Responders</span>
             </b>
           </nuxt-link>
         </li>

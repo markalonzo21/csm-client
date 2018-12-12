@@ -61,7 +61,12 @@
 
 <script>
 export default {
-  layout: 'command-center',
+  layout: "command-center",
+  asyncData({ store, redirect }) {
+    if (!store.getters["auth/hasPermission"]("view response types")) {
+      redirect("/");
+    }
+  },
   data() {
     return {
       isCreateResponseTypeModalVisible: false,
@@ -69,48 +74,48 @@ export default {
       responseTypes: [],
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          width: '80%',
-          scopedSlots: { customRender: 'name' }
+          title: "Name",
+          dataIndex: "name",
+          width: "80%",
+          scopedSlots: { customRender: "name" }
         },
         {
-          title: 'Operation',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
+          title: "Operation",
+          dataIndex: "operation",
+          scopedSlots: { customRender: "operation" }
         }
       ],
       form: {
-        name: '',
-        description: ''
+        name: "",
+        description: ""
       }
-    }
+    };
   },
   mounted() {
-    this.getResponseTypes()
-    this.generateFakeData()
+    this.getResponseTypes();
+    this.generateFakeData();
   },
   methods: {
     generateFakeData() {
-      this.form.name = this.$chance.word()
-      this.form.description = this.$chance.paragraph()
+      this.form.name = this.$chance.word();
+      this.form.description = this.$chance.paragraph();
     },
     getResponseTypes() {
-      this.$axios.$get('/response-types').then(response => {
-        this.responseTypes = response.data
-      })
+      this.$axios.$get("/response-types").then(response => {
+        this.responseTypes = response.data;
+      });
     },
     createResponseType() {
-      this.loadingCreateResponseType = true
-      this.$axios.$post('/response-types', this.form).then(response => {
-        this.generateFakeData()
-        this.responseTypes.push(response.data)
-        this.loadingCreateResponseType = false
-        this.isCreateResponseTypeModalVisible = false
-      })
+      this.loadingCreateResponseType = true;
+      this.$axios.$post("/response-types", this.form).then(response => {
+        this.generateFakeData();
+        this.responseTypes.push(response.data);
+        this.loadingCreateResponseType = false;
+        this.isCreateResponseTypeModalVisible = false;
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

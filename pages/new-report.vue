@@ -202,7 +202,7 @@ export default {
         .then(response => {
           setTimeout(() => {
             this.loadingSubmitReport = false;
-            this.$router.push(`/user/reports/${response.data._id}`);
+            this.$router.push(`/reports/${response.data._id}`);
           }, 500);
         })
         .catch(err => {

@@ -90,7 +90,7 @@
   font-weight: bold;
 }
 
-.upload-btn-wrapper input[type=file] {
+.upload-btn-wrapper input[type='file'] {
   font-size: 100px;
   position: absolute;
   left: 0;
@@ -99,10 +99,11 @@
 }
 
 //USER REPORT ID
-.user-report {}
+.user-report {
+}
 
 //RESPONDENT ACTIVE REPORT
-.respondent.active-report {
+.responder.active-report {
   .tabular-view {
     .title__black {
       font-size: 14px;

@@ -32,7 +32,7 @@
         {{ index + 1 }}. {{ response.responseType.name }} {{ milestoneIsCompleted(response) ? ' - COMPLETED' : '' }}
         <a class="cursor-pointer"
           v-if="isShowMarkButtonVisible(response, index)"
-          @click.prevent="$store.dispatch('respondent/markAsDone', response._id)"
+          @click.prevent="$store.dispatch('responder/markAsDone', response._id)"
         >- Click to Mark as Completed</a>
       </div>
     </div>
@@ -52,7 +52,7 @@ export default {
   },
   async fetch ({ $axios, store, params, error }) {
     await $axios.$get(`/reports/${params.id}`).then(response => {
-      store.commit('respondent/SET_ACTIVE_REPORT', response.data)
+      store.commit('responder/SET_ACTIVE_REPORT', response.data)
     }).catch(err => {
       error({ status: 404, message: 'Report not found!' })
     })
@@ -64,14 +64,14 @@ export default {
   },
   computed: {
     report() {
-      return this.$store.state.respondent.report
+      return this.$store.state.responder.report
     }
   },
   mounted() {
     this.initSocketListeners()
   },
   beforeDestroy() {
-    this.$socket.off('respondent-assigned')
+    this.$socket.off('responder-assigned')
   },
   methods: {
     showPhoto(photo) {
@@ -79,13 +79,13 @@ export default {
       return `${baseUrl}/${photo}`
     },
     initSocketListeners() {
-      this.$socket.on('respondent-assigned', report => {
+      this.$socket.on('responder-assigned', report => {
         this.$notify({
           type: 'info',
           title: 'You have been assigned!',
           content: `You're assigned to an incident.`
         })
-        this.$store.commit('respondent/SET_ACTIVE_REPORT', report)
+        this.$store.commit('responder/SET_ACTIVE_REPORT', report)
       })
     },
     isShowMarkButtonVisible(response, index) {

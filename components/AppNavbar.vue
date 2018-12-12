@@ -6,11 +6,14 @@
           <img src="/img/megaworld-logo.png" alt class="responsive mrgnauto">
         </router-link>
         <navbar-nav left v-if="$auth.loggedIn">
-          <li v-if="$store.getters['auth/isRoleUser']">
+          <li>
             <router-link class="text-blue-light" to="/new-report">New Report</router-link>
           </li>
-          <li v-if="$store.getters['auth/isRoleUser']">
+          <li>
             <router-link class="text-blue-light" to="/report-tracker">Report Tracker</router-link>
+          </li>
+          <li>
+            <router-link class="text-blue-light" to="/report-history">Report History</router-link>
           </li>
         </navbar-nav>
         <navbar-nav right v-if="$auth.loggedIn" class="select-none">
@@ -25,11 +28,19 @@
               <!-- <router-link to="/my-profile" tag="li">
                 <a class="button">My Profile</a>
               </router-link>-->
-              <router-link to="/respondent" tag="li" v-if="$auth.user.role.slug === 'respondent'">
-                <a class="button">Dashboard</a>
+              <router-link
+                to="/command-center"
+                tag="li"
+                v-if="$store.getters['auth/hasPermission']('view dashboard')"
+              >
+                <a class="button">Command Center</a>
               </router-link>
-              <router-link to="/report-history" tag="li" v-else>
-                <a class="button">Report History</a>
+              <router-link
+                to="/responder"
+                tag="li"
+                v-if="$store.getters['auth/hasPermission']('respond')"
+              >
+                <a class="button">Responder Dashboard</a>
               </router-link>
               <li>
                 <a role="button" @click.prevent="$store.dispatch('auth/logout')">Log Out</a>
