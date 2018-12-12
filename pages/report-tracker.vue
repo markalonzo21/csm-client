@@ -24,11 +24,39 @@ export default {
     ActiveReport
   },
   asyncData({ $axios }) {
-    return $axios.$get("/reports?activeOnly=true").then(response => {
+    return $axios.$get("/reports?unresolvedOnly=true").then(response => {
       return {
         reports: response.data
       };
     });
+  },
+  mounted() {
+    this.initSocketListener();
+  },
+  methods: {
+    initSocketListener() {
+      this.$socket.on("milestone-confirmed", payload => {
+        const reportIndex = this.reports.findIndex(
+          report => report._id === payload.reportId
+        );
+
+        let responseIndex = this.reports[reportIndex].responses.findIndex(
+          response => response._id === payload.response._id
+        );
+
+        this.$set(
+          this.reports[reportIndex].responses,
+          responseIndex,
+          payload.response
+        );
+
+        this.$notify({
+          type: "info",
+          title: "Help Update!",
+          content: payload.response.name
+        });
+      });
+    }
   }
 };
 </script>
