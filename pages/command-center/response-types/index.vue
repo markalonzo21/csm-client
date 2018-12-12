@@ -64,7 +64,7 @@ export default {
   layout: "command-center",
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("view response types")) {
-      redirect("/");
+ return redirect("/");
     }
   },
   data() {

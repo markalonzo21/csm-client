@@ -108,7 +108,7 @@ export default {
   },
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("view report types")) {
-      redirect("/");
+ return redirect("/");
     }
   },
   data() {

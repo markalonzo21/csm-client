@@ -20,7 +20,7 @@ export default {
   layout: "command-center",
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("view areas")) {
-      redirect("/");
+      return redirect("/");
     }
   },
   data() {

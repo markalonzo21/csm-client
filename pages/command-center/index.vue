@@ -16,7 +16,7 @@ export default {
   },
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("view dashboard")) {
-      redirect("/");
+      return redirect("/");
     }
   }
 };

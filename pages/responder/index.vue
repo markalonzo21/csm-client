@@ -4,30 +4,42 @@
       <div class="row">
         <div class="col-md-4 left-content">
           <h1 class="title__black mt0 uppercase ml-2">Active Reports</h1>
-          <div class="panel bgblue" v-if="report">
-            <div class="panel-body" style="padding: 100px 30px 30px;">
-              <h2
-                class="title__white--large text-uppercase mb0 ofwbw"
-                v-text="report.reportType.name"
-              >Petnapping</h2>
-              <h3
-                class="title__white--mid mb20 ofwbw"
-                v-text="report.reportType.reportCategory.name"
-              >Security Management</h3>
-              <router-link
-                class="btn btnwhite text-uppercase"
-                :to="`/reports/${report._id}`"
-              >Respond</router-link>
-            </div>
-          </div>
-          <div class="panel bgblue" v-else>
-            <div class="panel-body">
-              <h3 class="title__white--mid mb20">No Active Report</h3>
-            </div>
-          </div>
+          <ResponderActiveReportPanel :report="activeReport"/>
         </div>
         <div class="col-md-8 right-content">
-          <ReportsHistory/>
+          <section class="user-dashboard mx-auto">
+            <h1 class="title__black mt0 uppercase">Reports History</h1>
+            <div v-if="reports.length > 0">
+              <div class="panel" style="border: none;" v-for="report in reports">
+                <div class="panel-body border h-32 rounded shadow bg-white flex items-center">
+                  <div class="col-sm-3">
+                    <strong>Date</strong>
+                    <div>{{ $moment(report.createdAt).format('hh:mm A - MMM. DD, YYYY') }}</div>
+                  </div>
+                  <div class="col-sm-3">
+                    <strong>Type</strong>
+                    <div>{{ report.reportType.name }}</div>
+                  </div>
+                  <div class="col-sm-3">
+                    <strong>Resolved Date</strong>
+                    <div>{{ report.resolvedAt ? $moment(report.resolvedAt).format('hh:mm A - MMM. DD, YYYY') : 'Unresolved' }}</div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btnblue col-sm-3 outline-none"
+                    @click.prevent="$router.push(`/reports/${report._id}`)"
+                  >View More</button>
+                </div>
+              </div>
+            </div>
+            <div v-else>
+              <div class="panel">
+                <div
+                  class="panel-body border h-32 rounded shadow bg-white flex items-center justify-center"
+                >No reports...</div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </section>
@@ -65,100 +77,47 @@
 
 <script>
 import ChatBox from "~/components/ChatBox";
-import ReportsHistory from "~/components/ReportsHistory";
+import ResponderActiveReportPanel from "~/components/ResponderActiveReportPanel";
 export default {
-  data() {
-    return {
-      respondModal: false,
-      loadingMarkAsDone: false
-    };
+  asyncData({ $axios, store, redirect }) {
+    if (!store.getters["auth/hasPermission"]("respond")) {
+      return redirect("/");
+    }
+
+    return $axios.$get("/responder/reports").then(response => {
+      return {
+        reports: response.data
+      };
+    });
   },
   components: {
     ChatBox,
-    ReportsHistory
-  },
-  async fetch({ store, params }) {
-    await store.dispatch("responder/getActiveReport");
-  },
-  computed: {
-    report() {
-      return this.$store.state.responder.report;
-    },
-    isResolved() {
-      if (!this.report) {
-        return true;
-      }
-      return (
-        this.report.reportType.milestones.length ===
-        this.report.responses.length
-      );
-    }
+    ResponderActiveReportPanel
   },
   mounted() {
     this.initSocketListeners();
   },
+  computed: {
+    activeReport() {
+      if (this.reports.length > 0) {
+        return this.reports.find(report => report.resolvedAt === null);
+      }
+      return null;
+    }
+  },
   beforeDestroy() {
-    this.$socket.off("responder-assigned");
+    this.$socket.off("respondent-assigned");
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on("responder-assigned", report => {
+      this.$socket.on("respondent-assigned", report => {
         this.$notify({
           type: "info",
           title: "You have been assigned!",
           content: `You're assigned to an incident.`
         });
-        this.$store.commit("responder/SET_ACTIVE_REPORT", report);
+        this.$store.commit("respondent/SET_ACTIVE_REPORT", report);
       });
-    },
-    isShowMarkButtonVisible(milestoneId, index) {
-      if (this.milestoneIsCompleted(milestoneId)) {
-        return false;
-      }
-
-      if (index === 0) {
-        return true;
-      }
-
-      if (this.isNotYetMarkable(index)) {
-        return false;
-      }
-
-      return true;
-    },
-    milestoneIsCompleted(id) {
-      return this.report.responses.includes(id);
-    },
-    isNotYetMarkable(index) {
-      const milestoneBeforeThisMilestone = this.report.reportType.milestones[
-        index - 1
-      ];
-
-      if (this.milestoneIsCompleted(milestoneBeforeThisMilestone._id)) {
-        return false;
-      }
-
-      return true;
-    },
-    markAsDone(id) {
-      this.loadingMarkAsDone = true;
-      this.$axios
-        .$post("/responder/respond", {
-          reportId: this.report._id,
-          milestoneId: id
-        })
-        .then(response => {
-          this.$store.commit("responder/NEW_RESPONSE", id);
-          this.loadingMarkAsDone = false;
-
-          if (this.isResolved) {
-            alert("incident is resolved!");
-            this.$store.commit("responder/SET_ACTIVE_REPORT", null);
-          }
-        })
-        .catch(error => {
-          this.loadingMarkAsDone = false;
-        });
     }
   }
 };

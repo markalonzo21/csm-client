@@ -54,7 +54,7 @@ export default {
   },
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("view areas")) {
-      redirect("/");
+      return redirect("/");
     }
   },
   mounted() {

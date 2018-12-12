@@ -141,7 +141,7 @@ export default {
 
   asyncData({ $axios, store, params, error }) {
     if (!store.getters["auth/hasPermission"]("view reports")) {
-      redirect("/");
+ return redirect("/");
     }
     return $axios.$get(`/admin/reports/${params.id}`).then(response => {
       console.log(response.data.location);

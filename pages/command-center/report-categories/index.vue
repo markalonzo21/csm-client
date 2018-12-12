@@ -68,7 +68,7 @@ export default {
   layout: "command-center",
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("view report categories")) {
-      redirect("/");
+      return redirect("/");
     }
   },
   data() {

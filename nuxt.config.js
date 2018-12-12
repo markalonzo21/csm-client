@@ -29,6 +29,7 @@ module.exports = {
   css: [
     '~/assets/css/tailwind.css',
     '~/assets/css/antd.css',
+    '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
     {
       src: '~/assets/sass/app.scss',
       lang: 'sass'
@@ -43,10 +44,11 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    { src: '~/plugins/vue-svgicon', ssr: true },
+    { src: '~/plugins/uiv.js', ssr: true },
+    { src: '~/plugins/ant', ssr: true },
     { src: '~/plugins/vue-chance.js', ssr: false },
     { src: '~/plugins/vue2-leaflet-heatmap.js', ssr: false },
-    { src: '~/plugins/ant', ssr: true },
-    { src: '~/plugins/uiv.js', ssr: true },
     { src: '~/plugins/socket', ssr: false },
     { src: '~/plugins/vue-geolocation', ssr: false }
   ],
