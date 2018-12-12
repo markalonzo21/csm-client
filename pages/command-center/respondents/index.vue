@@ -111,7 +111,7 @@
       <template
         slot="createdAt"
         slot-scope="text, responder"
-      >{{ responder.createdAt ? $moment(responder.createdAt).format('hh:mm A - MMM. DD, YYYY') : '' }}</template>
+      >{{ responder.createdAt ? $moment(responder.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>

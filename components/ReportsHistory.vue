@@ -6,7 +6,7 @@
         <div class="panel-body border h-32 rounded shadow bg-white flex items-center">
           <div class="col-sm-3">
             <strong>Date</strong>
-            <div>{{ $moment(report.createdAt).format('hh:mm A - MMM. DD, YYYY') }}</div>
+            <div>{{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}</div>
           </div>
           <div class="col-sm-3">
             <strong>Type</strong>
@@ -14,7 +14,7 @@
           </div>
           <div class="col-sm-3">
             <strong>Resolved Date</strong>
-            <div>{{ report.resolvedAt ? $moment(report.resolvedAt).format('hh:mm A - MMM. DD, YYYY') : 'Unresolved' }}</div>
+            <div>{{ report.resolvedAt ? $moment(report.resolvedAt).format('MMM. DD, YYYY | h:mm A ') : 'Unresolved' }}</div>
           </div>
           <button
             type="button"

@@ -1,127 +1,126 @@
 <template>
-<div class="main-content">
-  <div class="container mx-auto py-4" v-if="report">
-    <div class="col-md-12 flex flex-col items-center">
-      <div>
-      <h3 class="title__blue">Report Details</h3>
-      <hr>
-      <h4 class="mb-1"><strong>Report ID:</strong> {{ report._id }}</h4>
-      <h4 class="mb-1"><strong>Type:</strong> {{ report.reportType.name }}</h4>
-      <h4 class="mb-1"><strong>Description:</strong> {{ report.description }}</h4>
-      <h4
-        class="mb-1"
-      ><strong>Reported By:</strong> {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h4>
-      <h4 class="mb-1"><strong>Assigned To:</strong>
-        <template
-          v-if="report.assignedTo"
-        >{{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}</template>
-        <template v-else>None</template>
-      </h4>
-      <hr>
-      <h4 v-if="report.photos.length > 0">Photos</h4>
-      <div class="row">
-        <img :src="showPhoto(photo)" alt="image" v-for="photo in report.photos" class="h-24 w-24">
-      </div>
-      <hr>
-      <h3 class="title__blue">Milestones</h3>
-      <div
-        class="my-2"
-        v-for="(response, index) in report.responses"
-        :key="response._id"
-      >
-        {{ index + 1 }}. {{ response.responseType.name }} {{ milestoneIsCompleted(response) ? ' - COMPLETED' : '' }}
-        <a class="cursor-pointer"
-          v-if="isShowMarkButtonVisible(response, index)"
-          @click.prevent="$store.dispatch('responder/markAsDone', response._id)"
-        >- Click to Mark as Completed</a>
+  <div class="responder active-report main-content">
+    <div class="container">
+      <div class="active-report">
+        <div class="col-md-4">
+          <div class="border rounded bg-white py-6 px-6">
+            <div class="clearfix">
+              <span class="font-semibold text-blue-dark float-left">Date</span>
+              <span
+                class="float-right"
+              >{{$moment(report.createdAt).format("MMM. DD, YYYY | h:mm A ")}}</span>
+            </div>
+            <div class="clearfix">
+              <span class="font-semibold text-blue-dark float-left">Type</span>
+              <span class="float-right">{{ report.reportType.name }}</span>
+            </div>
+            <div class="clearfix">
+              <span class="font-semibold text-blue-dark float-left">Reporter</span>
+              <span
+                class="float-right"
+              >{{ report.reportedBy.firstName }} {{ report.reportedBy.middleName }} {{ report.reportedBy.lastName }}</span>
+            </div>
+
+            <div class="border-b w-full my-4"></div>
+
+            <div class="clearfix" v-if="report.photos.length > 0">
+              <div class="font-semibold text-blue-dark">Images</div>
+              <img
+                class="w-32 h-32 py-2 pr-4"
+                :src="$store.getters['showPhoto'](photo)"
+                alt="photo"
+                v-for="(photo, index) in report.photos"
+                :key="`photo-${index}`"
+              >
+            </div>
+            <div class="clearfix mt-4">
+              <div class="font-semibold text-blue-dark">Notes</div>
+              <p>{{ report.description }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="row border rounded bg-white py-6 px-6 mb-2" v-if="report.location !== null">
+            <h4 class="font-bold mt-0 text-blue-darker">Incident Location</h4>
+            <div id="map-wrap" style="height: 300px; width: 100%;" class="mt-4">
+              <no-ssr>
+                <l-map
+                  :center="report.map.center"
+                  :zoom="report.map.zoom"
+                  :minZoom="report.map.minZoom"
+                  :maxZoom="report.map.maxZoom"
+                  ref="map"
+                >
+                  <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+                  <l-marker :lat-lng="report.map.center"></l-marker>
+                </l-map>
+              </no-ssr>
+            </div>
+          </div>
+          <div class="row border rounded bg-white py-6 px-6">
+            <h4 class="font-bold mt-0 text-blue-darker">Milestones</h4>
+            <div class="col-md-4 my-4" v-for="milestone in report.responses" :key="milestone._id">
+              <div class="box" :class="{'checked': milestone.resolvedAt !== null }">
+                <svgicon name="check"></svgicon>
+              </div>
+              <p class="m-0 text-uppercase bluelabel">{{ milestone.responseType.name }}</p>
+              <p
+                class="m-0"
+                :class="{ 'invisible': milestone.resolvedAt === null }"
+              >{{ $moment(milestone.resolvedAt).format("MMM. DD, YYYY | h:mm A ") }}</p>
+            </div>
+
+            <div class="col-md-12 text-center mt-4" v-if="nextMilestone">
+              <button
+                class="btn btnblue text-uppercase"
+                @click.prevent="markAsDone(nextMilestone)"
+              >{{ nextMilestone.responseType.name }}</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-      </div>
-
-    <ChatBox :reportId="report._id" :isResolved="report.resolvedAt"/>
-  </div>
-
+    <ChatBox :reportId="report._id"/>
   </div>
 </template>
 
+
 <script>
-import ChatBox from '~/components/ChatBox'
+import ChatBox from "~/components/ChatBox";
 export default {
   components: {
     ChatBox
   },
-  async fetch ({ $axios, store, params, error }) {
-    await $axios.$get(`/reports/${params.id}`).then(response => {
-      store.commit('responder/SET_ACTIVE_REPORT', response.data)
-    }).catch(err => {
-      error({ status: 404, message: 'Report not found!' })
-    })
-  },
-  data() {
-    return {
-      loadingMarkAsDone: false
+  async fetch({ store, error, params, redirect }) {
+    if (!store.getters["auth/hasPermission"]("respond")) {
+      return redirect("/");
+    }
+    try {
+      await store.dispatch("responder/getReport", params.id);
+    } catch (err) {
+      error({ status: err.response.status, message: "Report not found!" });
     }
   },
   computed: {
     report() {
-      return this.$store.state.responder.report
+      return this.$store.state.responder.report;
+    },
+    nextMilestone() {
+      return this.report.responses.find(response => {
+        return response.resolvedAt === null;
+      });
     }
-  },
-  mounted() {
-    this.initSocketListeners()
-  },
-  beforeDestroy() {
-    this.$socket.off('responder-assigned')
   },
   methods: {
-    showPhoto(photo) {
-      const baseUrl = process.env.API_URL ? process.env.API_URL : 'https://incident-reporting-api.now.sh'
-      return `${baseUrl}/${photo}`
-    },
-    initSocketListeners() {
-      this.$socket.on('responder-assigned', report => {
-        this.$notify({
-          type: 'info',
-          title: 'You have been assigned!',
-          content: `You're assigned to an incident.`
-        })
-        this.$store.commit('responder/SET_ACTIVE_REPORT', report)
-      })
-    },
-    isShowMarkButtonVisible(response, index) {
-      if (this.milestoneIsCompleted(response)) {
-        return false
-      }
-
-      if (index === 0) {
-        return true
-      }
-
-      if (this.isNotYetMarkable(index)) {
-        return false
-      }
-
-      return true
-    },
-    milestoneIsCompleted(response) {
-      return response.resolvedAt !== null
-    },
-    isNotYetMarkable(index) {
-      const previousResponse = this.report.responses[index - 1]
-
-      if (this.milestoneIsCompleted(previousResponse)) {
-        return false
-      }
-
-      return true
+    markAsDone(milestone) {
+      this.$store.dispatch("responder/markAsDone", milestone._id);
     }
   }
-}
+};
 </script>
 
-
 <style scoped>
-  strong {
-    color: #34c3e5;
-  }
+.rounded {
+  border-radius: 1rem;
+}
 </style>

@@ -150,7 +150,7 @@ body * {
 }
 
 .btn.btnblue {
-  width: 125px;
+  min-width: 125px;
   height: 40px;
   line-height: 27px;
   border: 1px solid $irs__aqua;

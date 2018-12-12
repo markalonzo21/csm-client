@@ -74,13 +74,13 @@ export default {
     tooltipMessage() {
       if (!this.milestone) {
         return `Submitted at ${this.$moment(this.report.createdAt).format(
-          "hh:mm:ss A - MMM. DD, YYYY"
+          "MMM. DD, YYYY | h:mm A "
         )}`;
       }
 
       if (this.milestone.resolvedAt !== null) {
         return `Completed at ${this.$moment(this.milestone.resolvedAt).format(
-          "hh:mm:ss A - MMM. DD, YYYY"
+          "MMM. DD, YYYY | h:mm A "
         )}`;
       }
 

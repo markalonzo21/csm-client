@@ -26,14 +26,14 @@
           <div class="col-md-3" v-for="photo in report.photos">
             <div class="panel">
               <div class="panel-body">
-                <img :src="showPhoto(photo)" alt="image" class="h-24 w-24">
+                <img :src="$store.getters['showPhoto'](photo)" alt="image" class="h-24 w-24">
               </div>
             </div>
           </div>
         </div>
         <h3 class="mb-1">Milestones</h3>
         <div class="my-2" v-for="(response, index) in report.responses" :key="response._id">
-          {{ index + 1 }}. {{ response.responseType.name }} {{ milestoneIsCompleted(response._id) ? `- Completed at ${$moment(response.resolvedAt).format('hh:mm:ss A - MMM. DD, YYYY')}` : '' }}
+          {{ index + 1 }}. {{ response.responseType.name }} {{ milestoneIsCompleted(response._id) ? `- Completed at ${$moment(response.resolvedAt).format('MMM. DD, YYYY | h:mm A ')}` : '' }}
           <a
             class="cursor-pointer"
             @click.prevent="confirmResponse(response)"
@@ -141,10 +141,9 @@ export default {
 
   asyncData({ $axios, store, params, error }) {
     if (!store.getters["auth/hasPermission"]("view reports")) {
- return redirect("/");
+      return redirect("/");
     }
     return $axios.$get(`/admin/reports/${params.id}`).then(response => {
-      console.log(response.data.location);
       const bounds = [120.89287, 14.63956, 121.07483, 14.5565];
       const lat = response.data.location
         ? response.data.location.coordinates[1]
@@ -178,12 +177,6 @@ export default {
     this.$socket.off("milestone-completed");
   },
   methods: {
-    showPhoto(photo) {
-      const baseUrl = process.env.API_URL
-        ? process.env.API_URL
-        : "https://incident-reporting-api.now.sh";
-      return `${baseUrl}/${photo}`;
-    },
     initSocketListeners() {
       this.$socket.on("milestone-completed", newResponse => {
         let responseIndex = this.report.responses.findIndex(
@@ -226,7 +219,7 @@ export default {
     },
     confirmResponse(response) {
       this.$axios
-        .$post(`/confirm-response`, {
+        .$post(`/admin/confirm-response`, {
           reportId: this.report._id,
           responseId: response._id
         })

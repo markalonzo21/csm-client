@@ -88,7 +88,7 @@
       <template
         slot="createdAt"
         slot-scope="text, resolver"
-      >{{ resolver.createdAt ? $moment(resolver.createdAt).format('hh:mm A - MMM. DD, YYYY') : '' }}</template>
+      >{{ resolver.createdAt ? $moment(resolver.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
       <template slot="operation" slot-scope="text, resolver">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>

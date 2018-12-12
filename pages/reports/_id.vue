@@ -35,7 +35,7 @@
               <div class="col-md-3" v-for="photo in report.photos">
                 <div class="panel">
                   <div class="panel-body">
-                    <img :src="showPhoto(photo)" alt="image" class="h-24 w-24">
+                    <img :src="$store.getters['showPhoto'](photo)" alt="image" class="h-24 w-24">
                   </div>
                 </div>
               </div>
@@ -45,7 +45,7 @@
               {{ index + 1 }}. {{ response.responseType.name }}
               <span
                 v-if="response.resolvedAt !== null && response.confirmed"
-              >- Completed At {{ $moment(response.resolvedAt).format('hh:mm:ss A - MMM. DD, YYYY') }}</span>
+              >- Completed At {{ $moment(response.resolvedAt).format('MMM. DD, YYYY | h:mm A ') }}</span>
             </div>
           </div>
         </div>
@@ -109,12 +109,6 @@ export default {
           content: newResponse.name
         });
       });
-    },
-    showPhoto(photo) {
-      const baseUrl = process.env.API_URL
-        ? process.env.API_URL
-        : "https://incident-reporting-api.now.sh";
-      return `${baseUrl}/${photo}`;
     }
   }
 };

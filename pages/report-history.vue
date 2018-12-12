@@ -8,7 +8,7 @@
             <div class="panel-body border h-32 rounded shadow bg-white flex items-center">
               <div class="col-sm-3">
                 <strong>Date</strong>
-                <div>{{ $moment(report.createdAt).format('hh:mm A - MMM. DD, YYYY') }}</div>
+                <div>{{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}</div>
               </div>
               <div class="col-sm-3">
                 <strong>Type</strong>
@@ -16,7 +16,7 @@
               </div>
               <div class="col-sm-3">
                 <strong>Resolved Date</strong>
-                <div>{{ report.resolvedAt ? $moment(report.resolvedAt).format('hh:mm A - MMM. DD, YYYY') : 'Unresolved' }}</div>
+                <div>{{ report.resolvedAt ? $moment(report.resolvedAt).format('MMM. DD, YYYY | h:mm A ') : 'Unresolved' }}</div>
               </div>
               <button
                 type="button"
@@ -40,25 +40,31 @@
 
 <script>
 export default {
+  async fetch({ $axios, store, redirect }) {
+    await store.dispatch("user/getResolvedReports");
+  },
   data() {
     return {
-      reports: [],
-      isLoadMoreVisible: false,
       isReportsLoading: false
     };
   },
-  mounted() {
-    this.loadMoreReports();
+  computed: {
+    reports() {
+      return this.$store.state.user.resolvedReports;
+    },
+    isLoadMoreVisible() {
+      return this.$store.state.user.isLoadMoreVisible;
+    }
   },
   methods: {
     loadMoreReports() {
       this.isReportsLoading = true;
       this.$axios
-        .$get(`/reports?skip=${this.reports.length}`)
+        .$get(`/reports?resolvedOnly=true&skip=${this.reports.length}`)
         .then(response => {
-          this.isLoadMoreVisible = !(response.data.length < 10);
+          this.$store.commit("user/SET_LOAD_MORE_STATUS", response.data);
           response.data.forEach(report => {
-            this.reports.push(report);
+            this.$store.commit("user/UNSHIFT_RESOLVED_REPORT", report);
           });
           this.isReportsLoading = false;
         });

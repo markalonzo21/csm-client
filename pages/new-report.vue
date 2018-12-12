@@ -191,7 +191,9 @@ export default {
         this.generateDemoFakeData(this.area);
       }
 
-      formData.append("location", JSON.stringify(this.form.location));
+      formData.append("location_lat", this.form.location.coordinates.lat);
+      formData.append("location_lng", this.form.location.coordinates.lng);
+      // formData.append("location", JSON.stringify(this.form.location));
 
       this.form.photos.forEach(photo => {
         formData.append("photos[]", photo.file);
@@ -202,7 +204,7 @@ export default {
         .then(response => {
           setTimeout(() => {
             this.loadingSubmitReport = false;
-            this.$router.push(`/reports/${response.data._id}`);
+            this.$router.push(`/report-tracker`);
           }, 500);
         })
         .catch(err => {

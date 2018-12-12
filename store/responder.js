@@ -1,12 +1,24 @@
 export const state = () => ({
+  reports: [],
   report: null,
   loadingMarkAsDone: false
 })
 
+export const getters = {
+  activeReport(state) {
+    return state.reports.find(report => report.resolvedAt === null)
+  }
+}
+
 export const actions = {
-  getActiveReport({ state, commit }) {
-    return this.$axios.$get(`/responder/active-report`).then(response => {
-      commit('SET_ACTIVE_REPORT', response.data)
+  getReports({ commit }) {
+    return this.$axios.$get('/responder/reports').then(response => {
+      commit('SET_REPORTS', response.data)
+    })
+  },
+  getReport({ commit }, id) {
+    return this.$axios.$get(`/responder/reports/${id}`).then(response => {
+      commit('SET_REPORT', response.data)
     })
   },
   markAsDone({ state, commit }, id) {
@@ -17,27 +29,36 @@ export const actions = {
         responseId: id
       })
       .then(response => {
-        commit('SET_ACTIVE_REPORT', response.data)
+        commit('SET_REPORT', response.data)
         commit('LOADING_MARK_AS_DONE', false)
 
         if (state.report.resolvedAt !== null) {
           alert('incident is resolved!')
-          commit('SET_ACTIVE_REPORT', null)
         }
       })
       .catch(error => {
-        console.log(error.response)
         commit('LOADING_MARK_AS_DONE', false)
       })
   }
 }
 
 export const mutations = {
-  SET_ACTIVE_REPORT(state, report) {
-    state.report = report
+  SET_REPORTS(state, reports) {
+    state.reports = reports
   },
-  NEW_RESPONSE(state, milestoneId) {
-    state.report.responses.push(milestoneId)
+  SET_REPORT(state, report) {
+    const lat = report.location ? report.location.coordinates[1] : 14.59804
+    const lng = report.location ? report.location.coordinates[0] : 120.98385
+
+    report.map = {
+      center: [lat, lng],
+      zoom: 13,
+      minZoom: 13,
+      maxZoom: 18,
+      maxBoundsViscosity: 1.0
+    }
+
+    state.report = report
   },
   LOADING_MARK_AS_DONE(state, trueOrFalse) {
     state.loadingMarkAsDone = trueOrFalse

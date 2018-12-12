@@ -21,8 +21,12 @@
             <a class="rowlink" style="width: 100%;" v-text="report.reportType.name"></a>
           </td>
           <!-- <td v-html="report.location.coordinates">14.12414, 121,41241</td> -->
-          <td v-text="$moment(report.createdAt).format('hh:mm A - MMM. DD, YYYY')">Nov. 11, 2018 10:30 PM</td>
-          <td v-text="report.resolvedAt ? $moment(report.resolvedAt).format('hh:mm A - MMM. DD, YYYY') : 'Unresolved'"></td>
+          <td
+            v-text="$moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ')"
+          >Nov. 11, 2018 10:30 PM</td>
+          <td
+            v-text="report.resolvedAt ? $moment(report.resolvedAt).format('MMM. DD, YYYY | h:mm A ') : 'Unresolved'"
+          ></td>
         </tr>
       </tbody>
       <button
@@ -42,26 +46,26 @@ export default {
       reports: [],
       isLoadMoreVisible: false,
       isReportsLoading: false
-    }
+    };
   },
   mounted() {
-    this.loadMoreReports()
+    this.loadMoreReports();
   },
   methods: {
     loadMoreReports() {
-      this.isReportsLoading = true
+      this.isReportsLoading = true;
       this.$axios
         .$get(`/reports?skip=${this.reports.length}`)
         .then(response => {
-          this.isLoadMoreVisible = !(response.data.length < 10)
+          this.isLoadMoreVisible = !(response.data.length < 10);
           response.data.forEach(report => {
-            this.reports.push(report)
-          })
-          this.isReportsLoading = false
-        })
+            this.reports.push(report);
+          });
+          this.isReportsLoading = false;
+        });
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -72,7 +76,7 @@ table {
 }
 
 .rowlink::before {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   left: 0;
