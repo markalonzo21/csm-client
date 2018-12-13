@@ -10,7 +10,7 @@
         >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h3>
         <template v-if="report.assignedTo">
           <h3 class="mb-1">
-            Assigned To:
+            Responder:
             {{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}
           </h3>
         </template>
@@ -60,7 +60,7 @@
           </no-ssr>
         </div>
         <hr>
-        <ChatBox :reportId="report._id"/>
+        <ChatBox :reportId="report._id" :isResolved="report.resolvedAt !== null"/>
       </div>
       <modal
         class="assign-modal"
@@ -68,40 +68,6 @@
         v-model="isAssignModalVisible"
         :class="{ 'pointer-events-none': loadingAssignResponder }"
       >
-        <!-- <table class="table">
-          <tbody>
-            <tr>
-              <td class="title">Order No.</td>
-              <td class="details">AA-1234567-2018</td>
-            </tr>
-            <tr>
-              <td class="title">Category</td>
-              <td class="details">Security Management</td>
-            </tr>
-            <tr>
-              <td class="title">Type</td>
-              <td class="details">Theft</td>
-            </tr>
-            <tr>
-              <td class="title">Reporter</td>
-              <td class="details">Andrei Nicolo Francisco</td>
-            </tr>
-          </tbody>
-        </table>-->
-        <!-- <div class="location-info mb20">
-          <span class="title">Location</span>
-          <br>
-          <span
-            class="details"
-          >Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquam debitis nostrum labore facilis sit, incidunt recusandae temporibus fuga nihil!</span>
-        </div>
-        <div class="notes-info mb20">
-          <span class="title">Notes</span>
-          <br>
-          <span
-            class="details"
-          >Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquam debitis nostrum labore facilis sit, incidunt recusandae temporibus fuga nihil!</span>
-        </div>-->
         <div class="row">
           <div class="col-md-3">
             <label for class="title">Responder</label>

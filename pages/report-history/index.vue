@@ -21,7 +21,7 @@
               <button
                 type="button"
                 class="btn btnblue col-sm-3 outline-none"
-                @click.prevent="$router.push(`/reports/${report._id}`)"
+                @click.prevent="$router.push(`/report-history/${report._id}`)"
               >View More</button>
             </div>
           </div>

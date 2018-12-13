@@ -14,6 +14,7 @@ export const actions = {
   getReports({ commit }) {
     return this.$axios.$get('/responder/reports').then(response => {
       commit('SET_REPORTS', response.data)
+      commit('SET_REPORT', response.data.find(report => report.resolvedAt === null))
     })
   },
   getReport({ commit }, id) {
@@ -47,6 +48,11 @@ export const mutations = {
     state.reports = reports
   },
   SET_REPORT(state, report) {
+    if (!report) {
+      state.report = null
+      return
+    }
+
     const lat = report.location ? report.location.coordinates[1] : 14.59804
     const lng = report.location ? report.location.coordinates[0] : 120.98385
 

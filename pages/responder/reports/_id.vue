@@ -1,5 +1,5 @@
 <template>
-  <div class="responder active-report main-content">
+  <div class="responder active-report main-content" v-if="report">
     <div class="container">
       <div class="active-report">
         <div class="col-md-4">
@@ -80,7 +80,7 @@
         </div>
       </div>
     </div>
-    <ChatBox :reportId="report._id"/>
+    <ChatBox :reportId="report._id" :isResolved="report.resolvedAt !== null"/>
   </div>
 </template>
 
@@ -111,7 +111,18 @@ export default {
       });
     }
   },
+  mounted() {
+    this.initSocketListener()
+  },
+  beforeDestroy() {
+    this.$socket.off("report-resolved")
+  },
   methods: {
+    initSocketListener() {
+      this.$socket.on("report-resolved", report => {
+        this.$store.commit('responder/SET_REPORT', report)
+      })
+    },
     markAsDone(milestone) {
       this.$store.dispatch("responder/markAsDone", milestone._id);
     }

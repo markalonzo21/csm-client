@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export const state = () => ({
   unresolvedReports: [],
   resolvedReports: [],
@@ -18,7 +20,7 @@ export const actions = {
       commit('SET_LOAD_MORE_STATUS', response.data)
     })
   },
-  getUnresolvedReports({ commit }) {
+  getUnresolvedReports({ commit, dispatch }) {
     return this.$axios.$get('/reports?unresolvedOnly=true').then(response => {
       commit('SET_UNRESOLVED_REPORTS', response.data)
     })
@@ -56,5 +58,25 @@ export const mutations = {
   },
   SET_LOAD_MORE_STATUS(state, reports) {
     state.isLoadMoreVisible = !(reports.length < 10)
+  },
+  UPDATE_REPORT_MILESTONE(state, payload) {
+    const reportIndex = state.unresolvedReports.findIndex(
+      report => report._id === payload.reportId
+    );
+
+    let responseIndex = state.unresolvedReports[reportIndex].responses.findIndex(
+      response => response._id === payload.response._id
+    );
+
+    Vue.set(
+      state.unresolvedReports[reportIndex].responses,
+      responseIndex,
+      payload.response
+    );
+  },
+  REPORT_RESOLVED(state, report) {
+    const index = state.unresolvedReports.find(item => item._id === report._id)
+
+    state.unresolvedReports.splice(index, 1)
   }
 }

@@ -12,7 +12,7 @@
           <td>{{ report._id }}</td>
           <td>{{ report.reportType.name }}</td>
           <td class="text-center">
-            <button class="btn btnblue chat">
+            <button class="btn btnblue chat" @click.prevent="$emit('chatToggled', { reportId: report._id, isResolved: report.resolvedAt !== null })">
               <svgicon name="chat"></svgicon>Chat
             </button>
           </td>
@@ -28,7 +28,7 @@
           <tr>
             <th class="bluelabel">Notes</th>
             <th class="bluelabel">Reported by</th>
-            <th class="bluelabel">Assigned to</th>
+            <th class="bluelabel">Responder</th>
             <th class="bluelabel">Reported at</th>
           </tr>
           <tr>

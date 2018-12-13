@@ -126,7 +126,7 @@ export default {
           dataIndex: "reportType.name"
         },
         {
-          title: "Assigned To",
+          title: "Responder",
           dataIndex: "assignedTo.email"
         },
         {

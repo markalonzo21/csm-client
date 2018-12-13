@@ -72,7 +72,7 @@ export default {
         //   dataIndex: 'location.coordinates'
         // },
         {
-          title: 'Assigned To',
+          title: 'Responder',
           dataIndex: 'assignedTo',
           scopedSlots: { customRender: 'assignedTo' }
         },

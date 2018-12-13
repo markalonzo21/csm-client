@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      showChat: false,
+      showChat: true,
       loadingSendMessage: false,
       messages: [],
       message: ''

@@ -10,25 +10,37 @@
         </div>
       </div>
       <no-ssr>
-        <ActiveReport :report="report" v-for="report in reports" :key="report._id"/>
+        <ActiveReport :report="report" v-for="report in reports" :key="report._id" @chatToggled="setChatBoxData" />
       </no-ssr>
     </div>
+    <ChatBox v-if="chat.reportId !== null" :reportId="chat.reportId" :isResolved="chat.isResolved" />
   </div>
 </template>
 
 <script>
 import ActiveReport from "~/components/ActiveReport";
+import ChatBox from "~/components/ChatBox";
 
 export default {
   components: {
-    ActiveReport
+    ActiveReport,
+    ChatBox
   },
-  asyncData({ $axios }) {
-    return $axios.$get("/reports?unresolvedOnly=true").then(response => {
-      return {
-        reports: response.data
-      };
-    });
+  async fetch({ $axios, store, redirect }) {
+    await store.dispatch("user/getUnresolvedReports");
+  },
+  data() {
+    return {
+      chat: {
+        reportId: null,
+        isResolved: true
+      }
+    }
+  },
+  computed: {
+    reports() {
+      return this.$store.state.user.unresolvedReports
+    }
   },
   mounted() {
     this.initSocketListener();
@@ -36,19 +48,7 @@ export default {
   methods: {
     initSocketListener() {
       this.$socket.on("milestone-confirmed", payload => {
-        const reportIndex = this.reports.findIndex(
-          report => report._id === payload.reportId
-        );
-
-        let responseIndex = this.reports[reportIndex].responses.findIndex(
-          response => response._id === payload.response._id
-        );
-
-        this.$set(
-          this.reports[reportIndex].responses,
-          responseIndex,
-          payload.response
-        );
+        this.$store.commit('user/UPDATE_REPORT_MILESTONE', payload)
 
         this.$notify({
           type: "info",
@@ -56,6 +56,21 @@ export default {
           content: payload.response.name
         });
       });
+
+      this.$socket.on("report-resolved", report => {
+        if (this.chat.reportId === report._id) {
+          this.chat.reportId = null
+        }
+
+        this.$store.commit('user/REPORT_RESOLVED', report)
+      })
+    },
+    setChatBoxData(data) {
+      this.chat.reportId = null
+      this.$nextTick(() => {
+        this.chat.reportId = data.reportId
+        this.chat.isResolved = data.isResolved
+      })
     }
   }
 };

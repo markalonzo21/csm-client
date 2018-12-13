@@ -23,7 +23,7 @@
               {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})
             </h4>
             <h4 class="mb-1">
-              <strong>Assigned To:</strong>
+              <strong>Responder:</strong>
               <template
                 v-if="report.assignedTo"
               >{{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}</template>

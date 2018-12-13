@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-4 left-content">
           <h1 class="title__black mt0 uppercase ml-2">Active Reports</h1>
-          <ResponderActiveReportPanel :report="activeReport"/>
+          <ResponderActiveReportPanel :report="report"/>
         </div>
         <div class="col-md-8 right-content">
           <section class="user-dashboard mx-auto">
@@ -65,8 +65,8 @@ export default {
     reports() {
       return this.$store.state.responder.reports;
     },
-    activeReport() {
-      return this.$store.getters["responder/activeReport"];
+    report() {
+      return this.$store.state.responder.report;
     }
   },
   mounted() {
