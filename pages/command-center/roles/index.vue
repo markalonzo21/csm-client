@@ -89,7 +89,7 @@
                     <input type="checkbox"
                            :id="`${category}-${index}`"
                            :value="category"
-                           @change="toggleCategory">
+                           @change="toggleEditCategory">
                     <label class="text-capitalize"
                            :for="`${category}-${index}`">
                       {{ category }}
@@ -186,6 +186,17 @@ export default {
       }
     };
   },
+  watch: {
+    isEditModalVisible(value) {
+      if (!value) {
+        this.editForm.id = null
+         this.editForm.index = null
+         this.editForm.name = ""
+         this.editForm.description = ""
+         this.editForm.permissions = []
+        }
+      }
+  },
   computed: {
     categories() {
       return this.permissions
@@ -205,7 +216,7 @@ export default {
       this.editForm.id = role._id
       this.editForm.name = role.name
       this.editForm.description = role.description
-      this.editForm.permissions = role.permissions
+      this.editForm.permissions = role.permissions.map(permission => permission._id)
     },
     generateFakeData() {
       this.form.name = this.$chance.word();
@@ -248,6 +259,33 @@ export default {
           return
         }
         this.form.permissions.push(permission._id)
+      })
+    },
+    toggleEditCategory(event) {
+      const value = event.target.value
+      const isChecked = event.target.checked
+
+      const permissions = this.permissions.filter(
+        permission => permission.category === value
+      )
+
+      if (!isChecked) {
+        permissions.forEach(permission => {
+          const exists = this.editForm.permissions.findIndex(id => {
+            return id === permission._id
+          })
+          if (exists !== -1) {
+            this.editForm.permissions.splice(exists, 1)
+          }
+        })
+        return
+      }
+
+      permissions.forEach(permission => {
+        if (this.editForm.permissions.includes(permission._id)) {
+          return
+        }
+        this.editForm.permissions.push(permission._id)
       })
     },
     createRole() {

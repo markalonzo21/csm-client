@@ -50,7 +50,8 @@ module.exports = {
     { src: '~/plugins/vue-chance.js', ssr: false },
     { src: '~/plugins/vue2-leaflet-heatmap.js', ssr: false },
     { src: '~/plugins/socket', ssr: false },
-    { src: '~/plugins/vue-geolocation', ssr: false }
+    { src: '~/plugins/vue-geolocation', ssr: false },
+    { src: '~/plugins/leaflet-draw', ssr: false },
   ],
 
   /*

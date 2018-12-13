@@ -2,7 +2,7 @@
   <div v-if="!loading">
     <div class="col-md-6">
       <h4>{{ area.name }}</h4>
-      <area-map :area="area"></area-map>
+      <AreaMap :area="area"/>
     </div>
     <a-modal title="Add Area User" v-model="isAddModalVisible" @ok="handleSave">
       <a-form :layout="'vertical'">

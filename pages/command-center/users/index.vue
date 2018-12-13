@@ -331,7 +331,6 @@ export default {
   },
   methods: {
     showEditModal(user, index) {
-      console.log(user)
       this.isEditModalVisible = true;
       this.editForm.index = index
       this.editForm.id = user._id
