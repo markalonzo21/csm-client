@@ -41,13 +41,31 @@ export default {
       rectangleDrawer: null,
       rectangle: null,
       form: {
-        name: ''
+        name: "",
+        bounds: []
       }
-    }
+    };
+  },
+  mounted() {
+    this.initDrawing();
   },
   methods: {
+    initDrawing() {
+      const checkDrawing = setInterval(() => {
+        if (this.$refs.map) {
+          this.mapObject = this.$refs.map.mapObject;
+        }
+      }, 100);
+    },
     saveArea() {
-
+      const bounds = this.mapObject.getBounds();
+      this.form.bounds = [
+        [bounds._northEast.lng, bounds._northEast.lat],
+        [bounds._southWest.lng, bounds._southWest.lat]
+      ];
+      this.$axios.$post("/admin/areas", this.form).then(response => {
+        this.$router.push("/command-center/areas");
+      });
     }
   }
 };

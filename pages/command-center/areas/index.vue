@@ -2,7 +2,13 @@
   <section class="w-full" v-if="!loading">
     <div class="clearfix">
       <h3 class="float-left">Areas</h3>
-      <router-link to="/command-center/areas/create"><a-button type="primary" class="float-right my-6" v-if="$store.getters['auth/hasPermission']('create area')">Create Area</a-button></router-link>
+      <router-link to="/command-center/areas/create">
+        <a-button
+          type="primary"
+          class="float-right my-6"
+          v-if="$store.getters['auth/hasPermission']('create area')"
+        >Create Area</a-button>
+      </router-link>
     </div>
     <hr>
     <a-table bordered :dataSource="dataSource" :columns="columns">
@@ -43,7 +49,7 @@ export default {
     };
   },
   mounted() {
-    this.$axios.$get("/areas").then(response => {
+    this.$axios.$get("/admin/areas").then(response => {
       this.dataSource = response.data;
       this.loading = false;
     });
@@ -103,7 +109,7 @@ export default {
     AreaMap: AreaMap
   },
   mounted() {
-    this.$axios.$get('/areas').then(response => {
+    this.$axios.$get('/admin/areas').then(response => {
       this.areas = response.data
     })
 

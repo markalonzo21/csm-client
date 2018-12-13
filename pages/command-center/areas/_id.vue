@@ -26,7 +26,12 @@
     </a-modal>
     <div class="col-md-6">
       <h4>Details
-        <a-button type="primary" @click="isAddModalVisible = true" class="float-right">Add</a-button>
+        <a-button
+          type="primary"
+          @click="isAddModalVisible = true"
+          class="float-right"
+          v-if="$store.getters['auth/hasPermission']('update area')"
+        >Add Area User</a-button>
       </h4>
       <hr>
       <h5>Resolvers</h5>
@@ -58,7 +63,7 @@ export default {
     }
   },
   mounted() {
-    this.$axios.$get(`/areas/${this.$route.params.id}`).then(response => {
+    this.$axios.$get(`/admin/areas/${this.$route.params.id}`).then(response => {
       this.area = response.data.area;
       this.resolvers = response.data.resolvers;
       this.responders = response.data.responders;
@@ -127,7 +132,7 @@ export default {
     },
     handleSave() {
       if (this.form.user && this.form.role) {
-        this.$axios.$post("/areas/add-user", this.form).then(response => {
+        this.$axios.$post("/admin/areas/add-user", this.form).then(response => {
           const index = this.allAvailableUsers.find(
             user => user._id === this.form.user
           );
