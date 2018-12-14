@@ -55,6 +55,9 @@ export default {
   mounted() {
     this.initSocketListeners();
   },
+  beforeDestroy() {
+    this.$socket.off("new-report")
+  },
   methods: {
     initSocketListeners() {
       this.$socket.on("new-report", report => {

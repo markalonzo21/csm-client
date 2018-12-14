@@ -47,6 +47,10 @@ export default {
   },
   methods: {
     initSocketListener() {
+      this.$socket.on("responder-assigned", (report) => {
+        this.$store.commit('user/REPLACE_REPORT', report)
+      })
+
       this.$socket.on("milestone-confirmed", (report) => {
         this.$store.commit('user/REPLACE_REPORT', report)
       })

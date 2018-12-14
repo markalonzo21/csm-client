@@ -1,6 +1,7 @@
 <template>
   <div class="panel chatbox" :class="{ expanded: showChat }">
     <div class="panel-heading bgblue" @click="showChat = !showChat">
+      <div class="float-left text-white my-2">Chatbox: {{ reportId }}</div>
       <span class="pull-right"></span>
     </div>
     <div class="panel-body chatbody overflow-y-auto" ref="messagesContainer">
@@ -52,7 +53,9 @@ export default {
     getMessages() {
       this.$axios.$get(`/messages?reportId=${this.reportId}`).then(response => {
         this.$socket.on('new-message', message => {
-          this.addMessage(message)
+          if (message.report === this.reportId) {
+            this.addMessage(message)
+          }
         })
         this.messages = response.data
       })
@@ -88,7 +91,7 @@ export default {
         })
         .then(response => {
           this.message = ''
-          // this.addMessage(response.data)
+          // this.loadingSendMessage = false
         })
         .catch(error => {
           this.loadingSendMessage = false

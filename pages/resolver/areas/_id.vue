@@ -71,12 +71,24 @@
     },
     methods: {
       initSocketListener() {
+        this.$socket.on("new-report", report => {
+          const contains = this.bounds.contains(
+            L.latLng(
+              report.location.coordinates[1],
+              report.location.coordinates[0]
+            )
+          )
+
+          if (contains) {
+            this.reports.unshift(report)
+          }
+        });
+
         this.$socket.on("milestone-completed", (payload) => {
           const index = this.reports.findIndex(report => report._id === payload._id)
 
           if (index !== -1) {
             this.$set(this.reports, index, payload)
-            // this.reports[index] = payload
           }
         })
 
@@ -85,7 +97,6 @@
 
           if (index !== -1) {
             this.$set(this.reports, index, payload)
-            // this.reports[index] = payload
           }
         })
       },
