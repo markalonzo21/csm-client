@@ -2,7 +2,7 @@
   <section class="w-full select-none" style="width: 100%">
     <!-- CREATE MODAL -->
     <modal v-model="isCreateRolesModalVisible" title="Create Roles" :footer="false">
-      <form @submit.prevent="createRole" class="clearfix">
+      <form style="max-height: 400px; overflow-y: auto;" @submit.prevent="createRole" class="clearfix">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Name" v-model="form.name" required>
         </div>
@@ -37,14 +37,14 @@
                     </label>
                   </li>
 
-                  <li v-for="(permission, index) in permissions.filter(permission => permission.category === category)"
+                  <li v-for="(permission, key) in permissions.filter(permission => permission.category === category)"
                       :key="`${permission._id}`"
                       class="list-group-item">
                     <input type="checkbox"
-                           :id="`${permission._id}-${index}`"
+                           :id="`${permission._id}-${key}`"
                            v-model="form.permissions"
                            :value="permission._id"> &nbsp;
-                    <label :for="`${permission._id}-${index}`"
+                    <label :for="`${permission._id}-${key}`"
                            class="text-capitalize">{{ permission.name }}</label>
                   </li>
                 </ul>
@@ -61,7 +61,7 @@
     </modal>
     <!-- EDIT MODAL -->
     <modal v-model="isEditModalVisible" title="Edit Role" :footer="false">
-      <form @submit.prevent="updateRole" class="clearfix">
+      <form style="max-height: 400px; overflow-y: auto;" @submit.prevent="updateRole" class="clearfix">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Name" v-model="editForm.name" required>
         </div>
@@ -135,7 +135,7 @@
         slot-scope="text, role"
       >{{ role.createdAt ? $moment(role.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
       <template slot="operation" slot-scope="text, role, index">
-        <a-button type="primary" :disabled="!role.canDelete" @click.prevent="showEditModal(role, index)">Edit</a-button>
+        <a-button type="primary"  @click.prevent="showEditModal(role, index)">Edit</a-button>
         <a-popconfirm title="Are you sure delete this role?" @confirm="deleteRole(role, index)" okText="Yes" cancelText="No">
           <a-button type="danger" :disabled="!role.canDelete">Delete</a-button>
         </a-popconfirm>
@@ -189,7 +189,7 @@ export default {
   watch: {
     isEditModalVisible(value) {
       if (!value) {
-        this.editForm.id = null
+         this.editForm.id = null
          this.editForm.index = null
          this.editForm.name = ""
          this.editForm.description = ""
@@ -291,13 +291,14 @@ export default {
     createRole() {
       this.loadingCreateRole = true;
       this.$axios.$post("/admin/roles", this.form).then(response => {
-        this.generateFakeData();
-        this.form.name = ''
-        this.form.description = ''
-        this.form.permissions = []
-        this.roles.push(response.data);
-        this.loadingCreateRole = false;
-        this.isCreateRolesModalVisible = false;
+        window.location.reload()
+        // this.generateFakeData();
+        // this.form.name = ''
+        // this.form.description = ''
+        // this.form.permissions = []
+        // this.roles.push(response.data);
+        // this.loadingCreateRole = false;
+        // this.isCreateRolesModalVisible = false;
       });
     },
     updateRole() {
@@ -307,15 +308,23 @@ export default {
         return
       }
 
+      if (! this.roles[this.editForm.index].canDelete) {
+        this.isEditModalVisible = false
+        this.$message.error('This role can\'t be updated.')
+        return
+      }
+
       this.loadingUpdateRole = true;
       this.$axios.$patch(`/admin/roles/${this.editForm.id}`, this.editForm).then(response => {
-        this.roles[this.editForm.index] = response.data
-        this.editForm.index = null
-        this.editForm.name = ''
-        this.editForm.description = ''
-        this.editForm.permissions = []
-        this.loadingUpdateRole = false;
-        this.isEditModalVisible = false;
+        window.location.reload()
+
+        // this.roles[this.editForm.index] = response.data
+        // this.editForm.index = null
+        // this.editForm.name = ''
+        // this.editForm.description = ''
+        // this.editForm.permissions = []
+        // this.loadingUpdateRole = false;
+        // this.isEditModalVisible = false;
       });
     },
     deleteRole(role, index) {

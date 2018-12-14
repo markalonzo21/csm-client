@@ -33,7 +33,12 @@
         </div>
         <h3 class="mb-1">Milestones</h3>
         <div class="my-2" v-for="(response, index) in report.responses" :key="response._id">
-          {{ index + 1 }}. {{ response.responseType.name }} {{ milestoneIsCompleted(response._id) ? `- Completed at ${$moment(response.resolvedAt).format('MMM. DD, YYYY | h:mm A ')}` : '' }}
+          <span>
+            {{ index + 1 }}. {{ response.responseType.name }}
+            <span v-if="response.resolvedAt !== null">
+              - Completed at {{ $moment(response.resolvedAt).format('MMM. DD, YYYY | h:mm A ') }}
+            </span>
+          </span>
           <a
             class="cursor-pointer"
             @click.prevent="confirmResponse(response)"

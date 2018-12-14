@@ -66,7 +66,7 @@ export default {
           title: "Dashboard",
           icon: "dashboard",
           link: "/command-center",
-          permissionNeeded: "view dashboard"
+          permissionNeeded: "view command center"
         },
 
         {

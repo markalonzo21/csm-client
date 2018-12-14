@@ -103,15 +103,13 @@
 export default {
   layout: "command-center",
   data() {
-    // const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
-    const bounds = [97.16309, 23.32208, 143.74512, 2.02107];
     return {
       loadingHeats: true,
-      center: [14.59804, 120.98385],
-      zoom: 13,
-      minZoom: 13,
+      center: [12.99804, 121.98385],
+      zoom: 5,
+      minZoom: 5,
       maxZoom: 18,
-      maxBounds: bounds,
+      maxBounds: null,
       maxBoundsViscosity: 1.0,
       // Details
       reportTypes: [],
@@ -173,19 +171,9 @@ export default {
       const check = setInterval(() => {
         if (this.$refs.map) {
           this.maxBounds = new L.LatLngBounds(
-            new L.LatLng(14.63956, 120.89287),
-            new L.LatLng(14.5565, 121.07483)
+            new L.LatLng(4.800675384778373, 104.94140625000001),
+            new L.LatLng(20.96143961409684, 138.99902343750003),
           );
-          // this.maxBounds = new L.LatLngBounds(
-          //   new L.LatLng(23.32208, 97.16309),
-          //   new L.LatLng(2.02107, 143.74512)
-          // )
-
-          this.$refs.map.mapObject.on("drag", () => {
-            this.$refs.map.mapObject.panInsideBounds(this.maxBounds, {
-              animate: false
-            });
-          });
 
           this.searchReports(null, "both");
           clearInterval(check);
@@ -235,6 +223,7 @@ export default {
         });
     },
     searchReports(type, resolvedOrUnresolved) {
+      this.loadingHeats = true
       this.$axios
         .$get(`/admin/reports/${type}/${resolvedOrUnresolved}`)
         .then(response => {

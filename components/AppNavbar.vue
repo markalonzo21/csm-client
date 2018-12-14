@@ -31,7 +31,7 @@
               <router-link
                 to="/command-center"
                 tag="li"
-                v-if="$store.getters['auth/hasPermission']('view dashboard')"
+                v-if="$store.getters['auth/hasPermission']('view command center')"
               >
                 <a class="button">Command Center</a>
               </router-link>
