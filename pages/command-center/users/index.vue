@@ -264,6 +264,10 @@ export default {
           dataIndex: "mobile"
         },
         {
+          title: "Role",
+          dataIndex: "role.name"
+        },
+        {
           title: "Can Respond To",
           dataIndex: "canRespondTo",
           scopedSlots: { customRender: "canRespondTo" }

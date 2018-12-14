@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!loading">
+  <div v-if="!loading && area">
     <div class="col-md-6">
       <h4>{{ area.name }}</h4>
       <AreaMap :area="area"/>
@@ -115,8 +115,9 @@ export default {
   computed: {
     filteredUsers() {
       if (!this.loading) {
+        const permissionNameToFind = this.form.role === "resolver" ? "resolve" : "respond"
         return this.allAvailableUsers.filter(user => {
-          return user.role.slug === this.form.role;
+          return user.role.permissions.some(permission => permission.name === permissionNameToFind);
         });
       }
       return [];
@@ -133,9 +134,10 @@ export default {
     handleSave() {
       if (this.form.user && this.form.role) {
         this.$axios.$post("/admin/areas/add-user", this.form).then(response => {
-          const index = this.allAvailableUsers.find(
+          const index = this.allAvailableUsers.findIndex(
             user => user._id === this.form.user
           );
+
           this.allAvailableUsers.splice(index, 1);
 
           if (this.form.role === "resolver") {
@@ -143,6 +145,10 @@ export default {
           } else {
             this.responders.push(response.data);
           }
+
+          this.form.role = "resolver"
+          this.form.user = ""
+          this.form.area = null
 
           this.isAddModalVisible = false;
         });

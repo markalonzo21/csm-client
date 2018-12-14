@@ -74,9 +74,18 @@ export const mutations = {
       payload.response
     );
   },
-  REPORT_RESOLVED(state, report) {
-    const index = state.unresolvedReports.find(item => item._id === report._id)
+  REPLACE_REPORT(state, report) {
+    const index = state.unresolvedReports.findIndex(item => item._id === report._id)
 
-    state.unresolvedReports.splice(index, 1)
+    if (index !== -1) {
+      Vue.set(state.unresolvedReports, index, report)
+    }
+  },
+  REPORT_RESOLVED(state, report) {
+    const index = state.unresolvedReports.findIndex(item => item._id === report._id)
+
+    if (index !== -1) {
+      state.unresolvedReports.splice(index, 1)
+    }
   }
 }

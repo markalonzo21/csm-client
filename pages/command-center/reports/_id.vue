@@ -139,23 +139,21 @@ export default {
   mounted() {
     this.initSocketListeners();
   },
-  beoreDestroy() {
+  beforeDestroy() {
     this.$socket.off("milestone-completed");
+    this.$socket.off("milestone-confirmed");
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on("milestone-completed", newResponse => {
-        let responseIndex = this.report.responses.findIndex(
-          response => response._id === newResponse._id
-        );
-
-        this.$set(this.report.responses, responseIndex, newResponse);
-
-        this.$notify({
-          type: "info",
-          title: "Help Update!",
-          content: newResponse.name
-        });
+      this.$socket.on("milestone-completed", payload => {
+        if (this.report._id === payload._id) {
+          this.report = payload
+        }
+      });
+      this.$socket.on("milestone-confirmed", payload => {
+        if (this.report._id === payload._id) {
+          this.report = payload
+        }
       });
     },
     milestoneIsCompleted(response) {

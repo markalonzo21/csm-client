@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <a-input v-model="form.name" placeholder="Area Name"/>
+    <div class="my-2">
+      <a-input v-model="form.name" placeholder="Area Name" />
+    </div>
     <div id="map-wrap" style="height: 500px; width: 100%;" class="mt-4">
       <no-ssr>
         <l-map
@@ -21,6 +23,22 @@
 </template>
 
 <script>
+function formatNumber (value) {
+  value += ''
+  const list = value.split('.')
+  const prefix = list[0].charAt(0) === '-' ? '-' : ''
+  let num = prefix ? list[0].slice(1) : list[0]
+  let result = ''
+  while (num.length > 3) {
+    result = `,${num.slice(-3)}${result}`
+    num = num.slice(0, num.length - 3)
+  }
+  if (num) {
+    result = num + result
+  }
+  return `${prefix}${result}${list[1] ? `.${list[1]}` : ''}`
+}
+
 export default {
   layout: "command-center",
   asyncData({ store, redirect }) {
@@ -63,6 +81,7 @@ export default {
         [bounds._northEast.lng, bounds._northEast.lat],
         [bounds._southWest.lng, bounds._southWest.lat]
       ];
+      this.form.minZoom = this.mapObject.getZoom()
       this.$axios.$post("/admin/areas", this.form).then(response => {
         this.$router.push("/command-center/areas");
       });

@@ -89,3 +89,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .rounded {
+    border-radius: 12px;
+  }
+</style>

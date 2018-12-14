@@ -47,15 +47,9 @@ export default {
   },
   methods: {
     initSocketListener() {
-      this.$socket.on("milestone-confirmed", payload => {
-        this.$store.commit('user/UPDATE_REPORT_MILESTONE', payload)
-
-        this.$notify({
-          type: "info",
-          title: "Help Update!",
-          content: payload.response.name
-        });
-      });
+      this.$socket.on("milestone-confirmed", (report) => {
+        this.$store.commit('user/REPLACE_REPORT', report)
+      })
 
       this.$socket.on("report-resolved", report => {
         if (this.chat.reportId === report._id) {

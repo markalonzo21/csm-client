@@ -36,6 +36,13 @@
                 <a class="button">Command Center</a>
               </router-link>
               <router-link
+                to="/resolver"
+                tag="li"
+                v-if="$store.getters['auth/hasPermission']('resolve')"
+              >
+                <a class="button">Resolver Dashboard</a>
+              </router-link>
+              <router-link
                 to="/responder"
                 tag="li"
                 v-if="$store.getters['auth/hasPermission']('respond')"
