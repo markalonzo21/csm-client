@@ -1,46 +1,49 @@
 <template>
   <div class="panel shadow">
-    <div class="panel-heading" role="button">
-      <table class="table">
-        <tr>
-          <th class="bluelabel">Report ID</th>
-          <th class="bluelabel">Type</th>
-          <th class="bluelabel"></th>
-          <th class="bluelabel"></th>
-        </tr>
-        <tr>
-          <td>{{ report._id }}</td>
-          <td>{{ report.reportType.name }}</td>
-          <td class="text-center">
-            <button class="btn btnblue chat" @click.prevent="$emit('chatToggled', { reportId: report._id, isResolved: report.resolvedAt !== null })">
-              <svgicon name="chat"></svgicon>Chat
-            </button>
-          </td>
-          <td class="bluelabel select-none">
-            <span @click="toggleAccordion(0)">{{ showAccordion[0] ? 'View Less' : 'View More' }}</span>
-          </td>
-        </tr>
-      </table>
+    <div class="panel-heading h-32" role="button">
+        <div class="col-sm-3">
+          <span class="bluelabel">Report ID</span><br />
+        {{ report._id }}
+      </div>
+        <div class="col-sm-3">
+          <span class="bluelabel"> Type </span> <br />
+          {{ report.reportType.name }}
+        </div>
+        <div class="col-sm-3">
+          <button class="btn btnblue chat" @click.prevent="$emit('chatToggled', { reportId: report._id, isResolved: report.resolvedAt !== null })">
+            <svgicon name="chat"></svgicon>Chat
+          </button>
+        </div>
+        <div class="col-sm-3 bluelabel mt-3 select-none">
+          <span @click="toggleAccordion(0)">{{ showAccordion[0] ? 'View Less' : 'View More' }}</span>
+        </div>
     </div>
     <collapse v-model="showAccordion[0]">
       <div class="panel-body">
-        <table class="table">
-          <tr>
-            <th class="bluelabel">Notes</th>
-            <th class="bluelabel">Reported by</th>
-            <th class="bluelabel">Responder</th>
-            <th class="bluelabel">Reported at</th>
-          </tr>
-          <tr>
-            <td>{{ report.description }}</td>
-            <td>{{ report.reportedBy.firstName }} {{ report.reportedBy.middleName }} {{ report.reportedBy.lastName}}</td>
-            <td
-              v-if="report.assignedTo"
-            >{{ report.assignedTo.firstName }} {{ report.assignedTo.middleName }} {{ report.assignedTo.lastName}}</td>
-            <td v-else>None</td>
-            <td>{{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}</td>
-          </tr>
-        </table>
+
+            <div class="col-md-3">
+              <span class="bluelabel"> Notes </span>
+              <br/>
+              {{ report.description }}
+            </div>
+            <div class="col-md-3">
+              <span class="bluelabel"> Reported by </span>
+              <br/>
+              {{ report.reportedBy.firstName }} {{ report.reportedBy.middleName }} {{ report.reportedBy.lastName}}
+            </div>
+            <div class="col-md-3">
+              <span class="bluelabel"> Responder </span>
+              <br/>
+              <span v-if="report.assignedTo">
+                {{ report.assignedTo.firstName }} {{ report.assignedTo.middleName }} {{ report.assignedTo.lastName}}
+              </span>
+              <span v-else>None</span>
+            </div>
+            <div class="col-md-3">
+              <span class="bluelabel"> Reported at </span>
+              <br/>
+              {{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}
+            </div>
 
         <div v-if="report.photos.length > 0">
           <h3 class="title__blue mt60 mb30">Images</h3>

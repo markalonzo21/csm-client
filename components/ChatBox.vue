@@ -9,7 +9,7 @@
     </div>
     <div class="panel-footer">
       <form class="input-group" @submit.prevent="sendMessage">
-      <input type="text" class="form-control" placeholder="Write something here ..." v-model="message" :disabled="isResolved || loadingSendMessage">
+      <input type="text" ref="chatMessageInput" class="form-control" placeholder="Write something here ..." v-model="message" :disabled="isResolved || loadingSendMessage">
       <div class="input-group-btn">
         <button type="submit" class="btn chatsubmit text-uppercase" :disabled="isResolved || loadingSendMessage">{{ loadingSendMessage ? 'Sending...' : 'Send' }}</button>
       </div>
@@ -75,6 +75,7 @@ export default {
         setTimeout(() => {
           this.messages.push(message)
           this.loadingSendMessage = false
+          this.$refs.chatMessageInput.focus()
         }, 500)
       })
     },
@@ -91,7 +92,6 @@ export default {
         })
         .then(response => {
           this.message = ''
-          // this.loadingSendMessage = false
         })
         .catch(error => {
           this.loadingSendMessage = false

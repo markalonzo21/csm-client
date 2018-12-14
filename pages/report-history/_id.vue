@@ -18,7 +18,7 @@
           </div>
           <div class="col-md-3">
             <div class="text-blue-light font-semibold"></div>
-            <button class="btn btnblue capitalize">View Chat History</button>
+            <button class="btn btnblue capitalize" @click.prevent="showChatHistory = !showChatHistory">View Chat History</button>
           </div>
         </div>
         <div class="row border rounded bg-white py-6 px-6" v-if="report.location !== null">
@@ -40,11 +40,16 @@
         </div>
       </div>
     </div>
+    <ChatBox v-if="showChatHistory" :reportId="report._id" :isResolved="report.resolvedAt !== null" />
   </div>
 </template>
 
 <script>
+import ChatBox from "~/components/ChatBox";
 export default {
+  components: {
+    ChatBox
+  },
   asyncData({ $axios, params, isServer }) {
     return $axios.$get(`/reports/${params.id}`).then(response => {
       const lat = response.data.location ? response.data.location.coordinates[1] : 14.59804
@@ -59,9 +64,10 @@ export default {
       }
 
       return {
-        report: response.data
+        report: response.data,
+        showChatHistory: false,
       };
     });
-  },
+  }
 }
 </script>
