@@ -1,4 +1,16 @@
 <template>
+  <section class="w-full" v-if="!loading">
+    <div class="clearfix">
+      <h3 class="float-left">Areas</h3>
+      <router-link to="/command-center/areas/create">
+        <a-button
+          type="primary"
+          class="float-right my-6"
+          v-if="$store.getters['auth/hasPermission']('create area')"
+        >Create Area</a-button>
+      </router-link>
+    </div>
+    <hr>
     <a-table :loading="loadingGetAreas" bordered :dataSource="dataSource" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary">
@@ -6,6 +18,7 @@
         </a-button>
       </template>
     </a-table>
+  </section>
 </template>
 
 <script>

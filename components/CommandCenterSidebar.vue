@@ -110,7 +110,13 @@ export default {
           icon: "bars",
           link: "/command-center/response-types",
           permissionNeeded: "view response types"
-        }
+        },
+        {
+          title: "Advertisements",
+          icon: "bars",
+          link: "/command-center/advertisement",
+          permissionNeeded: "view advertisements"
+        },
 
         // {
         //   title: "Resolvers",

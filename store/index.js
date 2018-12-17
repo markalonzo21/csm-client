@@ -8,6 +8,20 @@ export const state = () => ({
 
 export const getters = {
   showPhoto: state => photo => {
+    if (photo.indexOf("https://") > -1) {
+      photo = photo.split('/')
+
+      const lastSegment = photo.pop()
+      const beforeLastSegment = photo.pop()
+
+      photo.push('w_200,h_200')
+
+      photo.push(beforeLastSegment)
+      photo.push(lastSegment)
+
+      return photo.join('/')
+    }
+
     const baseUrl = process.env.API_URL
       ? process.env.API_URL
       : 'https://irs-api.now.sh'
