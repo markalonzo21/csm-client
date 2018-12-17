@@ -82,7 +82,7 @@
 
       <div class="col-md-6">
         <h3 class="title__gray--small">REPORTS</h3>
-        <a-table bordered :dataSource="reports" :columns="columns">
+        <a-table :loading="loadingHeats" bordered :dataSource="reports" :columns="columns">
           <template
             slot="createdAt"
             slot-scope="text, report"
@@ -117,7 +117,6 @@ export default {
       resolvedOrUnresolved: "both",
       type: null,
       reports: [],
-      isReportsLoading: false,
       columns: [
         {
           title: "Type",
@@ -209,18 +208,6 @@ export default {
       this.$socket.on("new-report", report => {
         this.searchReports(this.type, this.resolvedOrUnresolved);
       });
-    },
-    loadReports() {
-      this.isReportsLoading = true;
-      this.$axios
-        .$get(`/admin/reports?skip=${this.reports.length}`)
-        .then(response => {
-          response.data.forEach(report => {
-            this.reports.push(report);
-          });
-          this.isLoadMoreVisible = !(response.data.length < 10);
-          this.isReportsLoading = false;
-        });
     },
     searchReports(type, resolvedOrUnresolved) {
       this.loadingHeats = true

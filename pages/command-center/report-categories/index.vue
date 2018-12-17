@@ -9,14 +9,14 @@
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Name" v-model="form.name" required>
         </div>
-         <div class="form-group">
+         <!-- <div class="form-group">
           <textarea
             cols="30" rows="10"
             class="form-control"
             placeholder="Description"
             v-model="form.description"
           ></textarea>
-        </div>
+        </div> -->
         <button
           class="btn btn-primary float-right"
           :disabled="loadingCreateReportCategory"
@@ -32,7 +32,7 @@
       >Create Report Category</a-button>
     </div>
     <hr>
-    <a-table bordered :dataSource="reportCategories" :columns="columns">
+    <a-table :loading="loadingGetReportCategories" bordered :dataSource="reportCategories" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
@@ -73,6 +73,7 @@ export default {
   },
   data() {
     return {
+      loadingGetReportCategories: false,
       isCreateReportCategoryModalVisible: false,
       loadingCreateReportCategory: false,
       reportCategories: [],
@@ -105,8 +106,10 @@ export default {
       this.form.description = this.$chance.paragraph();
     },
     getReportCategories() {
+      this.loadingGetReportCategories = true;
       this.$axios.$get("/report-categories").then(response => {
         this.reportCategories = response.data;
+        this.loadingGetReportCategories = false;
       });
     },
     createReportCategory() {

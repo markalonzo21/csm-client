@@ -65,14 +65,14 @@
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Name" v-model="editForm.name" required>
         </div>
-         <!-- <div class="form-group">
+         <div class="form-group">
           <textarea
             cols="30" rows="10"
             class="form-control"
             placeholder="Description"
             v-model="editForm.description"
           ></textarea>
-        </div> -->
+        </div>
         <div class="form-group">
           <label class="control-label col-sm-2"
                  for="pwd">Permissions:</label>
@@ -129,7 +129,7 @@
     <hr>
 
     <!-- TABLE -->
-    <a-table bordered :dataSource="roles" :columns="columns">
+    <a-table :loading="loadingGetRoles" bordered :dataSource="roles" :columns="columns">
       <template
         slot="createdAt"
         slot-scope="text, role"
@@ -159,7 +159,8 @@ export default {
       columns: [
         {
           title: "Name",
-          dataIndex: "name"
+          dataIndex: "name",
+          width: "80%",
         },
         // {
         //   title: "Description",
@@ -219,8 +220,8 @@ export default {
       this.editForm.permissions = role.permissions.map(permission => permission._id)
     },
     generateFakeData() {
-      this.form.name = this.$chance.word();
-      this.form.description = this.$chance.paragraph();
+      this.form.name = "";
+      this.form.description = "";
     },
     getPermissions() {
       this.$axios.$get("/admin/permissions").then(response => {

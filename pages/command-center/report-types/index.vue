@@ -88,7 +88,7 @@
         </tr>
       </tbody>
     </table>-->
-    <a-table bordered :dataSource="reportTypes" :columns="columns">
+    <a-table :loading="loadingGetReportTypes" bordered :dataSource="reportTypes" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
@@ -108,13 +108,14 @@ export default {
   },
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("view report types")) {
- return redirect("/");
+      return redirect("/");
     }
   },
   data() {
     return {
       isCreateReportTypeModalVisible: false,
       loadingCreateReportType: false,
+      loadingGetReportTypes: false,
       reportTypes: [],
       reportCategories: [],
       responseTypes: [],
@@ -172,8 +173,10 @@ export default {
       });
     },
     getResponseTypes() {
+      this.loadingGetReportTypes = true;
       this.$axios.$get("/response-types").then(response => {
         this.responseTypes = response.data;
+        this.loadingGetReportTypes = false;
       });
     },
     milestoneSelected(event) {

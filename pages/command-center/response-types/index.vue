@@ -28,7 +28,7 @@
       >Create Response Type</a-button>
     </div>
     <hr>
-    <a-table bordered :dataSource="responseTypes" :columns="columns">
+    <a-table :loading="loadingGetResponseTypes" bordered :dataSource="responseTypes" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
@@ -64,13 +64,14 @@ export default {
   layout: "command-center",
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("view response types")) {
- return redirect("/");
+      return redirect("/");
     }
   },
   data() {
     return {
       isCreateResponseTypeModalVisible: false,
       loadingCreateResponseType: false,
+      loadingGetResponseTypes: false,
       responseTypes: [],
       columns: [
         {
@@ -101,8 +102,10 @@ export default {
       this.form.description = this.$chance.paragraph();
     },
     getResponseTypes() {
+      this.loadingGetResponseTypes = true;
       this.$axios.$get("/response-types").then(response => {
         this.responseTypes = response.data;
+        this.loadingGetResponseTypes = false;
       });
     },
     createResponseType() {

@@ -5,7 +5,7 @@
       <a-button type="primary" class="float-right invisible my-6">Hidden</a-button>
     </div>
     <hr>
-    <a-table bordered :dataSource="reports" :columns="columns">
+    <a-table :loading="loadingGetReports" bordered :dataSource="reports" :columns="columns">
       <template
         slot="createdAt"
         slot-scope="text, report"
@@ -48,7 +48,7 @@ export default {
           }
         ],
         isLoadMoreVisible: !(response.data.length < 10),
-        isReportsLoading: false
+        loadingGetReports: false
       };
     });
   },
@@ -65,7 +65,7 @@ export default {
       });
     },
     loadMoreReports() {
-      this.isReportsLoading = true;
+      this.loadingGetReports = true;
       this.$axios
         .$get(`/admin/reports?skip=${this.reports.length}`)
         .then(response => {
@@ -73,7 +73,7 @@ export default {
             this.reports.push(report);
           });
           this.isLoadMoreVisible = !(response.data.length < 10);
-          this.isReportsLoading = false;
+          this.loadingGetReports = false;
         });
     }
   }

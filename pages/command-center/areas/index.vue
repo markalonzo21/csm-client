@@ -1,24 +1,11 @@
 <template>
-  <section class="w-full" v-if="!loading">
-    <div class="clearfix">
-      <h3 class="float-left">Areas</h3>
-      <router-link to="/command-center/areas/create">
-        <a-button
-          type="primary"
-          class="float-right my-6"
-          v-if="$store.getters['auth/hasPermission']('create area')"
-        >Create Area</a-button>
-      </router-link>
-    </div>
-    <hr>
-    <a-table bordered :dataSource="dataSource" :columns="columns">
+    <a-table :loading="loadingGetAreas" bordered :dataSource="dataSource" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary">
           <router-link :to="`/command-center/areas/${record._id}`">Show</router-link>
         </a-button>
       </template>
     </a-table>
-  </section>
 </template>
 
 <script>
@@ -31,14 +18,20 @@ export default {
   },
   data() {
     return {
-      loading: true,
+      loadingGetAreas: true,
       columns: [
         {
           title: "Name",
           dataIndex: "name",
+          scopedSlots: { customRender: "name" },
           width: "80%",
-          scopedSlots: { customRender: "name" }
         },
+        // {
+        //   title: "Description",
+        //   dataIndex: "description",
+        //   width: "60%",
+        //   scopedSlots: { customRender: "description" }
+        // },
         {
           title: "Operation",
           dataIndex: "operation",
@@ -49,9 +42,10 @@ export default {
     };
   },
   mounted() {
+    this.loadingGetAreas = true;
     this.$axios.$get("/admin/areas").then(response => {
       this.dataSource = response.data;
-      this.loading = false;
+      this.loadingGetAreas = false;
     });
   }
 };

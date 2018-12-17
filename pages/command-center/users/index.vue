@@ -203,7 +203,7 @@
     <hr>
 
     <!-- TABLE -->
-    <a-table bordered :dataSource="users" :columns="columns">
+    <a-table :loading="loadingGetUsers" bordered :dataSource="users" :columns="columns">
       <template slot="canRespondTo" slot-scope="text, record">
         <ul class="list-reset">
           <li

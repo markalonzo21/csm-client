@@ -3,6 +3,9 @@
     <div class="my-2">
       <a-input v-model="form.name" placeholder="Area Name" />
     </div>
+    <div class="my-2">
+      <a-textarea v-model="form.description" placeholder="Description" :autosize="{ minRows: 2, maxRows: 6 }" />
+    </div>
     <div id="map-wrap" style="height: 500px; width: 100%;" class="mt-4">
       <no-ssr>
         <l-map
