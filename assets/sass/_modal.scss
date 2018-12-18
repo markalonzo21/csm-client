@@ -47,12 +47,12 @@
     .form-control {
       font-size: 14px;
       color: $irs__gray--dark;
-      border: 1px solid $irs__gray--light;
       transition: all ease 300ms;
       &:focus {
         border-color: $irs__aqua;
         transition: all ease 300ms;
       }
+
     }
     form .row {
       margin-left: -7.5px;

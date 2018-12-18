@@ -114,9 +114,9 @@ export default {
         {
           title: "Advertisements",
           icon: "bars",
-          link: "/command-center/advertisement",
+          link: "/command-center/advertisements",
           permissionNeeded: "view advertisements"
-        },
+        }
 
         // {
         //   title: "Resolvers",

@@ -254,10 +254,12 @@
       <div class="ads mt30">
         <div class="container">
           <div class="row">
-            <div class="col-md-4 item" v-for="n in 3">
+            <div class="col-md-4 item" v-for="advertisement in advertisements" :key="`ad-${advertisement._id}`">
               <div class="panel">
                 <div class="panel-heading">
-                  <img src="/img/ads.jpg" alt class="img-responsive mrgnauto">
+                  <a :href="advertisement.link" target="_blank" :class="[advertisement.link ? 'cursor-pointer':  'pointer-events-none' ]">
+                    <img :src="advertisement.image" alt class="img-responsive mrgnauto">
+                  </a>
                 </div>
               </div>
             </div>
@@ -270,6 +272,13 @@
 <script>
 export default {
   auth: false,
-  layout: "public"
+  layout: "public",
+  asyncData ({ $axios }) {
+    return $axios.$get('/advertisements').then(response => {
+      return {
+        advertisements: response.data
+      }
+    })
+  }
 };
 </script>
