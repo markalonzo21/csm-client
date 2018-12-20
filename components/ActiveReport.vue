@@ -1,49 +1,53 @@
 <template>
   <div class="panel shadow">
     <div class="panel-heading h-32" role="button">
-        <div class="col-sm-3">
-          <span class="bluelabel">Report ID</span><br />
+      <div class="col-sm-3">
+        <span class="bluelabel">Report ID</span>
+        <br>
         {{ report._id }}
       </div>
-        <div class="col-sm-3">
-          <span class="bluelabel"> Type </span> <br />
-          {{ report.reportType.name }}
-        </div>
-        <div class="col-sm-3">
-          <button class="btn btnblue chat" @click.prevent="$emit('chatToggled', { reportId: report._id, isResolved: report.resolvedAt !== null })">
-            <svgicon name="chat"></svgicon>Chat
-          </button>
-        </div>
-        <div class="col-sm-3 bluelabel mt-3 select-none">
-          <span @click="toggleAccordion(0)">{{ showAccordion[0] ? 'View Less' : 'View More' }}</span>
-        </div>
+      <div class="col-sm-3">
+        <span class="bluelabel">Type</span>
+        <br>
+        {{ report.reportType.name }}
+      </div>
+      <div class="col-sm-3">
+        <button
+          class="btn btnblue chat"
+          @click.prevent="$emit('chatToggled', { reportId: report._id, isResolved: report.resolvedAt !== null })"
+        >
+          <svgicon name="chat"></svgicon>Chat
+        </button>
+      </div>
+      <div class="col-sm-3 bluelabel mt-3 select-none">
+        <span @click="toggleAccordion(0)">{{ showAccordion[0] ? 'View Less' : 'View More' }}</span>
+      </div>
     </div>
     <collapse v-model="showAccordion[0]">
       <div class="panel-body">
-
-            <div class="col-md-3">
-              <span class="bluelabel"> Notes </span>
-              <br/>
-              {{ report.description }}
-            </div>
-            <div class="col-md-3">
-              <span class="bluelabel"> Reported by </span>
-              <br/>
-              {{ report.reportedBy.firstName }} {{ report.reportedBy.middleName }} {{ report.reportedBy.lastName}}
-            </div>
-            <div class="col-md-3">
-              <span class="bluelabel"> Responder </span>
-              <br/>
-              <span v-if="report.assignedTo">
-                {{ report.assignedTo.firstName }} {{ report.assignedTo.middleName }} {{ report.assignedTo.lastName}}
-              </span>
-              <span v-else>None</span>
-            </div>
-            <div class="col-md-3">
-              <span class="bluelabel"> Reported at </span>
-              <br/>
-              {{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}
-            </div>
+        <div class="col-md-3">
+          <span class="bluelabel">Notes</span>
+          <br>
+          {{ report.description }}
+        </div>
+        <div class="col-md-3">
+          <span class="bluelabel">Reported by</span>
+          <br>
+          {{ report.reportedBy.firstName }} {{ report.reportedBy.middleName }} {{ report.reportedBy.lastName}}
+        </div>
+        <div class="col-md-3">
+          <span class="bluelabel">Responder</span>
+          <br>
+          <span
+            v-if="report.assignedTo"
+          >{{ report.assignedTo.firstName }} {{ report.assignedTo.middleName }} {{ report.assignedTo.lastName}}</span>
+          <span v-else>None</span>
+        </div>
+        <div class="col-md-3">
+          <span class="bluelabel">Reported at</span>
+          <br>
+          {{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}
+        </div>
 
         <div v-if="report.photos.length > 0">
           <h3 class="title__blue mt60 mb30">Images</h3>
@@ -53,7 +57,7 @@
             </div>
           </div>
         </div>
-        <h3 class="title__blue mt60 mb30">Milestones</h3>
+        <!-- <h3 class="title__blue mt60 mb30">Milestones</h3>
         <div class="row">
           <div class="col-md-3" v-for="milestone in report.responses" :key="milestone._id">
             <div
@@ -68,7 +72,7 @@
               :class="[milestone.confirmed && milestone.resolvedAt !== null  ? 'visible': 'invisible']"
             >{{ $moment(milestone.resolvedAt).format("MMM. DD, YYYY | h:mm A ") }}</p>
           </div>
-        </div>
+        </div>-->
       </div>
     </collapse>
   </div>

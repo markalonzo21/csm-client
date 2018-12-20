@@ -38,14 +38,14 @@
               <router-link
                 to="/resolver"
                 tag="li"
-                v-if="$store.getters['auth/hasPermission']('resolve')"
+                v-if="$store.getters['auth/hasPermission']('resolve') && $route.path !== '/resolver'"
               >
                 <a class="button">Resolver Dashboard</a>
               </router-link>
               <router-link
                 to="/responder"
                 tag="li"
-                v-if="$store.getters['auth/hasPermission']('respond')"
+                v-if="$store.getters['auth/hasPermission']('respond') && $route.path !== '/responder'"
               >
                 <a class="button">Responder Dashboard</a>
               </router-link>

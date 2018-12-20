@@ -9,7 +9,6 @@
               <div class="panel" style="border: none;" v-for="area in areas" :key="area._id">
                 <div class="panel-body border h-32 rounded shadow bg-white flex items-center">
                   <div class="col-sm-6">
-                    <strong class="text-blue-dark">Name</strong>
                     <div>{{ area.name }}</div>
                   </div>
                   <button
@@ -40,7 +39,6 @@ export default {
     if (!store.getters["auth/hasPermission"]("resolve")) {
       return redirect("/");
     }
-
   },
   computed: {
     areas() {

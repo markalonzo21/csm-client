@@ -42,7 +42,11 @@
           <td>{{ report._id }}</td>
           <td>{{ report.reportType.name }}</td>
           <td class="text-center">
-            <button class="btn btnblue chat" @click.prevent="$emit('chatToggled', { reportId: report._id, isResolved: report.resolvedAt !== null })">
+            <button
+              class="btn chat"
+              :class="chatIsActive ? 'btngreen' : 'btnblue'"
+              @click.prevent="$emit('chatToggled', { reportId: report._id, isResolved: report.resolvedAt !== null })"
+            >
               <svgicon name="chat"></svgicon>Chat
             </button>
           </td>
@@ -68,9 +72,7 @@
               v-if="report.assignedTo"
             >{{ report.assignedTo.firstName }} {{ report.assignedTo.middleName }} {{ report.assignedTo.lastName}}</td>
             <td v-else>
-              <a class="cursor-pointer"
-                @click.prevent="showAssignModal"
-              >Assign Responder</a>
+              <a class="cursor-pointer" @click.prevent="showAssignModal">Assign Responder</a>
             </td>
             <td>{{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}</td>
           </tr>
@@ -87,10 +89,7 @@
         <h3 class="title__blue mt60 mb30">Milestones</h3>
         <div class="row">
           <div class="col-md-3" v-for="milestone in report.responses" :key="milestone._id">
-            <div
-              class="box"
-              :class="{'checked': milestone && milestone.resolvedAt !== null }"
-            >
+            <div class="box" :class="{'checked': milestone && milestone.resolvedAt !== null }">
               <svgicon name="check"></svgicon>
             </div>
             <p class="m-0">
@@ -115,21 +114,33 @@
 
 <script>
 export default {
-  props: ["report"],
+  props: ["report", "activeChat"],
   data() {
     return {
       showAccordion: [false],
       isAssignModalVisible: false,
       availableResponders: [],
       selectedResponder: null,
-      loadingAssignResponder: false,
+      loadingAssignResponder: false
     };
+  },
+  computed: {
+    isResolver() {
+      return this.$store.getters["auth/hasPermission"]("resolve");
+    },
+    chatIsActive() {
+      return this.report._id === this.activeChat.reportId;
+    }
   },
   methods: {
     showAssignModal() {
       this.isAssignModalVisible = true;
       this.$axios
-        .$get(`/admin/available-responders?type=${this.report.reportType._id}&areaId=${this.$route.params.id}`)
+        .$get(
+          `/admin/available-responders?type=${
+            this.report.reportType._id
+          }&areaId=${this.$route.params.id}`
+        )
         .then(response => {
           this.availableResponders = response.data;
         });
@@ -156,21 +167,18 @@ export default {
       }
     },
     confirmResponse(response) {
-      this.loadingConfirmation = true
+      this.loadingConfirmation = true;
       this.$axios
         .$post(`/admin/confirm-response`, {
           reportId: this.report._id,
           responseId: response._id
-        }).then(response => {
-          this.loadingConfirmation = false
-        }).catch(error => {
-          this.loadingConfirmation = false
         })
-    }
-  },
-  computed: {
-    isResolver() {
-      return this.$store.getters['auth/hasPermission']('resolve')
+        .then(response => {
+          this.loadingConfirmation = false;
+        })
+        .catch(error => {
+          this.loadingConfirmation = false;
+        });
     }
   }
 };

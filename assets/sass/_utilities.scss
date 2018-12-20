@@ -167,6 +167,29 @@ body * {
     background: transparent;
     color: #2eb2e2;
     transition: all ease 300ms;
+    outline: 0;
+  }
+}
+
+.btn.btngreen {
+  min-width: 125px;
+  height: 40px;
+  line-height: 27px;
+  border: 1px solid $irs__aqua;
+  border-radius: 10px;
+  background: linear-gradient(to right, #51d88a, #38c172);
+  font-size: 14px;
+  color: $white;
+  border-radius: 10px;
+  transition: all ease 300ms;
+
+  &:active,
+  &:focus,
+  &:hover {
+    // background: #a2f5bf;
+    // color: white;
+    // transition: all ease 300ms;
+    outline: 0;
   }
 }
 

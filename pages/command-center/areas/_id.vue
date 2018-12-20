@@ -115,9 +115,12 @@ export default {
   computed: {
     filteredUsers() {
       if (!this.loading) {
-        const permissionNameToFind = this.form.role === "resolver" ? "resolve" : "respond"
+        const permissionNameToFind =
+          this.form.role === "resolver" ? "resolve" : "respond";
         return this.allAvailableUsers.filter(user => {
-          return user.role.permissions.some(permission => permission.name === permissionNameToFind);
+          return user.role.permissions.some(
+            permission => permission.name === permissionNameToFind
+          );
         });
       }
       return [];
@@ -138,17 +141,29 @@ export default {
             user => user._id === this.form.user
           );
 
-          this.allAvailableUsers.splice(index, 1);
-
-          if (this.form.role === "resolver") {
+          const user = this.allAvailableUsers[index];
+          const canResolve = user.role.permissions.find(
+            permission => permission.name === "resolve"
+          );
+          const canRespond = user.role.permissions.find(
+            permission => permission.name === "respond"
+          );
+          const selectedUserIsYou = user._id === this.$auth.user._id;
+          if (canResolve) {
             this.resolvers.push(response.data);
-          } else {
+          }
+          if (canRespond) {
             this.responders.push(response.data);
           }
+          if (selectedUserIsYou) {
+            this.$store.commit("auth/ADD_AREA", this.area);
+          }
 
-          this.form.role = "resolver"
-          this.form.user = ""
-          this.form.area = null
+          this.allAvailableUsers.splice(index, 1);
+
+          this.form.role = "resolver";
+          this.form.user = "";
+          this.form.area = null;
 
           this.isAddModalVisible = false;
         });

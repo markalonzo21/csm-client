@@ -15,8 +15,15 @@
                   {{ $auth.user.email }}
                   <a-icon type="down"/>
                 </a>
+
                 <a-menu slot="overlay">
-                  <a-menu-item key="0">
+                  <a-menu-item key="0" v-if="$store.getters['auth/hasPermission']('resolve')">
+                    <router-link to="/resolver">Resolver Dashboard</router-link>
+                  </a-menu-item>
+                  <a-menu-item key="1" v-if="$store.getters['auth/hasPermission']('respond')">
+                    <router-link to="/responder">Responder Dashboard</router-link>
+                  </a-menu-item>
+                  <a-menu-item key="2">
                     <a @click.prevent="$store.dispatch('auth/logout')">Log Out</a>
                   </a-menu-item>
                 </a-menu>

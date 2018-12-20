@@ -31,5 +31,8 @@ export const mutations = {
   SET_USER(state, user) {
     console.log(user)
     state.user = user
+  },
+  ADD_AREA(state, area) {
+    state.user.areas.push(area)
   }
 }
