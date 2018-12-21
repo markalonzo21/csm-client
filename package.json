@@ -27,7 +27,7 @@
     "form-backend-validation": "^2.3.4",
     "leaflet-draw": "^1.0.4",
     "moment": "^2.22.2",
-    "nuxt": "^2.3.0",
+    "nuxt": "^2.3.4",
     "nuxt-leaflet": "0.0.10",
     "socket.io-client": "^2.1.1",
     "uiv": "^0.28.0",

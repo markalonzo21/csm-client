@@ -1,15 +1,30 @@
 <template>
   <div class="panel chatbox" :class="{ expanded: showChat }">
-    <div class="panel-heading bgblue" @click="showChat = !showChat">
-      <div class="float-left text-white my-2">Chatbox: {{ reportId }}</div>
-      <span class="pull-right"></span>
+    <div class="panel-heading bgblue" >
+      <!-- <div class="text-center text-white my-2">Chatbox: {{ reportId }}</div> -->
+      <button class="btn" :class="[ activeType === 'responder' ? 'btngreen' : 'btnblue']" v-if="showChat" @click.prevent="switchType('responder')">Responder</button>
+      <button class="btn" :class="[ activeType === 'user' ? 'btngreen' : 'btnblue']" v-if="showChat" @click.prevent="switchType('user')">Reporter</button>
+      <div class="float-right text-white cursor-pointer select-none" @click.prevent="showChat = !showChat">
+        {{ showChat ? 'Hide' : 'Show' }}
+      </div>
+      <!-- <span class="pull-right"></span> -->
     </div>
     <div class="panel-body chatbody overflow-y-auto" ref="messagesContainer">
-      <ChatBoxMessage
-        v-for="(message, index) in messages"
-        :key="`${index}-${message._id}`"
-        :message="message"
-      />
+      <template v-if="activeType === 'responder'">
+        <ChatBoxMessage
+          v-for="(message, index) in responderMessages"
+          :key="`${index}-${message._id}`"
+          :message="message"
+        />
+      </template>
+
+      <template v-if="activeType === 'user'">
+        <ChatBoxMessage
+          v-for="(message, index) in userMessages"
+          :key="`${index}-${message._id}`"
+          :message="message"
+        />
+      </template>
     </div>
     <div class="panel-footer">
       <form class="input-group" @submit.prevent="sendMessage">
@@ -44,8 +59,10 @@ export default {
   data() {
     return {
       showChat: true,
+      activeType: 'user',
       loadingSendMessage: false,
-      messages: [],
+      responderMessages: [],
+      userMessages: [],
       message: ""
     };
   },
@@ -62,41 +79,61 @@ export default {
         const ul = this.$refs.messagesContainer;
         ul.scrollTop = ul.scrollHeight;
       });
-    },
-    responderMessages() {},
-    reporterMessages() {}
+    }
   },
   methods: {
     initSocketListener() {
       this.$socket.on("new-message", message => {
         if (message.report === this.reportId) {
-          this.addMessage(message);
+          if (this.messageIsFromUser(message)) {
+            const messageExists = this.userMessages.find(item => item._id === message._id)
+            if (messageExists) {
+              return
+            }
+            this.userMessages.push(message)
+          }
+          if (this.messageIsFromResponder(message)) {
+            const messageExists = this.responderMessages.find(item => item._id === message._id)
+            if (messageExists) {
+              return
+            }
+            this.responderMessages.push(message)
+          }
         }
       });
+    },
+    switchType(type) {
+      this.activeType = type
     },
     getMessages() {
       this.$axios
         .$get(`/resolver/messages?reportId=${this.reportId}`)
         .then(response => {
-          this.messages = response.data;
+          this.userMessages = response.data.filter(message => this.messageIsFromUser(message))
+          this.responderMessages = response.data.filter(message => this.messageIsFromResponder(message))
         });
     },
-    addMessage(message) {
-      this.$nextTick(() => {
-        const alreadyExists = this.messages.find(
-          item => item._id === message._id
-        );
+    messageIsFromUser(message) {
+      if (message.sentTo === 'user' && message.sentAs === 'resolver') {
+        return true
+      }
 
-        if (alreadyExists) {
-          this.loadingSendMessage = false;
-          return;
-        }
+      if (message.sentAs === 'user' && message.sentTo === 'resolver') {
+        return true
+      }
 
-        setTimeout(() => {
-          this.messages.push(message);
-          this.loadingSendMessage = false;
-        }, 500);
-      });
+      return false
+    },
+    messageIsFromResponder(message) {
+      if (message.sentTo === 'responder' && message.sentAs === 'resolver') {
+        return true
+      }
+
+      if (message.sentAs === 'responder' && message.sentTo === 'resolver') {
+        return true
+      }
+
+      return false
     },
     sendMessage() {
       if (this.message.trim().length === 0) {
@@ -107,14 +144,25 @@ export default {
       this.$axios
         .$post("/resolver/messages", {
           content: this.message,
-          reportId: this.reportId
+          reportId: this.reportId,
+          sentTo: this.activeType
         })
         .then(response => {
+          this.pushMessage(response.data)
           this.message = "";
+          this.loadingSendMessage = false
         })
         .catch(error => {
           this.loadingSendMessage = false;
         });
+    },
+    pushMessage(message) {
+      if (this.messageIsFromUser(message)) {
+        this.userMessages.push(message)
+      }
+      if (this.messageIsFromResponder(message)) {
+        this.responderMessages.push(message)
+      }
     }
   }
 };
