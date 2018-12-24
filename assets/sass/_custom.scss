@@ -15,7 +15,7 @@
 }
 .main-content {
   min-height: 100vh;
-  padding: 70px 0;
+  padding: 30px 0;
   .news {
     .panel {
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -156,4 +156,35 @@
 }
 .box.checked svg {
   fill: #fff;
+}
+
+// CONTAINER-BOTTOM
+.container-bottom {
+  background-color: #f6f6f6;
+  padding: 40px 0;
+
+  .row {
+    display: flex;
+  }
+  
+  .left-content {
+    display: flex;
+    .panel-body {
+      padding: 60px 120px;
+    }
+    .btn.btnblue {
+      width: 100%;
+    }
+  }
+  .panel {
+    border-radius: 24px;
+  }
+  .right-content {
+    .panel-body {
+      padding: 40px;
+    }
+    textarea {
+      resize: none;
+    }
+  }
 }
