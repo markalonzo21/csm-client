@@ -2,7 +2,7 @@
   <div>
       <div class="ads mt30">
           <div class="container">
-              <img src="https://via.placeholder.com/1200x90.png?text=This+is+a+sample+ads" alt="" class="img-responsive mb20">
+              <img src="/img/wide-ads.png" alt="" class="img-responsive mb20">
           </div>
         </div>
     <section class="main-content">
