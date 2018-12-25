@@ -136,8 +136,8 @@
       >{{ role.createdAt ? $moment(role.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
       <template slot="operation" slot-scope="text, role, index">
         <a-button type="primary"  @click.prevent="showEditModal(role, index)">Edit</a-button>
-        <a-popconfirm title="Are you sure delete this role?" @confirm="deleteRole(role, index)" okText="Yes" cancelText="No">
-          <a-button type="danger" :disabled="!role.canDelete">Delete</a-button>
+        <a-popconfirm  title="Are you sure delete this role?" @confirm="deleteRole(role, index)" okText="Yes" cancelText="No">
+          <a-button type="danger" >Delete</a-button>
         </a-popconfirm>
       </template>
     </a-table>
@@ -329,6 +329,10 @@ export default {
       });
     },
     deleteRole(role, index) {
+      if (!role.canDelete) {
+        this.$message.error('This role can\'t be deleted.')
+      }
+
       if (! this.$store.getters['auth/hasPermission']('delete role')) {
         this.$message.error('You don\'t have the permission to delete a role.')
         return

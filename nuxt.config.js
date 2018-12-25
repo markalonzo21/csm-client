@@ -1,5 +1,6 @@
-import dotenv from 'dotenv'
 const pkg = require('./package')
+import path from 'path'
+import dotenv from 'dotenv'
 dotenv.config()
 
 module.exports = {
@@ -28,16 +29,13 @@ module.exports = {
    */
   css: [
     '~/assets/css/tailwind.css',
-    // '~/assets/css/antd.css',
+    '~/node_modules/ant-design-vue/dist/antd.css',
     '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
+    '~/assets/css/leaflet.css',
     {
       src: '~/assets/sass/app.scss',
       lang: 'sass'
     }
-    // {
-    //   src: '~/assets/less/antd.less',
-    //   lang: 'less'
-    // }
   ],
 
   /*
@@ -48,6 +46,7 @@ module.exports = {
     { src: '~/plugins/uiv.js', ssr: true },
     { src: '~/plugins/ant', ssr: true },
     { src: '~/plugins/vue-chance.js', ssr: false },
+    { src: '~/plugins/vue2-leaflet.js', ssr: false },
     { src: '~/plugins/vue2-leaflet-heatmap.js', ssr: false },
     { src: '~/plugins/socket', ssr: false },
     { src: '~/plugins/vue-geolocation', ssr: false },
@@ -61,7 +60,6 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/dotenv',
-    'nuxt-leaflet',
     '@nuxtjs/moment'
   ],
 
@@ -110,6 +108,27 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend (config, ctx) {}
+    extend(config, ctx) {
+      config.resolve.alias['./images/layers.png$'] = path.resolve(
+        __dirname,
+        'node_modules/leaflet/dist/images/layers.png'
+      )
+      config.resolve.alias['./images/layers-2x.png$'] = path.resolve(
+        __dirname,
+        'node_modules/leaflet/dist/images/layers-2x.png'
+      )
+      config.resolve.alias['./images/marker-icon.png$'] = path.resolve(
+        __dirname,
+        'node_modules/leaflet/dist/images/marker-icon.png'
+      )
+      config.resolve.alias['./images/marker-icon-2x.png$'] = path.resolve(
+        __dirname,
+        'node_modules/leaflet/dist/images/marker-icon-2x.png'
+      )
+      config.resolve.alias['./images/marker-shadow.png$'] = path.resolve(
+        __dirname,
+        'node_modules/leaflet/dist/images/marker-shadow.png'
+      )
+    }
   }
 }

@@ -141,16 +141,19 @@ export default {
   },
   computed: {
     heats() {
-      return this.reports
-        .filter(report => {
-          return report.location.coordinates[0] !== null;
-        })
-        .map(report => {
-          return [
-            report.location.coordinates[1],
-            report.location.coordinates[0]
-          ];
-        });
+      if (this.reports.length > 0) {
+        return this.reports
+          .filter(report => {
+            return report.location.coordinates[0] !== null;
+          })
+          .map(report => {
+            return [
+              report.location.coordinates[1],
+              report.location.coordinates[0]
+            ];
+          });
+      }
+      return [];
     }
   },
   mounted() {
@@ -171,7 +174,7 @@ export default {
         if (this.$refs.map) {
           this.maxBounds = new L.LatLngBounds(
             new L.LatLng(4.800675384778373, 104.94140625000001),
-            new L.LatLng(20.96143961409684, 138.99902343750003),
+            new L.LatLng(20.96143961409684, 138.99902343750003)
           );
 
           this.searchReports(null, "both");
@@ -210,7 +213,7 @@ export default {
       });
     },
     searchReports(type, resolvedOrUnresolved) {
-      this.loadingHeats = true
+      this.loadingHeats = true;
       this.$axios
         .$get(`/admin/reports/${type}/${resolvedOrUnresolved}`)
         .then(response => {

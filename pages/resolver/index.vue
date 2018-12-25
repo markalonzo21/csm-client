@@ -40,6 +40,9 @@ export default {
       return redirect("/");
     }
   },
+  mounted() {
+    console.log("mounted");
+  },
   computed: {
     areas() {
       return this.$auth.user.areas;
