@@ -20,10 +20,8 @@ export default {
   },
   computed: {
     isSender() {
-      const isUser =
-        this.$route.path.includes("report-tracker") ||
-        this.$route.path.includes("report-history");
-      return this.message.sentAs === "user" && isUser;
+      const isResolver = this.$route.path.includes("resolver");
+      return this.message.sentAs === "resolver" && isResolver;
     }
   }
 };

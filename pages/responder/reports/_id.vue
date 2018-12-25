@@ -80,16 +80,16 @@
         </div>
       </div>
     </div>
-    <ChatBox :reportId="report._id" :isResolved="report.resolvedAt !== null"/>
+    <ResponderChatBox :reportId="report._id" :isResolved="report.resolvedAt !== null"/>
   </div>
 </template>
 
 
 <script>
-import ChatBox from "~/components/ChatBox";
+import ResponderChatBox from "~/components/ResponderChatBox";
 export default {
   components: {
-    ChatBox
+    ResponderChatBox
   },
   async fetch({ store, error, params, redirect }) {
     if (!store.getters["auth/hasPermission"]("respond")) {
@@ -112,16 +112,16 @@ export default {
     }
   },
   mounted() {
-    this.initSocketListener()
+    this.initSocketListener();
   },
   beforeDestroy() {
-    this.$socket.off("report-resolved")
+    this.$socket.off("report-resolved");
   },
   methods: {
     initSocketListener() {
       this.$socket.on("report-resolved", report => {
-        this.$store.commit('responder/SET_REPORT', report)
-      })
+        this.$store.commit("responder/SET_REPORT", report);
+      });
     },
     markAsDone(milestone) {
       this.$store.dispatch("responder/markAsDone", milestone._id);

@@ -6,7 +6,7 @@
 
 <script>
 import { findRealParent, propsBinder, L } from "vue2-leaflet";
-import "Leaflet.heat/dist/leaflet-heat.js";
+import "leaflet.heat/dist/leaflet-heat.js";
 L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
   initialize: function(latlngs, options) {
     this._latlngs = latlngs;

@@ -5,7 +5,7 @@
       <span class="pull-right"></span>
     </div>
     <div class="panel-body chatbody overflow-y-auto" ref="messagesContainer">
-      <ChatBoxMessage
+      <ResponderChatBoxMessage
         v-for="(message, index) in messages"
         :key="`${index}-${message._id}`"
         :message="message"
@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import ChatBoxMessage from "./ChatBoxMessage";
+import ResponderChatBoxMessage from "./ResponderChatBoxMessage";
 
 export default {
   props: ["reportId", "isResolved"],
   components: {
-    ChatBoxMessage
+    ResponderChatBoxMessage
   },
   data() {
     return {
@@ -65,14 +65,16 @@ export default {
   },
   methods: {
     getMessages() {
-      this.$axios.$get(`/messages?reportId=${this.reportId}`).then(response => {
-        this.$socket.on("new-message", message => {
-          if (message.report === this.reportId) {
-            this.addMessage(message);
-          }
+      this.$axios
+        .$get(`/responder/messages?reportId=${this.reportId}`)
+        .then(response => {
+          this.$socket.on("new-message", message => {
+            if (message.report === this.reportId) {
+              this.addMessage(message);
+            }
+          });
+          this.messages = response.data;
         });
-        this.messages = response.data;
-      });
     },
     addMessage(message) {
       this.$nextTick(() => {
@@ -98,7 +100,7 @@ export default {
 
       this.loadingSendMessage = true;
       this.$axios
-        .$post("/messages", {
+        .$post("/responder/messages", {
           content: this.message,
           reportId: this.reportId
         })
