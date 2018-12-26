@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h3 class="mt-0">Create Area</h3>
     <div class="my-2">
       <a-input v-model="form.name" placeholder="Area Name" />
     </div>

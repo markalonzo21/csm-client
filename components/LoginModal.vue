@@ -40,7 +40,7 @@ export default {
     return {
       loading: false,
       form: {
-        email: "reporter1@gmail.com",
+        email: "admin@gmail.com",
         password: "123123123"
       }
     };

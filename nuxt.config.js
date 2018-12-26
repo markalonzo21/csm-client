@@ -1,6 +1,6 @@
-const pkg = require('./package')
 import path from 'path'
 import dotenv from 'dotenv'
+const pkg = require('./package')
 dotenv.config()
 
 module.exports = {
@@ -108,7 +108,7 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {
+    extend (config, ctx) {
       config.resolve.alias['./images/layers.png$'] = path.resolve(
         __dirname,
         'node_modules/leaflet/dist/images/layers.png'

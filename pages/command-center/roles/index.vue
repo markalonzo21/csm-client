@@ -1,64 +1,5 @@
 <template>
   <section class="w-full select-none" style="width: 100%">
-    <!-- CREATE MODAL -->
-    <modal v-model="isCreateRolesModalVisible" title="Create Roles" :footer="false">
-      <form style="max-height: 400px; overflow-y: auto;" @submit.prevent="createRole" class="clearfix">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Name" v-model="form.name" required>
-        </div>
-         <!-- <div class="form-group">
-          <textarea
-            cols="30" rows="10"
-            class="form-control"
-            placeholder="Description"
-            v-model="form.description"
-          ></textarea>
-        </div> -->
-        <div class="form-group">
-          <label class="control-label col-sm-2"
-                 for="pwd">Permissions:</label>
-
-          <div class="col-sm-10">
-            <div class="row">
-              <div class="col-md-10"
-                   v-for="(category, index) in categories"
-                   :key="`category-${index}`"
-                   style="user-select: none;">
-                <ul class="list-group">
-                  <li class="list-group-item"
-                      style="padding-bottom: 5px; border: none;">
-                    <input type="checkbox"
-                           :id="`${category}-${index}`"
-                           :value="category"
-                           @change="toggleCategory">
-                    <label class="text-capitalize"
-                           :for="`${category}-${index}`">
-                      {{ category }}
-                    </label>
-                  </li>
-
-                  <li v-for="(permission, key) in permissions.filter(permission => permission.category === category)"
-                      :key="`${permission._id}`"
-                      class="list-group-item">
-                    <input type="checkbox"
-                           :id="`${permission._id}-${key}`"
-                           v-model="form.permissions"
-                           :value="permission._id"> &nbsp;
-                    <label :for="`${permission._id}-${key}`"
-                           class="text-capitalize">{{ permission.name }}</label>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-        <button
-          class="btn btn-primary float-right"
-          :disabled="loadingCreateRole"
-        >{{ loadingCreateRole ? 'Loading' : 'Save' }}</button>
-      </form>
-    </modal>
     <!-- EDIT MODAL -->
     <modal v-model="isEditModalVisible" title="Edit Role" :footer="false">
       <form style="max-height: 400px; overflow-y: auto;" @submit.prevent="updateRole" class="clearfix">
@@ -123,7 +64,7 @@
       <a-button
         type="primary"
         class="float-right my-6"
-        @click.prevent="isCreateRolesModalVisible = true"
+        @click.prevent="$router.push('/command-center/roles/create')"
       >Create Role</a-button>
     </div>
     <hr>
@@ -150,7 +91,6 @@ export default {
   layout: "command-center",
   data() {
     return {
-      isCreateRolesModalVisible: false,
       loadingGetRoles: false,
       permissions: [],
       roles: [],
@@ -172,11 +112,6 @@ export default {
           scopedSlots: { customRender: "operation" }
         }
       ],
-      form: {
-        name: "",
-        description: "",
-        permissions: []
-      },
       isEditModalVisible: false,
       editForm: {
         id: null,
@@ -186,6 +121,13 @@ export default {
         permissions: []
       }
     };
+  },
+  computed: {
+    categories() {
+      return this.permissions
+        .map(permission => permission.category)
+        .filter((v, i, a) => a.indexOf(v) === i)
+    }
   },
   watch: {
     isEditModalVisible(value) {
@@ -198,17 +140,9 @@ export default {
         }
       }
   },
-  computed: {
-    categories() {
-      return this.permissions
-        .map(permission => permission.category)
-        .filter((v, i, a) => a.indexOf(v) === i)
-    },
-  },
   mounted() {
     this.getPermissions();
     this.getRoles();
-    this.generateFakeData();
   },
   methods: {
     showEditModal(role, index) {
@@ -218,10 +152,6 @@ export default {
       this.editForm.name = role.name
       this.editForm.description = role.description
       this.editForm.permissions = role.permissions.map(permission => permission._id)
-    },
-    generateFakeData() {
-      this.form.name = "";
-      this.form.description = "";
     },
     getPermissions() {
       this.$axios.$get("/admin/permissions").then(response => {
@@ -234,33 +164,6 @@ export default {
         this.roles = response.data;
         this.loadingGetRoles = false;
       });
-    },
-    toggleCategory(event) {
-      const value = event.target.value
-      const isChecked = event.target.checked
-
-      const permissions = this.permissions.filter(
-        permission => permission.category === value
-      )
-
-      if (!isChecked) {
-        permissions.forEach(permission => {
-          const exists = this.form.permissions.findIndex(id => {
-            return id === permission._id
-          })
-          if (exists !== -1) {
-            this.form.permissions.splice(exists, 1)
-          }
-        })
-        return
-      }
-
-      permissions.forEach(permission => {
-        if (this.form.permissions.includes(permission._id)) {
-          return
-        }
-        this.form.permissions.push(permission._id)
-      })
     },
     toggleEditCategory(event) {
       const value = event.target.value
@@ -288,19 +191,6 @@ export default {
         }
         this.editForm.permissions.push(permission._id)
       })
-    },
-    createRole() {
-      this.loadingCreateRole = true;
-      this.$axios.$post("/admin/roles", this.form).then(response => {
-        window.location.reload()
-        // this.generateFakeData();
-        // this.form.name = ''
-        // this.form.description = ''
-        // this.form.permissions = []
-        // this.roles.push(response.data);
-        // this.loadingCreateRole = false;
-        // this.isCreateRolesModalVisible = false;
-      });
     },
     updateRole() {
       if (! this.$store.getters['auth/hasPermission']('update role')) {
