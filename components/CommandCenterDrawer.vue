@@ -13,37 +13,96 @@
       :style="{ height: '100%', borderRight: 0 }"
       theme="dark"
     >
-      <template
-        v-for="item in list"
-        v-if="$store.getters['auth/hasPermission'](item.permissionNeeded)"
+      <a-menu-item
+        key="/command-center"
+        :class="{ 'ant-menu-item-selected': $route.path === '/command-center' }"
+        v-if="$store.getters['auth/hasPermission']('view command center')"
       >
-        <a-menu-item
-          v-if="!item.children"
-          :key="item.link"
-          :class="{ 'ant-menu-item-selected': $route.path === item.link }"
-        >
-          <router-link :to="item.link" v-if="item.link">
-            <a-icon :type="item.icon"/>
-            <span>{{item.title}}</span>
-          </router-link>
-          <template v-else>
-            <a-icon :type="item.icon"/>
-            <span>{{item.title}}</span>
-          </template>
-        </a-menu-item>
-        <a-sub-menu :key="item.link" v-else>
-          <span slot="title">
-            <a-icon :type="item.icon"/>
-            <span>{{ item.title }}</span>
-          </span>
-          <a-menu-item :key="child.link" v-for="child in item.children">
-            <router-link :to="child.link" v-if="child.link">
-              <a-icon :type="child.icon"/>
-              <span>{{child.title}}</span>
-            </router-link>
-          </a-menu-item>
-        </a-sub-menu>
-      </template>
+        <router-link to="/command-center">
+          <a-icon type="dashboard"/>
+          <span>Dashboard</span>
+        </router-link>>
+      </a-menu-item>
+      <a-menu-item
+        key="/command-center/roles"
+        :class="{ 'ant-menu-item-selected': $route.path === '/command-center/roles' }"
+        v-if="$store.getters['auth/hasPermission']('view roles')"
+      >
+        <router-link to="/command-center/roles">
+          <a-icon type="bars"/>
+          <span>Roles</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item
+        key="/command-center/users"
+        :class="{ 'ant-menu-item-selected': $route.path === '/command-center/users' }"
+        v-if="$store.getters['auth/hasPermission']('view users')"
+      >
+        <router-link to="/command-center/users">
+          <a-icon type="bars"/>
+          <span>Users</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item
+        key="/command-center/areas"
+        :class="{ 'ant-menu-item-selected': $route.path === '/command-center/areas' }"
+        v-if="$store.getters['auth/hasPermission']('view areas') || $store.getters['auth/hasSpecificArea']"
+      >
+        <router-link to="/command-center/areas">
+          <a-icon type="bars"/>
+          <span>Areas</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item
+        key="/command-center/reports"
+        :class="{ 'ant-menu-item-selected': $route.path === '/command-center/reports' }"
+        v-if="$store.getters['auth/hasPermission']('view reports')"
+      >
+        <router-link to="/command-center/reports">
+          <a-icon type="bars"/>
+          <span>Reports</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item
+        key="/command-center/report-categories"
+        :class="{ 'ant-menu-item-selected': $route.path === '/command-center/report-categories' }"
+        v-if="$store.getters['auth/hasPermission']('view report categories')"
+      >
+        <router-link to="/command-center/report-categories">
+          <a-icon type="bars"/>
+          <span>Report Categories</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item
+        key="/command-center/report-types"
+        :class="{ 'ant-menu-item-selected': $route.path === '/command-center/report-types' }"
+        v-if="$store.getters['auth/hasPermission']('view report types')"
+      >
+        <router-link to="/command-center/report-types">
+          <a-icon type="bars"/>
+          <span>Report Types</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item
+        key="/command-center/response-types"
+        :class="{ 'ant-menu-item-selected': $route.path === '/command-center/response-types' }"
+        v-if="$store.getters['auth/hasPermission']('view response types')"
+      >
+        <router-link to="/command-center/response-types">
+          <a-icon type="bars"/>
+          <span>Response Types</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item
+        key="/command-center/advertisements"
+        :class="{ 'ant-menu-item-selected': $route.path === '/command-center/advertisements' }"
+        v-if="$store.getters['auth/hasPermission']('view advertisements')"
+      >
+        <router-link to="/command-center/advertisements">
+          <a-icon type="bars"/>
+          <span>Advertisements</span>
+        </router-link>
+      </a-menu-item>
     </a-menu>
     </a-drawer>
   </div>
@@ -64,62 +123,6 @@ export default {
   data() {
     return {
       list: [
-        {
-          title: "Dashboard",
-          icon: "dashboard",
-          link: "/command-center",
-          permissionNeeded: "view command center"
-        },
-
-        {
-          title: "Roles",
-          icon: "bars",
-          link: "/command-center/roles",
-          permissionNeeded: "view roles"
-        },
-        {
-          title: "Users",
-          icon: "bars",
-          link: "/command-center/users",
-          permissionNeeded: "view users"
-        },
-        {
-          title: "Areas",
-          icon: "bars",
-          link: "/command-center/areas",
-          permissionNeeded: "view areas"
-        },
-        {
-          title: "Reports",
-          icon: "bars",
-          link: "/command-center/reports",
-          permissionNeeded: "view reports"
-        },
-        {
-          title: "Report Categories",
-          icon: "bars",
-          link: "/command-center/report-categories",
-          permissionNeeded: "view report categories"
-        },
-        {
-          title: "Report Types",
-          icon: "bars",
-          link: "/command-center/report-types",
-          permissionNeeded: "view report types"
-        },
-        {
-          title: "Response Types",
-          icon: "bars",
-          link: "/command-center/response-types",
-          permissionNeeded: "view response types"
-        },
-        {
-          title: "Advertisements",
-          icon: "bars",
-          link: "/command-center/advertisements",
-          permissionNeeded: "view advertisements"
-        }
-
         // {
         //   title: "Resolvers",
         //   icon: "bars",

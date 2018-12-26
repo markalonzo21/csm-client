@@ -1,8 +1,7 @@
 <template>
-  <div style="height: 380px; width: 100%; " v-if="!loading">
+  <div style="height: 380px; width: 100%;">
     <l-map
       :center="center"
-      :maxBounds="maxBounds"
       :zoom="zoom"
       :minZoom="minZoom"
       :maxZoom="maxZoom"
@@ -22,13 +21,6 @@
 <script>
 export default {
   props: ['area', 'reports'],
-  mounted() {
-    this.$nextTick(() => {
-      if (this.area) {
-        this.assignInitialValue()
-      }
-    })
-  },
   data() {
     return {
       loading: true,
@@ -40,33 +32,44 @@ export default {
       maxBoundsViscosity: 1.0
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      if (this.area) {
+        this.assignInitialValue()
+      }
+    })
+  },
   methods: {
     assignInitialValue() {
       const lIsAvailable = setInterval(() => {
-        if (L) {
-          this.zoom = this.area.minZoom
-          this.minZoom = this.area.minZoom
-          this.maxZoom = this.area.maxZoom
+        this.$nextTick(() => {
+          console.log(this.$refs.map, L)
+          if (L && this.$refs.map) {
+            this.zoom = this.area.minZoom
+            this.minZoom = this.area.minZoom
+            this.maxZoom = this.area.maxZoom
 
-          this.maxBounds = L.latLngBounds(
-            L.latLng(
-              this.area.location.coordinates[0][1],
-              this.area.location.coordinates[0][0]
-            ),
-            L.latLng(
-              this.area.location.coordinates[1][1],
-              this.area.location.coordinates[1][0]
+            console.log(L)
+            this.maxBounds = L.latLngBounds(
+              L.latLng(
+                this.area.location.coordinates[0][1],
+                this.area.location.coordinates[0][0]
+              ),
+              L.latLng(
+                this.area.location.coordinates[1][1],
+                this.area.location.coordinates[1][0]
+              )
             )
-          )
 
-          this.center = [
-            this.maxBounds.getCenter().lat,
-            this.maxBounds.getCenter().lng
-          ]
-          this.loading = false
+            this.center = [
+              this.maxBounds.getCenter().lat,
+              this.maxBounds.getCenter().lng
+            ]
+            this.loading = false
 
-          clearInterval(lIsAvailable)
-        }
+            clearInterval(lIsAvailable)
+          }
+        })
       }, 100)
     }
   }

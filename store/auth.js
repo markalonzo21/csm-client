@@ -4,35 +4,40 @@ export const getters = {
       return true
     }
 
-    return Boolean(
-      state.user.role.permissions.find(
-        permission => permission.name === permissionName
-      )
+    return state.user.role.permissions.some(
+      permission => permission.name === permissionName
     )
+  },
+  hasSpecificArea (state) {
+    if (state.user) {
+      return state.user.role.permissions.some(permission => {
+        return permission.category === 'specific area management'
+      })
+    }
   }
 }
 
 export const actions = {
-  logout({ commit }) {
+  logout ({ commit }) {
     // commit('LOGOUT_USER')
     this.$auth.logout().then(() => {
+      window.location.href = '/'
       this.$socket.disconnect()
       // this.$router.replace('/')
-      window.location.href = '/'
     })
   }
 }
 
 export const mutations = {
-  LOGOUT_USER(state) {
+  LOGOUT_USER (state) {
     // state.strategy = 'local'
     window.location.href = '/'
   },
-  SET_USER(state, user) {
+  SET_USER (state, user) {
     console.log(user)
     state.user = user
   },
-  ADD_AREA(state, area) {
+  ADD_AREA (state, area) {
     state.user.areas.push(area)
   }
 }

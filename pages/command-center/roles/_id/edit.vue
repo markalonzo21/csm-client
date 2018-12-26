@@ -47,6 +47,7 @@
           loadingUpdateRole: false,
           permissions: permissions.data,
           form: {
+            id: role.data._id,
             name: role.data.name,
             description: role.data.description,
             permissions: role.data.permissions.map(permission => permission._id)
@@ -91,9 +92,10 @@
           return
         }
 
-        this.$axios.$post("/admin/roles", this.form).then(response => {
+        this.loadingUpdateRole = true;
+        this.$axios.$patch(`/admin/roles/${this.form.id}`, this.form).then(response => {
           this.$router.push('/command-center/roles')
-        });
+        })
       },
     }
   }

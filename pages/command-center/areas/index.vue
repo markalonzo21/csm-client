@@ -14,7 +14,7 @@
     <a-table :loading="loadingGetAreas" bordered :dataSource="dataSource" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary">
-          <router-link :to="`/command-center/areas/${record._id}`">Show</router-link>
+          <router-link :to="`/command-center/areas/${record.name}`">Show</router-link>
         </a-button>
       </template>
     </a-table>
@@ -25,9 +25,10 @@
 export default {
   layout: "command-center",
   asyncData({ store, redirect }) {
-    if (!store.getters["auth/hasPermission"]("view areas")) {
-      return redirect("/");
+    if (store.getters["auth/hasPermission"]("view areas") || store.getters["auth/hasSpecificArea"]) {
+      return
     }
+    return redirect("/");
   },
   data() {
     return {

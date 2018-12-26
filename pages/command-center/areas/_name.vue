@@ -1,8 +1,10 @@
 <template>
-  <div v-if="!loading && area">
+  <div >
     <div class="col-md-6">
       <h4>{{ area.name }}</h4>
-      <AreaMap :area="area"/>
+      <no-ssr>
+        <AreaMap :area="area"/>
+      </no-ssr>
     </div>
     <a-modal title="Add Area User" v-model="isAddModalVisible" @ok="handleSave">
       <a-form :layout="'vertical'">
@@ -57,20 +59,43 @@ export default {
   components: {
     AreaMap: AreaMap
   },
-  asyncData({ store, redirect }) {
-    if (!store.getters["auth/hasPermission"]("view areas")) {
-      return redirect("/");
+  asyncData({ $axios, store, redirect, params }) {
+    const hasAccessToThisArea = store.state.auth.user.role.permissions.some(
+      permission => permission.name === params.name
+    )
+
+
+    if (store.getters["auth/hasPermission"]("view areas")) {
+        return $axios.$get(`/admin/areas/${params.name}`).then(response => {
+            return {
+              area: response.data.area,
+              resolvers: response.data.resolvers,
+              responders: response.data.responders,
+              allAvailableUsers: response.data.allAvailableUsers,
+              form: {
+                area: params.name
+              }
+            }
+          });
+        }
+
+        if (hasAccessToThisArea) {
+          return $axios.$get(`/admin/areas/${params.name}`).then(response => {
+            return {
+              area: response.data.area,
+              resolvers: response.data.resolvers,
+              responders: response.data.responders,
+              allAvailableUsers: response.data.allAvailableUsers,
+              form: {
+                area: params.name
+              }
+            }
+          });
     }
+
+    return redirect("/");
   },
   mounted() {
-    this.$axios.$get(`/admin/areas/${this.$route.params.id}`).then(response => {
-      this.area = response.data.area;
-      this.resolvers = response.data.resolvers;
-      this.responders = response.data.responders;
-      this.allAvailableUsers = response.data.allAvailableUsers;
-      this.form.area = this.$route.params.id;
-    });
-
     this.$nextTick(() => {
       this.assignInitialValue();
     });
@@ -130,6 +155,7 @@ export default {
     assignInitialValue() {
       const lIsAvailable = setInterval(() => {
         if (L) {
+          clearInterval(lIsAvailable);
           this.loading = false;
         }
       }, 100);
