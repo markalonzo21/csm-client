@@ -14,6 +14,24 @@
              :type="isDrawerVisible ? 'menu-fold' : 'menu-unfold'"
            />
         </a-menu-item>
+        <a-dropdown :trigger="['click']" class="float-right text-white hover:text-grey">
+          <a class="ant-dropdown-link" href="#">
+            {{ $auth.user.email }}
+            <a-icon type="down"/>
+          </a>
+
+          <a-menu slot="overlay">
+            <a-menu-item key="0" v-if="$store.getters['auth/hasPermission']('resolve')">
+              <router-link to="/resolver">Resolver Dashboard</router-link>
+            </a-menu-item>
+            <a-menu-item key="1" v-if="$store.getters['auth/hasPermission']('respond')">
+              <router-link to="/responder">Responder Dashboard</router-link>
+            </a-menu-item>
+            <a-menu-item key="2">
+              <a @click.prevent="$store.dispatch('auth/logout')">Log Out</a>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
       </a-menu>
     </a-layout-header>
     <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
