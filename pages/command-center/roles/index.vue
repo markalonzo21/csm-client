@@ -76,10 +76,15 @@
         slot-scope="text, role"
       >{{ role.createdAt ? $moment(role.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
       <template slot="operation" slot-scope="text, role, index">
-        <a-button type="primary"  @click.prevent="showEditModal(role, index)">Edit</a-button>
-        <a-popconfirm  title="Are you sure delete this role?" @confirm="deleteRole(role, index)" okText="Yes" cancelText="No">
-          <a-button type="danger" >Delete</a-button>
-        </a-popconfirm>
+        <div v-if="!role.canDelete">
+          Unactionable
+        </div>
+        <div v-else>
+          <a-button type="primary" @click.prevent="$router.push(`/command-center/roles/${role._id}/edit`)" :disabled="!role.canDelete">Edit</a-button>
+          <a-popconfirm  title="Are you sure delete this role?" @confirm="deleteRole(role, index)" okText="Yes" cancelText="No">
+            <a-button type="danger">Delete</a-button>
+          </a-popconfirm>
+        </div>
       </template>
     </a-table>
   </section>
@@ -221,6 +226,7 @@ export default {
     deleteRole(role, index) {
       if (!role.canDelete) {
         this.$message.error('This role can\'t be deleted.')
+        return
       }
 
       if (! this.$store.getters['auth/hasPermission']('delete role')) {

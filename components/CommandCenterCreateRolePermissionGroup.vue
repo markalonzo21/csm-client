@@ -24,6 +24,9 @@
         checkAll: false
       }
     },
+    mounted() {
+      this.checkedList = this.permissions.filter(permission => this.selectedPermissions.includes(permission._id)).map(permission => permission.name)
+    },
     watch: {
       checkedList(newValues, oldValues) {
         this.$emit('removePermissions', oldValues)

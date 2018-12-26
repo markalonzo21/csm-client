@@ -6,7 +6,7 @@
     </div>
     <div class="form-group">
       <h5 class="font-bold">Permissions</h5>
-      <CommandCenterUpdateRolePermissionGroup
+      <CommandCenterCreateRolePermissionGroup
         v-if="categories"
         v-for="(category, index) in categories"
         :permissions="permissions"
@@ -33,21 +33,27 @@
     components: {
       CommandCenterCreateRolePermissionGroup
     },
-    asyncData({ $axios, store, redirect }) {
+    asyncData({ $axios, store, redirect, params }) {
       if (!store.getters["auth/hasPermission"]("update role")) {
         return redirect("/");
       }
 
-      return $axios.$get("/admin/permissions").then(response => {
+      const getPermissions = $axios.$get("/admin/permissions")
+      const getRole = $axios.$get(`/admin/roles/${params.id}`)
+
+      return Promise.all([getPermissions, getRole]).then(([permissions, role]) => {
+
         return {
           loadingUpdateRole: false,
-          permissions:  response.data,
+          permissions: permissions.data,
           form: {
-            name: "",
-            description: "",
-            permissions: []
+            name: role.data.name,
+            description: role.data.description,
+            permissions: role.data.permissions.map(permission => permission._id)
           }
         }
+      }).catch(err => {
+        console.log(err)
       })
     },
     computed: {
