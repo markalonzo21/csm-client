@@ -1,10 +1,23 @@
 <template>
-  <div >
+  <div>
     <div class="col-md-6">
       <h4>{{ area.name }}</h4>
-      <no-ssr>
-        <AreaMap :area="area"/>
-      </no-ssr>
+      <div style="height: 380px; width: 100%;">
+        <no-ssr>
+          <l-map
+            v-if="center.length > 0"
+            :center="center"
+            :zoom="zoom"
+            :minZoom="minZoom"
+            :maxZoom="maxZoom"
+            :maxBounds="maxBounds"
+            :maxBoundsViscosity="maxBoundsViscosity"
+            ref="map"
+          >
+            <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+          </l-map>
+        </no-ssr>
+      </div>
     </div>
     <a-modal title="Add Area User" v-model="isAddModalVisible" @ok="handleSave">
       <a-form :layout="'vertical'">
@@ -53,44 +66,51 @@
 </template>
 
 <script>
-import AreaMap from "~/components/AreaMap";
 export default {
   layout: "command-center",
-  components: {
-    AreaMap: AreaMap
-  },
   asyncData({ $axios, store, redirect, params }) {
     const hasAccessToThisArea = store.state.auth.user.role.permissions.some(
       permission => permission.name === params.name
-    )
-
+    );
 
     if (store.getters["auth/hasPermission"]("view areas")) {
-        return $axios.$get(`/admin/areas/${params.name}`).then(response => {
-            return {
-              area: response.data.area,
-              resolvers: response.data.resolvers,
-              responders: response.data.responders,
-              allAvailableUsers: response.data.allAvailableUsers,
-              form: {
-                area: params.name
-              }
-            }
-          });
-        }
+      return $axios.$get(`/admin/areas/${params.name}`).then(response => {
+        return {
+          area: response.data.area,
+          resolvers: response.data.resolvers,
+          responders: response.data.responders,
+          allAvailableUsers: response.data.allAvailableUsers,
+          form: {
+            area: params.name
+          },
+          center: [14.53116, 121.04653],
+          zoom: 13,
+          minZoom: 13,
+          maxZoom: 18,
+          maxBounds: [],
+          maxBoundsViscosity: 1.0
+        };
+      });
+    }
 
-        if (hasAccessToThisArea) {
-          return $axios.$get(`/admin/areas/${params.name}`).then(response => {
-            return {
-              area: response.data.area,
-              resolvers: response.data.resolvers,
-              responders: response.data.responders,
-              allAvailableUsers: response.data.allAvailableUsers,
-              form: {
-                area: params.name
-              }
-            }
-          });
+    if (hasAccessToThisArea) {
+      return $axios.$get(`/admin/areas/${params.name}`).then(response => {
+        return {
+          area: response.data.area,
+          resolvers: response.data.resolvers,
+          responders: response.data.responders,
+          allAvailableUsers: response.data.allAvailableUsers,
+          form: {
+            area: params.name
+          },
+          center: [14.53116, 121.04653],
+          zoom: 13,
+          minZoom: 13,
+          maxZoom: 18,
+          maxBounds: [],
+          maxBoundsViscosity: 1.0
+        };
+      });
     }
 
     return redirect("/");
@@ -154,9 +174,29 @@ export default {
   methods: {
     assignInitialValue() {
       const lIsAvailable = setInterval(() => {
-        if (L) {
-          clearInterval(lIsAvailable);
+        if (L && this.$refs.map) {
+          this.zoom = this.area.minZoom;
+          this.minZoom = this.area.minZoom;
+          this.maxZoom = this.area.maxZoom;
+
+          this.maxBounds = L.latLngBounds(
+            L.latLng(
+              this.area.location.coordinates[0][1],
+              this.area.location.coordinates[0][0]
+            ),
+            L.latLng(
+              this.area.location.coordinates[1][1],
+              this.area.location.coordinates[1][0]
+            )
+          );
+
+          this.center = [
+            this.maxBounds.getCenter().lat,
+            this.maxBounds.getCenter().lng
+          ];
           this.loading = false;
+
+          clearInterval(lIsAvailable);
         }
       }, 100);
     },

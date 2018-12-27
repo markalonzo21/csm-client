@@ -47,7 +47,7 @@ module.exports = {
     { src: '~/plugins/ant', ssr: true },
     { src: '~/plugins/vue-chance.js', ssr: false },
     { src: '~/plugins/vue2-leaflet.js', ssr: false },
-    // { src: '~/plugins/vue2-leaflet-heatmap.js', ssr: false },
+    { src: '~/plugins/vue2-leaflet-heatmap.js', ssr: false },
     { src: '~/plugins/socket', ssr: false },
     { src: '~/plugins/vue-geolocation', ssr: false },
     { src: '~/plugins/leaflet-draw', ssr: false }
@@ -108,26 +108,10 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend (config, ctx) {
-      config.resolve.alias['./images/layers.png$'] = path.resolve(
+    extend(config, ctx) {
+      config.resolve.alias['leaflet'] = path.join(
         __dirname,
-        'node_modules/leaflet/dist/images/layers.png'
-      )
-      config.resolve.alias['./images/layers-2x.png$'] = path.resolve(
-        __dirname,
-        'node_modules/leaflet/dist/images/layers-2x.png'
-      )
-      config.resolve.alias['./images/marker-icon.png$'] = path.resolve(
-        __dirname,
-        'node_modules/leaflet/dist/images/marker-icon.png'
-      )
-      config.resolve.alias['./images/marker-icon-2x.png$'] = path.resolve(
-        __dirname,
-        'node_modules/leaflet/dist/images/marker-icon-2x.png'
-      )
-      config.resolve.alias['./images/marker-shadow.png$'] = path.resolve(
-        __dirname,
-        'node_modules/leaflet/dist/images/marker-shadow.png'
+        'node_modules/leaflet'
       )
     }
   }
