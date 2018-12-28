@@ -1,39 +1,19 @@
 <template>
   <section class="admin container-fluid">
     <!-- <h1 class="title__black--large">Dashboard</h1> -->
-    <h3 style="margin-top: 0;">Today {{ $moment().format('MMM DD, YYYY') }}</h3>
+    <h3 style="margin-top: 0;">As of {{ $moment().format('MMM DD, YYYY') }}</h3>
     <div class="row">
       <div class="col-md-3">
-        <div class="panel">
-          <div class="panel-body">
-            <h2 class="title__white--large" v-text="dashboardDetails.registeredReporters">300</h2>
-            <span class="title__white--mid">REGISTERED REPORTERS</span>
-          </div>
-        </div>
+        <TotalReportsCard/>
       </div>
       <div class="col-md-3">
-        <div class="panel">
-          <div class="panel-body invert-gradient">
-            <h2 class="title__white--large" v-text="dashboardDetails.unassignedReports">15</h2>
-            <span class="title__white--mid">UNASSIGNED REPORTS</span>
-          </div>
-        </div>
+        <ResolvedReportsCard/>
       </div>
       <div class="col-md-3">
-        <div class="panel">
-          <div class="panel-body">
-            <h2 class="title__white--large" v-text="dashboardDetails.ongoingReports">300</h2>
-            <span class="title__white--mid">ON GOING REPORTS</span>
-          </div>
-        </div>
+        <UnresolvedReportsCard/>
       </div>
       <div class="col-md-3">
-        <div class="panel">
-          <div class="panel-body invert-gradient">
-            <h2 class="title__white--large" v-text="dashboardDetails.availableResponders">300</h2>
-            <span class="title__white--mid">AVAILABLE RESPONDERS</span>
-          </div>
-        </div>
+        <CancelledReportsCard/>
       </div>
     </div>
     <div class="row mt-5">
@@ -100,8 +80,18 @@
 </template>
 
 <script>
+import TotalReportsCard from '~/components/DashboardCards/TotalReportsCard'
+import ResolvedReportsCard from '~/components/DashboardCards/ResolvedReportsCard'
+import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReportsCard'
+import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
 export default {
   layout: "command-center",
+  components: {
+    TotalReportsCard,
+    ResolvedReportsCard,
+    UnresolvedReportsCard,
+    CancelledReportsCard,
+  },
   data() {
     return {
       loadingHeats: true,
@@ -226,20 +216,6 @@ export default {
 </script>
 
 <style scoped>
-.panel-body {
-  background-image: linear-gradient(to right, #354fa3, #34c3e5);
-  color: white;
-  border-radius: 0.5rem;
-}
-.invert-gradient {
-  background-image: linear-gradient(to right, #34c3e5, #354fa3) !important;
-}
-.panel-footer {
-  border: none;
-  background-image: inherit;
-  font-weight: bold;
-}
-
 h3 {
   margin-top: 0;
 }

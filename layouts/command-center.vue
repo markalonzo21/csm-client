@@ -41,7 +41,7 @@
           >{{ crumb.text.replace('-', ' ') }}</router-link>
         </a-breadcrumb-item>
       </a-breadcrumb>
-      <div :style="{ background: '#fff', padding: '24px', minHeight: '81vh' }">
+      <div :style="{ background: '#fff', padding: '24px', minHeight: '81vh', height: 'auto', overflow: 'hidden' }">
         <nuxt/>
       </div>
     </a-layout-content>

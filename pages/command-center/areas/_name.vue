@@ -1,7 +1,21 @@
 <template>
   <div>
+    <h4>{{ area.name }}</h4>
+    <div class="row">
+      <div class="col-md-3">
+        <TotalReportsCard/>
+      </div>
+      <div class="col-md-3">
+        <ResolvedReportsCard/>
+      </div>
+      <div class="col-md-3">
+        <UnresolvedReportsCard/>
+      </div>
+      <div class="col-md-3">
+        <CancelledReportsCard/>
+      </div>
+    </div>
     <div class="col-md-6">
-      <h4>{{ area.name }}</h4>
       <div style="height: 380px; width: 100%;">
         <no-ssr>
           <l-map
@@ -66,8 +80,18 @@
 </template>
 
 <script>
+import TotalReportsCard from '~/components/DashboardCards/TotalReportsCard'
+import ResolvedReportsCard from '~/components/DashboardCards/ResolvedReportsCard'
+import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReportsCard'
+import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
 export default {
   layout: "command-center",
+  components: {
+    TotalReportsCard,
+    ResolvedReportsCard,
+    UnresolvedReportsCard,
+    CancelledReportsCard,
+  },
   asyncData({ $axios, store, redirect, params }) {
     const hasAccessToThisArea = store.state.auth.user.role.permissions.some(
       permission => permission.name === params.name
@@ -81,7 +105,9 @@ export default {
           responders: response.data.responders,
           allAvailableUsers: response.data.allAvailableUsers,
           form: {
-            area: params.name
+            areaId: params._id,
+            user: '',
+            role: 'resolver'
           },
           center: [14.53116, 121.04653],
           zoom: 13,
@@ -229,7 +255,7 @@ export default {
 
           this.form.role = "resolver";
           this.form.user = "";
-          this.form.area = null;
+          this.form.areaId = null;
 
           this.isAddModalVisible = false;
         });
