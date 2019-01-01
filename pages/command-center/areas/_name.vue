@@ -80,17 +80,17 @@
 </template>
 
 <script>
-import TotalReportsCard from '~/components/DashboardCards/TotalReportsCard'
-import ResolvedReportsCard from '~/components/DashboardCards/ResolvedReportsCard'
-import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReportsCard'
-import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
+import TotalReportsCard from "~/components/DashboardCards/TotalReportsCard";
+import ResolvedReportsCard from "~/components/DashboardCards/ResolvedReportsCard";
+import UnresolvedReportsCard from "~/components/DashboardCards/UnresolvedReportsCard";
+import CancelledReportsCard from "~/components/DashboardCards/CancelledReportsCard";
 export default {
   layout: "command-center",
   components: {
     TotalReportsCard,
     ResolvedReportsCard,
     UnresolvedReportsCard,
-    CancelledReportsCard,
+    CancelledReportsCard
   },
   asyncData({ $axios, store, redirect, params }) {
     const hasAccessToThisArea = store.state.auth.user.role.permissions.some(
@@ -106,8 +106,8 @@ export default {
           allAvailableUsers: response.data.allAvailableUsers,
           form: {
             areaId: params._id,
-            user: '',
-            role: 'resolver'
+            user: "",
+            role: "resolver"
           },
           center: [14.53116, 121.04653],
           zoom: 13,
@@ -240,7 +240,8 @@ export default {
           const canRespond = user.role.permissions.find(
             permission => permission.name === "respond"
           );
-          const selectedUserIsYou = user._id === this.$auth.user._id;
+          const selectedUserIsYou =
+            user._id === this.$store.state.auth.user._id;
           if (canResolve) {
             this.resolvers.push(response.data);
           }

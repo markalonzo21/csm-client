@@ -55,17 +55,41 @@ export default {
             password: this.form.password
           }
         })
-        .then(response => {
+        .then(() => {
           this.loading = false;
-          if (this.$store.getters["auth/canAccessCommandCenter"]) {
-            window.location.href = `/command-center`;
-          } else if (this.$auth.user.role.slug === "responder") {
-            window.location.href = "/responder";
-          } else {
-            window.location.href = "/";
+          const permissions = this.$store.state.auth.user.role.permissions;
+          let redirectToHome = true;
+          for (let index = 0; index < permissions.length; index++) {
+            const permission = permissions[index];
+
+            if (permission.name === "view command center") {
+              redirectToHome = false;
+              this.$router.push(`/command-center`);
+              break;
+            }
+
+            if (permission.name === "resolve") {
+              redirectToHome = false;
+              this.$router.push("/resolver");
+              break;
+            }
+
+            if (permission.name === "respond") {
+              redirectToHome = false;
+              this.$router.push("/responder");
+              break;
+            }
           }
+
+          if (redirectToHome) {
+            this.$router.push("/");
+          }
+
+          this.$store.commit("TOGGLE_LOGIN_MODAL");
+          this.$notify("Login successful!");
         })
         .catch(errors => {
+          console.log(errors.response.data);
           alert("Invalid Credentials!");
           this.loading = false;
         });

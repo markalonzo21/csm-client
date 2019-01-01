@@ -1,5 +1,9 @@
 export const getters = {
   hasPermission: state => permissionName => {
+    if (!state.user) {
+      return false
+    }
+
     if (permissionName === null) {
       return true
     }
@@ -8,7 +12,7 @@ export const getters = {
       permission => permission.name === permissionName
     )
   },
-  hasSpecificArea (state) {
+  hasSpecificArea(state) {
     if (state.user) {
       return state.user.role.permissions.some(permission => {
         return permission.category === 'specific area management'
@@ -18,26 +22,17 @@ export const getters = {
 }
 
 export const actions = {
-  logout ({ commit }) {
-    // commit('LOGOUT_USER')
+  logout({ commit }) {
     this.$auth.logout().then(() => {
-      window.location.href = '/'
+      this.$router.replace('/')
+      this.$notify('Logout successful!')
       this.$socket.disconnect()
-      // this.$router.replace('/')
     })
   }
 }
 
 export const mutations = {
-  LOGOUT_USER (state) {
-    // state.strategy = 'local'
-    window.location.href = '/'
-  },
-  SET_USER (state, user) {
-    console.log(user)
-    state.user = user
-  },
-  ADD_AREA (state, area) {
+  ADD_AREA(state, area) {
     state.user.areas.push(area)
   }
 }

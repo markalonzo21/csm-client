@@ -12,7 +12,7 @@
             <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
               <a-dropdown :trigger="['click']" class="float-right text-white hover:text-grey">
                 <a class="ant-dropdown-link" href="#">
-                  {{ $auth.user.email }}
+                  {{ $store.state.auth.user.email }}
                   <a-icon type="down"/>
                 </a>
 

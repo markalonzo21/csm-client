@@ -5,7 +5,7 @@ dotenv.config()
 
 module.exports = {
   mode: 'universal',
-
+  serverMiddleware: ['~/serverMiddleware/selectiveSSR.js'],
   /*
    ** Headers of the page
    */
@@ -42,6 +42,7 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    { src: '~/plugins/utils', ssr: true },
     { src: '~/plugins/vue-svgicon', ssr: true },
     { src: '~/plugins/uiv.js', ssr: true },
     { src: '~/plugins/ant', ssr: true },

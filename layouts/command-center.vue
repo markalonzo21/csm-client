@@ -13,7 +13,7 @@
         </a-menu-item>
         <a-dropdown :trigger="['click']" class="float-right text-white hover:text-grey">
           <a class="ant-dropdown-link" href="#">
-            {{ $auth.user.email }}
+            {{ $store.state.auth.user.email }}
             <a-icon type="down"/>
           </a>
 
@@ -41,7 +41,9 @@
           >{{ crumb.text.replace('-', ' ') }}</router-link>
         </a-breadcrumb-item>
       </a-breadcrumb>
-      <div :style="{ background: '#fff', padding: '24px', minHeight: '81vh', height: 'auto', overflow: 'hidden' }">
+      <div
+        :style="{ background: '#fff', padding: '24px', minHeight: '81vh', height: 'auto', overflow: 'hidden' }"
+      >
         <nuxt/>
       </div>
     </a-layout-content>

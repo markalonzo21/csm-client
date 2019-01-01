@@ -5,7 +5,7 @@
         <router-link class="float-left pt-4 mr-6" slot="brand" to="/">
           <img src="/img/megaworld-logo.png" alt class="responsive mrgnauto">
         </router-link>
-        <navbar-nav left v-if="$auth.loggedIn">
+        <navbar-nav left v-if="$store.state.auth.loggedIn">
           <li>
             <router-link class="text-blue-light" to="/new-report">New Report</router-link>
           </li>
@@ -16,10 +16,10 @@
             <router-link class="text-blue-light" to="/report-history">Report History</router-link>
           </li>
         </navbar-nav>
-        <navbar-nav right v-if="$auth.loggedIn" class="select-none">
+        <navbar-nav right v-if="$store.state.auth.loggedIn" class="select-none">
           <dropdown tag="li">
             <a class="dropdown-toggle" role="button">
-              {{ $auth.user.firstName }} {{ $auth.user.middleName }} {{ $auth.user.lastName }}
+              {{ $store.state.auth.user.firstName }} {{ $store.state.auth.user.middleName }} {{ $store.state.auth.user.lastName }}
               <span
                 class="caret"
               ></span>
@@ -71,22 +71,6 @@
     </navbar>
   </div>
 </template>
-
-<script>
-import FixedHeader from "vue-fixed-header";
-
-export default {
-  components: {
-    FixedHeader
-  },
-  data() {
-    return {
-      isFixed: false
-    };
-  }
-};
-</script>
-
 
 <style scoped>
 .h-65 {

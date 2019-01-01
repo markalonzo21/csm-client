@@ -3,7 +3,7 @@
     <section class="resolver-dashboard container">
       <div class="row">
         <div class="col-md-12">
-          <section class="user-dashboard mx-auto">
+          <section class="user-dashboard mx-auto" v-if="$store.state.auth.loggedIn">
             <h1 class="title__black mt0 uppercase">Areas</h1>
             <div v-if="areas.length > 0">
               <div class="panel" style="border: none;" v-for="area in areas" :key="area._id">
@@ -35,17 +35,17 @@
 
 <script>
 export default {
-  async fetch({ $axios, store, redirect }) {
+  async fetch({ $axios, store, redirect, $utils }) {
     if (!store.getters["auth/hasPermission"]("resolve")) {
       return redirect("/");
     }
-  },
-  mounted() {
-    console.log("mounted");
+    // if (!$utils.hasPermission(store.state.auth.user, "resolve")) {
+    //   return redirect("/");
+    // }
   },
   computed: {
     areas() {
-      return this.$auth.user.areas;
+      return this.$store.state.auth.user.areas;
     }
   }
 };
