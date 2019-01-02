@@ -10,15 +10,18 @@
           </div>
           <div class="col-md-3">
             <div class="text-blue-light font-semibold">Type</div>
-            <div>{{ report.reportType.name }}</div>
+            <div>{{ report.type.name }}</div>
           </div>
           <div class="col-md-3">
             <div class="text-blue-light font-semibold">Responder</div>
-            <div>{{ report.assignedTo.firstName }} {{ report.assignedTo.middleName }} {{ report.assignedTo.lastName }}</div>
+            <div>{{ report.responder.firstName }} {{ report.responder.middleName }} {{ report.responder.lastName }}</div>
           </div>
           <div class="col-md-3">
             <div class="text-blue-light font-semibold"></div>
-            <button class="btn btnblue capitalize" @click.prevent="showChatHistory = !showChatHistory">View Chat History</button>
+            <button
+              class="btn btnblue capitalize"
+              @click.prevent="showChatHistory = !showChatHistory"
+            >View Chat History</button>
           </div>
         </div>
         <div class="row border rounded bg-white py-6 px-6" v-if="report.location !== null">
@@ -40,7 +43,11 @@
         </div>
       </div>
     </div>
-    <ChatBox v-if="showChatHistory" :reportId="report._id" :isResolved="report.resolvedAt !== null" />
+    <ChatBox
+      v-if="showChatHistory"
+      :reportId="report._id"
+      :isResolved="report.resolvedAt !== null"
+    />
   </div>
 </template>
 
@@ -52,8 +59,12 @@ export default {
   },
   asyncData({ $axios, params, isServer }) {
     return $axios.$get(`/reports/${params.id}`).then(response => {
-      const lat = response.data.location ? response.data.location.coordinates[1] : 14.59804
-      const lng = response.data.location ? response.data.location.coordinates[0] : 120.98385
+      const lat = response.data.location
+        ? response.data.location.coordinates[1]
+        : 14.59804;
+      const lng = response.data.location
+        ? response.data.location.coordinates[0]
+        : 120.98385;
 
       response.data.map = {
         center: [lat, lng],
@@ -61,13 +72,13 @@ export default {
         minZoom: 13,
         maxZoom: 18,
         maxBoundsViscosity: 1.0
-      }
+      };
 
       return {
         report: response.data,
-        showChatHistory: false,
+        showChatHistory: false
       };
     });
   }
-}
+};
 </script>

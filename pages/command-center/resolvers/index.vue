@@ -191,7 +191,7 @@ export default {
         .substr(5)}`
       this.form.password = '123123123'
       this.form.password_confirmation = '123123123'
-      this.form.reportTypes = []
+      this.form.types = []
     },
     getReportTypes() {
       this.$axios.$get('/report-categories').then(response => {

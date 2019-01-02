@@ -9,7 +9,7 @@
       <div class="col-sm-3">
         <span class="bluelabel">Type</span>
         <br>
-        {{ report.reportType.name }}
+        {{ report.type.name }}
       </div>
       <div class="col-sm-3">
         <button
@@ -33,14 +33,14 @@
         <div class="col-md-3">
           <span class="bluelabel">Reported by</span>
           <br>
-          {{ report.reportedBy.firstName }} {{ report.reportedBy.middleName }} {{ report.reportedBy.lastName}}
+          {{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName}}
         </div>
         <div class="col-md-3">
           <span class="bluelabel">Responder</span>
           <br>
           <span
-            v-if="report.assignedTo"
-          >{{ report.assignedTo.firstName }} {{ report.assignedTo.middleName }} {{ report.assignedTo.lastName}}</span>
+            v-if="report.responder"
+          >{{ report.responder.firstName }} {{ report.responder.middleName }} {{ report.responder.lastName}}</span>
           <span v-else>None</span>
         </div>
         <div class="col-md-3">

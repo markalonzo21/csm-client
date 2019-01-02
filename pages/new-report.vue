@@ -42,15 +42,13 @@
                     class="title__gray--small"
                     style="font-size:14px;"
                   >Demo Area (For Testing Purposes Only)</label>
-                  <div style="padding-left: 25px;">
+                  <div style="padding-left: 25px;" v-if="areas.length > 0">
                     <label class="radio">
                       <input type="radio" v-model="area" value>None
                     </label>
-                    <label class="radio">
-                      <input type="radio" v-model="area" value="mckinleyHill">Mckinley Hill
-                    </label>
-                    <label class="radio">
-                      <input type="radio" v-model="area" value="mckinleyWest">Mckinley West
+                    <label class="radio" v-for="(item, index) in areas" :key="index+'-area'">
+                      <input type="radio" v-model="area" :value="index">
+                      {{ item.name }}
                     </label>
                   </div>
                   <br>
@@ -85,36 +83,50 @@
 <script>
 export default {
   asyncData({ $axios, error }) {
-    return $axios.$get("/report-categories").then(response => {
-      return {
-        loadingSubmitReport: false,
-        reportCategories: response.data,
-        reportCategory: 0,
-        reportTypes: response.data[0].reportTypes,
-        form: {
-          type: response.data[0].reportTypes[0]._id,
-          description: "Please Help!",
-          location: {
-            type: "Point",
-            coordinates: { lng: null, lat: null }
+    const getCategories = $axios.$get("/report-categories");
+    const getAreas = $axios.$get("/areas");
+    return Promise.all([getCategories, getAreas]).then(
+      ([categories, areas]) => {
+        return {
+          areas: areas.data,
+          loadingSubmitReport: false,
+          reportCategories: categories.data,
+          reportCategory: 0,
+          reportTypes: categories.data[0].types,
+          form: {
+            type: categories.data[0].types[0]._id,
+            description: "Please Help!",
+            location: {
+              type: "Point",
+              coordinates: { lng: null, lat: null }
+            },
+            photos: []
           },
-          photos: []
-        },
-        area: ""
-      };
-    });
+          area: ""
+        };
+      }
+    );
   },
   watch: {
     reportCategory(index) {
       const reportCategory = this.reportCategories[index];
       this.$nextTick(() => {
-        this.reportTypes = reportCategory.reportTypes;
-        this.form.type = reportCategory.reportTypes[0]._id;
+        this.types = reportCategory.types;
+        this.form.type = reportCategory.types[0]._id;
       });
+    },
+    area(index) {
+      if (Number.isInteger(index)) {
+        const area = this.areas[index];
+        const geoJSON = L.geoJSON(area.location);
+        const bounds = geoJSON.getBounds();
+        this.randomWithinBounds(bounds);
+      } else {
+        this.getGeolocation();
+      }
     }
   },
   mounted() {
-    this.generateFakeData();
     this.getGeolocation();
   },
   methods: {
@@ -150,33 +162,6 @@ export default {
         reader.readAsDataURL(file);
       }
     },
-    generateFakeData() {
-      this.form.location.coordinates.lat = this.$chance.latitude({
-        min: 14.5965,
-        max: 14.63956
-      });
-      this.form.location.coordinates.lng = this.$chance.longitude({
-        min: 120.89287,
-        max: 121.07483
-      });
-    },
-    generateDemoFakeData(area) {
-      if (area === "mckinleyHill") {
-        const bounds = L.latLngBounds(
-          L.latLng(14.53116, 121.04653),
-          L.latLng(14.53636, 121.0579)
-        );
-        this.randomWithinBounds(bounds);
-      }
-
-      if (area === "mckinleyWest") {
-        const bounds = L.latLngBounds(
-          L.latLng(14.53986, 121.03887),
-          L.latLng(14.53467, 121.05024)
-        );
-        this.randomWithinBounds(bounds);
-      }
-    },
     randomWithinBounds(bounds) {
       var lat_min = bounds.getSouthWest().lat,
         lat_range = bounds.getNorthEast().lat - lat_min,
@@ -191,18 +176,10 @@ export default {
 
       // Validate Location
       let formData = new FormData();
-
       formData.append("description", this.form.description);
       formData.append("type", this.form.type);
-
-      // MckinleyHill Override
-      if (this.area != "") {
-        this.generateDemoFakeData(this.area);
-      }
-
       formData.append("location_lat", this.form.location.coordinates.lat);
       formData.append("location_lng", this.form.location.coordinates.lng);
-      // formData.append("location", JSON.stringify(this.form.location));
 
       this.form.photos.forEach(photo => {
         formData.append("photos[]", photo.file);

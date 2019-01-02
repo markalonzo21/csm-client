@@ -14,7 +14,7 @@
           ></textarea>
         </div>-->
         <div class="form-group">
-          <select class="form-control" v-model="form.reportCategory" required>
+          <select class="form-control" v-model="form.category" required>
             <option
               v-for="reportCategory in reportCategories"
               :value="reportCategory._id"
@@ -74,7 +74,7 @@
         <tr v-for="reportType in reportTypes">
           <td>{{ reportType.name }}</td>
           <td>{{ reportType.description }}</td>
-          <td>{{ reportType.reportCategory.name }}</td>
+          <td>{{ reportType.category.name }}</td>
           <td>
             <ul class="list-reset">
               <li v-for="item in reportType.milestones">{{ item.name }}</li>
@@ -163,13 +163,13 @@ export default {
     },
     getReportTypes() {
       this.$axios.$get("/report-types").then(response => {
-        this.reportTypes = response.data;
+        this.types = response.data;
       });
     },
     getReportCategories() {
       this.$axios.$get("/report-categories").then(response => {
         this.reportCategories = response.data;
-        this.form.reportCategory = response.data[0]._id;
+        this.form.category = response.data[0]._id;
       });
     },
     getResponseTypes() {
@@ -196,7 +196,7 @@ export default {
       this.loadingCreateReportType = true;
       this.$axios.$post("/report-types", this.form).then(response => {
         this.generateFakeData();
-        this.reportTypes.push(response.data);
+        this.types.push(response.data);
         this.loadingCreateReportType = false;
         this.isCreateReportTypeModalVisible = false;
       });

@@ -12,13 +12,13 @@
             </div>
             <div class="clearfix">
               <span class="font-semibold text-blue-dark float-left">Type</span>
-              <span class="float-right">{{ report.reportType.name }}</span>
+              <span class="float-right">{{ report.type.name }}</span>
             </div>
             <div class="clearfix">
               <span class="font-semibold text-blue-dark float-left">Reporter</span>
               <span
                 class="float-right"
-              >{{ report.reportedBy.firstName }} {{ report.reportedBy.middleName }} {{ report.reportedBy.lastName }}</span>
+              >{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName }}</span>
             </div>
 
             <div class="border-b w-full my-4"></div>

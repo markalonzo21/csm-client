@@ -80,22 +80,22 @@
 </template>
 
 <script>
-import TotalReportsCard from '~/components/DashboardCards/TotalReportsCard'
-import ResolvedReportsCard from '~/components/DashboardCards/ResolvedReportsCard'
-import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReportsCard'
-import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
+import TotalReportsCard from "~/components/DashboardCards/TotalReportsCard";
+import ResolvedReportsCard from "~/components/DashboardCards/ResolvedReportsCard";
+import UnresolvedReportsCard from "~/components/DashboardCards/UnresolvedReportsCard";
+import CancelledReportsCard from "~/components/DashboardCards/CancelledReportsCard";
 export default {
   layout: "command-center",
   components: {
     TotalReportsCard,
     ResolvedReportsCard,
     UnresolvedReportsCard,
-    CancelledReportsCard,
+    CancelledReportsCard
   },
   data() {
     return {
       loadingHeats: true,
-      center: [12.99804, 121.98385],
+      center: [14.56679, 121.02059],
       zoom: 5,
       minZoom: 5,
       maxZoom: 18,
@@ -152,7 +152,7 @@ export default {
 
     Promise.all([getReportTypes, getDashboardDetails]).then(
       ([reportTypes, dashboardDetails]) => {
-        this.reportTypes = reportTypes.data;
+        this.types = reportTypes.data;
         this.dashboardDetails = dashboardDetails.data;
         this.resolvedOrUnresolved = "both";
         this.type = null;

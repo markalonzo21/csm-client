@@ -80,11 +80,11 @@
           <div v-for="reportCategory in reportCategories">
             <h5
               class="font-bold"
-              v-if="reportCategory.reportTypes.length > 0"
+              v-if="reportCategory.types.length > 0"
             >{{ reportCategory.name }}</h5>
-            <div class="checkbox" v-for="reportType in reportCategory.reportTypes">
+            <div class="checkbox" v-for="reportType in reportCategory.types">
               <label>
-                <input type="checkbox" v-model="form.reportTypes" :value="reportType._id">
+                <input type="checkbox" v-model="form.types" :value="reportType._id">
                 {{ reportType.name }}
               </label>
             </div>
@@ -176,11 +176,11 @@
           <div v-for="reportCategory in reportCategories">
             <h5
               class="font-bold"
-              v-if="reportCategory.reportTypes.length > 0"
+              v-if="reportCategory.types.length > 0"
             >{{ reportCategory.name }}</h5>
-            <div class="checkbox" v-for="reportType in reportCategory.reportTypes">
+            <div class="checkbox" v-for="reportType in reportCategory.types">
               <label>
-                <input type="checkbox" v-model="editForm.reportTypes" :value="reportType._id">
+                <input type="checkbox" v-model="editForm.types" :value="reportType._id">
                 {{ reportType.name }}
               </label>
             </div>
@@ -345,7 +345,7 @@ export default {
       this.editForm.role = user.role.slug;
       this.editForm.password = "123123123";
       this.editForm.password_confirmation = "123123123";
-      this.editForm.reportTypes = user.canRespondTo.map(type => type._id);
+      this.editForm.types = user.canRespondTo.map(type => type._id);
     },
     generateFakeData() {
       this.form.firstName = this.$chance.first();
@@ -358,7 +358,7 @@ export default {
       this.form.role = 'user'
       this.form.password = "123123123";
       this.form.password_confirmation = "123123123";
-      this.form.reportTypes = [];
+      this.form.types = [];
     },
     getReportTypes() {
       this.loadingGetReportTypes = true;
@@ -392,7 +392,7 @@ export default {
 
       this.editForm.mobile = `0${this.editForm.mobile}`;
       if (!this.editSelectedRoleCanRespond) {
-        this.reportTypes = []
+        this.types = []
       }
       this.editForm.role = this.editSelectedRole._id
 
@@ -409,7 +409,7 @@ export default {
       this.loadingCreateUser = true;
       this.form.mobile = `0${this.form.mobile}`;
       if (!this.selectedRoleCanRespond) {
-        this.reportTypes = []
+        this.types = []
       }
       this.form.role = this.selectedRole._id
       this.$axios.$post("/admin/users", this.form).then(response => {

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
+import { LMap, LTileLayer, LMarker, LGeoJson } from 'vue2-leaflet'
 
 import L from 'leaflet'
 delete L.Icon.Default.prototype._getIconUrl
@@ -13,3 +13,4 @@ L.Icon.Default.mergeOptions({
 Vue.component('l-map', LMap)
 Vue.component('l-tile-layer', LTileLayer)
 Vue.component('l-marker', LMarker)
+Vue.component('l-geojson', LGeoJson)

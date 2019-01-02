@@ -1,5 +1,5 @@
 <template>
-  <div class="container h-screen">
+  <div class="container h-screen" v-if="area">
     <h1 class="text-blue-dark mt-10 uppercase">{{ area.name }}</h1>
     <hr>
     <div class="row">
@@ -114,33 +114,13 @@ export default {
       });
     },
     getReports() {
-      this.bounds = L.latLngBounds(
-        L.latLng(
-          this.area.location.coordinates[0][1],
-          this.area.location.coordinates[0][0]
-        ),
-        L.latLng(
-          this.area.location.coordinates[1][1],
-          this.area.location.coordinates[1][0]
-        )
-      );
+      const geoJSON = L.geoJSON(this.area.location);
+      this.bounds = geoJSON.getBounds();
 
       this.$axios
         .$get(`/resolver/areas/${this.$route.params.id}`)
         .then(response => {
-          response.data.reports.forEach(report => {
-            const contains = this.bounds.contains(
-              L.latLng(
-                report.location.coordinates[1],
-                report.location.coordinates[0]
-              )
-            );
-
-            if (contains) {
-              this.reports.push(report);
-            }
-          });
-          this.reports;
+          this.reports = response.data.reports;
         });
     },
     setResolverChatBoxData(data) {

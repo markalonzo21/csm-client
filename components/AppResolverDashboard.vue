@@ -5,7 +5,7 @@
         <template
           slot="assignedTo"
           slot-scope="text, record"
-        >{{ record.assignedTo ? record.assignedTo.email : 'Unassigned' }}</template>
+        >{{ record.responder ? record.responder.email : 'Unassigned' }}</template>
         <template slot="operation" slot-scope="text, record">
           <a :href="`/command-center/reports/${record._id}`" target="_blank">
             <a-button type="primary">Show</a-button>

@@ -40,7 +40,7 @@
         </tr>
         <tr>
           <td>{{ report._id }}</td>
-          <td>{{ report.reportType.name }}</td>
+          <td>{{ report.type.name }}</td>
           <td class="text-center">
             <button
               class="btn chat"
@@ -67,10 +67,10 @@
           </tr>
           <tr>
             <td>{{ report.description }}</td>
-            <td>{{ report.reportedBy.firstName }} {{ report.reportedBy.middleName }} {{ report.reportedBy.lastName}}</td>
+            <td>{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName}}</td>
             <td
-              v-if="report.assignedTo"
-            >{{ report.assignedTo.firstName }} {{ report.assignedTo.middleName }} {{ report.assignedTo.lastName}}</td>
+              v-if="report.responder"
+            >{{ report.responder.firstName }} {{ report.responder.middleName }} {{ report.responder.lastName}}</td>
             <td v-else>
               <a class="cursor-pointer" @click.prevent="showAssignModal">Assign Responder</a>
             </td>
@@ -137,9 +137,9 @@ export default {
       this.isAssignModalVisible = true;
       this.$axios
         .$get(
-          `/admin/available-responders?type=${
-            this.report.reportType._id
-          }&areaId=${this.$route.params.id}`
+          `/admin/available-responders?type=${this.report.type._id}&areaId=${
+            this.$route.params.id
+          }`
         )
         .then(response => {
           this.availableResponders = response.data;

@@ -28,6 +28,7 @@
             :maxBoundsViscosity="maxBoundsViscosity"
             ref="map"
           >
+            <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
             <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
           </l-map>
         </no-ssr>
@@ -101,11 +102,12 @@ export default {
       return $axios.$get(`/admin/areas/${params.name}`).then(response => {
         return {
           area: response.data.area,
+          geojson: null,
           resolvers: response.data.resolvers,
           responders: response.data.responders,
           allAvailableUsers: response.data.allAvailableUsers,
           form: {
-            areaId: params._id,
+            areaName: params.name,
             user: "",
             role: "resolver"
           },
@@ -123,6 +125,7 @@ export default {
       return $axios.$get(`/admin/areas/${params.name}`).then(response => {
         return {
           area: response.data.area,
+          geojson: null,
           resolvers: response.data.resolvers,
           responders: response.data.responders,
           allAvailableUsers: response.data.allAvailableUsers,
@@ -205,8 +208,9 @@ export default {
           this.minZoom = this.area.minZoom;
           this.maxZoom = this.area.maxZoom;
 
-          const geoJSON = L.geoJSON(this.area.location)
-          this.maxBounds = geoJSON.getBounds()
+          const geoJSON = L.geoJSON(this.area.location);
+          this.geojson = geoJSON.toGeoJSON();
+          this.maxBounds = geoJSON.getBounds();
           this.center = [
             this.maxBounds.getCenter().lat,
             this.maxBounds.getCenter().lng

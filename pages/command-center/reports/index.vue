@@ -149,7 +149,7 @@ export default {
           },
           {
             title: "Category",
-            dataIndex: "reportType.reportCategory.name"
+            dataIndex: "reportType.category.name"
           },
           {
             title: "Type",
@@ -238,7 +238,7 @@ export default {
     selectCategoryChange(value) {
       const categories = this.selectList.categories.find(category => category._id === value)
       if (value) {
-        this.selectList.types = categories.reportTypes
+        this.selectList.types = categories.types
       }
       this.form.category = value
       this.form.type = ''

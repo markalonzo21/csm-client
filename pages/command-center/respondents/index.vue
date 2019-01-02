@@ -74,11 +74,11 @@
           <div v-for="reportCategory in reportCategories">
             <h5
               class="font-bold"
-              v-if="reportCategory.reportTypes.length > 0"
+              v-if="reportCategory.types.length > 0"
             >{{ reportCategory.name }}</h5>
-            <div class="checkbox" v-for="reportType in reportCategory.reportTypes">
+            <div class="checkbox" v-for="reportType in reportCategory.types">
               <label>
-                <input type="checkbox" v-model="form.reportTypes" :value="reportType._id">
+                <input type="checkbox" v-model="form.types" :value="reportType._id">
                 {{ reportType.name }}
               </label>
             </div>
@@ -227,7 +227,7 @@ export default {
         .substr(5)}`;
       this.form.password = "123123123";
       this.form.password_confirmation = "123123123";
-      this.form.reportTypes = [];
+      this.form.types = [];
     },
     getReportTypes() {
       this.$axios.$get("/report-categories").then(response => {

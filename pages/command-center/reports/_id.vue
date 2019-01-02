@@ -3,15 +3,15 @@
     <div class="row" v-if="report">
       <div class="col-md-6">
         <h3 class="mb-1">ID: {{ report._id }}</h3>
-        <h3 class="mb-1">Type: {{ report.reportType.name }}</h3>
+        <h3 class="mb-1">Type: {{ report.type.name }}</h3>
         <h3 class="mb-1">Description: {{ report.description }}</h3>
         <h3
           class="mb-1"
-        >Reported By: {{ report.reportedBy.firstName }} {{ report.reportedBy.lastName }} ({{ report.reportedBy.mobile }})</h3>
-        <template v-if="report.assignedTo">
+        >Reported By: {{ report.reporter.firstName }} {{ report.reporter.lastName }} ({{ report.reporter.mobile }})</h3>
+        <template v-if="report.responder">
           <h3 class="mb-1">
             Responder:
-            {{ report.assignedTo.firstName }} {{ report.assignedTo.lastName }}
+            {{ report.responder.firstName }} {{ report.responder.lastName }}
           </h3>
         </template>
         <template v-else>
@@ -35,9 +35,9 @@
         <div class="my-2" v-for="(response, index) in report.responses" :key="response._id">
           <span>
             {{ index + 1 }}. {{ response.responseType.name }}
-            <span v-if="response.resolvedAt !== null">
-              - Completed at {{ $moment(response.resolvedAt).format('MMM. DD, YYYY | h:mm A ') }}
-            </span>
+            <span
+              v-if="response.resolvedAt !== null"
+            >- Completed at {{ $moment(response.resolvedAt).format('MMM. DD, YYYY | h:mm A ') }}</span>
           </span>
           <a
             class="cursor-pointer"
@@ -152,12 +152,12 @@ export default {
     initSocketListeners() {
       this.$socket.on("milestone-completed", payload => {
         if (this.report._id === payload._id) {
-          this.report = payload
+          this.report = payload;
         }
       });
       this.$socket.on("milestone-confirmed", payload => {
         if (this.report._id === payload._id) {
-          this.report = payload
+          this.report = payload;
         }
       });
     },
@@ -167,7 +167,7 @@ export default {
     showAssignModal() {
       this.isAssignModalVisible = true;
       this.$axios
-        .$get(`/admin/available-responders?type=${this.report.reportType._id}`)
+        .$get(`/admin/available-responders?type=${this.report.type._id}`)
         .then(response => {
           this.availableResponders = response.data;
         });

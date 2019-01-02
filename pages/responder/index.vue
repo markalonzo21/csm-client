@@ -18,7 +18,7 @@
                   </div>
                   <div class="col-sm-3">
                     <strong>Type</strong>
-                    <div>{{ report.reportType.name }}</div>
+                    <div>{{ report.type.name }}</div>
                   </div>
                   <div class="col-sm-3">
                     <strong>Resolved Date</strong>
