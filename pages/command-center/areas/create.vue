@@ -7,7 +7,7 @@
     <div class="my-2">
       <a-textarea v-model="form.description" placeholder="Description" :autosize="{ minRows: 2, maxRows: 6 }" />
     </div>
-    <div id="map-wrap" style="height: 500px; width: 100%;" class="mt-4">
+    <div id="map-wrap" style="height: 500px; width: 50%;" class="mt-4">
       <no-ssr>
         <l-map
           :center="map.center"
@@ -21,7 +21,10 @@
       </no-ssr>
     </div>
     <div class="my-4">
-      <a-button type="primary" @click.prevent="saveArea">Save Area</a-button>
+      <a-button type="primary" @click.prevent="saveArea">Save Area </a-button>
+      <pre v-if="mapObject">
+        {{ bounds }}
+      </pre>
     </div>
   </div>
 </template>
@@ -48,6 +51,11 @@ export default {
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("create area")) {
       return redirect("/");
+    }
+  },
+  computed: {
+    bounds() {
+      return this.$refs.map.mapObject.getBounds()
     }
   },
   data() {

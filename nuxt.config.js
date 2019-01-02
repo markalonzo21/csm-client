@@ -5,7 +5,7 @@ dotenv.config()
 
 module.exports = {
   mode: 'universal',
-  serverMiddleware: ['~/serverMiddleware/selectiveSSR.js'],
+  serverMiddleware: ['~/serverMiddleware/selectiveSsr.js'],
   /*
    ** Headers of the page
    */
@@ -109,7 +109,7 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {
+    extend (config, ctx) {
       config.resolve.alias['leaflet'] = path.join(
         __dirname,
         'node_modules/leaflet'

@@ -205,17 +205,8 @@ export default {
           this.minZoom = this.area.minZoom;
           this.maxZoom = this.area.maxZoom;
 
-          this.maxBounds = L.latLngBounds(
-            L.latLng(
-              this.area.location.coordinates[0][1],
-              this.area.location.coordinates[0][0]
-            ),
-            L.latLng(
-              this.area.location.coordinates[1][1],
-              this.area.location.coordinates[1][0]
-            )
-          );
-
+          const geoJSON = L.geoJSON(this.area.location)
+          this.maxBounds = geoJSON.getBounds()
           this.center = [
             this.maxBounds.getCenter().lat,
             this.maxBounds.getCenter().lng
