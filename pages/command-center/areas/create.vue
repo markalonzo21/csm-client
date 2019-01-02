@@ -1,13 +1,7 @@
 <template>
   <div class="container">
     <h3 class="mt-0">Create Area</h3>
-    <div class="my-2">
-      <a-input v-model="form.name" placeholder="Area Name" />
-    </div>
-    <div class="my-2">
-      <a-textarea v-model="form.description" placeholder="Description" :autosize="{ minRows: 2, maxRows: 6 }" />
-    </div>
-    <div id="map-wrap" style="height: 500px; width: 50%;" class="mt-4">
+    <div id="map-wrap" style="height: 500px; width: 50vw; margin: auto;" class="mt-4">
       <no-ssr>
         <l-map
           :center="map.center"
@@ -20,11 +14,14 @@
         </l-map>
       </no-ssr>
     </div>
+    <div class="my-2">
+      <a-input v-model="form.name" placeholder="Area Name" />
+    </div>
+    <div class="my-2">
+      <a-textarea v-model="form.description" placeholder="Description" :autosize="{ minRows: 2, maxRows: 6 }" />
+    </div>
     <div class="my-4">
       <a-button type="primary" @click.prevent="saveArea">Save Area </a-button>
-      <pre v-if="mapObject">
-        {{ bounds }}
-      </pre>
     </div>
   </div>
 </template>
@@ -51,11 +48,6 @@ export default {
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("create area")) {
       return redirect("/");
-    }
-  },
-  computed: {
-    bounds() {
-      return this.$refs.map.mapObject.getBounds()
     }
   },
   data() {
@@ -87,12 +79,25 @@ export default {
         }
       }, 100);
     },
+    createPolygonFromBounds(latLngBounds) {
+      var center = latLngBounds.getCenter();
+      var latlngs = [];
+
+      latlngs.push(latLngBounds.getSouthWest());//bottom left
+      latlngs.push({ lat: latLngBounds.getSouth(), lng: center.lng });//bottom center
+      latlngs.push(latLngBounds.getSouthEast());//bottom right
+      latlngs.push({ lat: center.lat, lng: latLngBounds.getEast() });// center right
+      latlngs.push(latLngBounds.getNorthEast());//top right
+      latlngs.push({ lat: latLngBounds.getNorth(), lng: this.$refs.map.mapObject.getCenter().lng });//top center
+      latlngs.push(latLngBounds.getNorthWest());//top left
+      latlngs.push({ lat: this.$refs.map.mapObject.getCenter().lat, lng: latLngBounds.getWest() });//center left
+
+      return new L.polygon(latlngs);
+    },
     saveArea() {
       const bounds = this.mapObject.getBounds();
-      this.form.bounds = [
-        [bounds._northEast.lng, bounds._northEast.lat],
-        [bounds._southWest.lng, bounds._southWest.lat]
-      ];
+      const polygon = this.createPolygonFromBounds(bounds)
+      this.form.coordinates = polygon.toGeoJSON().geometry.coordinates
       this.form.minZoom = this.mapObject.getZoom()
       this.$axios.$post("/admin/areas", this.form).then(response => {
         this.$router.push("/command-center/areas");
