@@ -1,1 +1,1 @@
-now && now alias && now rm irs --safe --yes
+now && now alias && now rm ireport --safe --yes
