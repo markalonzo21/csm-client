@@ -18,6 +18,14 @@
                   <td>{{ report.reporter.email }}</td>
                 </tr>
                 <tr>
+                  <td>Resolver</td>
+                  <td>{{ report.resolver ? report.resolver.email : 'N/A' }}</td>
+                </tr>
+                <tr>
+                  <td>Responder</td>
+                  <td>{{ report.responder ? report.responder.email : 'N/A' }}</td>
+                </tr>
+                <tr>
                   <td>Status</td>
                   <td>{{ report.status }}</td>
                 </tr>
@@ -49,7 +57,25 @@
           <div class="panel-heading">
             <h3 class="text-uppercase">Location</h3>
           </div>
-          <div class="panel-body"></div>
+          <div class="panel-body">
+            <div style="height: 380px; width: 100%;">
+                <l-map
+                  v-if="map.center.length > 0"
+                  :center="map.center"
+                  :zoom="map.zoom"
+                  :minZoom="map.minZoom"
+                  :maxZoom="map.maxZoom"
+                  :maxBounds="map.maxBounds"
+                  :maxBoundsViscosity="map.maxBoundsViscosity"
+                  ref="map"
+                >
+                <l-marker
+                  :lat-lng="[report.location.coordinates[1], report.location.coordinates[0]]"
+                ></l-marker>
+                  <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+                </l-map>
+            </div>
+          </div>
         </div>
         <div class="panel option">
           <div class="panel-heading">
@@ -62,33 +88,39 @@
                   <label for="">Type</label>
                 </div>
                 <div class="col-md-6">
-                  <input type="text" class="form-control" />
+                  <input type="text" class="form-control" :value="report.type.name" />
+                  <!-- <typeahead v-model="form.type" target="#input-4" :async-src="reportTypesEndpoint" async-key="data" item-key="name"/> -->
                 </div>
                 <div class="col-md-3">
-                  <button class="btn btnform">Change</button>
+                  <button class="btn btnform" disabled>Change</button>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-3"><label for="">Reassign To</label></div>
+                <div class="col-md-3"><label for="">Reassign Resolver</label></div>
                 <div class="col-md-6">
-                  <input type="text" class="form-control" />
+                  <input type="text" class="form-control" :value="report.resolver.email"/>
                 </div>
                 <div class="col-md-3">
-                  <button class="btn btnform">Change</button>
+                  <button class="btn btnform" disabled>Change</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3"><label for="">Reassign Responder</label></div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" :value="report.responder.email"/>
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btnform" disabled>Change</button>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-3">
                   <label for="">Override Status</label>
                 </div>
-                <div class="col-md-3">
-                  <button class="btn btnform">On-hold</button>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3"><label for="">Tag as</label></div>
-                <div class="col-md-3">
-                  <button class="btn btnform btntag">Junk</button>
+                <div class="col-md-6">
+                  <select class="capitalize form-control" @change="statusChanged">
+                    <option v-for="status in ['pending', 'in-progress', 'resolved', 'cancelled']" class="capitalize" :selected="status === form.status" >{{ status }}</option>
+                  </select>
                 </div>
               </div>
             </form>
@@ -98,17 +130,19 @@
       <div class="col-md-8 content">
         <div class="panel ticket-details">
           <div class="panel-heading">
-            <h3 class="text-uppercase">Priority number: 12323fdfsea</h3>
+            <h3 class="text-uppercase" style="visibility: hidden;">Priority number: </h3>
           </div>
           <div class="panel-body">
             <div class="row basic-details">
               <div class="col-md-4">
                 <label for="">Date</label><br />
-                <span class="basic">January 1, 2019 7:44:03 PM</span>
+                <span class="basic">
+                  {{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}
+                </span>
               </div>
               <div class="col-md-4">
                 <label for="">Name of Reporter</label><br />
-                <span class="basic">Janno Reyes</span>
+                <span class="basic">{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName }}</span>
               </div>
               <div class="col-md-4 text-right">
                 <a href="" class="btn btnblue">Print Chat History</a>
@@ -117,24 +151,26 @@
             <div class="row notes">
               <div class="col-md-4">
                 <label for="">Notes</label><br />
-                <span class="basic">Nawalan ako ng tubig sa shower</span>
+                <span class="basic">{{ report.description }}</span>
               </div>
             </div>
-            <div class="row images">
+            <div class="row images" v-if="report.photos.length > 0">
               <div class="col-md-4">
                 <label for="">Images</label><br />
-
+                <div class="col-md-3" v-for="photo in report.photos" :key="photo">
+                  <img :src="$store.getters['showPhoto'](photo)" alt="photo">
+                </div>
               </div>
             </div>
             <div class="row resolver">
               <div class="col-md-4">
                 <label for="">Resolver</label><br />
-                <span class="basic">Harold Llames</span>
+                <span class="basic">{{ report.resolver.firstName }} {{ report.resolver.middleName }} {{ report.resolver.lastName }}</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="panel">
+<!--         <div class="panel">
           <div class="panel-body">
             <div class="row comment">
               <div class="col-md-10">
@@ -152,7 +188,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -183,13 +219,19 @@
           map: {
             center: [lat, lng],
             zoom: 13,
-            minZoom: 13,
+            minZoom: 8,
             maxZoom: 18,
             maxBounds: bounds,
             maxBoundsViscosity: 1.0,
             reports: []
+          },
+          form: {
+            type: response.data.type.name,
+            status: response.data.status,
+            resolver: response.data.resolver,
+            responder: response.data.responder
           }
-        };
+        }
       });
     },
     mounted() {
@@ -198,6 +240,12 @@
     beforeDestroy() {
       this.$socket.off("report-updated");
     },
+    computed: {
+      reportTypesEndpoint() {
+        const baseUrl = process.env.API_URL ? process.env.API_URL : 'https://ireport-api.now.sh'
+        return  `${baseUrl}/report-types`
+      }
+    },
     methods: {
       initSocketListeners() {
         this.$socket.on("report-updated", payload => {
@@ -205,7 +253,26 @@
             this.report = payload;
           }
         })
-      }
+      },
+        statusChanged(event) {
+          var confirmed = confirm("Are you sure you want to update the status?")
+
+          if (confirmed) {
+            this.$axios.$post('/resolver/update-report', {
+              status: event.target.value,
+              reportId: this.report._id
+            }).then(response => {
+              alert('Update successful!')
+              this.form.status = response.data.status
+              this.report.status = response.data.status
+            }).catch(err => {
+              alert('Something went wrong!')
+              event.target.value = this.form.status
+            })
+          } else {
+            event.target.value = this.form.status
+          }
+        }
     }
   }
 </script>

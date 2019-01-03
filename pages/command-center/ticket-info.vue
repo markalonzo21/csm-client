@@ -124,7 +124,7 @@
               <div class="row images">
                 <div class="col-md-4">
                   <label for="">Images</label><br />
-                  
+
                 </div>
               </div>
               <div class="row resolver">

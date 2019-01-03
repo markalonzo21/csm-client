@@ -3,7 +3,7 @@ import io from 'socket.io-client'
 export default function (ctx, inject) {
   const API_URL =
     process.env.API_URL === undefined
-      ? 'https://irs-api.now.sh'
+      ? 'https://ireport-api.now.sh'
       : process.env.API_URL
 
   const socket = io(API_URL, {
