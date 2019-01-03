@@ -171,7 +171,7 @@ export default {
         lastName: '',
         email: '',
         mobile: '',
-        reportTypes: []
+        types: []
       }
     }
   },

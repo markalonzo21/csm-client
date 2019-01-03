@@ -83,7 +83,7 @@
           <span>Report Types</span>
         </router-link>
       </a-menu-item>
-      <a-menu-item
+<!--       <a-menu-item
         key="/command-center/response-types"
         :class="{ 'ant-menu-item-selected': $route.path === '/command-center/response-types' }"
         v-if="$store.getters['auth/hasPermission']('view response types')"
@@ -92,7 +92,7 @@
           <a-icon type="bars"/>
           <span>Response Types</span>
         </router-link>
-      </a-menu-item>
+      </a-menu-item> -->
       <a-menu-item
         key="/command-center/advertisements"
         :class="{ 'ant-menu-item-selected': $route.path === '/command-center/advertisements' }"

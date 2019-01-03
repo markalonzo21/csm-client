@@ -48,10 +48,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="reportCategory in reportCategories">
-          <td>{{ reportCategory.name }}</td>
-          <td>{{ reportCategory.description }}</td>
-          <td>{{ reportCategory.createdAt }}</td>
+        <tr v-for="category in reportCategories">
+          <td>{{ category.name }}</td>
+          <td>{{ category.description }}</td>
+          <td>{{ category.createdAt }}</td>
           <td>
             <button class="m-2 btn btn-info" disabled>Edit</button>
             <button class="m-2 btn btn-danger" disabled>Delete</button>

@@ -16,13 +16,13 @@
         <div class="form-group">
           <select class="form-control" v-model="form.category" required>
             <option
-              v-for="reportCategory in reportCategories"
-              :value="reportCategory._id"
-              v-text="reportCategory.name"
+              v-for="category in reportCategories"
+              :value="category._id"
+              v-text="category.name"
             ></option>
           </select>
         </div>
-        <div class="form-group text-center">
+<!--         <div class="form-group text-center">
           <label for>Set Milestones - Muxt Be In Order</label>
           <div class="row">
             <h5>Selection</h5>
@@ -43,7 +43,7 @@
               >{{ index + 1 }}. {{ getMilestoneName(milestoneId) }}</div>
             </draggable>
           </div>
-        </div>
+        </div> -->
         <button
           class="btn btn-primary float-right"
           :disabled="loadingCreateReportType"
@@ -71,16 +71,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="reportType in reportTypes">
-          <td>{{ reportType.name }}</td>
-          <td>{{ reportType.description }}</td>
-          <td>{{ reportType.category.name }}</td>
+        <tr v-for="type in types">
+          <td>{{ type.name }}</td>
+          <td>{{ type.description }}</td>
+          <td>{{ type.category.name }}</td>
           <td>
             <ul class="list-reset">
-              <li v-for="item in reportType.milestones">{{ item.name }}</li>
+              <li v-for="item in type.milestones">{{ item.name }}</li>
             </ul>
           </td>
-          <td>{{ reportType.createdAt }}</td>
+          <td>{{ type.createdAt }}</td>
           <td>
             <button class="m-2 btn btn-info" disabled>Edit</button>
             <button class="m-2 btn btn-danger" disabled>Delete</button>
@@ -88,7 +88,7 @@
         </tr>
       </tbody>
     </table>-->
-    <a-table :loading="loadingGetReportTypes" bordered :dataSource="reportTypes" :columns="columns">
+    <a-table :loading="loadingGetReportTypes" bordered :dataSource="types" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
@@ -116,7 +116,7 @@ export default {
       isCreateReportTypeModalVisible: false,
       loadingCreateReportType: false,
       loadingGetReportTypes: false,
-      reportTypes: [],
+      types: [],
       reportCategories: [],
       responseTypes: [],
       selectedResponseTypes: [],
@@ -136,7 +136,7 @@ export default {
       form: {
         name: "",
         description: "",
-        reportCategory: "",
+        category: "",
         milestones: []
       }
     };

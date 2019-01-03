@@ -131,7 +131,6 @@ export default {
     const getReports = $axios.$get("/admin/reports")
 
     return Promise.all([getCategories, getReports]).then(([categories, reports]) => {
-      console.log(reports)
       return {
         reports: reports.data,
         isLoadMoreVisible: !(reports.data.length < 10),
@@ -149,11 +148,11 @@ export default {
           },
           {
             title: "Category",
-            dataIndex: "reportType.category.name"
+            dataIndex: "type.category.name"
           },
           {
             title: "Type",
-            dataIndex: "reportType.name"
+            dataIndex: "type.name"
           },
           {
             title: "Status",

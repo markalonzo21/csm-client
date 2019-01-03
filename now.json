@@ -2,7 +2,7 @@
   "name": "irs",
   "alias": "irs.now.sh",
   "env": {
-    "API_URL": "https://irs-api.now.sh"
+    "API_URL": "https://ireport-api.now.sh"
   },
   "scale" : {
     "sfo1": {

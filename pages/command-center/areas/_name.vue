@@ -102,7 +102,6 @@ export default {
       return $axios.$get(`/admin/areas/${params.name}`).then(response => {
         return {
           area: response.data.area,
-          geojson: null,
           resolvers: response.data.resolvers,
           responders: response.data.responders,
           allAvailableUsers: response.data.allAvailableUsers,
@@ -111,6 +110,7 @@ export default {
             user: "",
             role: "resolver"
           },
+          geojson: null,
           center: [14.53116, 121.04653],
           zoom: 13,
           minZoom: 13,
@@ -125,7 +125,6 @@ export default {
       return $axios.$get(`/admin/areas/${params.name}`).then(response => {
         return {
           area: response.data.area,
-          geojson: null,
           resolvers: response.data.resolvers,
           responders: response.data.responders,
           allAvailableUsers: response.data.allAvailableUsers,
@@ -134,6 +133,7 @@ export default {
           },
           center: [14.53116, 121.04653],
           zoom: 13,
+          geojson: null,
           minZoom: 13,
           maxZoom: 18,
           maxBounds: [],
@@ -211,6 +211,9 @@ export default {
           const geoJSON = L.geoJSON(this.area.location);
           this.geojson = geoJSON.toGeoJSON();
           this.maxBounds = geoJSON.getBounds();
+          this.$nextTick(() => {
+            this.$refs.map.mapObject.fitBounds(this.maxBounds)
+          })
           this.center = [
             this.maxBounds.getCenter().lat,
             this.maxBounds.getCenter().lng

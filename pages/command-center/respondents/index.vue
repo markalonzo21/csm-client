@@ -71,15 +71,15 @@
         </div>
         <div class="form-group text-center">
           <label for>Actionable Report Type</label>
-          <div v-for="reportCategory in reportCategories">
+          <div v-for="category in reportCategories">
             <h5
               class="font-bold"
-              v-if="reportCategory.types.length > 0"
-            >{{ reportCategory.name }}</h5>
-            <div class="checkbox" v-for="reportType in reportCategory.types">
+              v-if="category.types.length > 0"
+            >{{ category.name }}</h5>
+            <div class="checkbox" v-for="type in category.types">
               <label>
-                <input type="checkbox" v-model="form.types" :value="reportType._id">
-                {{ reportType.name }}
+                <input type="checkbox" v-model="form.types" :value="type._id">
+                {{ type.name }}
               </label>
             </div>
           </div>
@@ -207,7 +207,7 @@ export default {
         lastName: "",
         email: "",
         mobile: "",
-        reportTypes: []
+        types: []
       }
     };
   },

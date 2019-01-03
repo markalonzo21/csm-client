@@ -17,6 +17,7 @@
           v-for="report in reports"
           :key="report._id"
         ></l-marker>
+          <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
       </l-map>
     </no-ssr>
   </div>
@@ -33,15 +34,14 @@ export default {
       minZoom: 13,
       maxZoom: 18,
       maxBounds: [],
-      maxBoundsViscosity: 1.0
+      maxBoundsViscosity: 1.0,
+      geojson: null
     };
   },
   mounted() {
-    this.$nextTick(() => {
-      if (this.area) {
-        this.assignInitialValue();
-      }
-    });
+    if (this.area) {
+      this.assignInitialValue();
+    }
   },
   methods: {
     assignInitialValue() {
@@ -51,17 +51,9 @@ export default {
             this.zoom = this.area.minZoom;
             this.minZoom = this.area.minZoom;
             this.maxZoom = this.area.maxZoom;
-
-            this.maxBounds = L.latLngBounds(
-              L.latLng(
-                this.area.location.coordinates[0][1],
-                this.area.location.coordinates[0][0]
-              ),
-              L.latLng(
-                this.area.location.coordinates[1][1],
-                this.area.location.coordinates[1][0]
-              )
-            );
+            const geoJSON = L.geoJSON(this.area.location);
+            this.geojson = geoJSON.toGeoJSON();
+            this.maxBounds = geoJSON.getBounds();
 
             this.center = [
               this.maxBounds.getCenter().lat,

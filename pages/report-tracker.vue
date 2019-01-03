@@ -47,20 +47,16 @@ export default {
   },
   methods: {
     initSocketListener() {
-      this.$socket.on("responder-assigned", (report) => {
-        this.$store.commit('user/REPLACE_REPORT', report)
-      })
+      this.$socket.on("report-updated", (report) => {
+        if (report.status === 'resolved' ||report.status === 'cancelled') {
+          if (this.chat.reportId === report._id) {
+            this.chat.reportId = null
+          }
 
-      this.$socket.on("milestone-confirmed", (report) => {
-        this.$store.commit('user/REPLACE_REPORT', report)
-      })
-
-      this.$socket.on("report-resolved", report => {
-        if (this.chat.reportId === report._id) {
-          this.chat.reportId = null
+          this.$store.commit('user/REPORT_RESOLVED', report)
         }
 
-        this.$store.commit('user/REPORT_RESOLVED', report)
+        this.$store.commit('user/REPLACE_REPORT', report)
       })
     },
     setChatBoxData(data) {

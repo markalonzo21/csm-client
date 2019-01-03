@@ -31,7 +31,7 @@
           {{ report.description }}
         </div>
         <div class="col-md-3">
-          <span class="bluelabel">Reported by</span>
+          <span class="bluelabel">Reporter</span>
           <br>
           {{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName}}
         </div>
@@ -44,7 +44,12 @@
           <span v-else>None</span>
         </div>
         <div class="col-md-3">
-          <span class="bluelabel">Reported at</span>
+          <span class="bluelabel">Status</span>
+          <br>
+          <span class="capitalize">{{ report.status }}</span>
+        </div>
+        <div class="col-md-3 mt-6">
+          <span class="bluelabel">Date Reported</span>
           <br>
           {{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}
         </div>

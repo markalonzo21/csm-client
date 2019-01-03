@@ -42,12 +42,11 @@
           <td>{{ report._id }}</td>
           <td>{{ report.type.name }}</td>
           <td class="text-center">
-         <button
-              class="btn chat"
-              :class="chatIsActive ? 'btngreen' : 'btnblue'"
-              @click.prevent="$emit('chatToggled', { reportId: report._id, isResolved: report.resolvedAt !== null })"
-            >
-              <svgicon name="chat"></svgicon>Chat
+            <button
+              class="btn chat btnblue"
+              @click.prevent="selectReport"
+              :disabled="loadingSelectReport"
+            >Resolve
             </button>
           </td>
           <td class="bluelabel select-none">
@@ -62,25 +61,18 @@
           <tr>
             <th class="bluelabel">Notes</th>
             <th class="bluelabel">Reporter</th>
-            <th class="bluelabel">Responder</th>
-            <th class="bluelabel">Status</th>
+            <!-- <th class="bluelabel">Responder</th> -->
             <th class="bluelabel">Date Reported</th>
           </tr>
           <tr>
             <td>{{ report.description }}</td>
             <td>{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName}}</td>
-            <td
+<!--             <td
               v-if="report.responder"
             >{{ report.responder.firstName }} {{ report.responder.middleName }} {{ report.responder.lastName}}</td>
             <td v-else>
               <a class="cursor-pointer" @click.prevent="showAssignModal">Assign Responder</a>
-            </td>
-            <td class="capitalize">
-              <span v-if="!report.responder">{{ report.status }}</span>
-              <select class="capitalize" @change="statusChanged" v-else>
-                <option v-for="status in ['pending', 'in-progress', 'resolved', 'cancelled']" class="capitalize" :selected="status === form.status" >{{ status }}</option>
-              </select>
-            </td>
+            </td> -->
             <td>{{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}</td>
           </tr>
         </table>
@@ -121,7 +113,7 @@
 
 <script>
 export default {
-  props: ["report", "activeChat"],
+  props: ["report"],
   data() {
     return {
       showAccordion: [false],
@@ -129,17 +121,12 @@ export default {
       availableResponders: [],
       selectedResponder: null,
       loadingAssignResponder: false,
-      form: {
-        status: this.report.status
-      }
+      loadingSelectReport: false
     };
   },
   computed: {
     isResolver() {
       return this.$store.getters["auth/hasPermission"]("resolve");
-    },
-    chatIsActive() {
-      return this.report._id === this.activeChat.reportId;
     }
   },
   methods: {
@@ -147,8 +134,8 @@ export default {
       this.isAssignModalVisible = true;
       this.$axios
         .$get(
-          `/admin/available-responders?type=${this.report.type._id}&areaId=${
-            this.$route.params.id
+          `/admin/available-responders?type=${this.report.type._id}&areaName=${
+            this.$route.params.name
           }`
         )
         .then(response => {
@@ -176,23 +163,17 @@ export default {
         this.showAccordion = this.showAccordion.map((v, i) => i === index);
       }
     },
-    statusChanged(event) {
-      var confirmed = confirm("Are you sure you want to update the status?")
-
-      if (confirmed) {
-        this.$axios.$post('/resolver/update-report', {
-          status: event.target.value,
-          reportId: this.report._id
-        }).then(response => {
-          alert('Update successful!')
-          this.form.status = response.data.status
-        }).catch(err => {
-          alert('Something went wrong!')
-          event.target.value = this.form.status
-        })
-      } else {
-        event.target.value = this.form.status
-      }
+    selectReport() {
+      this.loadingSelectReport = true
+      this.$axios.$post('/resolver/select-report', {
+        reportId: this.report._id,
+        areaName: this.$route.params.name
+      }).then(response => {
+        this.loadingSelectReport = false
+      }).catch(err => {
+        alert('Report is already selected!')
+        this.loadingSelectReport = false
+      })
     },
     confirmResponse(response) {
       this.loadingConfirmation = true;

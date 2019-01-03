@@ -14,7 +14,7 @@
                   <button
                     type="button"
                     class="btn btnblue col-sm-6 outline-none"
-                    @click.prevent="$router.push(`/resolver/areas/${area._id}`)"
+                    @click.prevent="$router.push(`/resolver/areas/${area.name}`)"
                   >View Area</button>
                 </div>
               </div>

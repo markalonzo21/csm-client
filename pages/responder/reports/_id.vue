@@ -18,7 +18,13 @@
               <span class="font-semibold text-blue-dark float-left">Reporter</span>
               <span
                 class="float-right"
-              >{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName }}</span>
+              >{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName }} ({{ report.reporter.mobile }})</span>
+            </div>
+            <div class="clearfix">
+              <span class="font-semibold text-blue-dark float-left">Resolver</span>
+              <span
+                class="float-right"
+              >{{ report.resolver.firstName }} {{ report.resolver.middleName }} {{ report.resolver.lastName }} ({{ report.resolver.mobile }})</span>
             </div>
 
             <div class="border-b w-full my-4"></div>
@@ -57,7 +63,7 @@
               </no-ssr>
             </div>
           </div>
-          <div class="row border rounded bg-white py-6 px-6">
+<!--           <div class="row border rounded bg-white py-6 px-6">
             <h4 class="font-bold mt-0 text-blue-darker">Milestones</h4>
             <div class="col-md-4 my-4" v-for="milestone in report.responses" :key="milestone._id">
               <div class="box" :class="{'checked': milestone.resolvedAt !== null }">
@@ -76,7 +82,7 @@
                 @click.prevent="markAsDone(nextMilestone)"
               >{{ nextMilestone.responseType.name }}</button>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -105,11 +111,11 @@ export default {
     report() {
       return this.$store.state.responder.report;
     },
-    nextMilestone() {
-      return this.report.responses.find(response => {
-        return response.resolvedAt === null;
-      });
-    }
+    // nextMilestone() {
+    //   return this.report.responses.find(response => {
+    //     return response.resolvedAt === null;
+    //   });
+    // }
   },
   mounted() {
     this.initSocketListener();

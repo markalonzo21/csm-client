@@ -10,7 +10,7 @@
                 <form @submit.prevent="report">
                   <label for class="title__gray--small" style="font-size:14px;">Category</label>
                   <br>
-                  <select v-model="reportCategory" required class="form-control mb20">
+                  <select v-model="category" required class="form-control mb20">
                     <option
                       v-for="(category, index) in reportCategories"
                       :key="category._id + index"
@@ -22,7 +22,7 @@
                   <br>
                   <select v-model="form.type" required class="form-control mb20">
                     <option
-                      v-for="type in reportTypes"
+                      v-for="type in types"
                       :key="type._id"
                       :value="type._id"
                       v-text="type.name"
@@ -91,8 +91,8 @@ export default {
           areas: areas.data,
           loadingSubmitReport: false,
           reportCategories: categories.data,
-          reportCategory: 0,
-          reportTypes: categories.data[0].types,
+          category: 0,
+          types: categories.data[0].types,
           form: {
             type: categories.data[0].types[0]._id,
             description: "Please Help!",
@@ -108,11 +108,11 @@ export default {
     );
   },
   watch: {
-    reportCategory(index) {
-      const reportCategory = this.reportCategories[index];
+    category(index) {
+      const category = this.reportCategories[index];
       this.$nextTick(() => {
-        this.types = reportCategory.types;
-        this.form.type = reportCategory.types[0]._id;
+        this.types = category.types;
+        this.form.type = category.types[0]._id;
       });
     },
     area(index) {

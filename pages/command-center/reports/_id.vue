@@ -1,215 +1,287 @@
 <template>
-  <div class="container p-2" style="height: 80vh; width: 100%;">
-    <div class="row" v-if="report">
-      <div class="col-md-6">
-        <h3 class="mb-1">ID: {{ report._id }}</h3>
-        <h3 class="mb-1">Type: {{ report.type.name }}</h3>
-        <h3 class="mb-1">Description: {{ report.description }}</h3>
-        <h3
-          class="mb-1"
-        >Reported By: {{ report.reporter.firstName }} {{ report.reporter.lastName }} ({{ report.reporter.mobile }})</h3>
-        <template v-if="report.responder">
-          <h3 class="mb-1">
-            Responder:
-            {{ report.responder.firstName }} {{ report.responder.lastName }}
-          </h3>
-        </template>
-        <template v-else>
-          <button
-            @click.prevent="showAssignModal"
-            class="btn btn-primary mt30"
-            style="width: auto;"
-          >Assign Responder</button>
-        </template>
-        <h3 v-if="report.photos.length > 0">Photos</h3>
-        <div class="row">
-          <div class="col-md-3" v-for="photo in report.photos">
-            <div class="panel">
-              <div class="panel-body">
-                <img :src="$store.getters['showPhoto'](photo)" alt="image" class="h-24 w-24">
+  <section class="ticket-info">
+    <div class="row">
+      <div class="col-md-4 sidebar">
+        <div class="panel info">
+          <div class="panel-heading">
+            <h3 class="text-uppercase">Report information</h3>
+          </div>
+          <div class="panel-body p0">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td>{{ report._id }}</td>
+                </tr>
+                <tr>
+                  <td>Reporter</td>
+                  <td>{{ report.reporter.email }}</td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>{{ report.status }}</td>
+                </tr>
+                <tr>
+                  <td>Date Created</td>
+                  <td>{{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}</td>
+                </tr>
+                <tr>
+                  <td>Last Updated</td>
+                  <td>{{ $moment(report.updatedAt).format('MMM. DD, YYYY | h:mm A ') }}</td>
+                </tr>
+                <tr>
+                  <td>Category</td>
+                  <td>{{ report.type.category.name }}</td>
+                </tr>
+                <tr>
+                  <td>Type</td>
+                  <td>{{ report.type.name }}</td>
+                </tr>
+                <tr>
+                  <td>Area</td>
+                  <td>{{ report.area ? report.area.name : 'N/A' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel location">
+          <div class="panel-heading">
+            <h3 class="text-uppercase">Location</h3>
+          </div>
+          <div class="panel-body"></div>
+        </div>
+        <div class="panel option">
+          <div class="panel-heading">
+            <h3 class="text-uppercase">Option</h3>
+          </div>
+          <div class="panel-body p0">
+            <form>
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="">Type</label>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btnform">Change</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3"><label for="">Reassign To</label></div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btnform">Change</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="">Override Status</label>
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btnform">On-hold</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3"><label for="">Tag as</label></div>
+                <div class="col-md-3">
+                  <button class="btn btnform btntag">Junk</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 content">
+        <div class="panel ticket-details">
+          <div class="panel-heading">
+            <h3 class="text-uppercase">Priority number: 12323fdfsea</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row basic-details">
+              <div class="col-md-4">
+                <label for="">Date</label><br />
+                <span class="basic">January 1, 2019 7:44:03 PM</span>
+              </div>
+              <div class="col-md-4">
+                <label for="">Name of Reporter</label><br />
+                <span class="basic">Janno Reyes</span>
+              </div>
+              <div class="col-md-4 text-right">
+                <a href="" class="btn btnblue">Print Chat History</a>
+              </div>
+            </div>
+            <div class="row notes">
+              <div class="col-md-4">
+                <label for="">Notes</label><br />
+                <span class="basic">Nawalan ako ng tubig sa shower</span>
+              </div>
+            </div>
+            <div class="row images">
+              <div class="col-md-4">
+                <label for="">Images</label><br />
+
+              </div>
+            </div>
+            <div class="row resolver">
+              <div class="col-md-4">
+                <label for="">Resolver</label><br />
+                <span class="basic">Harold Llames</span>
               </div>
             </div>
           </div>
         </div>
-        <h3 class="mb-1">Milestones</h3>
-        <div class="my-2" v-for="(response, index) in report.responses" :key="response._id">
-          <span>
-            {{ index + 1 }}. {{ response.responseType.name }}
-            <span
-              v-if="response.resolvedAt !== null"
-            >- Completed at {{ $moment(response.resolvedAt).format('MMM. DD, YYYY | h:mm A ') }}</span>
-          </span>
-          <a
-            class="cursor-pointer"
-            @click.prevent="confirmResponse(response)"
-            v-if="response.resolvedAt !== null && response.confirmed === false"
-          >- Click to Confirm</a>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <!-- REPORT MAP -->
-        <div id="map-wrap" style="height: 300px; width: 100%;" class="mt-4">
-          <no-ssr>
-            <l-map
-              :center="map.center"
-              :maxBounds="map.maxBounds"
-              :zoom="map.zoom"
-              :minZoom="map.minZoom"
-              :maxZoom="map.maxZoom"
-              :maxBoundsViscosity="map.maxBoundsViscosity"
-              ref="map"
-            >
-              <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
-              <l-marker :lat-lng="map.center"></l-marker>
-            </l-map>
-          </no-ssr>
-        </div>
-        <hr>
-        <ChatBox :reportId="report._id" :isResolved="report.resolvedAt !== null"/>
-      </div>
-      <modal
-        class="assign-modal"
-        :header="false"
-        v-model="isAssignModalVisible"
-        :class="{ 'pointer-events-none': loadingAssignResponder }"
-      >
-        <div class="row">
-          <div class="col-md-3">
-            <label for class="title">Responder</label>
-          </div>
-          <div class="col-md-9">
-            <select required v-model="selectedResponder" class="form-control">
-              <option :value="null">Select Responder</option>
-              <option
-                v-for="responder in availableResponders"
-                :value="responder._id"
-                :key="responder._id"
-              >{{ responder.firstName }} {{ responder.lastName }}</option>
-            </select>
+        <div class="panel">
+          <div class="panel-body">
+            <div class="row comment">
+              <div class="col-md-10">
+                <textarea
+                  class="form-control"
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="2"
+                  placeholder="Write something here..."
+                ></textarea>
+              </div>
+              <div class="col-md-2 text-center">
+                <button class="btn text-uppercase">Send</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div slot="footer" class="text-center">
-          <button
-            @click.prevent="assignResponder"
-            class="btn btn-primary"
-            style="width: auto;"
-            :disabled="!selectedResponder"
-          >Assign Responder</button>
-        </div>
-      </modal>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
-import ChatBox from "~/components/ChatBox";
+  export default {
+    layout: 'command-center',
+    asyncData({ $axios, store, params, error }) {
+      if (!store.getters["auth/hasPermission"]("view reports")) {
+        return redirect("/");
+      }
+      return $axios.$get(`/admin/reports/${params.id}`).then(response => {
+        const bounds = [120.89287, 14.63956, 121.07483, 14.5565];
+        const lat = response.data.location
+          ? response.data.location.coordinates[1]
+          : 14.59804;
+        const lng = response.data.location
+          ? response.data.location.coordinates[0]
+          : 120.98385;
 
-export default {
-  layout: "command-center",
-  components: {
-    ChatBox
-  },
-
-  asyncData({ $axios, store, params, error }) {
-    if (!store.getters["auth/hasPermission"]("view reports")) {
-      return redirect("/");
-    }
-    return $axios.$get(`/admin/reports/${params.id}`).then(response => {
-      const bounds = [120.89287, 14.63956, 121.07483, 14.5565];
-      const lat = response.data.location
-        ? response.data.location.coordinates[1]
-        : 14.59804;
-      const lng = response.data.location
-        ? response.data.location.coordinates[0]
-        : 120.98385;
-
-      return {
-        report: response.data,
-        isAssignModalVisible: false,
-        availableResponders: [],
-        selectedResponder: null,
-        loadingAssignResponder: false,
-        map: {
-          center: [lat, lng],
-          zoom: 13,
-          minZoom: 13,
-          maxZoom: 18,
-          maxBounds: bounds,
-          maxBoundsViscosity: 1.0,
-          reports: []
-        }
-      };
-    });
-  },
-  mounted() {
-    this.initSocketListeners();
-  },
-  beforeDestroy() {
-    this.$socket.off("milestone-completed");
-    this.$socket.off("milestone-confirmed");
-  },
-  methods: {
-    initSocketListeners() {
-      this.$socket.on("milestone-completed", payload => {
-        if (this.report._id === payload._id) {
-          this.report = payload;
-        }
-      });
-      this.$socket.on("milestone-confirmed", payload => {
-        if (this.report._id === payload._id) {
-          this.report = payload;
-        }
+        return {
+          report: response.data,
+          isAssignModalVisible: false,
+          availableResponders: [],
+          selectedResponder: null,
+          loadingAssignResponder: false,
+          map: {
+            center: [lat, lng],
+            zoom: 13,
+            minZoom: 13,
+            maxZoom: 18,
+            maxBounds: bounds,
+            maxBoundsViscosity: 1.0,
+            reports: []
+          }
+        };
       });
     },
-    milestoneIsCompleted(response) {
-      return response.resolvedAt !== null;
+    mounted() {
+      this.initSocketListeners();
     },
-    showAssignModal() {
-      this.isAssignModalVisible = true;
-      this.$axios
-        .$get(`/admin/available-responders?type=${this.report.type._id}`)
-        .then(response => {
-          this.availableResponders = response.data;
-        });
+    beforeDestroy() {
+      this.$socket.off("report-updated");
     },
-    assignResponder() {
-      this.loadingAssignResponder = true;
-      this.$axios
-        .$post(`admin/assign-responder`, {
-          reportId: this.report._id,
-          responderId: this.selectedResponder
+    methods: {
+      initSocketListeners() {
+        this.$socket.on("report-updated", payload => {
+          if (this.report._id === payload._id) {
+            this.report = payload;
+          }
         })
-        .then(response => {
-          this.isAssignModalVisible = false;
-          this.report = response.data;
-          this.availableResponders = [];
-          this.loadingAssignResponder = false;
-        });
-    },
-    confirmResponse(response) {
-      this.$axios
-        .$post(`/admin/confirm-response`, {
-          reportId: this.report._id,
-          responseId: response._id
-        })
-        .then(response => {
-          this.isAssignModalVisible = false;
-          this.report = response.data;
-          this.availableResponders = [];
-          this.loadingAssignResponder = false;
-        });
+      }
     }
   }
-};
 </script>
 
-<style>
-.center-div {
-  width: 500px;
-  height: 300px;
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  transform: translate(-50%, -50%);
-}
+<style scoped>
+  .ticket-info .sidebar .panel-body {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .ticket-info .panel-body .row {
+    margin-bottom: 10px;
+  }
+  .ticket-info .panel-heading {
+    background-color: #344fa0;
+  }
+  .ticket-info .panel-heading h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #fff;
+  }
+  .ticket-info .table {
+    margin-bottom: 0;
+  }
+  .ticket-info .table td {
+    font-size: 12px;
+    border-color: #f1f1f1;
+  }
+  .ticket-info .table td:first-child {
+    background-color: #f1f1f1;
+    width: 120px;
+  }
+  .ticket-info .panel-body form {
+    padding: 10px;
+  }
+  .ticket-info .panel-body form label {
+    font-size: 12px;
+    font-weight: normal;
+  }
+  .btn.btnform {
+    width: 80px;
+    height: 30px;
+    border-radius: 10px;
+    background-color: #29abe2;
+    font-size: 14px;
+    color: #fff;
+    line-height: 16px;
+  }
+  .btn.btntag {
+    background-color: #ea9199;
+  }
+
+  .ticket-info .content label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+  }
+  .ticket-info .row.notes {
+    margin-top: 40px;
+    margin-bottom: 105px;
+  }
+  .ticket-info .row.images {
+    margin-bottom: 40px;
+  }
+  .ticket-info .row.comment {
+    margin: 0;
+  }
+  .ticket-info .row.comment .panel-body {
+    padding: 10px 0;
+  }
+  .ticket-info .row.comment .btn {
+    font-weight: 700;
+    color: #29abe2;
+  }
+  .ticket-info .content textarea {
+    resize: none;
+    height: 40px;
+    border-radius: 10px;
+  }
 </style>
