@@ -75,7 +75,7 @@ export default {
     position: fixed;
     bottom: 5px;
     right: 0;
-    z-index: 2;
+    z-index: 6;
   }
   .carousel-control.right,
   .carousel-control.left {
