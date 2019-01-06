@@ -1,10 +1,79 @@
 <template>
   <div>
-      <div class="ads mt30">
-          <div class="container">
-              <img src="/img/wide-ads.png" alt="" class="img-responsive mb20">
+    <section class="banner">
+      <carousel
+        :indicators="indicators"
+        :controls="controls"
+        :interval="interval"
+        ref="carousel"
+      >
+        <slide>
+          <img src="/img/banner.jpg" alt="" class="img-responsive" />
+        </slide>
+        <slide>
+            <img src="/img/banner-ads.png" alt="" class="img-responsive" />
+          <!-- <div class="container">
+            <div class="row">
+              <div class="col-md-4 left-content">
+                <h2 class="title__blue--large text-uppercase">Report Now!</h2>
+                <div class="intro-text mb30">
+                  <p class="basic__dark">
+                    This website is an Incident Reporting App and Web Software,
+                    wherein you can manage and track incidents in a quick and
+                    effective way, inform the right people directly and
+                    effortlessly in just one click away
+                  </p>
+                </div>
+                <router-link to="/new-report" class="btn btnblue text-uppercase"
+                  >Report</router-link
+                >
+              </div>
+              <div class="col-md-8 right-content">
+                <img
+                  src="/img/monitor.png"
+                  alt
+                  class="img-responsive mrgnauto pull-right"
+                />
+              </div>
+            </div>
+          </div> -->
+        </slide>
+      </carousel>
+      <div class="actionbtn">
+          <div class="forreport mb10">
+            <a href="#" class="btn text-uppercase">
+              Report now!</small>
+            </a>
+          </div>
+          <div class="forreg">
+            <a href="#" class="btn text-uppercase">
+              Register now!</small>
+            </a>
           </div>
         </div>
+    </section>
+    <div class="news ads mt30">
+      <div class="container">
+        <carousel
+          :indicators="indicators"
+          :controls="controls"
+          :interval="interval"
+          ref="carousel"
+        >
+          <slide>
+            <div class="newsitem">
+                <img src="/img/megaworld-logo.jpg" alt="" class="img-responsive pull-left mr10" style="max-width: 200px;">
+                <h3 class="title__black--lato mt0"><a href="#">Title of the News here</a></h3>
+            </div>
+          </slide>
+          <slide>
+            <div class="adsitem">
+                <img src="/img/wide-ads.png" alt="" class="img-responsive mb20" />
+            </div>
+          </slide>
+        </carousel>
+      </div>
+    </div>
     <section class="main-content">
       <div class="news">
         <div class="container">
@@ -304,41 +373,22 @@
         </div>
       </div> -->
     </section>
-    <section class="banner">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4 left-content">
-            <h2 class="title__blue--large text-uppercase">Report Now!</h2>
-            <div class="intro-text mb30">
-              <p class="basic__dark">
-                This website is an Incident Reporting App and Web Software,
-                wherein you can manage and track incidents in a quick and
-                effective way, inform the right people directly and effortlessly
-                in just one click away
-              </p>
-            </div>
-            <router-link to="/new-report" class="btn btnblue text-uppercase"
-              >Report</router-link
-            >
-          </div>
-          <div class="col-md-8 right-content">
-            <img
-              src="/img/monitor.png"
-              alt
-              class="img-responsive mrgnauto pull-right"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
+
     <section class="container-bottom">
       <div class="container">
         <div class="row">
           <div class="col-md-6 left-content">
             <div class="panel">
               <div class="panel-body">
-                <h3 class="title__blue--large text-uppercase">Command center</h3>
-                <p class="basic">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, quod, error quae dolore officiis autem officia iure quibusdam aliquid, fugiat laboriosam maiores earum sint odio quisquam harum deserunt. Aliquam, magnam.</p>
+                <h3 class="title__blue--large text-uppercase">
+                  Command center
+                </h3>
+                <p class="basic">
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                  Sapiente, quod, error quae dolore officiis autem officia iure
+                  quibusdam aliquid, fugiat laboriosam maiores earum sint odio
+                  quisquam harum deserunt. Aliquam, magnam.
+                </p>
                 <a href="#" class="btn btnblue">button</a>
               </div>
             </div>
@@ -346,8 +396,16 @@
           <div class="col-md-6 right-content">
             <div class="panel">
               <div class="panel-body">
-                <h3 class="title__blue--large text-uppercase">Help us improve our site</h3>
-                <textarea name="" id="" cols="30" rows="6" class="form-control mb20"></textarea>
+                <h3 class="title__blue--large text-uppercase">
+                  Help us improve our site
+                </h3>
+                <textarea
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="6"
+                  class="form-control mb20"
+                ></textarea>
                 <a href="#" class="btn btnblue">Submit</a>
               </div>
             </div>
@@ -355,6 +413,9 @@
         </div>
       </div>
     </section>
+    <div class="ads ptpb40">
+      <img src="/img/wide-ads.png" alt="" class="img-responsive mrgnauto" />
+    </div>
   </div>
 </template>
 <script>
@@ -367,6 +428,62 @@
           advertisements: response.data
         };
       });
+    },
+    data() {
+      return {
+        interval: 5000,
+        indicators: false,
+        controls: true
+      };
     }
   };
 </script>
+<style>
+  .ptpb40 {
+    padding: 40px 0;
+  }
+
+  .actionbtn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  .carousel-control.right,
+  .carousel-control.left {
+    background: transparent;
+  }
+  .banner .left.carousel-control {
+    left: 15px;
+  }
+  .banner .right.carousel-control {
+    right: 15px;
+  }
+  .banner .carousel-control,
+  .ads .carousel-control {
+    width: 0;
+    opacity: 1;
+  }
+  .ads .carousel-control .glyphicon:before {
+    color: #344fa0;
+  }
+  .ads .left.carousel-control {
+    left: -15px;
+  }
+  .ads .right.carousel-control {
+    right: -15px;
+  }
+  .news.ads .item {
+    height: 150px;
+  }
+  .news.ads a {
+    font-size: 36px;
+    font-weight: 700;
+    color: #5f6772;
+    text-decoration: none;
+  }
+  .news.ads .newsitem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
