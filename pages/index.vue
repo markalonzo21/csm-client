@@ -67,45 +67,52 @@ export default {
 }
 </script>
 <style>
-.ptpb40 {
-  padding: 40px 0;
-}
-.carousel-control.right,
-.carousel-control.left {
-  background: transparent;
-}
-.banner .left.carousel-control {
-  left: 15px;
-}
-.banner .right.carousel-control {
-  right: 15px;
-}
-.banner .carousel-control,
-.ads .carousel-control {
-  width: 0;
-  opacity: 1;
-}
-.ads .carousel-control .glyphicon:before {
-  color: #344fa0;
-}
-.ads .left.carousel-control {
-  left: -15px;
-}
-.ads .right.carousel-control {
-  right: -15px;
-}
-.news.ads .item {
-  height: 150px;
-}
-.news.ads a {
-  font-size: 36px;
-  font-weight: 700;
-  color: #5f6772;
-  text-decoration: none;
-}
-.news.ads .newsitem {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .ptpb40 {
+    padding: 40px 0;
+  }
+
+  .actionbtn {
+    position: fixed;
+    bottom: 5px;
+    right: 0;
+    z-index: 2;
+  }
+  .carousel-control.right,
+  .carousel-control.left {
+    background: transparent;
+  }
+  .banner .left.carousel-control {
+    left: 15px;
+  }
+  .banner .right.carousel-control {
+    right: 15px;
+  }
+  .banner .carousel-control,
+  .ads .carousel-control {
+    width: 0;
+    opacity: 1;
+  }
+  .ads .carousel-control .glyphicon:before {
+    color: #344fa0;
+  }
+  .ads .left.carousel-control {
+    left: -15px;
+  }
+  .ads .right.carousel-control {
+    right: -15px;
+  }
+  .news.ads .item {
+    height: 150px;
+  }
+  .news.ads a {
+    font-size: 36px;
+    font-weight: 700;
+    color: #5f6772;
+    text-decoration: none;
+  }
+  .news.ads .newsitem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 </style>
