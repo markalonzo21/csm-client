@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import CommandCenterDrawer from "~/components/CommandCenterDrawer";
+import CommandCenterDrawer from '~/components/CommandCenterDrawer'
 
 export default {
   components: {
@@ -60,37 +60,38 @@ export default {
   },
   computed: {
     crumbs() {
-      let crumbs = this.$route.path.split("/");
-      let items = [];
-      let route = "";
+      let crumbs = this.$route.path.split('/')
+      let items = []
+      let route = ''
 
       for (let i = 1; i < crumbs.length; i++) {
-        let crumb = crumbs[i];
+        let crumb = crumbs[i]
 
-        route = route + "/" + crumbs[i];
+        route = route + '/' + crumbs[i]
 
         items.push({
           text: crumb,
           to: route
-        });
+        })
       }
-      return items;
+      return items
     }
   },
   data() {
     return {
       isDrawerVisible: false
-    };
+    }
   }
-};
+}
 </script>
 
 <style>
 #components-layout-demo-fixed .logo {
   width: 120px;
   height: 31px;
-  background-image: url("/img/megaworld-logo.png");
+  background-image: url('/img/megaworld-logo.png');
   background-size: cover;
+  background-color: white;
   margin: 16px 24px 16px 0;
   float: left;
 }

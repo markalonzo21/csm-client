@@ -58,7 +58,7 @@
           <h3 class="title__blue mb30">Images/Videos</h3>
           <div class="row">
             <div class="col-md-3" v-for="media in report.media" :key="media">
-              <img :src="media" alt="image-media" v-if="isImage(media)">
+              <img :src="media" alt="image-media" v-if="$utils.isImage(media)">
               <video width="300" controls v-else>
                 <source :src="media" type="video/mp4">
               </video>
@@ -89,28 +89,22 @@
 
 <script>
 export default {
-  props: ["report"],
+  props: ['report'],
   data() {
     return {
       showAccordion: [false]
-    };
+    }
   },
   methods: {
     toggleAccordion(index) {
       if (this.showAccordion[index]) {
-        this.$set(this.showAccordion, index, false);
+        this.$set(this.showAccordion, index, false)
       } else {
-        this.showAccordion = this.showAccordion.map((v, i) => i === index);
+        this.showAccordion = this.showAccordion.map((v, i) => i === index)
       }
-    },
-    isImage(src) {
-      if (src.includes(".png") || src.includes(".jpg")) {
-        return true;
-      }
-      return false;
     }
   }
-};
+}
 </script>
 
 

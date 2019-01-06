@@ -93,12 +93,10 @@
           <h3 class="title__blue mt60 mb30">Images/Videos</h3>
           <div class="row">
             <div class="col-md-3" v-for="media in report.media" :key="media">
-              <div class="col-md-3" v-for="media in report.media" :key="media">
-                <img :src="media" alt="image-media" v-if="isImage(media)">
-                <video width="300" controls v-else>
-                  <source :src="media" type="video/mp4">
-                </video>
-              </div>
+              <img :src="media" alt="image-media" v-if="$utils.isImage(media)">
+              <video width="300" controls v-else>
+                <source :src="media" type="video/mp4">
+              </video>
             </div>
           </div>
         </div>
@@ -110,7 +108,7 @@
 
 <script>
 export default {
-  props: ["report", "activeChat"],
+  props: ['report', 'activeChat'],
   data() {
     return {
       showAccordion: [false],
@@ -121,19 +119,19 @@ export default {
       form: {
         status: this.report.status
       }
-    };
+    }
   },
   computed: {
     isResolver() {
-      return this.$store.getters["auth/hasPermission"]("resolve");
+      return this.$store.getters['auth/hasPermission']('resolve')
     },
     chatIsActive() {
-      return this.report._id === this.activeChat.reportId;
+      return this.report._id === this.activeChat.reportId
     }
   },
   methods: {
     showAssignModal() {
-      this.isAssignModalVisible = true;
+      this.isAssignModalVisible = true
       this.$axios
         .$get(
           `/admin/available-responders?type=${this.report.type._id}&areaId=${
@@ -141,73 +139,67 @@ export default {
           }`
         )
         .then(response => {
-          this.availableResponders = response.data;
-        });
+          this.availableResponders = response.data
+        })
     },
     assignResponder() {
-      this.loadingAssignResponder = true;
+      this.loadingAssignResponder = true
       this.$axios
         .$post(`admin/assign-responder`, {
           reportId: this.report._id,
           responderId: this.selectedResponder
         })
         .then(response => {
-          this.isAssignModalVisible = false;
-          this.report = response.data;
-          this.availableResponders = [];
-          this.loadingAssignResponder = false;
-        });
+          this.isAssignModalVisible = false
+          this.report = response.data
+          this.availableResponders = []
+          this.loadingAssignResponder = false
+        })
     },
     toggleAccordion(index) {
       if (this.showAccordion[index]) {
-        this.$set(this.showAccordion, index, false);
+        this.$set(this.showAccordion, index, false)
       } else {
-        this.showAccordion = this.showAccordion.map((v, i) => i === index);
+        this.showAccordion = this.showAccordion.map((v, i) => i === index)
       }
-    },
-    isImage(src) {
-      if ([".jpg", ".png"].includes(src)) {
-        return true;
-      }
-      return false;
     },
     statusChanged(event) {
-      var confirmed = confirm("Are you sure you want to update the status?");
+      var confirmed = confirm('Are you sure you want to update the status?')
 
       if (confirmed) {
         this.$axios
-          .$post("/resolver/update-report", {
+          .$post('/resolver/update-report', {
             status: event.target.value,
             reportId: this.report._id
           })
           .then(response => {
-            alert("Update successful!");
-            this.form.status = response.data.status;
+            alert('Update successful!')
+            this.form.status = response.data.status
           })
           .catch(err => {
-            alert("Something went wrong!");
-            event.target.value = this.form.status;
-          });
+            alert('Something went wrong!')
+            event.target.value = this.form.status
+          })
       } else {
-        event.target.value = this.form.status;
+        event.target.value = this.form.status
       }
     },
     confirmResponse(response) {
-      this.loadingConfirmation = true;
+      this.loadingConfirmation = true
       this.$axios
         .$post(`/admin/confirm-response`, {
           reportId: this.report._id,
           responseId: response._id
         })
         .then(response => {
-          this.loadingConfirmation = false;
+          this.loadingConfirmation = false
         })
         .catch(error => {
-          this.loadingConfirmation = false;
-        });
+          this.loadingConfirmation = false
+        })
     }
   }
-};
+}
 </script>
 
 
