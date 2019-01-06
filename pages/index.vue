@@ -444,9 +444,10 @@
   }
 
   .actionbtn {
-    position: absolute;
-    bottom: 0;
+        position: fixed;
+    bottom: 5px;
     right: 0;
+    z-index: 2;
   }
   .carousel-control.right,
   .carousel-control.left {
