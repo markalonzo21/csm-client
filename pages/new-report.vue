@@ -29,12 +29,30 @@
                     ></option>
                   </select>
                   <div class="upload-btn-wrapper w-100 mb20">
-                    <button class="btnupload w-100">Upload Photos</button>
-                    <input type="file" accept="image/*" multiple @change="processFile($event)">
+                    <button class="btnupload w-100">Upload Images/Videos</button>
+                    <input
+                      type="file"
+                      accept="image/*, video/*"
+                      multiple
+                      @change="processFile($event)"
+                    >
                   </div>
                   <div class="row">
-                    <div class="col-md-4" v-for="photo in form.photos">
-                      <img :src="photo.src" alt="photo" class="h-24 w-24">
+                    <div
+                      class="col-md-4"
+                      v-for="(media, index) in form.media"
+                      :key="media-`${index}`"
+                    >
+                      <img
+                        :src="media.src"
+                        alt="media"
+                        class="h-24"
+                        style="width: 300px;"
+                        v-if="isImage(media.src)"
+                      >
+                      <video width="300" controls v-else>
+                        <source :src="media.src" type="video/mp4">
+                      </video>
                     </div>
                   </div>
                   <label
@@ -44,7 +62,7 @@
                   >Demo Area (For Testing Purposes Only)</label>
                   <div style="padding-left: 25px;" v-if="areas.length > 0">
                     <label class="radio">
-                      <input type="radio" v-model="area" value>None
+                      <input type="radio" v-model="area" value>Current Location
                     </label>
                     <label class="radio" v-for="(item, index) in areas" :key="index+'-area'">
                       <input type="radio" v-model="area" :value="index">
@@ -100,7 +118,7 @@ export default {
               type: "Point",
               coordinates: { lng: null, lat: null }
             },
-            photos: []
+            media: []
           },
           area: ""
         };
@@ -141,12 +159,12 @@ export default {
       });
     },
     processFile(event) {
-      this.form.photos = [];
+      this.form.media = [];
 
       const files = event.target.files;
 
       if (files.length > 3) {
-        alert("Maximum of 3 photos");
+        alert("Maximum of 3 media");
         return;
       }
 
@@ -154,7 +172,7 @@ export default {
         const file = files[i];
         let reader = new FileReader();
         reader.onload = e => {
-          this.form.photos.push({
+          this.form.media.push({
             file: file,
             src: e.target.result
           });
@@ -171,6 +189,12 @@ export default {
       this.form.location.coordinates.lat = lat_min + Math.random() * lat_range;
       this.form.location.coordinates.lng = lng_min + Math.random() * lng_range;
     },
+    isImage(src) {
+      if (src.includes("data:image/")) {
+        return true;
+      }
+      return false;
+    },
     report() {
       this.loadingSubmitReport = true;
 
@@ -181,8 +205,8 @@ export default {
       formData.append("location_lat", this.form.location.coordinates.lat);
       formData.append("location_lng", this.form.location.coordinates.lng);
 
-      this.form.photos.forEach(photo => {
-        formData.append("photos[]", photo.file);
+      this.form.media.forEach(media => {
+        formData.append("media[]", media.file);
       });
 
       this.$axios
