@@ -15,6 +15,20 @@
         <CancelledReportsCard/>
       </div>
     </div>
+    <div class="col-md-12 mb-12">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="title__gray--small">Graphs</h3>
+
+          <div class="col-md-6">
+            <ReportsPieChart/>
+          </div>
+          <div class="col-md-6">
+            <ReportsBarChart/>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="col-md-6">
       <div style="height: 380px; width: 100%;">
         <no-ssr>
@@ -81,24 +95,28 @@
 </template>
 
 <script>
-import TotalReportsCard from "~/components/DashboardCards/TotalReportsCard";
-import ResolvedReportsCard from "~/components/DashboardCards/ResolvedReportsCard";
-import UnresolvedReportsCard from "~/components/DashboardCards/UnresolvedReportsCard";
-import CancelledReportsCard from "~/components/DashboardCards/CancelledReportsCard";
+import TotalReportsCard from '~/components/DashboardCards/TotalReportsCard'
+import ResolvedReportsCard from '~/components/DashboardCards/ResolvedReportsCard'
+import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReportsCard'
+import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
+import ReportsPieChart from '~/components/DashboardCharts/ReportsPieChart'
+import ReportsBarChart from '~/components/DashboardCharts/ReportsBarChart'
 export default {
-  layout: "command-center",
+  layout: 'command-center',
   components: {
     TotalReportsCard,
     ResolvedReportsCard,
     UnresolvedReportsCard,
-    CancelledReportsCard
+    CancelledReportsCard,
+    ReportsPieChart,
+    ReportsBarChart
   },
   asyncData({ $axios, store, redirect, params }) {
     const hasAccessToThisArea = store.state.auth.user.role.permissions.some(
       permission => permission.name === params.name
-    );
+    )
 
-    if (store.getters["auth/hasPermission"]("view areas")) {
+    if (store.getters['auth/hasPermission']('view areas')) {
       return $axios.$get(`/admin/areas/${params.name}`).then(response => {
         return {
           area: response.data.area,
@@ -107,8 +125,8 @@ export default {
           allAvailableUsers: response.data.allAvailableUsers,
           form: {
             areaName: params.name,
-            user: "",
-            role: "resolver"
+            user: '',
+            role: 'resolver'
           },
           geojson: null,
           center: [14.53116, 121.04653],
@@ -117,8 +135,8 @@ export default {
           maxZoom: 18,
           maxBounds: [],
           maxBoundsViscosity: 1.0
-        };
-      });
+        }
+      })
     }
 
     if (hasAccessToThisArea) {
@@ -138,16 +156,16 @@ export default {
           maxZoom: 18,
           maxBounds: [],
           maxBoundsViscosity: 1.0
-        };
-      });
+        }
+      })
     }
 
-    return redirect("/");
+    return redirect('/')
   },
   mounted() {
     this.$nextTick(() => {
-      this.assignInitialValue();
-    });
+      this.assignInitialValue()
+    })
   },
   data() {
     return {
@@ -156,110 +174,109 @@ export default {
       isAddModalVisible: false,
       columns: [
         {
-          title: "First Name",
-          dataIndex: "firstName",
-          key: "firstName"
+          title: 'First Name',
+          dataIndex: 'firstName',
+          key: 'firstName'
         },
         {
-          title: "Last Name",
-          dataIndex: "lastName",
-          key: "lastName"
+          title: 'Last Name',
+          dataIndex: 'lastName',
+          key: 'lastName'
         },
         {
-          title: "Email",
-          dataIndex: "email",
-          key: "email"
+          title: 'Email',
+          dataIndex: 'email',
+          key: 'email'
         }
       ],
       allAvailableUsers: [],
       resolvers: [],
       responders: [],
       form: {
-        role: "resolver",
-        user: "",
+        role: 'resolver',
+        user: '',
         area: null
       }
-    };
+    }
   },
   watch: {
-    "form.role"(value) {
-      this.form.user = "";
+    'form.role'(value) {
+      this.form.user = ''
     }
   },
   computed: {
     filteredUsers() {
       if (!this.loading) {
         const permissionNameToFind =
-          this.form.role === "resolver" ? "resolve" : "respond";
+          this.form.role === 'resolver' ? 'resolve' : 'respond'
         return this.allAvailableUsers.filter(user => {
           return user.role.permissions.some(
             permission => permission.name === permissionNameToFind
-          );
-        });
+          )
+        })
       }
-      return [];
+      return []
     }
   },
   methods: {
     assignInitialValue() {
       const lIsAvailable = setInterval(() => {
         if (L && this.$refs.map) {
-          this.zoom = this.area.minZoom;
-          this.minZoom = this.area.minZoom;
-          this.maxZoom = this.area.maxZoom;
+          this.zoom = this.area.minZoom
+          this.minZoom = this.area.minZoom
+          this.maxZoom = this.area.maxZoom
 
-          const geoJSON = L.geoJSON(this.area.location);
-          this.geojson = geoJSON.toGeoJSON();
-          this.maxBounds = geoJSON.getBounds();
+          const geoJSON = L.geoJSON(this.area.location)
+          this.geojson = geoJSON.toGeoJSON()
+          this.maxBounds = geoJSON.getBounds()
           this.$nextTick(() => {
             this.$refs.map.mapObject.fitBounds(this.maxBounds)
           })
           this.center = [
             this.maxBounds.getCenter().lat,
             this.maxBounds.getCenter().lng
-          ];
-          this.loading = false;
+          ]
+          this.loading = false
 
-          clearInterval(lIsAvailable);
+          clearInterval(lIsAvailable)
         }
-      }, 100);
+      }, 100)
     },
     handleSave() {
       if (this.form.user && this.form.role) {
-        this.$axios.$post("/admin/areas/add-user", this.form).then(response => {
+        this.$axios.$post('/admin/areas/add-user', this.form).then(response => {
           const index = this.allAvailableUsers.findIndex(
             user => user._id === this.form.user
-          );
+          )
 
-          const user = this.allAvailableUsers[index];
+          const user = this.allAvailableUsers[index]
           const canResolve = user.role.permissions.find(
-            permission => permission.name === "resolve"
-          );
+            permission => permission.name === 'resolve'
+          )
           const canRespond = user.role.permissions.find(
-            permission => permission.name === "respond"
-          );
-          const selectedUserIsYou =
-            user._id === this.$store.state.auth.user._id;
+            permission => permission.name === 'respond'
+          )
+          const selectedUserIsYou = user._id === this.$store.state.auth.user._id
           if (canResolve) {
-            this.resolvers.push(response.data);
+            this.resolvers.push(response.data)
           }
           if (canRespond) {
-            this.responders.push(response.data);
+            this.responders.push(response.data)
           }
           if (selectedUserIsYou) {
-            this.$store.commit("auth/ADD_AREA", this.area);
+            this.$store.commit('auth/ADD_AREA', this.area)
           }
 
-          this.allAvailableUsers.splice(index, 1);
+          this.allAvailableUsers.splice(index, 1)
 
-          this.form.role = "resolver";
-          this.form.user = "";
-          this.form.areaId = null;
+          this.form.role = 'resolver'
+          this.form.user = ''
+          this.form.areaId = null
 
-          this.isAddModalVisible = false;
-        });
+          this.isAddModalVisible = false
+        })
       }
     }
   }
-};
+}
 </script>
