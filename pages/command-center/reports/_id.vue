@@ -176,11 +176,16 @@
               </div>
             </div>
             <div class="row images" v-if="report.media.length > 0">
-              <div class="col-md-4">
+              <div class="col-md-12">
                 <label for>Images/Videos</label>
                 <br>
                 <div class="col-md-3" v-for="media in report.media" :key="media">
-                  <img :src="media" alt="image-media" v-if="isImage(media)">
+                  <img
+                    class="image-responsive"
+                    :src="media"
+                    alt="image-media"
+                    v-if="$utils.isImage(media)"
+                  >
                   <video width="300" controls v-else>
                     <source :src="media" type="video/mp4">
                   </video>
@@ -226,19 +231,19 @@
 
 <script>
 export default {
-  layout: "command-center",
+  layout: 'command-center',
   asyncData({ $axios, store, params, error }) {
-    if (!store.getters["auth/hasPermission"]("view reports")) {
-      return redirect("/");
+    if (!store.getters['auth/hasPermission']('view reports')) {
+      return redirect('/')
     }
     return $axios.$get(`/admin/reports/${params.id}`).then(response => {
-      const bounds = [120.89287, 14.63956, 121.07483, 14.5565];
+      const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
       const lat = response.data.location
         ? response.data.location.coordinates[1]
-        : 14.59804;
+        : 14.59804
       const lng = response.data.location
         ? response.data.location.coordinates[0]
-        : 120.98385;
+        : 120.98385
 
       return {
         report: response.data,
@@ -261,64 +266,58 @@ export default {
           resolver: response.data.resolver,
           responder: response.data.responder
         }
-      };
-    });
+      }
+    })
   },
   mounted() {
-    this.initSocketListeners();
+    this.initSocketListeners()
   },
   beforeDestroy() {
-    this.$socket.off("report-updated");
+    this.$socket.off('report-updated')
   },
   computed: {
     reportTypesEndpoint() {
       const baseUrl = process.env.API_URL
         ? process.env.API_URL
-        : "https://ireport-api.now.sh";
-      return `${baseUrl}/report-types`;
+        : 'https://ireport-api.now.sh'
+      return `${baseUrl}/report-types`
     }
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on("report-updated", payload => {
+      this.$socket.on('report-updated', payload => {
         if (this.report._id === payload._id) {
-          this.report = payload;
+          this.report = payload
         }
-      });
-    },
-    isImage(src) {
-      if ([".jpg", ".png"].includes(src)) {
-        return true;
-      }
-      return false;
+      })
     },
     printChatHistory() {
-      alert("Not yet working!");
+      alert('Not yet working!')
     },
     statusChanged(event) {
-      var confirmed = confirm("Are you sure you want to update the status?");
+      var confirmed = confirm('Are you sure you want to update the status?')
 
       if (confirmed) {
         this.$axios
-          .$post("/resolver/update-report", {
+          .$post('/resolver/update-report', {
             status: event.target.value,
             reportId: this.report._id
           })
           .then(response => {
-            alert("Update successful!");
-            this.form.status = response.data.status;
-            this.report.status = response.data.status;
+            alert('Update successful!')
+            this.form.status = response.data.status
+            this.report.status = response.data.status
           })
           .catch(err => {
-            alert("Something went wrong!");
-            event.target.value = this.form.status;
-          });
+            alert('Something went wrong!')
+            event.target.value = this.form.status
+          })
       } else {
-        event.target.value = this.form.status;
+        event.target.value = this.form.status
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>
