@@ -1,7 +1,10 @@
 //Style
 .banner {
-  padding: 60px 0;
-  background-image: url('/img/bg.jpg');
+  min-height: 100vh;
+  img {
+    object-fit: cover;
+    height: 700px !important;
+  }
   .row {
     display: flex;
     align-items: center;
@@ -12,6 +15,22 @@
       color: $white;
     }
   }
+  .actionbtn {
+    a{
+      font-size: 30px;
+      font-weight: 700;
+      color: $white;
+      font-family: $oswald;
+    }
+    .forreport {
+      padding: 20px;
+      background-color: #2ac0ff;
+    }
+    .forreg {
+      padding: 20px;
+      background-color: #344fa0;
+    }
+  } 
 }
 .main-content {
   min-height: 100vh;
@@ -188,3 +207,6 @@
     }
   }
 }
+
+
+
