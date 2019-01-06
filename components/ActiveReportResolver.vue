@@ -42,7 +42,7 @@
           <td>{{ report._id }}</td>
           <td>{{ report.type.name }}</td>
           <td class="text-center">
-         <button
+            <button
               class="btn chat"
               :class="chatIsActive ? 'btngreen' : 'btnblue'"
               @click.prevent="$emit('chatToggled', { reportId: report._id, isResolved: report.resolvedAt !== null })"
@@ -78,41 +78,30 @@
             <td class="capitalize">
               <span v-if="!report.responder">{{ report.status }}</span>
               <select class="capitalize" @change="statusChanged" v-else>
-                <option v-for="status in ['pending', 'in-progress', 'resolved', 'cancelled']" class="capitalize" :selected="status === form.status" >{{ status }}</option>
+                <option
+                  v-for="status in ['pending', 'in-progress', 'resolved', 'cancelled']"
+                  class="capitalize"
+                  :selected="status === form.status"
+                >{{ status }}</option>
               </select>
             </td>
             <td>{{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}</td>
           </tr>
         </table>
 
-        <div v-if="report.photos.length > 0">
-          <h3 class="title__blue mt60 mb30">Images</h3>
+        <div v-if="report.media.length > 0">
+          <h3 class="title__blue mt60 mb30">Images/Videos</h3>
           <div class="row">
-            <div class="col-md-3" v-for="photo in report.photos" :key="photo">
-              <img :src="$store.getters['showPhoto'](photo)" alt="photo">
+            <div class="col-md-3" v-for="media in report.media" :key="media">
+              <div class="col-md-3" v-for="media in report.media" :key="media">
+                <img :src="media" alt="image-media" v-if="isImage(media)">
+                <video width="300" controls v-else>
+                  <source :src="media" type="video/mp4">
+                </video>
+              </div>
             </div>
           </div>
         </div>
-<!--         <h3 class="title__blue mt60 mb30">Milestones</h3>
-        <div class="row">
-          <div class="col-md-3" v-for="milestone in report.responses" :key="milestone._id">
-            <div class="box" :class="{'checked': milestone && milestone.resolvedAt !== null }">
-              <svgicon name="check"></svgicon>
-            </div>
-            <p class="m-0">
-              <a
-                class="cursor-pointer"
-                @click.prevent="confirmResponse(milestone)"
-                v-if="milestone.resolvedAt !== null && milestone.confirmed === false"
-              >Click to Confirm</a>
-            </p>
-            <p class="m-0 text-uppercase bluelabel">{{ milestone.responseType.name }}</p>
-            <p
-              class="m-0"
-              :class="[milestone && milestone.resolvedAt !== null  ? 'visible': 'invisible']"
-            >{{ $moment(milestone.resolvedAt).format("MMM. DD, YYYY | h:mm A ") }}</p>
-          </div>
-        </div> -->
       </div>
     </collapse>
   </div>
@@ -176,22 +165,31 @@ export default {
         this.showAccordion = this.showAccordion.map((v, i) => i === index);
       }
     },
+    isImage(src) {
+      if ([".jpg", ".png"].includes(src)) {
+        return true;
+      }
+      return false;
+    },
     statusChanged(event) {
-      var confirmed = confirm("Are you sure you want to update the status?")
+      var confirmed = confirm("Are you sure you want to update the status?");
 
       if (confirmed) {
-        this.$axios.$post('/resolver/update-report', {
-          status: event.target.value,
-          reportId: this.report._id
-        }).then(response => {
-          alert('Update successful!')
-          this.form.status = response.data.status
-        }).catch(err => {
-          alert('Something went wrong!')
-          event.target.value = this.form.status
-        })
+        this.$axios
+          .$post("/resolver/update-report", {
+            status: event.target.value,
+            reportId: this.report._id
+          })
+          .then(response => {
+            alert("Update successful!");
+            this.form.status = response.data.status;
+          })
+          .catch(err => {
+            alert("Something went wrong!");
+            event.target.value = this.form.status;
+          });
       } else {
-        event.target.value = this.form.status
+        event.target.value = this.form.status;
       }
     },
     confirmResponse(response) {

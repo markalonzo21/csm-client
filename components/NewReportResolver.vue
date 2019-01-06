@@ -46,8 +46,7 @@
               class="btn chat btnblue"
               @click.prevent="selectReport"
               :disabled="loadingSelectReport"
-            >Resolve
-            </button>
+            >Resolve</button>
           </td>
           <td class="bluelabel select-none">
             <span @click="toggleAccordion(0)">{{ showAccordion[0] ? 'View Less' : 'View More' }}</span>
@@ -67,44 +66,22 @@
           <tr>
             <td>{{ report.description }}</td>
             <td>{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName}}</td>
-<!--             <td
-              v-if="report.responder"
-            >{{ report.responder.firstName }} {{ report.responder.middleName }} {{ report.responder.lastName}}</td>
-            <td v-else>
-              <a class="cursor-pointer" @click.prevent="showAssignModal">Assign Responder</a>
-            </td> -->
+
             <td>{{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}</td>
           </tr>
         </table>
 
-        <div v-if="report.photos.length > 0">
-          <h3 class="title__blue mt60 mb30">Images</h3>
+        <div v-if="report.media.length > 0">
+          <h3 class="title__blue mt60 mb30">Images/Videos</h3>
           <div class="row">
-            <div class="col-md-3" v-for="photo in report.photos" :key="photo">
-              <img :src="$store.getters['showPhoto'](photo)" alt="photo">
+            <div class="col-md-3" v-for="media in report.media" :key="media">
+              <img :src="media" alt="image-media" v-if="isImage(media)">
+              <video width="300" controls v-else>
+                <source :src="media" type="video/mp4">
+              </video>
             </div>
           </div>
         </div>
-<!--         <h3 class="title__blue mt60 mb30">Milestones</h3>
-        <div class="row">
-          <div class="col-md-3" v-for="milestone in report.responses" :key="milestone._id">
-            <div class="box" :class="{'checked': milestone && milestone.resolvedAt !== null }">
-              <svgicon name="check"></svgicon>
-            </div>
-            <p class="m-0">
-              <a
-                class="cursor-pointer"
-                @click.prevent="confirmResponse(milestone)"
-                v-if="milestone.resolvedAt !== null && milestone.confirmed === false"
-              >Click to Confirm</a>
-            </p>
-            <p class="m-0 text-uppercase bluelabel">{{ milestone.responseType.name }}</p>
-            <p
-              class="m-0"
-              :class="[milestone && milestone.resolvedAt !== null  ? 'visible': 'invisible']"
-            >{{ $moment(milestone.resolvedAt).format("MMM. DD, YYYY | h:mm A ") }}</p>
-          </div>
-        </div> -->
       </div>
     </collapse>
   </div>
@@ -130,6 +107,12 @@ export default {
     }
   },
   methods: {
+    isImage(src) {
+      if ([".jpg", ".png"].includes(src)) {
+        return true;
+      }
+      return false;
+    },
     showAssignModal() {
       this.isAssignModalVisible = true;
       this.$axios
@@ -164,16 +147,19 @@ export default {
       }
     },
     selectReport() {
-      this.loadingSelectReport = true
-      this.$axios.$post('/resolver/select-report', {
-        reportId: this.report._id,
-        areaName: this.$route.params.name
-      }).then(response => {
-        this.loadingSelectReport = false
-      }).catch(err => {
-        alert('Report is already selected!')
-        this.loadingSelectReport = false
-      })
+      this.loadingSelectReport = true;
+      this.$axios
+        .$post("/resolver/select-report", {
+          reportId: this.report._id,
+          areaName: this.$route.params.name
+        })
+        .then(response => {
+          this.loadingSelectReport = false;
+        })
+        .catch(err => {
+          alert("Report is already selected!");
+          this.loadingSelectReport = false;
+        });
     },
     confirmResponse(response) {
       this.loadingConfirmation = true;

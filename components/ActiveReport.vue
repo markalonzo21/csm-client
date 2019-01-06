@@ -54,11 +54,14 @@
           {{ $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') }}
         </div>
 
-        <div v-if="report.photos.length > 0">
-          <h3 class="title__blue mt60 mb30">Images</h3>
+        <div v-if="report.media.length > 0">
+          <h3 class="title__blue mt60 mb30">Images/Videos</h3>
           <div class="row">
-            <div class="col-md-3" v-for="photo in report.photos" :key="photo">
-              <img :src="$store.getters['showPhoto'](photo)" alt="photo">
+            <div class="col-md-3" v-for="media in report.media" :key="media">
+              <img :src="media" alt="image-media" v-if="isImage(media)">
+              <video width="300" controls v-else>
+                <source :src="media" type="video/mp4">
+              </video>
             </div>
           </div>
         </div>
@@ -99,6 +102,12 @@ export default {
       } else {
         this.showAccordion = this.showAccordion.map((v, i) => i === index);
       }
+    },
+    isImage(src) {
+      if ([".jpg", ".png"].includes(src)) {
+        return true;
+      }
+      return false;
     }
   }
 };
