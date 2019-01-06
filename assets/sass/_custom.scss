@@ -1,6 +1,6 @@
 //Style
 .banner {
-  min-height: 100vh;
+  // min-height: 100vh;
   img {
     object-fit: cover;
     height: 700px !important;
@@ -16,7 +16,7 @@
     }
   }
   .actionbtn {
-    a{
+    a {
       font-size: 30px;
       font-weight: 700;
       color: $white;
@@ -30,7 +30,7 @@
       padding: 20px;
       background-color: #344fa0;
     }
-  } 
+  }
 }
 .main-content {
   min-height: 100vh;
@@ -185,7 +185,7 @@
   .row {
     display: flex;
   }
-  
+
   .left-content {
     display: flex;
     .panel-body {
@@ -207,6 +207,3 @@
     }
   }
 }
-
-
-
