@@ -1,1 +1,1 @@
-now && now alias && now rm ireport --safe --yes
+now && now alias && now rm csm --safe --yes

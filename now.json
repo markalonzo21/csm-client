@@ -1,6 +1,6 @@
 {
-  "name": "ireport",
-  "alias": "ireport.now.sh",
+  "name": "csm",
+  "alias": "csm.now.sh",
   "env": {
     "API_URL": "https://ireport-api.now.sh"
   },
