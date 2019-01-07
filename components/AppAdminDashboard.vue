@@ -4,30 +4,31 @@
     <h3 style="margin-top: 0;">As of {{ $moment().format('MMM DD, YYYY') }}</h3>
     <div class="row">
       <div class="col-md-3">
-        <TotalReportsCard/>
+        <TotalReportsCard :total="dashboardDetails.reportsCount"/>
       </div>
       <div class="col-md-3">
-        <ResolvedReportsCard/>
+        <ResolvedReportsCard :total="dashboardDetails.resolvedReportsCount"/>
       </div>
       <div class="col-md-3">
-        <UnresolvedReportsCard/>
+        <UnresolvedReportsCard :total="dashboardDetails.unresolvedReportsCount"/>
       </div>
       <div class="col-md-3">
-        <CancelledReportsCard/>
+        <CancelledReportsCard :total="dashboardDetails.cancelledReportsCount"/>
       </div>
     </div>
     <div class="row mt-5">
       <div class="col-md-12">
         <h3 class="title__gray--small">Graphs</h3>
-
-        <div class="col-md-6">
-          <ReportsPieChart/>
+        <div class="col-md-6 text-center">
+          <h4>Reports Per Month </h4>
+          <ReportsBarChart v-if="reportsPerMonth.labels.length > 0" :labels="reportsPerMonth.labels" :datasets="reportsPerMonth.datasets"/>
         </div>
-        <div class="col-md-6">
-          <ReportsBarChart/>
+        <div class="col-md-6 text-center">
+          <h4>Reports Per Type </h4>
+          <ReportsPieChart v-if="reportsPerType.labels.length > 0" :labels="reportsPerType.labels" :datasets="reportsPerType.datasets"/>
         </div>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 mt-12">
         <h3 class="title__gray--small">INCIDENT HEAT MAP</h3>
         <div id="map-wrap" style="height: 500px; width: 100%;">
           <no-ssr>
@@ -75,6 +76,7 @@ import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReports
 import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
 import ReportsPieChart from '~/components/DashboardCharts/ReportsPieChart'
 import ReportsBarChart from '~/components/DashboardCharts/ReportsBarChart'
+
 export default {
   layout: 'command-center',
   components: {
@@ -100,26 +102,14 @@ export default {
       resolvedOrUnresolved: 'both',
       type: null,
       reports: [],
-      columns: [
-        {
-          title: 'Type',
-          dataIndex: 'reportType.name'
-        },
-        {
-          title: 'Responder',
-          dataIndex: 'assignedTo.email'
-        },
-        {
-          title: 'Created At',
-          dataIndex: 'createdAt',
-          scopedSlots: { customRender: 'createdAt' }
-        },
-        {
-          title: 'Operation',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
-        }
-      ]
+      reportsPerType: {
+        labels: [],
+        datasets: []
+      },
+      reportsPerMonth: {
+        labels: [],
+        datasets: []
+      }
     }
   },
   computed: {
@@ -142,13 +132,17 @@ export default {
   mounted() {
     const getReportTypes = this.$axios.$get('/report-types')
     const getDashboardDetails = this.$axios.$get('/admin/dashboard')
+    const getReportsPerType = this.$axios.$get('/admin/dashboard/reports-per-type')
+    const getReportsPerMonth = this.$axios.$get('/admin/dashboard/reports-per-month')
 
-    Promise.all([getReportTypes, getDashboardDetails]).then(
-      ([types, dashboardDetails]) => {
+    Promise.all([getReportTypes, getDashboardDetails, getReportsPerType, getReportsPerMonth]).then(
+      ([types, dashboardDetails, reportsPerType, reportsPerMonth]) => {
         this.types = types.data
-        this.dashboardDetails = dashboardDetails.data
-        this.resolvedOrUnresolved = 'both'
         this.type = null
+        this.resolvedOrUnresolved = 'both'
+        this.dashboardDetails = dashboardDetails.data
+        this.reportsPerType = reportsPerType.data
+        this.reportsPerMonth = reportsPerMonth.data
       }
     )
 
@@ -192,7 +186,8 @@ export default {
   methods: {
     initSocketListeners() {
       this.$socket.on('new-report', report => {
-        this.searchReports(this.type, this.resolvedOrUnresolved)
+        this.dashboardDetails.reportsCount++
+        this.dashboardDetails.unresolvedReportsCount++
       })
     },
     searchReports(type, resolvedOrUnresolved) {

@@ -1,6 +1,5 @@
 import path from 'path'
 import dotenv from 'dotenv'
-const pkg = require('./package')
 dotenv.config()
 
 module.exports = {
@@ -10,11 +9,11 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: pkg.name,
+    title: 'CSM Report',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: 'CSM Report Application' }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },

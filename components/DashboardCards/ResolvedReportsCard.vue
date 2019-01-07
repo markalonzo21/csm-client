@@ -9,11 +9,7 @@
 
 <script>
   export default {
-    data() {
-      return {
-        total: 0
-      }
-    },
+    props: ['total'],
     mounted() {
 
     }

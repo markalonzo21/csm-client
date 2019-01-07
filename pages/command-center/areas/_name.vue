@@ -3,49 +3,73 @@
     <h4>{{ area.name }}</h4>
     <div class="row">
       <div class="col-md-3">
-        <TotalReportsCard/>
+        <TotalReportsCard :total="dashboardDetails.reportsCount"/>
       </div>
       <div class="col-md-3">
-        <ResolvedReportsCard/>
+        <ResolvedReportsCard :total="dashboardDetails.resolvedReportsCount"/>
       </div>
       <div class="col-md-3">
-        <UnresolvedReportsCard/>
+        <UnresolvedReportsCard :total="dashboardDetails.unresolvedReportsCount"/>
       </div>
       <div class="col-md-3">
-        <CancelledReportsCard/>
+        <CancelledReportsCard :total="dashboardDetails.cancelledReportsCount"/>
       </div>
     </div>
-    <div class="col-md-12 mb-12">
-      <div class="row">
-        <div class="col-md-12">
-          <h3 class="title__gray--small">Graphs</h3>
-
-          <div class="col-md-6">
-            <ReportsPieChart/>
-          </div>
-          <div class="col-md-6">
-            <ReportsBarChart/>
-          </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="title__gray--small">Graphs</h3>
+        <div class="col-md-6 text-center">
+          <h4>Reports Per Month </h4>
+          <ReportsBarChart v-if="reportsPerMonth.labels.length > 0" :labels="reportsPerMonth.labels" :datasets="reportsPerMonth.datasets"/>
+        </div>
+        <div class="col-md-6 text-center">
+          <h4>Reports Per Type </h4>
+          <ReportsPieChart v-if="reportsPerType.labels.length > 0" :labels="reportsPerType.labels" :datasets="reportsPerType.datasets"/>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <div style="height: 380px; width: 100%;">
-        <no-ssr>
-          <l-map
-            v-if="center.length > 0"
-            :center="center"
-            :zoom="zoom"
-            :minZoom="minZoom"
-            :maxZoom="maxZoom"
-            :maxBounds="maxBounds"
-            :maxBoundsViscosity="maxBoundsViscosity"
-            ref="map"
-          >
-            <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
-            <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
-          </l-map>
-        </no-ssr>
+    <div class="row mt-12">
+      <div class="col-md-6">
+        <div style="height: 380px; width: 100%;">
+          <no-ssr>
+            <l-map
+              v-if="center.length > 0"
+              :center="center"
+              :zoom="zoom"
+              :minZoom="minZoom"
+              :maxZoom="maxZoom"
+              :maxBounds="maxBounds"
+              :maxBoundsViscosity="maxBoundsViscosity"
+              ref="map"
+            >
+              <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
+              <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+            </l-map>
+          </no-ssr>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h4>Details
+          <a-button
+            type="primary"
+            @click="isAddModalVisible = true"
+            class="float-right"
+            v-if="$store.getters['auth/hasPermission']('update area')"
+          >Add Area User</a-button>
+        </h4>
+        <hr>
+        <h5>Resolvers</h5>
+        <a-table :columns="columns" :dataSource="resolvers">
+          <a slot="firstName" slot-scope="text" href="javascript:;">{{text}}</a>
+          <a slot="lastName" slot-scope="text" href="javascript:;">{{text}}</a>
+          <a slot="email" slot-scope="text" href="javascript:;">{{text}}</a>
+        </a-table>
+        <h5>Responders</h5>
+        <a-table :columns="columns" :dataSource="responders">
+          <a slot="firstName" slot-scope="text" href="javascript:;">{{text}}</a>
+          <a slot="lastName" slot-scope="text" href="javascript:;">{{text}}</a>
+          <a slot="email" slot-scope="text" href="javascript:;">{{text}}</a>
+        </a-table>
       </div>
     </div>
     <a-modal title="Add Area User" v-model="isAddModalVisible" @ok="handleSave">
@@ -68,29 +92,6 @@
         </a-form-item>
       </a-form>
     </a-modal>
-    <div class="col-md-6">
-      <h4>Details
-        <a-button
-          type="primary"
-          @click="isAddModalVisible = true"
-          class="float-right"
-          v-if="$store.getters['auth/hasPermission']('update area')"
-        >Add Area User</a-button>
-      </h4>
-      <hr>
-      <h5>Resolvers</h5>
-      <a-table :columns="columns" :dataSource="resolvers">
-        <a slot="firstName" slot-scope="text" href="javascript:;">{{text}}</a>
-        <a slot="lastName" slot-scope="text" href="javascript:;">{{text}}</a>
-        <a slot="email" slot-scope="text" href="javascript:;">{{text}}</a>
-      </a-table>
-      <h5>Responders</h5>
-      <a-table :columns="columns" :dataSource="responders">
-        <a slot="firstName" slot-scope="text" href="javascript:;">{{text}}</a>
-        <a slot="lastName" slot-scope="text" href="javascript:;">{{text}}</a>
-        <a slot="email" slot-scope="text" href="javascript:;">{{text}}</a>
-      </a-table>
-    </div>
   </div>
 </template>
 
@@ -166,6 +167,8 @@ export default {
     this.$nextTick(() => {
       this.assignInitialValue()
     })
+
+    this.getGraphsData()
   },
   data() {
     return {
@@ -196,6 +199,15 @@ export default {
         role: 'resolver',
         user: '',
         area: null
+      },
+      dashboardDetails: [],
+      reportsPerType: {
+        labels: [],
+        datasets: []
+      },
+      reportsPerMonth: {
+        labels: [],
+        datasets: []
       }
     }
   },
@@ -276,6 +288,20 @@ export default {
           this.isAddModalVisible = false
         })
       }
+    },
+    getGraphsData() {
+    const getDashboardDetails = this.$axios.$get('/admin/dashboard')
+
+      const getReportsPerType = this.$axios.$get('/admin/dashboard/reports-per-type')
+      const getReportsPerMonth = this.$axios.$get('/admin/dashboard/reports-per-month')
+
+      Promise.all([getDashboardDetails, getReportsPerType, getReportsPerMonth]).then(
+        ([dashboardDetails, reportsPerType, reportsPerMonth]) => {
+          this.dashboardDetails = dashboardDetails.data
+          this.reportsPerType = reportsPerType.data
+          this.reportsPerMonth = reportsPerMonth.data
+        }
+      )
     }
   }
 }
