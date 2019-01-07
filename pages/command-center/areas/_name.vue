@@ -3,21 +3,22 @@
     <h4>{{ area.name }}</h4>
     <div class="row">
       <div class="col-md-3">
-        <TotalReportsCard :total="dashboardDetails.reportsCount"/>
+        <TotalReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.reportsCount ? dashboardDetails.reportsCount : 0"/>
       </div>
       <div class="col-md-3">
-        <ResolvedReportsCard :total="dashboardDetails.resolvedReportsCount"/>
+        <ResolvedReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.resolvedReportsCount ? dashboardDetails.resolvedReportsCount : 0"/>
       </div>
       <div class="col-md-3">
-        <UnresolvedReportsCard :total="dashboardDetails.unresolvedReportsCount"/>
+        <UnresolvedReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.unresolvedReportsCount ? dashboardDetails.unresolvedReportsCount : 0"/>
       </div>
       <div class="col-md-3">
-        <CancelledReportsCard :total="dashboardDetails.cancelledReportsCount"/>
+        <CancelledReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.cancelledReportsCount ? dashboardDetails.cancelledReportsCount : 0"/>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
-        <h3 class="title__gray--small">Graphs</h3>
+        <h4 class="title__gray--small">Graphs</h4>
+        <hr>
         <div class="col-md-6 text-center">
           <h4>Reports Per Month </h4>
           <ReportsBarChart v-if="reportsPerMonth.labels.length > 0" :labels="reportsPerMonth.labels" :datasets="reportsPerMonth.datasets"/>
@@ -30,6 +31,8 @@
     </div>
     <div class="row mt-12">
       <div class="col-md-6">
+        <h4>Map Area</h4>
+        <hr>
         <div style="height: 380px; width: 100%;">
           <no-ssr>
             <l-map
@@ -212,7 +215,8 @@ export default {
       reportsPerMonth: {
         labels: [],
         datasets: []
-      }
+      },
+      fetchingDashboardDetails: false
     }
   },
   watch: {
@@ -327,6 +331,7 @@ export default {
       }
     },
     getGraphsData() {
+      this.fetchingDashboardDetails = true
       const getDashboardDetails = this.$axios.$get(`/admin/areas/${this.area._id}/dashboard`)
       const getReportsPerType = this.$axios.$get(`/admin/areas/${this.area._id}/dashboard/reports-per-type`)
       const getReportsPerMonth = this.$axios.$get(`/admin/areas/${this.area._id}/dashboard/reports-per-month`)
@@ -336,6 +341,7 @@ export default {
           this.dashboardDetails = dashboardDetails.data
           this.reportsPerType = reportsPerType.data
           this.reportsPerMonth = reportsPerMonth.data
+          this.fetchingDashboardDetails = false
         }
       )
     }

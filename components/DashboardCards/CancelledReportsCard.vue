@@ -1,6 +1,9 @@
 <template>
   <div class="panel">
-    <div class="panel-body">
+    <div class="panel-body flex items-center justify-center" style=" height: 119px;" v-if="loading">
+        <a-icon type="loading" style="font-size: 32px;" spin />
+    </div>
+    <div class="panel-body" v-else>
       <h2 class="title__white--large" v-text="total"></h2>
       <span class="title__white--mid">CANCELLED REPORTS</span>
     </div>
@@ -9,9 +12,15 @@
 
 <script>
   export default {
-    props: ['total'],
-    mounted() {
-
+    props: {
+      total: {
+        type: Number,
+        required: true
+      },
+      loading: {
+        type: Boolean,
+        default: false
+      }
     }
   }
 </script>

@@ -4,16 +4,16 @@
     <h3 style="margin-top: 0;">As of {{ $moment().format('MMM DD, YYYY') }}</h3>
     <div class="row">
       <div class="col-md-3">
-        <TotalReportsCard :total="dashboardDetails.reportsCount"/>
+        <TotalReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.reportsCount ? dashboardDetails.reportsCount : 0"/>
       </div>
       <div class="col-md-3">
-        <ResolvedReportsCard :total="dashboardDetails.resolvedReportsCount"/>
+        <ResolvedReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.resolvedReportsCount ? dashboardDetails.resolvedReportsCount : 0"/>
       </div>
       <div class="col-md-3">
-        <UnresolvedReportsCard :total="dashboardDetails.unresolvedReportsCount"/>
+        <UnresolvedReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.unresolvedReportsCount ? dashboardDetails.unresolvedReportsCount : 0"/>
       </div>
       <div class="col-md-3">
-        <CancelledReportsCard :total="dashboardDetails.cancelledReportsCount"/>
+        <CancelledReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.cancelledReportsCount ? dashboardDetails.cancelledReportsCount : 0"/>
       </div>
     </div>
     <div class="row mt-5">
@@ -109,7 +109,8 @@ export default {
       reportsPerMonth: {
         labels: [],
         datasets: []
-      }
+      },
+      fetchingDashboardDetails: false
     }
   },
   computed: {
@@ -130,6 +131,7 @@ export default {
     }
   },
   mounted() {
+    this.fetchingDashboardDetails = true
     const getReportTypes = this.$axios.$get('/report-types')
     const getDashboardDetails = this.$axios.$get('/admin/dashboard')
     const getReportsPerType = this.$axios.$get('/admin/dashboard/reports-per-type')
@@ -143,6 +145,7 @@ export default {
         this.dashboardDetails = dashboardDetails.data
         this.reportsPerType = reportsPerType.data
         this.reportsPerMonth = reportsPerMonth.data
+        this.fetchingDashboardDetails = false
       }
     )
 
