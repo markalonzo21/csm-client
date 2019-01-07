@@ -25,6 +25,7 @@
     "bootstrap": "^3.3.7",
     "chance": "^1.0.16",
     "chart.js": "^2.7.3",
+    "chartjs-plugin-labels": "^1.1.0",
     "dotenv": "^6.2.0",
     "form-backend-validation": "^2.3.4",
     "leaflet-draw": "^1.0.4",

@@ -1,4 +1,5 @@
 import { Pie } from 'vue-chartjs'
+import 'chartjs-plugin-labels'
 
 export default {
   extends: Pie,
@@ -9,7 +10,16 @@ export default {
         labels: this.labels,
         datasets: this.datasets
       },
-      { responsive: true, maintainAspectRatio: false }
+      {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          labels: {
+            render: 'percentage',
+            precision: 1
+          }
+        }
+      }
     )
   }
 }
