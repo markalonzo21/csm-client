@@ -29,7 +29,14 @@
 
       <div class="col-md-8" v-if="$store.state.auth.loggedIn">
         <h4>Active Reports</h4>
-        <div v-if="activeReports.length > 0">
+        <div v-if="loadingGetReports">
+          <div class="panel">
+            <div class="panel-body h-32 rounded shadow bg-white flex items-center justify-center">
+              <a-spin/>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="activeReports.length > 0">
           <ActiveReportResolver
             :report="report"
             :activeChat="chat"
@@ -47,7 +54,14 @@
         </div>
 
         <h4>New Reports</h4>
-        <div v-if="newReports.length > 0">
+        <div v-if="loadingGetReports">
+          <div class="panel">
+            <div class="panel-body h-32 rounded shadow bg-white flex items-center justify-center">
+              <a-spin/>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="newReports.length > 0">
           <NewReportResolver :report="report" v-for="report in newReports" :key="report._id"/>
         </div>
         <div v-else>
@@ -100,7 +114,8 @@ export default {
       minZoom: 13,
       maxZoom: 18,
       maxBounds: [],
-      maxBoundsViscosity: 1.0
+      maxBoundsViscosity: 1.0,
+      loadingGetReports: true
     }
   },
   mounted() {
@@ -154,6 +169,7 @@ export default {
       })
     },
     getReports() {
+      this.loadingGetReports = true
       const geoJSON = L.geoJSON(this.area.location)
       this.geojson = geoJSON.toGeoJSON()
       this.maxBounds = geoJSON.getBounds()
@@ -165,6 +181,10 @@ export default {
         .$get(`/resolver/areas/${this.$route.params.name}`)
         .then(response => {
           this.reports = response.data.reports
+          this.loadingGetReports = false
+        })
+        .catch(err => {
+          this.loadingGetReports = false
         })
     },
     setResolverChatBoxData(data) {

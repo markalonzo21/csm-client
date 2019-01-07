@@ -5,7 +5,9 @@
       <span class="pull-right"></span>
     </div>
     <div class="panel-body chatbody overflow-y-auto" ref="messagesContainer">
+      <div v-if="loadingGetMessages">Loading messages...</div>
       <ResponderChatBoxMessage
+        v-else
         v-for="(message, index) in messages"
         :key="`${index}-${message._id}`"
         :message="message"
@@ -34,10 +36,10 @@
 </template>
 
 <script>
-import ResponderChatBoxMessage from "./ResponderChatBoxMessage";
+import ResponderChatBoxMessage from './ResponderChatBoxMessage'
 
 export default {
-  props: ["reportId", "isResolved"],
+  props: ['reportId', 'isResolved'],
   components: {
     ResponderChatBoxMessage
   },
@@ -45,73 +47,76 @@ export default {
     return {
       showChat: true,
       loadingSendMessage: false,
+      loadingGetMessages: false,
       messages: [],
-      message: ""
-    };
+      message: ''
+    }
   },
   mounted() {
-    this.getMessages();
+    this.getMessages()
   },
   beforeDestroy() {
-    this.$socket.off("new-message");
+    this.$socket.off('new-message')
   },
   watch: {
     messages() {
       this.$nextTick(() => {
-        const ul = this.$refs.messagesContainer;
-        ul.scrollTop = ul.scrollHeight;
-      });
+        const ul = this.$refs.messagesContainer
+        ul.scrollTop = ul.scrollHeight
+      })
     }
   },
   methods: {
     getMessages() {
+      this.loadingGetMessages = true
       this.$axios
         .$get(`/responder/messages?reportId=${this.reportId}`)
         .then(response => {
-          this.$socket.on("new-message", message => {
+          this.$socket.on('new-message', message => {
             if (message.report === this.reportId) {
-              this.addMessage(message);
+              this.addMessage(message)
             }
-          });
-          this.messages = response.data;
-        });
+          })
+          this.messages = response.data
+          this.loadingGetMessages = false
+        })
     },
     addMessage(message) {
       this.$nextTick(() => {
         const alreadyExists = this.messages.find(
           item => item._id === message._id
-        );
+        )
 
         if (alreadyExists) {
-          this.loadingSendMessage = false;
-          return;
+          this.loadingSendMessage = false
+          return
         }
 
         setTimeout(() => {
-          this.messages.push(message);
-          this.loadingSendMessage = false;
-        }, 500);
-      });
+          this.messages.push(message)
+          this.loadingSendMessage = false
+        }, 500)
+      })
     },
     sendMessage() {
       if (this.message.trim().length === 0) {
-        return;
+        return
       }
 
-      this.loadingSendMessage = true;
+      this.loadingSendMessage = true
       this.$axios
-        .$post("/responder/messages", {
+        .$post('/responder/messages', {
           content: this.message,
           reportId: this.reportId
         })
         .then(response => {
-          this.message = "";
+          this.message = ''
         })
         .catch(error => {
-          this.loadingSendMessage = false;
-        });
+          this.loadingSendMessage = false
+        })
     }
   }
-};
+}
 </script>
 
