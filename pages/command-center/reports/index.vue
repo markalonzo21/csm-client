@@ -69,7 +69,7 @@
            :labelCol="{ span: 4 }"
            :wrapperCol="{ span: 20 }"
           >
-            <a-date-picker class="w-full" v-model="form.start" />
+            <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.startDate" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -78,7 +78,7 @@
            :labelCol="{ span: 4 }"
            :wrapperCol="{ span: 20 }"
           >
-            <a-date-picker class="w-full" v-model="form.end" />
+            <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.endDate" />
           </a-form-item>
         </a-col>
          <a-col :span="12">
@@ -87,7 +87,7 @@
             :labelCol="{ span: 4 }"
             :wrapperCol="{ span: 20 }"
            >
-               <a-input placeholder="Enter reporter name" v-model="form.reporter"/>
+               <a-input placeholder="Enter reporter email" v-model="form.reporter"/>
            </a-form-item>
          </a-col>
          <a-col :span="12">
@@ -96,7 +96,7 @@
             :labelCol="{ span: 4 }"
             :wrapperCol="{ span: 20 }"
            >
-               <a-input placeholder="Enter responder name" v-model="form.responder"/>
+               <a-input placeholder="Enter responder email" v-model="form.responder"/>
            </a-form-item>
          </a-col>
          <a-col :span="12">
@@ -105,7 +105,7 @@
             :labelCol="{ span: 4 }"
             :wrapperCol="{ span: 20 }"
            >
-               <a-input placeholder="Enter resolver name" v-model="form.resolver"/>
+               <a-input placeholder="Enter resolver email" v-model="form.resolver"/>
            </a-form-item>
          </a-col>
          <a-col :span="11" :offset="1">
@@ -194,8 +194,8 @@ export default {
           resolver: '',
           status: '',
           type: '',
-          start: null,
-          end: null
+          startDate: null,
+          endDate: null
         }
       };
     })
@@ -215,6 +215,8 @@ export default {
     filterReports() {
       this.loadingFilter = true
 
+      this.form.start = this.form.startDate ? this.$moment(this.form.startDate).format('YYYY-MM-DD') : null
+      this.form.end = this.form.endDate ? this.$moment(this.form.endDate).format('YYYY-MM-DD') : null
       this.$axios.$get('/admin/reports', { params: this.form }).then(response => {
         this.reports = response.data
         this.loadingFilter = false

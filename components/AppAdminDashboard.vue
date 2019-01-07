@@ -1,7 +1,7 @@
 <template>
   <section class="admin container-fluid">
     <!-- <h1 class="title__black--large">Dashboard</h1> -->
-    <h3 style="margin-top: 0;">As of {{ $moment().format('MMM DD, YYYY') }}</h3>
+    <h3 style="margin-top: 0;">As of {{ $moment().format('MMM. DD, YYYY') }}</h3>
     <div class="row">
       <div class="col-md-3">
         <TotalReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.reportsCount ? dashboardDetails.reportsCount : 0"/>
