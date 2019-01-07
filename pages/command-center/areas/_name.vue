@@ -3,16 +3,28 @@
     <h4>{{ area.name }}</h4>
     <div class="row">
       <div class="col-md-3">
-        <TotalReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.reportsCount ? dashboardDetails.reportsCount : 0"/>
+        <TotalReportsCard
+          :loading="fetchingDashboardDetails"
+          :total="dashboardDetails.reportsCount ? dashboardDetails.reportsCount : 0"
+        />
       </div>
       <div class="col-md-3">
-        <ResolvedReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.resolvedReportsCount ? dashboardDetails.resolvedReportsCount : 0"/>
+        <ResolvedReportsCard
+          :loading="fetchingDashboardDetails"
+          :total="dashboardDetails.resolvedReportsCount ? dashboardDetails.resolvedReportsCount : 0"
+        />
       </div>
       <div class="col-md-3">
-        <UnresolvedReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.unresolvedReportsCount ? dashboardDetails.unresolvedReportsCount : 0"/>
+        <UnresolvedReportsCard
+          :loading="fetchingDashboardDetails"
+          :total="dashboardDetails.unresolvedReportsCount ? dashboardDetails.unresolvedReportsCount : 0"
+        />
       </div>
       <div class="col-md-3">
-        <CancelledReportsCard :loading="fetchingDashboardDetails" :total="dashboardDetails.cancelledReportsCount ? dashboardDetails.cancelledReportsCount : 0"/>
+        <CancelledReportsCard
+          :loading="fetchingDashboardDetails"
+          :total="dashboardDetails.cancelledReportsCount ? dashboardDetails.cancelledReportsCount : 0"
+        />
       </div>
     </div>
     <div class="row">
@@ -20,12 +32,20 @@
         <h4 class="title__gray--small">Graphs</h4>
         <hr>
         <div class="col-md-6 text-center">
-          <h4>Reports Per Month </h4>
-          <ReportsBarChart v-if="reportsPerMonth.labels.length > 0" :labels="reportsPerMonth.labels" :datasets="reportsPerMonth.datasets"/>
+          <h4>Reports Per Month</h4>
+          <ReportsBarChart
+            v-if="reportsPerMonth.labels.length > 0"
+            :labels="reportsPerMonth.labels"
+            :datasets="reportsPerMonth.datasets"
+          />
         </div>
         <div class="col-md-6 text-center">
-          <h4>Reports Per Type </h4>
-          <ReportsPieChart v-if="reportsPerType.labels.length > 0" :labels="reportsPerType.labels" :datasets="reportsPerType.datasets"/>
+          <h4>Reports Per Category</h4>
+          <ReportsPieChart
+            v-if="reportsPerCategory.labels.length > 0"
+            :labels="reportsPerCategory.labels"
+            :datasets="reportsPerCategory.datasets"
+          />
         </div>
       </div>
     </div>
@@ -208,7 +228,7 @@ export default {
         area: null
       },
       dashboardDetails: [],
-      reportsPerType: {
+      reportsPerCategory: {
         labels: [],
         datasets: []
       },
@@ -251,22 +271,31 @@ export default {
         if (contains) {
           this.$notification['info']({
             message: `New report received!`,
-            description: `You received a ${report.type.name} report in ${report.type.category.name.toLowerCase()}.`,
-              btn: (h)=>{
-                return h('a-button', {
+            description: `You received a ${
+              report.type.name
+            } report in ${report.type.category.name.toLowerCase()}.`,
+            btn: h => {
+              return h(
+                'a-button',
+                {
                   props: {
                     type: 'primary',
-                    size: 'small',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
-                      var win = window.open(`/command-center/reports/${report._id}`, '_blank');
-                      win.focus();
+                      var win = window.open(
+                        `/command-center/reports/${report._id}`,
+                        '_blank'
+                      )
+                      win.focus()
                     }
                   }
-                }, 'View report details.')
-              }
-            })
+                },
+                'View report details.'
+              )
+            }
+          })
           this.dashboardDetails.reportsCount++
           this.dashboardDetails.unresolvedReportsCount++
         }
@@ -332,18 +361,26 @@ export default {
     },
     getGraphsData() {
       this.fetchingDashboardDetails = true
-      const getDashboardDetails = this.$axios.$get(`/admin/areas/${this.area._id}/dashboard`)
-      const getReportsPerType = this.$axios.$get(`/admin/areas/${this.area._id}/dashboard/reports-per-type`)
-      const getReportsPerMonth = this.$axios.$get(`/admin/areas/${this.area._id}/dashboard/reports-per-month`)
-
-      Promise.all([getDashboardDetails, getReportsPerType, getReportsPerMonth]).then(
-        ([dashboardDetails, reportsPerType, reportsPerMonth]) => {
-          this.dashboardDetails = dashboardDetails.data
-          this.reportsPerType = reportsPerType.data
-          this.reportsPerMonth = reportsPerMonth.data
-          this.fetchingDashboardDetails = false
-        }
+      const getDashboardDetails = this.$axios.$get(
+        `/admin/areas/${this.area._id}/dashboard`
       )
+      const getreportsPerCategory = this.$axios.$get(
+        `/admin/areas/${this.area._id}/dashboard/reports-per-category`
+      )
+      const getReportsPerMonth = this.$axios.$get(
+        `/admin/areas/${this.area._id}/dashboard/reports-per-month`
+      )
+
+      Promise.all([
+        getDashboardDetails,
+        getreportsPerCategory,
+        getReportsPerMonth
+      ]).then(([dashboardDetails, reportsPerCategory, reportsPerMonth]) => {
+        this.dashboardDetails = dashboardDetails.data
+        this.reportsPerCategory = reportsPerCategory.data
+        this.reportsPerMonth = reportsPerMonth.data
+        this.fetchingDashboardDetails = false
+      })
     }
   }
 }
