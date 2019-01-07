@@ -11,7 +11,8 @@
           <label for class="title">Responder</label>
         </div>
         <div class="col-md-9">
-          <select required v-model="selectedResponder" class="form-control">
+          <div v-if="loadingGetAvailableResponders">Loading...</div>
+          <select required v-model="selectedResponder" class="form-control" v-else>
             <option :value="null">Select Responder</option>
             <option
               v-for="responder in availableResponders"
@@ -116,6 +117,7 @@ export default {
       availableResponders: [],
       selectedResponder: null,
       loadingAssignResponder: false,
+      loadingGetAvailableResponders: false,
       form: {
         status: this.report.status
       }
@@ -132,6 +134,7 @@ export default {
   methods: {
     showAssignModal() {
       this.isAssignModalVisible = true
+      this.loadingGetAvailableResponders = true
       this.$axios
         .$get(
           `/admin/available-responders?type=${this.report.type._id}&areaId=${
@@ -139,6 +142,7 @@ export default {
           }`
         )
         .then(response => {
+          this.loadingGetAvailableResponders = false
           this.availableResponders = response.data
         })
     },

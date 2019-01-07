@@ -83,18 +83,22 @@
           </div>
           <div class="panel-body p0">
             <form>
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-md-3">
                   <label for>Type</label>
                 </div>
                 <div class="col-md-6">
-                  <input type="text" class="form-control" :value="report.type.name">
-                  <!-- <typeahead v-model="form.type" target="#input-4" :async-src="reportTypesEndpoint" async-key="data" item-key="name"/> -->
+                  <input
+                    type="text"
+                    :disabled="true"
+                    class="form-control"
+                    :value="report.type.name"
+                  >
                 </div>
                 <div class="col-md-3">
-                  <button class="btn btnform" disabled>Change</button>
+                  <button class="btn btnform" @click.prevent="alertItsNotWorkingYet">Change</button>
                 </div>
-              </div>
+              </div>-->
               <div class="row">
                 <div class="col-md-3">
                   <label for>Reassign Resolver</label>
@@ -103,11 +107,12 @@
                   <input
                     type="text"
                     class="form-control"
-                    :value="report.resolver ? report.resolver.email : ''"
+                    :disabled="true"
+                    :value="report.resolver ? report.resolver.email : 'No resolver'"
                   >
                 </div>
                 <div class="col-md-3">
-                  <button class="btn btnform" disabled>Change</button>
+                  <button class="btn btnform" @click.prevent="alertItsNotWorkingYet">Change</button>
                 </div>
               </div>
               <div class="row">
@@ -118,11 +123,12 @@
                   <input
                     type="text"
                     class="form-control"
-                    :value="report.responder ? report.responder.email : ''"
+                    :disabled="true"
+                    :value="report.responder ? report.responder.email : 'No responder'"
                   >
                 </div>
                 <div class="col-md-3">
-                  <button class="btn btnform" disabled>Change</button>
+                  <button class="btn btnform" @click.prevent="alertItsNotWorkingYet">Change</button>
                 </div>
               </div>
               <div class="row">
@@ -292,7 +298,12 @@ export default {
       })
     },
     printChatHistory() {
-      alert('Not yet working!')
+      alert('Print Chat History feature is still under development!')
+    },
+    alertItsNotWorkingYet() {
+      alert(
+        'Overriding resolver or responder function is still under development. In the meantime please use a resolver with the access to the area to resolve the issue.'
+      )
     },
     statusChanged(event) {
       var confirmed = confirm('Are you sure you want to update the status?')
