@@ -168,7 +168,11 @@ export default {
       this.assignInitialValue()
     })
 
+    this.initSocketListeners()
     this.getGraphsData()
+  },
+  beforeDestroy() {
+    this.$socket.off('new-report')
   },
   data() {
     return {
@@ -231,6 +235,39 @@ export default {
     }
   },
   methods: {
+    initSocketListeners() {
+      this.$socket.on('new-report', report => {
+        const contains = this.maxBounds.contains(
+          L.latLng(
+            report.location.coordinates[1],
+            report.location.coordinates[0]
+          )
+        )
+
+        if (contains) {
+          this.$notification['info']({
+            message: `New report received!`,
+            description: `You received a ${report.type.name} report in ${report.type.category.name.toLowerCase()}.`,
+              btn: (h)=>{
+                return h('a-button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small',
+                  },
+                  on: {
+                    click: () => {
+                      var win = window.open(`/command-center/reports/${report._id}`, '_blank');
+                      win.focus();
+                    }
+                  }
+                }, 'View report details.')
+              }
+            })
+          this.dashboardDetails.reportsCount++
+          this.dashboardDetails.unresolvedReportsCount++
+        }
+      })
+    },
     assignInitialValue() {
       const lIsAvailable = setInterval(() => {
         if (L && this.$refs.map) {
