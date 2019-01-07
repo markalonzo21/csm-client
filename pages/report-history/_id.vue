@@ -13,8 +13,8 @@
             <div>{{ report.type.name }}</div>
           </div>
           <div class="col-md-3">
-            <div class="text-blue-light font-semibold">Responder</div>
-            <div>{{ report.responder.firstName }} {{ report.responder.middleName }} {{ report.responder.lastName }}</div>
+            <div class="text-blue-light font-semibold">Status</div>
+            <div>{{ report.status }}</div>
           </div>
           <div class="col-md-3">
             <div class="text-blue-light font-semibold"></div>
@@ -22,6 +22,33 @@
               class="btn btnblue capitalize"
               @click.prevent="showChatHistory = !showChatHistory"
             >View Chat History</button>
+          </div>
+          <div class="col-md-3 mt-4">
+            <div class="text-blue-light font-semibold">Reporter</div>
+            <div>{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName }}</div>
+          </div>
+          <div class="col-md-3 mt-4">
+            <div class="text-blue-light font-semibold">Resolver</div>
+            <div>{{ report.resolver.firstName }} {{ report.resolver.middleName }} {{ report.resolver.lastName }}</div>
+          </div>
+          <div class="col-md-3 mt-4">
+            <div class="text-blue-light font-semibold">Responder</div>
+            <div>{{ report.responder.firstName }} {{ report.responder.middleName }} {{ report.responder.lastName }}</div>
+          </div>
+          <div class="col-md-3 mt-4">
+            <div class="text-blue-light font-semibold">Resolved Date</div>
+            <div>{{ $moment(report.resolvedAt).format('MMM. DD, YYYY | h:mm A') }}</div>
+          </div>
+          <div class="col-md-12" v-if="report.media.length > 0">
+            <h3 class="title__blue mb30">Images/Videos</h3>
+            <div class="row">
+              <div class="col-md-3" v-for="media in report.media" :key="media">
+                <img :src="media" alt="image-media" v-if="$utils.isImage(media)">
+                <video width="300" controls v-else>
+                  <source :src="media" type="video/mp4">
+                </video>
+              </div>
+            </div>
           </div>
         </div>
         <div class="row border rounded bg-white py-6 px-6" v-if="report.location !== null">

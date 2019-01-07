@@ -41,7 +41,7 @@
                     <div
                       class="col-md-4"
                       v-for="(media, index) in form.media"
-                      :key="media-`${index}`"
+                      :key="`media-${index}`"
                     >
                       <img
                         :src="media.src"

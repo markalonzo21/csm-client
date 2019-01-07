@@ -11,6 +11,16 @@
               >{{$moment(report.createdAt).format("MMM. DD, YYYY | h:mm A ")}}</span>
             </div>
             <div class="clearfix">
+              <span class="font-semibold text-blue-dark float-left" v-if="report.resolvedAt">Date Resolved</span>
+              <span
+                class="float-right"
+              >{{$moment(report.resolvedAt).format("MMM. DD, YYYY | h:mm A ")}}</span>
+            </div>
+            <div class="clearfix">
+              <span class="font-semibold text-blue-dark float-left">Category</span>
+              <span class="float-right">{{ report.type.category.name }}</span>
+            </div>
+            <div class="clearfix">
               <span class="font-semibold text-blue-dark float-left">Type</span>
               <span class="float-right">{{ report.type.name }}</span>
             </div>
@@ -26,25 +36,35 @@
                 class="float-right"
               >{{ report.resolver.firstName }} {{ report.resolver.middleName }} {{ report.resolver.lastName }} ({{ report.resolver.mobile }})</span>
             </div>
+            <div class="clearfix">
+              <span class="font-semibold text-blue-dark float-left">Responder</span>
+              <span
+                class="float-right"
+                v-if="report.responder"
+              >{{ report.responder.firstName }} {{ report.responder.middleName }} {{ report.responder.lastName }} ({{ report.responder.mobile }})</span>
+              <span v-else>None</span>
+            </div>
 
             <div class="border-b w-full my-4"></div>
 
-            <div class="clearfix" v-if="report.photos.length > 0">
-              <div class="font-semibold text-blue-dark">Images</div>
-              <img
-                class="w-32 h-32 py-2 pr-4"
-                :src="$store.getters['showPhoto'](photo)"
-                alt="photo"
-                v-for="(photo, index) in report.photos"
-                :key="`photo-${index}`"
-              >
-            </div>
             <div class="clearfix mt-4">
               <div class="font-semibold text-blue-dark">Notes</div>
               <p>{{ report.description }}</p>
             </div>
           </div>
         </div>
+        <div class="col-md-8 clearfix" v-if="report.media.length > 0">
+          <div class="row border rounded bg-white py-6 px-6 mb-2">
+            <h4 class="font-bold mt-0 text-blue-darker">Images/Videos</h4>
+            <div class="col-md-3" v-for="media in report.media" :key="media">
+              <img :src="media" alt="image-media" v-if="$utils.isImage(media)">
+              <video width="300" controls v-else>
+                <source :src="media" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" v-if="report.location !== null"></div>
         <div class="col-md-8">
           <div class="row border rounded bg-white py-6 px-6 mb-2" v-if="report.location !== null">
             <h4 class="font-bold mt-0 text-blue-darker">Incident Location</h4>

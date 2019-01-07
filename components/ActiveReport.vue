@@ -36,6 +36,12 @@
           {{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName}}
         </div>
         <div class="col-md-3">
+          <span class="bluelabel">Resolver</span>
+          <br>
+         <span  v-if="report.resolver">{{ report.resolver.firstName }} {{ report.resolver.middleName }} {{ report.resolver.lastName}} </span>
+         <span v-else>None</span>
+        </div>
+        <div class="col-md-3">
           <span class="bluelabel">Responder</span>
           <br>
           <span
@@ -43,7 +49,7 @@
           >{{ report.responder.firstName }} {{ report.responder.middleName }} {{ report.responder.lastName}}</span>
           <span v-else>None</span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mt-6">
           <span class="bluelabel">Status</span>
           <br>
           <span class="capitalize">{{ report.status }}</span>
