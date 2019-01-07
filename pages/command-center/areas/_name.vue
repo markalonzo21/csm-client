@@ -290,10 +290,9 @@ export default {
       }
     },
     getGraphsData() {
-    const getDashboardDetails = this.$axios.$get('/admin/dashboard')
-
-      const getReportsPerType = this.$axios.$get('/admin/dashboard/reports-per-type')
-      const getReportsPerMonth = this.$axios.$get('/admin/dashboard/reports-per-month')
+      const getDashboardDetails = this.$axios.$get(`/admin/areas/${this.area._id}/dashboard`)
+      const getReportsPerType = this.$axios.$get(`/admin/areas/${this.area._id}/dashboard/reports-per-type`)
+      const getReportsPerMonth = this.$axios.$get(`/admin/areas/${this.area._id}/dashboard/reports-per-month`)
 
       Promise.all([getDashboardDetails, getReportsPerType, getReportsPerMonth]).then(
         ([dashboardDetails, reportsPerType, reportsPerMonth]) => {
