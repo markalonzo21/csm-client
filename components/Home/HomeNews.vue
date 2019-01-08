@@ -16,7 +16,7 @@
           </div>
         </slide>
         <slide>
-          <div class="adsitem">
+          <div class="plugitem">
             <img src="/img/wide-ads.png" alt class="img-responsive mb20">
           </div>
         </slide>
