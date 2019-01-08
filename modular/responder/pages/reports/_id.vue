@@ -10,8 +10,8 @@
                 class="float-right"
               >{{$moment(report.createdAt).format("MMM. DD, YYYY | h:mm A ")}}</span>
             </div>
-            <div class="clearfix">
-              <span class="font-semibold text-blue-dark float-left" v-if="report.resolvedAt">Date Resolved</span>
+            <div class="clearfix"  v-if="report.resolvedAt">
+              <span class="font-semibold text-blue-dark float-left">Date Resolved</span>
               <span
                 class="float-right"
               >{{$moment(report.resolvedAt).format("MMM. DD, YYYY | h:mm A ")}}</span>
@@ -45,6 +45,13 @@
               <span v-else>None</span>
             </div>
 
+            <div class="clearfix">
+              <span class="font-semibold text-blue-dark float-left">Status</span>
+              <span
+                class="float-right"
+              >{{ report.status}}</span>
+            </div>
+
             <div class="border-b w-full my-4"></div>
 
             <div class="clearfix mt-4">
@@ -55,7 +62,7 @@
         </div>
         <div class="col-md-8 clearfix" v-if="report.media.length > 0">
           <div class="row border rounded bg-white py-6 px-6 mb-2">
-            <h4 class="font-bold mt-0 text-blue-darker">Images/Videos</h4>
+            <h4 class="font-bold mt-0 text-blue-darker">Media</h4>
             <div class="col-md-3" v-for="media in report.media" :key="media">
               <img :src="media" alt="image-media" v-if="$utils.isImage(media)">
               <video width="300" controls v-else>
@@ -83,26 +90,6 @@
               </no-ssr>
             </div>
           </div>
-<!--           <div class="row border rounded bg-white py-6 px-6">
-            <h4 class="font-bold mt-0 text-blue-darker">Milestones</h4>
-            <div class="col-md-4 my-4" v-for="milestone in report.responses" :key="milestone._id">
-              <div class="box" :class="{'checked': milestone.resolvedAt !== null }">
-                <svgicon name="check"></svgicon>
-              </div>
-              <p class="m-0 text-uppercase bluelabel">{{ milestone.responseType.name }}</p>
-              <p
-                class="m-0"
-                :class="{ 'invisible': milestone.resolvedAt === null }"
-              >{{ $moment(milestone.resolvedAt).format("MMM. DD, YYYY | h:mm A ") }}</p>
-            </div>
-
-            <div class="col-md-12 text-center mt-4" v-if="nextMilestone">
-              <button
-                class="btn btnblue text-uppercase"
-                @click.prevent="markAsDone(nextMilestone)"
-              >{{ nextMilestone.responseType.name }}</button>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -130,12 +117,7 @@ export default {
   computed: {
     report() {
       return this.$store.state.responder.report;
-    },
-    // nextMilestone() {
-    //   return this.report.responses.find(response => {
-    //     return response.resolvedAt === null;
-    //   });
-    // }
+    }
   },
   mounted() {
     this.initSocketListener();
@@ -145,12 +127,9 @@ export default {
   },
   methods: {
     initSocketListener() {
-      this.$socket.on("report-resolved", report => {
+      this.$socket.on("report-updated", report => {
         this.$store.commit("responder/SET_REPORT", report);
       });
-    },
-    markAsDone(milestone) {
-      this.$store.dispatch("responder/markAsDone", milestone._id);
     }
   }
 };

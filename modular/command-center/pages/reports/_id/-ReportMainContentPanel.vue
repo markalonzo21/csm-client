@@ -32,7 +32,7 @@
             </div>
             <div class="row images" v-if="report.media.length > 0">
               <div class="col-md-12">
-                <label for>Images/Videos</label>
+                <label for>Media</label>
                 <br>
                 <div class="col-md-3" v-for="media in report.media" :key="media">
                   <img

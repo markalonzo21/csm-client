@@ -40,7 +40,7 @@
             <div>{{ $moment(report.resolvedAt).format('MMM. DD, YYYY | h:mm A') }}</div>
           </div>
           <div class="col-md-12" v-if="report.media.length > 0">
-            <h3 class="title__blue mb30">Images/Videos</h3>
+            <h3 class="title__blue mb30">Media</h3>
             <div class="row">
               <div class="col-md-3" v-for="media in report.media" :key="media">
                 <img :src="media" alt="image-media" v-if="$utils.isImage(media)">

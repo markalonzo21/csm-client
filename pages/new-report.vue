@@ -29,7 +29,7 @@
                     ></option>
                   </select>
                   <div class="upload-btn-wrapper w-100 mb20">
-                    <button class="btnupload w-100">Upload Images/Videos</button>
+                    <button class="btnupload w-100">Upload Image/Video</button>
                     <input
                       type="file"
                       accept="image/*, video/*"
