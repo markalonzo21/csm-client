@@ -8,7 +8,7 @@
       </div>
       <div class="col-md-8 content">
         <ReportMainContentPanel v-if="report" :report="report"/>
-        <div class="panel">
+<!--         <div class="panel">
           <div class="panel-body">
             <div class="row comment">
               <div class="col-md-10">
@@ -26,7 +26,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -65,6 +65,7 @@ export default {
     initSocketListeners() {
       this.$socket.on('report-updated', payload => {
         if (this.report._id === payload._id) {
+          this.report = payload
           this.$notification['info']({
             message: `Report has been updated!`
           })

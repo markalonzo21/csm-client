@@ -31,6 +31,9 @@
       }
     },
     methods: {
+      alertItsNotWorkingYet() {
+        alert('Reassigning type is still under development')
+      },
       changeType() {
 
       }

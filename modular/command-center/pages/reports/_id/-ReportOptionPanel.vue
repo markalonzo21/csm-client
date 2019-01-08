@@ -5,7 +5,7 @@
     </div>
     <div class="panel-body p0">
       <form>
-        <ReportOptionUpdateType :report="report"/>
+        <!-- <ReportOptionUpdateType :report="report"/> -->
         <ReportOptionUpdateResolver :report="report"/>
         <ReportOptionUpdateResponder :report="report"/>
         <ReportOptionUpdateStatus :report="report"/>
