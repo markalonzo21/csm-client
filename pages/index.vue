@@ -81,6 +81,11 @@ export default {
   .carousel-control.left {
     background: transparent;
   }
+  .banner img {
+     object-fit: cover;
+     height: 700px !important;
+     width: 100%;
+  }
   .banner .left.carousel-control {
     left: 15px;
   }
