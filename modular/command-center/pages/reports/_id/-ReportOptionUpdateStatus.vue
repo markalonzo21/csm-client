@@ -40,15 +40,15 @@
             })
             .then(response => {
               alert('Update successful!')
-              this.form.status = response.data.status
+              this.currentStatus = response.data.status
               this.report.status = response.data.status
             })
             .catch(err => {
               alert('Something went wrong!')
-              event.target.value = this.form.status
+              event.target.value = this.currentStatus
             })
         } else {
-          event.target.value = this.form.status
+          event.target.value = this.currentStatus
         }
       }
     }
