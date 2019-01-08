@@ -1,0 +1,56 @@
+<template>
+  <div class="row">
+    <div class="col-md-3">
+      <label for>Override Status</label>
+    </div>
+    <div class="col-md-6">
+      <select class="capitalize form-control" @change="statusChanged">
+        <option
+          v-for="status in ['pending', 'in-progress', 'resolved', 'cancelled']"
+          class="capitalize"
+          :selected="status === currentStatus"
+        >{{ status }}</option>
+      </select>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    props: {
+      report: {
+        type: Object,
+        required: true
+      }
+    },
+    data() {
+      return {
+        currentStatus: this.report.status
+      }
+    },
+    methods: {
+      statusChanged(event) {
+        var confirmed = confirm('Are you sure you want to update the status?')
+
+        if (confirmed) {
+          this.$axios
+            .$post('/resolver/update-report', {
+              status: event.target.value,
+              reportId: this.report._id
+            })
+            .then(response => {
+              alert('Update successful!')
+              this.form.status = response.data.status
+              this.report.status = response.data.status
+            })
+            .catch(err => {
+              alert('Something went wrong!')
+              event.target.value = this.form.status
+            })
+        } else {
+          event.target.value = this.form.status
+        }
+      }
+    }
+  }
+</script>

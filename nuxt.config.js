@@ -60,7 +60,8 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/dotenv',
-    '@nuxtjs/moment'
+    '@nuxtjs/moment',
+    '@cknow/nuxt-modular'
   ],
 
   /*
