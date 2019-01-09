@@ -2,7 +2,7 @@
   "name": "csm",
   "alias": "csm.now.sh",
   "github": {
-    "autoJobCancelation": false
+    "enabled": false
   },
   "env": {
     "API_URL": "https://ireport-api.now.sh"
