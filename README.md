@@ -1,10 +1,10 @@
-# opengraphgenerator-web
+# CSM Report Application Frontend
 
 > My good Nuxt.js project
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ yarn install
 
