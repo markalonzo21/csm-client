@@ -8,6 +8,7 @@
       style="max-height: 295px;"
     >
       <div v-if="loadingGetMessages">Loading messages...</div>
+      <div v-else-if="messages.length === 0">No messages...</div>
       <ReportChatboxMessage
         v-else
         v-for="(message, index) in messages"
