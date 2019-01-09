@@ -1,10 +1,13 @@
 {
   "name": "csm",
   "alias": "csm.now.sh",
+  "github": {
+    "autoJobCancelation": false
+  },
   "env": {
     "API_URL": "https://ireport-api.now.sh"
   },
-  "scale" : {
+  "scale": {
     "sfo1": {
       "min": 1,
       "max": 1
