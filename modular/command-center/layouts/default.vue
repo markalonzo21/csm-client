@@ -6,7 +6,7 @@
       @close="isDrawerVisible = false"
     />
     <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-      <div class="logo cursor-pointer" @click.prevent="$router.push('/')"/>
+      <nuxt-link class="logo cursor-pointer" to="/"></nuxt-link>
       <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
         <a-menu-item key="1" style="background: transparent;" @click="isDrawerVisible = true">
           <a-icon class="trigger" :type="isDrawerVisible ? 'menu-fold' : 'menu-unfold'"/>
@@ -19,10 +19,10 @@
 
           <a-menu slot="overlay">
             <a-menu-item key="0" v-if="$store.getters['auth/hasPermission']('resolve')">
-              <router-link to="/resolver">Resolver Dashboard</router-link>
+              <nuxt-link to="/resolver">Resolver Dashboard</nuxt-link>
             </a-menu-item>
             <a-menu-item key="1" v-if="$store.getters['auth/hasPermission']('respond')">
-              <router-link to="/responder">Responder Dashboard</router-link>
+              <nuxt-link to="/responder">Responder Dashboard</nuxt-link>
             </a-menu-item>
             <a-menu-item key="2">
               <a @click.prevent="$store.dispatch('auth/logout')">Log Out</a>
@@ -34,11 +34,11 @@
     <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
       <a-breadcrumb style="margin: 16px 0">
         <a-breadcrumb-item v-for="(crumb, index) in crumbs" :key="`crumb-${index}`">
-          <router-link
+          <nuxt-link
             class="capitalize"
             :to="crumb.to"
             v-if="index < crumbs.length "
-          >{{ crumb.text.replace('-', ' ') }}</router-link>
+          >{{ crumb.text.replace('-', ' ') }}</nuxt-link>
         </a-breadcrumb-item>
       </a-breadcrumb>
       <div

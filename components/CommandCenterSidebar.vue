@@ -21,10 +21,10 @@
             :key="item.link"
             :class="{ 'ant-menu-item-selected': $route.path === item.link }"
           >
-            <router-link :to="item.link" v-if="item.link">
+            <nuxt-link :to="item.link" v-if="item.link">
               <a-icon :type="item.icon"/>
               <span>{{item.title}}</span>
-            </router-link>
+            </nuxt-link>
             <template v-else>
               <a-icon :type="item.icon"/>
               <span>{{item.title}}</span>
@@ -36,10 +36,10 @@
               <span>{{ item.title }}</span>
             </span>
             <a-menu-item :key="child.link" v-for="child in item.children">
-              <router-link :to="child.link" v-if="child.link">
+              <nuxt-link :to="child.link" v-if="child.link">
                 <a-icon :type="child.icon"/>
                 <span>{{child.title}}</span>
-              </router-link>
+              </nuxt-link>
             </a-menu-item>
           </a-sub-menu>
         </template>
@@ -54,68 +54,68 @@ export default {
     defaultOpenKeys() {
       return this.list
         .filter(item => {
-          return this.$route.path.includes(item.link);
+          return this.$route.path.includes(item.link)
         })
-        .map(item => item.link);
+        .map(item => item.link)
     }
   },
   data() {
     return {
       list: [
         {
-          title: "Dashboard",
-          icon: "dashboard",
-          link: "/command-center",
-          permissionNeeded: "view command center"
+          title: 'Dashboard',
+          icon: 'dashboard',
+          link: '/command-center',
+          permissionNeeded: 'view command center'
         },
 
         {
-          title: "Roles",
-          icon: "bars",
-          link: "/command-center/roles",
-          permissionNeeded: "view roles"
+          title: 'Roles',
+          icon: 'bars',
+          link: '/command-center/roles',
+          permissionNeeded: 'view roles'
         },
         {
-          title: "Users",
-          icon: "bars",
-          link: "/command-center/users",
-          permissionNeeded: "view users"
+          title: 'Users',
+          icon: 'bars',
+          link: '/command-center/users',
+          permissionNeeded: 'view users'
         },
         {
-          title: "Areas",
-          icon: "bars",
-          link: "/command-center/areas",
-          permissionNeeded: "view areas"
+          title: 'Areas',
+          icon: 'bars',
+          link: '/command-center/areas',
+          permissionNeeded: 'view areas'
         },
         {
-          title: "Reports",
-          icon: "bars",
-          link: "/command-center/reports",
-          permissionNeeded: "view reports"
+          title: 'Reports',
+          icon: 'bars',
+          link: '/command-center/reports',
+          permissionNeeded: 'view reports'
         },
         {
-          title: "Report Categories",
-          icon: "bars",
-          link: "/command-center/report-categories",
-          permissionNeeded: "view report categories"
+          title: 'Report Categories',
+          icon: 'bars',
+          link: '/command-center/report-categories',
+          permissionNeeded: 'view report categories'
         },
         {
-          title: "Report Types",
-          icon: "bars",
-          link: "/command-center/report-types",
-          permissionNeeded: "view report types"
+          title: 'Report Types',
+          icon: 'bars',
+          link: '/command-center/report-types',
+          permissionNeeded: 'view report types'
         },
         {
-          title: "Response Types",
-          icon: "bars",
-          link: "/command-center/response-types",
-          permissionNeeded: "view response types"
+          title: 'Response Types',
+          icon: 'bars',
+          link: '/command-center/response-types',
+          permissionNeeded: 'view response types'
         },
         {
-          title: "Advertisements",
-          icon: "bars",
-          link: "/command-center/advertisements",
-          permissionNeeded: "view advertisements"
+          title: 'Advertisements',
+          icon: 'bars',
+          link: '/command-center/advertisements',
+          permissionNeeded: 'view advertisements'
         }
 
         // {
@@ -131,7 +131,7 @@ export default {
         //   permissionNeeded: ["administrator"]
         // }
       ]
-    };
+    }
   }
-};
+}
 </script>

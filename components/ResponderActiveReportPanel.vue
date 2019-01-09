@@ -6,10 +6,10 @@
         class="title__white--mid mb20 ofwbw"
         v-text="report.type.category.name"
       >Security Management</h3>
-      <router-link
+      <nuxt-link
         class="btn btnwhite text-uppercase"
         :to="`/responder/reports/${report._id}`"
-      >Respond</router-link>
+      >Respond</nuxt-link>
     </div>
   </div>
   <div class="panel bgblue" v-else>
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  props: ["report"]
-};
+  props: ['report']
+}
 </script>
 

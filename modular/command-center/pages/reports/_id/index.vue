@@ -8,25 +8,11 @@
       </div>
       <div class="col-md-8 content">
         <ReportMainContentPanel v-if="report" :report="report"/>
-<!--         <div class="panel">
+        <div class="panel">
           <div class="panel-body">
-            <div class="row comment">
-              <div class="col-md-10">
-                <textarea
-                  class="form-control"
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="2"
-                  placeholder="Write something here..."
-                ></textarea>
-              </div>
-              <div class="col-md-2 text-center">
-                <button class="btn text-uppercase">Send</button>
-              </div>
-            </div>
+            <ReportChatbox :report="report"/>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
   </section>
@@ -37,13 +23,15 @@ import ReportInformationPanel from './-ReportInformationPanel'
 import ReportLocationPanel from './-ReportLocationPanel'
 import ReportOptionPanel from './-ReportOptionPanel'
 import ReportMainContentPanel from './-ReportMainContentPanel'
+import ReportChatbox from './-ReportChatbox'
 export default {
   layout: 'command-center/default',
   components: {
     ReportInformationPanel,
     ReportLocationPanel,
     ReportOptionPanel,
-    ReportMainContentPanel
+    ReportMainContentPanel,
+    ReportChatbox
   },
   asyncData({ $axios, store, params, error }) {
     if (!store.getters['auth/hasPermission']('view reports')) {
@@ -71,9 +59,6 @@ export default {
           })
         }
       })
-    },
-    printChatHistory() {
-      alert('Print Chat History feature is still under development!')
     }
   }
 }

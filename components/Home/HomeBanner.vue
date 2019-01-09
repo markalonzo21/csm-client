@@ -17,8 +17,8 @@
                     effortlessly in just one click away
                   </p>
                 </div>
-                <router-link to="/new-report" class="btn btnblue text-uppercase"
-                  >Report</router-link
+                <nuxt-link to="/new-report" class="btn btnblue text-uppercase"
+                  >Report</nuxt-link
                 >
               </div>
               <div class="col-md-8 right-content">
@@ -41,7 +41,7 @@ export default {
       interval: 5000,
       indicators: false,
       controls: true
-    };
+    }
   }
-};
+}
 </script>

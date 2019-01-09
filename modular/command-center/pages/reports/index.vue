@@ -12,7 +12,7 @@
       >{{ report.createdAt ? $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
       <template slot="operation" slot-scope="text, report">
         <a-button type="primary">
-          <router-link :to="`/command-center/reports/${report._id}`">Show</router-link>
+          <nuxt-link :to="`/command-center/reports/${report._id}`">Show</nuxt-link>
         </a-button>
       </template>
     </a-table>

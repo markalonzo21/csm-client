@@ -2,18 +2,18 @@
   <div class="h-65">
     <navbar class="user-menu h-65" :fixed-top="true">
       <div class="container h-65">
-        <router-link class="float-left pt-4 mr-6" slot="brand" to="/">
+        <nuxt-link class="float-left pt-4 mr-6" slot="brand" to="/">
           <img src="/img/megaworld-logo.png" alt class="responsive mrgnauto">
-        </router-link>
+        </nuxt-link>
         <navbar-nav left v-if="$store.state.auth.loggedIn">
           <li>
-            <router-link class="text-blue-light" to="/new-report">New Report</router-link>
+            <nuxt-link class="text-blue-light" to="/new-report">New Report</nuxt-link>
           </li>
           <li>
-            <router-link class="text-blue-light" to="/report-tracker">Report Tracker</router-link>
+            <nuxt-link class="text-blue-light" to="/report-tracker">Report Tracker</nuxt-link>
           </li>
           <li>
-            <router-link class="text-blue-light" to="/report-history">Report History</router-link>
+            <nuxt-link class="text-blue-light" to="/report-history">Report History</nuxt-link>
           </li>
         </navbar-nav>
         <navbar-nav right v-if="$store.state.auth.loggedIn" class="select-none">
@@ -25,30 +25,30 @@
               ></span>
             </a>
             <template slot="dropdown">
-              <!-- <router-link to="/my-profile" tag="li">
+              <!-- <nuxt-link to="/my-profile" tag="li">
                 <a class="button">My Profile</a>
-              </router-link>-->
-              <router-link
+              </nuxt-link>-->
+              <nuxt-link
                 to="/command-center"
                 tag="li"
                 v-if="$store.getters['auth/hasPermission']('view command center')"
               >
                 <a class="button">Command Center</a>
-              </router-link>
-              <router-link
+              </nuxt-link>
+              <nuxt-link
                 to="/resolver"
                 tag="li"
                 v-if="$store.getters['auth/hasPermission']('resolve') && $route.path !== '/resolver'"
               >
                 <a class="button">Resolver Dashboard</a>
-              </router-link>
-              <router-link
+              </nuxt-link>
+              <nuxt-link
                 to="/responder"
                 tag="li"
                 v-if="$store.getters['auth/hasPermission']('respond') && $route.path !== '/responder'"
               >
                 <a class="button">Responder Dashboard</a>
-              </router-link>
+              </nuxt-link>
               <li>
                 <a role="button" @click.prevent="$store.dispatch('auth/logout')">Log Out</a>
               </li>

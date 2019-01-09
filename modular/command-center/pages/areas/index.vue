@@ -2,19 +2,19 @@
   <section class="w-full">
     <div class="clearfix">
       <h3 class="float-left">Areas</h3>
-      <router-link to="/command-center/areas/create">
+      <nuxt-link to="/command-center/areas/create">
         <a-button
           type="primary"
           class="float-right my-6"
           v-if="$store.getters['auth/hasPermission']('create area')"
         >Create Area</a-button>
-      </router-link>
+      </nuxt-link>
     </div>
     <hr>
     <a-table :loading="loadingGetAreas" bordered :dataSource="dataSource" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a-button type="primary">
-          <router-link :to="`/command-center/areas/${record.name}`">Show</router-link>
+          <nuxt-link :to="`/command-center/areas/${record.name}`">Show</nuxt-link>
         </a-button>
       </template>
     </a-table>
@@ -25,20 +25,23 @@
 export default {
   layout: 'command-center/default',
   asyncData({ store, redirect }) {
-    if (store.getters["auth/hasPermission"]("view areas") || store.getters["auth/hasSpecificArea"]) {
+    if (
+      store.getters['auth/hasPermission']('view areas') ||
+      store.getters['auth/hasSpecificArea']
+    ) {
       return
     }
-    return redirect("/");
+    return redirect('/')
   },
   data() {
     return {
       loadingGetAreas: true,
       columns: [
         {
-          title: "Name",
-          dataIndex: "name",
-          scopedSlots: { customRender: "name" },
-          width: "80%",
+          title: 'Name',
+          dataIndex: 'name',
+          scopedSlots: { customRender: 'name' },
+          width: '80%'
         },
         // {
         //   title: "Description",
@@ -47,22 +50,22 @@ export default {
         //   scopedSlots: { customRender: "description" }
         // },
         {
-          title: "Operation",
-          dataIndex: "operation",
-          scopedSlots: { customRender: "operation" }
+          title: 'Operation',
+          dataIndex: 'operation',
+          scopedSlots: { customRender: 'operation' }
         }
       ],
       dataSource: []
-    };
+    }
   },
   mounted() {
-    this.loadingGetAreas = true;
-    this.$axios.$get("/admin/areas").then(response => {
-      this.dataSource = response.data;
-      this.loadingGetAreas = false;
-    });
+    this.loadingGetAreas = true
+    this.$axios.$get('/admin/areas').then(response => {
+      this.dataSource = response.data
+      this.loadingGetAreas = false
+    })
   }
-};
+}
 </script>
 
 <!--<script>
