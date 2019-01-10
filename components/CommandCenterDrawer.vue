@@ -26,7 +26,7 @@
         <a-menu-item
           key="/command-center/incident-map"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/incident-map' }"
-          v-if="$store.getters['auth/hasPermission']('view command center')"
+          v-if="$store.getters['auth/hasPermission']('view incident map')"
         >
           <nuxt-link to="/command-center/incident-map">
             <a-icon type="global"/>
