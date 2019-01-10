@@ -34,6 +34,16 @@
       <h4>Filter</h4>
       <a-row :gutter="24">
         <a-col :span="12">
+          <a-form-item label="Area" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
+            <a-select :value="form.area" @change="selectAreaChange" placeholder="Select Area">
+              <a-select-option value>Any</a-select-option>
+              <a-select-option
+                v-for="item in selectList.areas"
+                :value="item._id"
+                :key="`area-${item._id}`"
+              >{{ item.name }}</a-select-option>
+            </a-select>
+          </a-form-item>
           <a-form-item label="Report ID" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
             <a-input placeholder="Enter Report ID" v-model="form.id"/>
           </a-form-item>
@@ -47,7 +57,7 @@
               <a-select-option
                 v-for="category in selectList.categories"
                 :value="category._id"
-                :key="category._id"
+                :key="`category-${category._id}`"
               >{{ category.name }}</a-select-option>
             </a-select>
           </a-form-item>
@@ -63,7 +73,7 @@
               <a-select-option
                 v-for="status in selectList.statuses"
                 :value="status"
-                :key="status"
+                :key="`status-${status}`"
               >{{ status }}</a-select-option>
             </a-select>
           </a-form-item>
@@ -75,7 +85,7 @@
               <a-select-option
                 v-for="type in selectList.types"
                 :value="type._id"
-                :key="type._id"
+                :key="`type-${type._id}`"
               >{{ type.name }}</a-select-option>
             </a-select>
           </a-form-item>
@@ -105,13 +115,13 @@
             <a-input placeholder="Enter resolver email" v-model="form.resolver"/>
           </a-form-item>
         </a-col>
-        <a-col :span="11" :offset="1">
+        <a-col :span="22" :offset="1">
           <a-form-item>
             <a-button
               class="float-right w-full"
               type="primary"
               htmlType="submit"
-              :loading="loadingFilter"
+              :loading="loadingReports"
             >Filter</a-button>
           </a-form-item>
         </a-col>
@@ -127,19 +137,15 @@ export default {
   asyncData({ $axios, error }) {
     const getCategories = $axios.$get('/report-categories')
     const getReports = $axios.$get('/admin/reports')
+    const getAreas = $axios.$get('/areas')
 
-    return Promise.all([getCategories, getReports]).then(
-      ([categories, reports]) => {
+    return Promise.all([getCategories, getReports, getAreas]).then(
+      ([categories, reports, areas]) => {
         return {
           reports: reports.data,
           isLoadMoreVisible: !(reports.data.length < 20),
           loadingGetReports: false,
           loadingFilter: false,
-          selectList: {
-            categories: categories.data,
-            types: [],
-            statuses: ['pending', 'in-progress', 'resolved', 'cancelled']
-          },
           columns: [
             {
               title: 'Report ID',
@@ -194,7 +200,14 @@ export default {
             status: '',
             type: '',
             startDate: null,
-            endDate: null
+            endDate: null,
+            area: ''
+          },
+          selectList: {
+            areas: areas.data,
+            categories: categories.data,
+            types: [],
+            statuses: ['pending', 'in-progress', 'resolved', 'cancelled']
           }
         }
       }
@@ -246,6 +259,9 @@ export default {
           this.isLoadMoreVisible = !(response.data.length < 20)
           this.loadingGetReports = false
         })
+    },
+    selectAreaChange(value) {
+      this.form.area = value
     },
     selectCategoryChange(value) {
       const categories = this.selectList.categories.find(
