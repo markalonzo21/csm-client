@@ -176,7 +176,7 @@ export default {
     getReports() {
       this.loadingReports = true
       this.$axios
-        .$get('/admin/reports')
+        .$get('/admin/reports?limit=999999')
         .then(response => {
           this.reports = response.data
           this.loadingReports = false

@@ -9,7 +9,8 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "svg": "vsvg -s ./static/svgs -t ./assets/svgs"
+    "svg": "vsvg -s ./static/svgs -t ./assets/svgs",
+    "commit": "git-cz"
   },
   "standard": {
     "globals": [
@@ -56,11 +57,17 @@
     "@commitlint/config-conventional": "^7.1.2",
     "autoprefixer": "^7.1.6",
     "cross-env": "^5.0.1",
+    "cz-conventional-changelog": "^2.1.0",
     "node-sass": "^4.10.0",
     "postcss": "^7.0.7",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "tailwindcss": "^0.7.2",
     "vue-svgicon": "^3.2.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

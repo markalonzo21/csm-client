@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full">
+  <section class="w-full flex flex-col">
     <div class="clearfix">
       <h3 class="float-left">Reports</h3>
       <a-button type="primary" class="float-right invisible my-6">Hidden</a-button>
@@ -22,6 +22,13 @@
         </a-button>
       </template>
     </a-table>
+    <br>
+    <a-button
+      type="primary"
+      class="m-auto"
+      v-if="isLoadMoreVisible"
+      @click.prevent="loadMoreReports"
+    >Load More</a-button>
     <hr>
     <a-form @submit.prevent="filterReports">
       <h4>Filter</h4>
@@ -125,7 +132,7 @@ export default {
       ([categories, reports]) => {
         return {
           reports: reports.data,
-          isLoadMoreVisible: !(reports.data.length < 10),
+          isLoadMoreVisible: !(reports.data.length < 20),
           loadingGetReports: false,
           loadingFilter: false,
           selectList: {
@@ -207,6 +214,7 @@ export default {
     },
     filterReports() {
       this.loadingFilter = true
+      this.isLoadMoreVisible = true
 
       this.form.start = this.form.startDate
         ? this.$moment(this.form.startDate).format('YYYY-MM-DD')
@@ -218,6 +226,7 @@ export default {
         .$get('/admin/reports', { params: this.form })
         .then(response => {
           this.reports = response.data
+          this.isLoadMoreVisible = !(response.data.length < 20)
           this.loadingFilter = false
         })
         .catch(err => {
@@ -226,13 +235,15 @@ export default {
     },
     loadMoreReports() {
       this.loadingGetReports = true
+
+      const skip = this.reports.length
       this.$axios
-        .$get(`/admin/reports?skip=${this.reports.length}`)
+        .$get(`/admin/reports`, { params: this.form, ...skip })
         .then(response => {
           response.data.forEach(report => {
             this.reports.push(report)
           })
-          this.isLoadMoreVisible = !(response.data.length < 10)
+          this.isLoadMoreVisible = !(response.data.length < 20)
           this.loadingGetReports = false
         })
     },
