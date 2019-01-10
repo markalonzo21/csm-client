@@ -48,6 +48,7 @@
     "vue-fixed-header": "^2.0.2",
     "vue2-leaflet": "^1.2.0",
     "vue2-leaflet-heatmap": "1.0.5",
+    "vue2-leaflet-markercluster": "^2.1.2",
     "vuedraggable": "^2.16.0"
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import { LMap, LTileLayer, LMarker, LGeoJson } from 'vue2-leaflet'
+import { LMap, LTileLayer, LMarker, LGeoJson, LPopup } from 'vue2-leaflet'
+import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 
 import L from 'leaflet'
 delete L.Icon.Default.prototype._getIconUrl
@@ -14,3 +15,5 @@ Vue.component('l-map', LMap)
 Vue.component('l-tile-layer', LTileLayer)
 Vue.component('l-marker', LMarker)
 Vue.component('l-geojson', LGeoJson)
+Vue.component('l-popup', LPopup)
+Vue.component('l-marker-cluster', Vue2LeafletMarkerCluster)

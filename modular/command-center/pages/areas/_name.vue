@@ -54,28 +54,26 @@
         <h4>Reports Heat Map</h4>
         <hr>
         <div style="height: 380px; width: 100%;">
-          <no-ssr>
-            <l-map
-              v-if="center.length > 0"
-              :center="center"
-              :zoom="zoom"
-              :minZoom="minZoom"
-              :maxZoom="maxZoom"
-              :maxBounds="maxBounds"
-              :maxBoundsViscosity="maxBoundsViscosity"
-              ref="map"
-            >
-              <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
-              <LeafletHeatmap
-                v-if="reports.length > 0 && !loadingHeats"
-                :lat-lng="heats"
-                :radius="15"
-                :min-opacity="0.75"
-                :blur="15"
-              ></LeafletHeatmap>
-              <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
-            </l-map>
-          </no-ssr>
+          <l-map
+            v-if="center.length > 0"
+            :center="center"
+            :zoom="zoom"
+            :minZoom="minZoom"
+            :maxZoom="maxZoom"
+            :maxBounds="maxBounds"
+            :maxBoundsViscosity="maxBoundsViscosity"
+            ref="map"
+          >
+            <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
+            <LeafletHeatmap
+              v-if="reports.length > 0 && !loadingHeats"
+              :lat-lng="heats"
+              :radius="15"
+              :min-opacity="0.75"
+              :blur="15"
+            ></LeafletHeatmap>
+            <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+          </l-map>
         </div>
         <div class="my-4">
           <select v-model="type" required class="p-2">
