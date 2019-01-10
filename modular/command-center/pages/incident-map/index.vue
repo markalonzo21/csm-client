@@ -29,13 +29,6 @@
           <l-popup :content="showReportContent(report)"></l-popup>
         </l-marker>
       </l-marker-cluster>
-      <!-- <LeafletHeatmap
-        v-if="reports.length > 0 && !loadingHeats"
-        :lat-lng="heats"
-        :radius="15"
-        :min-opacity="0.75"
-        :blur="15"
-      ></LeafletHeatmap>-->
       <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
     </l-map>
     <a-form @submit.prevent="filterReports">
@@ -215,6 +208,20 @@ export default {
         .then(response => {
           this.reports = response.data
           this.loadingReports = false
+
+          if (this.form.area.length > 0) {
+            const geoJSON = L.geoJSON(
+              this.selectList.areas.find(
+                area => area._id.toString() === this.form.area.toString()
+              ).location
+            )
+
+            this.geojson = geoJSON.toGeoJSON()
+            this.maxBounds = geoJSON.getBounds()
+            this.$nextTick(() => {
+              this.$refs.map.mapObject.fitBounds(this.maxBounds)
+            })
+          }
         })
         .catch(err => {
           this.loadingReports = false
