@@ -5,7 +5,7 @@
       @open="isDrawerVisible = true"
       @close="isDrawerVisible = false"
     />
-    <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+    <a-layout-header :style="{ position: 'fixed', zIndex: 401, width: '100%' }">
       <nuxt-link class="logo cursor-pointer" to="/"></nuxt-link>
       <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
         <a-menu-item key="1" style="background: transparent;" @click="isDrawerVisible = true">
