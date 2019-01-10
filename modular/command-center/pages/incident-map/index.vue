@@ -52,9 +52,6 @@
               >{{ item.name }}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item label="Report ID" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
-            <a-input placeholder="Enter Report ID" v-model="form.id"/>
-          </a-form-item>
           <a-form-item label="Category" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
             <a-select
               :value="form.category"
@@ -68,6 +65,9 @@
                 :key="`category-${category._id}`"
               >{{ category.name }}</a-select-option>
             </a-select>
+          </a-form-item>
+          <a-form-item label="Report ID" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
+            <a-input placeholder="Enter Report ID" v-model="form.id"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -99,6 +99,11 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
+          <a-form-item label="Reporter" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
+            <a-input placeholder="Enter reporter email" v-model="form.reporter"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
           <a-form-item label="Date Started" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
             <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.startDate"/>
           </a-form-item>
@@ -106,11 +111,6 @@
         <a-col :span="12">
           <a-form-item label="Date End" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
             <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.endDate"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="Reporter" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
-            <a-input placeholder="Enter reporter email" v-model="form.reporter"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">

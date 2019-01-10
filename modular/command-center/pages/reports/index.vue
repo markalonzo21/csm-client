@@ -6,7 +6,7 @@
     </div>
     <hr>
     <a-table
-      :loading="loadingGetReports || loadingFilter"
+      :loading="loadingReports || loadingFilter"
       bordered
       :pagination="false"
       :dataSource="reports"
@@ -27,6 +27,7 @@
       type="primary"
       class="m-auto"
       v-if="isLoadMoreVisible"
+      :loading="loadingReports"
       @click.prevent="loadMoreReports"
     >Load More</a-button>
     <hr>
@@ -44,9 +45,6 @@
               >{{ item.name }}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item label="Report ID" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
-            <a-input placeholder="Enter Report ID" v-model="form.id"/>
-          </a-form-item>
           <a-form-item label="Category" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
             <a-select
               :value="form.category"
@@ -60,6 +58,9 @@
                 :key="`category-${category._id}`"
               >{{ category.name }}</a-select-option>
             </a-select>
+          </a-form-item>
+          <a-form-item label="Report ID" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
+            <a-input placeholder="Enter Report ID" v-model="form.id"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -91,6 +92,11 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
+          <a-form-item label="Reporter" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
+            <a-input placeholder="Enter reporter email" v-model="form.reporter"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
           <a-form-item label="Date Started" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
             <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.startDate"/>
           </a-form-item>
@@ -98,11 +104,6 @@
         <a-col :span="12">
           <a-form-item label="Date End" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
             <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.endDate"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="Reporter" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
-            <a-input placeholder="Enter reporter email" v-model="form.reporter"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -131,7 +132,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   layout: 'command-center/default',
   asyncData({ $axios, error }) {
@@ -144,7 +144,7 @@ export default {
         return {
           reports: reports.data,
           isLoadMoreVisible: !(reports.data.length < 20),
-          loadingGetReports: false,
+          loadingReports: false,
           loadingFilter: false,
           columns: [
             {
@@ -201,7 +201,8 @@ export default {
             type: '',
             startDate: null,
             endDate: null,
-            area: ''
+            area: '',
+            skip: 0
           },
           selectList: {
             areas: areas.data,
@@ -235,6 +236,8 @@ export default {
       this.form.end = this.form.endDate
         ? this.$moment(this.form.endDate).format('YYYY-MM-DD')
         : null
+
+      this.form.skip = this.reports.length
       this.$axios
         .$get('/admin/reports', { params: this.form })
         .then(response => {
@@ -247,17 +250,17 @@ export default {
         })
     },
     loadMoreReports() {
-      this.loadingGetReports = true
+      this.loadingReports = true
 
-      const skip = this.reports.length
+      this.form.skip = this.reports.length
       this.$axios
-        .$get(`/admin/reports`, { params: this.form, ...skip })
+        .$get(`/admin/reports`, { params: this.form })
         .then(response => {
           response.data.forEach(report => {
             this.reports.push(report)
           })
           this.isLoadMoreVisible = !(response.data.length < 20)
-          this.loadingGetReports = false
+          this.loadingReports = false
         })
     },
     selectAreaChange(value) {
