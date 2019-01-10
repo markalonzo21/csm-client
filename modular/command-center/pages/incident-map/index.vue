@@ -12,6 +12,13 @@
       :maxBoundsViscosity="maxBoundsViscosity"
       ref="map"
     >
+      <div
+        class="absolute w-full h-full flex justify-center items-center"
+        style="z-index: 999999999;"
+        v-if="loadingReports"
+      >
+        <a-icon type="loading" style="font-size: 128px;" spin/>
+      </div>
       <l-geojson v-if="area" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
       <l-marker-cluster>
         <l-marker
@@ -19,7 +26,7 @@
           :lat-lng="[report.location.coordinates[1], report.location.coordinates[0]]"
           :key="`incident-${index}`"
         >
-          <l-popup :content="report.description"></l-popup>
+          <l-popup :content="showReportContent(report)"></l-popup>
         </l-marker>
       </l-marker-cluster>
       <!-- <LeafletHeatmap
@@ -66,6 +73,52 @@ export default {
           console.log(err.response.data)
           this.loadingReports = false
         })
+    },
+    showReportContent(report) {
+      return `      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <td>ID</td>
+            <td>${report._id}</td>
+          </tr>
+          <tr>
+            <td>Reporter</td>
+            <td>${report.reporter.email}</td>
+          </tr>
+          <tr>
+            <td>Resolver</td>
+            <td>${report.resolver ? report.resolver.email : 'N/A'}</td>
+          </tr>
+          <tr>
+            <td>Responder</td>
+            <td>${report.responder ? report.responder.email : 'N/A'}</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>${report.status}</td>
+          </tr>
+          <tr>
+            <td>Date Created</td>
+            <td>${this.$moment(report.createdAt).format(
+              'MMM. DD, YYYY | h:mm A '
+            )}</td>
+          </tr>
+          <tr>
+            <td>Last Updated</td>
+            <td>${this.$moment(report.updatedAt).format(
+              'MMM. DD, YYYY | h:mm A '
+            )}</td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td>${report.type.category.name}</td>
+          </tr>
+          <tr>
+            <td>Type</td>
+            <td>${report.type.name}</td>
+          </tr>
+        </tbody>
+      </table>`
     }
   }
 }
