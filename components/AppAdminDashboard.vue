@@ -27,6 +27,12 @@
           :total="dashboardDetails.cancelledReportsCount ? dashboardDetails.cancelledReportsCount : 0"
         />
       </div>
+      <div class="col-md-3">
+        <EmergencyReportCards
+          :loading="fetchingDashboardDetails"
+          :total="dashboardDetails.emergencyReportsCount ? dashboardDetails.emergencyReportsCount : 0"
+        />
+      </div>
     </div>
     <div class="row mt-5">
       <div class="col-md-12">
@@ -69,6 +75,7 @@
                 :min-opacity="0.75"
                 :blur="15"
               ></LeafletHeatmap>
+              <!-- :gradient="{'0.2': 'yellow', '0.4': 'orange', '0.6': 'red', '0.8', '1': 'maroon'}" -->
             </l-map>
           </no-ssr>
         </div>
@@ -94,6 +101,7 @@ import TotalReportsCard from '~/components/DashboardCards/TotalReportsCard'
 import ResolvedReportsCard from '~/components/DashboardCards/ResolvedReportsCard'
 import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReportsCard'
 import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
+import EmergencyReportCards from '~/components/DashboardCards/EmergencyReportCards'
 import ReportsPieChart from '~/components/DashboardCharts/ReportsPieChart'
 import ReportsBarChart from '~/components/DashboardCharts/ReportsBarChart'
 
@@ -104,6 +112,7 @@ export default {
     ResolvedReportsCard,
     UnresolvedReportsCard,
     CancelledReportsCard,
+    EmergencyReportCards,
     ReportsPieChart,
     ReportsBarChart
   },
@@ -130,7 +139,14 @@ export default {
         labels: [],
         datasets: []
       },
-      fetchingDashboardDetails: false
+      fetchingDashboardDetails: false,
+      heatmapColors: {
+        0.2: 'yellow',
+        0.4: 'orange',
+        0.6: 'red',
+        0.8: 'maroon',
+        1: 'black'
+      }
     }
   },
   computed: {
@@ -247,6 +263,9 @@ export default {
         })
         this.dashboardDetails.reportsCount++
         this.dashboardDetails.unresolvedReportsCount++
+        if (report.type.category.name === 'Emergency Management') {
+          this.dashboardDetails.emergencyReportsCount++
+        }
       })
     },
     searchReports(type, resolvedOrUnresolved) {

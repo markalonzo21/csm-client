@@ -2,7 +2,7 @@
   "name": "csm",
   "alias": "csm.now.sh",
   "github": {
-    "enabled": false
+    "enabled": true
   },
   "env": {
     "API_URL": "https://ireport-api.now.sh"

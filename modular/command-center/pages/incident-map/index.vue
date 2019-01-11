@@ -1,36 +1,36 @@
 <template>
-  <section class="w-full flex flex-col">
-    <div class="clearfix">
-      <h3 class="float-left">Reports</h3>
-      <a-button type="primary" class="float-right invisible my-6">Hidden</a-button>
-    </div>
-    <hr>
-    <a-table
-      :loading="loadingReports || loadingFilter"
-      bordered
-      :pagination="false"
-      :dataSource="reports"
-      :columns="columns"
+  <section class="w-full">
+    <h3 class="mt-0">Incident Map</h3>
+    <l-map
+      style="height: 69vh;"
+      v-if="center.length > 0"
+      :center="center"
+      :zoom="zoom"
+      :minZoom="minZoom"
+      :maxZoom="maxZoom"
+      :maxBounds="maxBounds"
+      :maxBoundsViscosity="maxBoundsViscosity"
+      ref="map"
     >
-      <template
-        slot="createdAt"
-        slot-scope="text, report"
-      >{{ report.createdAt ? $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
-      <template slot="operation" slot-scope="text, report">
-        <a-button type="primary">
-          <nuxt-link :to="`/command-center/reports/${report._id}`">Show</nuxt-link>
-        </a-button>
-      </template>
-    </a-table>
-    <br>
-    <a-button
-      type="primary"
-      class="m-auto"
-      v-if="isLoadMoreVisible"
-      :loading="loadingReports"
-      @click.prevent="loadMoreReports"
-    >Load More</a-button>
-    <hr>
+      <div
+        class="absolute w-full h-full flex justify-center items-center"
+        style="z-index: 999999999;"
+        v-if="loadingReports"
+      >
+        <a-icon type="loading" style="font-size: 128px;" spin/>
+      </div>
+      <l-geojson v-if="area" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
+      <l-marker-cluster>
+        <l-marker
+          v-for="(report, index) in reports"
+          :lat-lng="[report.location.coordinates[1], report.location.coordinates[0]]"
+          :key="`incident-${index}`"
+        >
+          <l-popup :content="showReportContent(report)"></l-popup>
+        </l-marker>
+      </l-marker-cluster>
+      <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+    </l-map>
     <a-form @submit.prevent="filterReports">
       <h4>Filter</h4>
       <a-row :gutter="24">
@@ -142,54 +142,16 @@ export default {
     return Promise.all([getCategories, getReports, getAreas]).then(
       ([categories, reports, areas]) => {
         return {
-          reports: reports.data,
-          isLoadMoreVisible: !(reports.data.length < 20),
+          center: [14.56679, 121.02059],
+          zoom: 5,
+          minZoom: 5,
+          maxZoom: 18,
+          maxBounds: null,
+          maxBoundsViscosity: 1.0,
+          area: null,
           loadingReports: false,
-          loadingFilter: false,
-          columns: [
-            {
-              title: 'Report ID',
-              dataIndex: '_id'
-            },
-            {
-              title: 'Category',
-              dataIndex: 'type.category.name'
-            },
-            {
-              title: 'Type',
-              dataIndex: 'type.name'
-            },
-            {
-              title: 'Status',
-              dataIndex: 'status'
-            },
-            {
-              title: 'Date Reported',
-              dataIndex: 'createdAt',
-              scopedSlots: { customRender: 'createdAt' }
-            },
-            {
-              title: 'Reporter',
-              dataIndex: 'reporter.email'
-            },
-            {
-              title: 'Resolver',
-              dataIndex: 'resolver.email'
-            },
-            {
-              title: 'Responder',
-              dataIndex: 'responder.email'
-            },
-            {
-              title: 'Remarks',
-              dataIndex: 'remarks'
-            },
-            {
-              title: 'Operation',
-              dataIndex: 'operation',
-              scopedSlots: { customRender: 'operation' }
-            }
-          ],
+          reports: [],
+          // Filter Form
           form: {
             id: '',
             category: '',
@@ -199,10 +161,10 @@ export default {
             resolver: '',
             status: '',
             type: '',
+            area: '',
             startDate: null,
             endDate: null,
-            area: '',
-            skip: 0
+            limit: 9999999
           },
           selectList: {
             areas: areas.data,
@@ -215,20 +177,24 @@ export default {
     )
   },
   mounted() {
-    this.initSocketListeners()
-  },
-  beforeDestroy() {
-    this.$socket.off('new-report')
+    this.getReports()
   },
   methods: {
-    initSocketListeners() {
-      this.$socket.on('new-report', report => {
-        this.reports.unshift(report)
-      })
+    getReports() {
+      this.loadingReports = true
+      this.$axios
+        .$get('/admin/reports?limit=999999')
+        .then(response => {
+          this.reports = response.data
+          this.loadingReports = false
+        })
+        .catch(err => {
+          console.log(err.response.data)
+          this.loadingReports = false
+        })
     },
     filterReports() {
-      this.loadingFilter = true
-      this.isLoadMoreVisible = true
+      this.loadingReports = true
 
       this.form.start = this.form.startDate
         ? this.$moment(this.form.startDate).format('YYYY-MM-DD')
@@ -237,29 +203,27 @@ export default {
         ? this.$moment(this.form.endDate).format('YYYY-MM-DD')
         : null
 
-      this.form.skip = this.reports.length
       this.$axios
         .$get('/admin/reports', { params: this.form })
         .then(response => {
           this.reports = response.data
-          this.isLoadMoreVisible = !(response.data.length < 20)
-          this.loadingFilter = false
+          this.loadingReports = false
+
+          if (this.form.area.length > 0) {
+            const geoJSON = L.geoJSON(
+              this.selectList.areas.find(
+                area => area._id.toString() === this.form.area.toString()
+              ).location
+            )
+
+            this.geojson = geoJSON.toGeoJSON()
+            this.maxBounds = geoJSON.getBounds()
+            this.$nextTick(() => {
+              this.$refs.map.mapObject.fitBounds(this.maxBounds)
+            })
+          }
         })
         .catch(err => {
-          this.loadingFilter = false
-        })
-    },
-    loadMoreReports() {
-      this.loadingReports = true
-
-      this.form.skip = this.reports.length
-      this.$axios
-        .$get(`/admin/reports`, { params: this.form })
-        .then(response => {
-          response.data.forEach(report => {
-            this.reports.push(report)
-          })
-          this.isLoadMoreVisible = !(response.data.length < 20)
           this.loadingReports = false
         })
     },
@@ -281,24 +245,58 @@ export default {
     },
     selectStatusChange(value) {
       this.form.status = value
+    },
+    showReportContent(report) {
+      return `      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <td>ID</td>
+            <td>${report._id}</td>
+          </tr>
+          <tr>
+            <td>Reporter</td>
+            <td>${report.reporter.email}</td>
+          </tr>
+          <tr>
+            <td>Resolver</td>
+            <td>${report.resolver ? report.resolver.email : 'N/A'}</td>
+          </tr>
+          <tr>
+            <td>Responder</td>
+            <td>${report.responder ? report.responder.email : 'N/A'}</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>${report.status}</td>
+          </tr>
+          <tr>
+            <td>Date Created</td>
+            <td>${this.$moment(report.createdAt).format(
+              'MMM. DD, YYYY | h:mm A '
+            )}</td>
+          </tr>
+          <tr>
+            <td>Last Updated</td>
+            <td>${this.$moment(report.updatedAt).format(
+              'MMM. DD, YYYY | h:mm A '
+            )}</td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td>${report.type.category.name}</td>
+          </tr>
+          <tr>
+            <td>Type</td>
+            <td>${report.type.name}</td>
+          </tr>
+        </tbody>
+      </table>`
     }
   }
 }
 </script>
 
 <style scoped>
-table {
-  position: relative;
-  border-collapse: separate;
-  border-spacing: 15px 15px;
-}
-
-.rowlink::before {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 1.5em; /* don't forget to set the height! */
-}
+@import '~leaflet.markercluster/dist/MarkerCluster.css';
+@import '~leaflet.markercluster/dist/MarkerCluster.Default.css';
 </style>

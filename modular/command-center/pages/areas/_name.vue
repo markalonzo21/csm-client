@@ -26,6 +26,12 @@
           :total="dashboardDetails.cancelledReportsCount ? dashboardDetails.cancelledReportsCount : 0"
         />
       </div>
+      <div class="col-md-3">
+        <EmergencyReportCards
+          :loading="fetchingDashboardDetails"
+          :total="dashboardDetails.emergencyReportsCount ? dashboardDetails.emergencyReportsCount : 0"
+        />
+      </div>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -54,28 +60,26 @@
         <h4>Reports Heat Map</h4>
         <hr>
         <div style="height: 380px; width: 100%;">
-          <no-ssr>
-            <l-map
-              v-if="center.length > 0"
-              :center="center"
-              :zoom="zoom"
-              :minZoom="minZoom"
-              :maxZoom="maxZoom"
-              :maxBounds="maxBounds"
-              :maxBoundsViscosity="maxBoundsViscosity"
-              ref="map"
-            >
-              <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
-              <LeafletHeatmap
-                v-if="reports.length > 0 && !loadingHeats"
-                :lat-lng="heats"
-                :radius="15"
-                :min-opacity="0.75"
-                :blur="15"
-              ></LeafletHeatmap>
-              <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
-            </l-map>
-          </no-ssr>
+          <l-map
+            v-if="center.length > 0"
+            :center="center"
+            :zoom="zoom"
+            :minZoom="minZoom"
+            :maxZoom="maxZoom"
+            :maxBounds="maxBounds"
+            :maxBoundsViscosity="maxBoundsViscosity"
+            ref="map"
+          >
+            <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
+            <LeafletHeatmap
+              v-if="reports.length > 0 && !loadingHeats"
+              :lat-lng="heats"
+              :radius="15"
+              :min-opacity="0.75"
+              :blur="15"
+            ></LeafletHeatmap>
+            <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+          </l-map>
         </div>
         <div class="my-4">
           <select v-model="type" required class="p-2">
@@ -142,6 +146,7 @@ import TotalReportsCard from '~/components/DashboardCards/TotalReportsCard'
 import ResolvedReportsCard from '~/components/DashboardCards/ResolvedReportsCard'
 import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReportsCard'
 import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
+import EmergencyReportCards from '~/components/DashboardCards/EmergencyReportCards'
 import ReportsPieChart from '~/components/DashboardCharts/ReportsPieChart'
 import ReportsBarChart from '~/components/DashboardCharts/ReportsBarChart'
 export default {
@@ -151,6 +156,7 @@ export default {
     ResolvedReportsCard,
     UnresolvedReportsCard,
     CancelledReportsCard,
+    EmergencyReportCards,
     ReportsPieChart,
     ReportsBarChart
   },
@@ -355,6 +361,9 @@ export default {
           })
           this.dashboardDetails.reportsCount++
           this.dashboardDetails.unresolvedReportsCount++
+          if (report.type.category.name === 'Emergency Management') {
+            this.dashboardDetails.emergencyReportsCount++
+          }
         }
       })
     },
