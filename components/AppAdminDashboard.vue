@@ -69,6 +69,7 @@
                 :min-opacity="0.75"
                 :blur="15"
               ></LeafletHeatmap>
+              <!-- :gradient="{'0.2': 'yellow', '0.4': 'orange', '0.6': 'red', '0.8', '1': 'maroon'}" -->
             </l-map>
           </no-ssr>
         </div>
