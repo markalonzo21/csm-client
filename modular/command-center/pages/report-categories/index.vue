@@ -9,6 +9,9 @@
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Name" v-model="form.name" required>
         </div>
+        <div class="form-group">
+          <input type="color" class="form-control" placeholder="Name" v-model="form.color" required>
+        </div>
         <!-- <div class="form-group">
           <textarea
             cols="30" rows="10"
@@ -101,6 +104,7 @@ export default {
       ],
       form: {
         name: '',
+        color: '',
         description: ''
       }
     }
@@ -111,8 +115,8 @@ export default {
   },
   methods: {
     generateFakeData() {
-      this.form.name = `${this.$chance.word().toUpperCase()} Management`
-      this.form.description = this.$chance.paragraph()
+      this.form.name = ``
+      this.form.color = this.$chance.color({ format: 'hex' })
     },
     getReportCategories() {
       this.loadingGetReportCategories = true

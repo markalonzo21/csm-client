@@ -5,6 +5,15 @@
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Name" v-model="form.name" required>
         </div>
+        <div class="form-group">
+          <input
+            type="color"
+            class="form-control"
+            placeholder="Color"
+            v-model="form.color"
+            required
+          >
+        </div>
         <!-- <div class="form-group">
           <textarea
             type="text"
@@ -144,6 +153,7 @@ export default {
       ],
       form: {
         name: '',
+        color: '',
         description: '',
         category: '',
         milestones: []
@@ -167,8 +177,9 @@ export default {
       return this.responseTypes.find(type => type._id === id).name
     },
     generateFakeData() {
-      this.form.name = this.$chance.word()
-      this.form.description = this.$chance.paragraph()
+      this.form.name = ''
+      this.form.color = this.$chance.color({ format: 'hex' })
+      this.form.description = ''
     },
     getReportTypes() {
       this.$axios.$get('/report-types').then(response => {
