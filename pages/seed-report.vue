@@ -77,7 +77,7 @@ export default {
     report() {
       this.loadingSubmitReport = true
 
-      for (let index = 0; index < 100; index++) {
+      for (let index = 0; index < 10; index++) {
         // Random Type
         const category = this.categories[
           Math.floor(Math.random() * this.categories.length)
