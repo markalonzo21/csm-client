@@ -70,7 +70,7 @@
             :maxBoundsViscosity="maxBoundsViscosity"
             ref="map"
           >
-            <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
+            <!-- <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson> -->
             <LeafletHeatmap
               v-if="reports.length > 0 && !loadingHeats"
               :lat-lng="heats"

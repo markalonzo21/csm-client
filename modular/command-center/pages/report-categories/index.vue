@@ -34,7 +34,8 @@
     <hr>
     <a-table
       :loading="loadingGetReportCategories"
-      bordered :scroll="{ x: 900 }"
+      bordered
+      :scroll="{ x: 900 }"
       :dataSource="reportCategories"
       :columns="columns"
     >
@@ -86,8 +87,11 @@ export default {
         {
           title: 'Name',
           dataIndex: 'name',
-          width: '80%',
           scopedSlots: { customRender: 'name' }
+        },
+        {
+          title: 'Color',
+          dataIndex: 'color'
         },
         {
           title: 'Actions',

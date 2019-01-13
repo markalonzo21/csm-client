@@ -19,7 +19,7 @@
       >
         <a-icon type="loading" style="font-size: 128px;" spin/>
       </div>
-      <l-geojson v-if="area" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
+      <!-- <l-geojson v-if="area" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson> -->
       <l-marker-cluster>
         <l-marker
           v-for="(report, index) in reports"

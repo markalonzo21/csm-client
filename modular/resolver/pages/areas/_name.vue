@@ -19,7 +19,7 @@
                 :maxBoundsViscosity="maxBoundsViscosity"
                 ref="map"
               >
-                <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson>
+                <!-- <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson> -->
                 <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
               </l-map>
             </no-ssr>

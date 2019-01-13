@@ -22,7 +22,7 @@
             ></option>
           </select>
         </div>
-<!--         <div class="form-group text-center">
+        <!--         <div class="form-group text-center">
           <label for>Set Milestones - Muxt Be In Order</label>
           <div class="row">
             <h5>Selection</h5>
@@ -43,7 +43,7 @@
               >{{ index + 1 }}. {{ getMilestoneName(milestoneId) }}</div>
             </draggable>
           </div>
-        </div> -->
+        </div>-->
         <button
           class="btn btn-primary float-right"
           :disabled="loadingCreateReportType"
@@ -88,7 +88,13 @@
         </tr>
       </tbody>
     </table>-->
-    <a-table :loading="loadingGetReportTypes" bordered :scroll="{ x: 900 }" :dataSource="types" :columns="columns">
+    <a-table
+      :loading="loadingGetReportTypes"
+      bordered
+      :scroll="{ x: 900 }"
+      :dataSource="types"
+      :columns="columns"
+    >
       <template slot="actions" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
@@ -99,7 +105,7 @@
 
 
 <script>
-import draggable from "vuedraggable";
+import draggable from 'vuedraggable'
 
 export default {
   layout: 'command-center/default',
@@ -107,8 +113,8 @@ export default {
     draggable
   },
   asyncData({ store, redirect }) {
-    if (!store.getters["auth/hasPermission"]("view report types")) {
-      return redirect("/");
+    if (!store.getters['auth/hasPermission']('view report types')) {
+      return redirect('/')
     }
   },
   data() {
@@ -122,87 +128,90 @@ export default {
       selectedResponseTypes: [],
       columns: [
         {
-          title: "Name",
-          dataIndex: "name",
-          width: "80%",
-          scopedSlots: { customRender: "name" }
+          title: 'Name',
+          dataIndex: 'name',
+          scopedSlots: { customRender: 'name' }
         },
         {
-          title: "Actions",
-          dataIndex: "actions",
-          scopedSlots: { customRender: "actions" }
+          title: 'Color',
+          dataIndex: 'color'
+        },
+        {
+          title: 'Actions',
+          dataIndex: 'actions',
+          scopedSlots: { customRender: 'actions' }
         }
       ],
       form: {
-        name: "",
-        description: "",
-        category: "",
+        name: '',
+        description: '',
+        category: '',
         milestones: []
       }
-    };
+    }
   },
   mounted() {
-    this.getReportTypes();
-    this.getReportCategories();
-    this.getResponseTypes();
-    this.generateFakeData();
+    this.getReportTypes()
+    this.getReportCategories()
+    this.getResponseTypes()
+    this.generateFakeData()
   },
   watch: {
     selectedResponseTypes(value) {
-      console.log(value);
-      this.form.milestones.push(value);
+      console.log(value)
+      this.form.milestones.push(value)
     }
   },
   methods: {
     getMilestoneName(id) {
-      return this.responseTypes.find(type => type._id === id).name;
+      return this.responseTypes.find(type => type._id === id).name
     },
     generateFakeData() {
-      this.form.name = this.$chance.word();
-      this.form.description = this.$chance.paragraph();
+      this.form.name = this.$chance.word()
+      this.form.description = this.$chance.paragraph()
     },
     getReportTypes() {
-      this.$axios.$get("/report-types").then(response => {
-        this.types = response.data;
-      });
+      this.$axios.$get('/report-types').then(response => {
+        this.types = response.data
+      })
     },
     getReportCategories() {
-      this.$axios.$get("/report-categories").then(response => {
-        this.reportCategories = response.data;
-        this.form.category = response.data[0]._id;
-      });
+      this.$axios.$get('/report-categories').then(response => {
+        this.reportCategories = response.data
+        this.form.category = response.data[0]._id
+      })
     },
     getResponseTypes() {
-      this.loadingGetReportTypes = true;
-      this.$axios.$get("/response-types").then(response => {
-        this.responseTypes = response.data;
-        this.loadingGetReportTypes = false;
-      });
+      this.loadingGetReportTypes = true
+      this.$axios.$get('/response-types').then(response => {
+        this.responseTypes = response.data
+        this.loadingGetReportTypes = false
+      })
     },
     milestoneSelected(event) {
       if (event.target.checked) {
-        this.form.milestones.push(event.target.value);
+        this.form.milestones.push(event.target.value)
       } else {
         const milestoneIndex = this.form.milestones.findIndex(milestoneId => {
-          return milestoneId === event.target.value;
-        });
+          return milestoneId === event.target.value
+        })
 
         if (milestoneIndex !== -1) {
-          this.form.milestones.splice(milestoneIndex, 1);
+          this.form.milestones.splice(milestoneIndex, 1)
         }
       }
     },
     createReportType() {
-      this.loadingCreateReportType = true;
-      this.$axios.$post("/report-types", this.form).then(response => {
-        this.generateFakeData();
-        this.types.push(response.data);
-        this.loadingCreateReportType = false;
-        this.isCreateReportTypeModalVisible = false;
-      });
+      this.loadingCreateReportType = true
+      this.$axios.$post('/report-types', this.form).then(response => {
+        this.generateFakeData()
+        this.types.push(response.data)
+        this.loadingCreateReportType = false
+        this.isCreateReportTypeModalVisible = false
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>
