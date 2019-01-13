@@ -25,6 +25,7 @@
           v-for="(report, index) in reports"
           :lat-lng="[report.location.coordinates[1], report.location.coordinates[0]]"
           :key="`incident-${index}`"
+          :icon="$utils.getIcon(report.type.category.color)"
         >
           <l-popup :content="showReportContent(report)"></l-popup>
         </l-marker>
@@ -246,6 +247,7 @@ export default {
     selectStatusChange(value) {
       this.form.status = value
     },
+
     showReportContent(report) {
       return `      <table class="table table-striped">
         <tbody>

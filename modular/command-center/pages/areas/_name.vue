@@ -361,7 +361,7 @@ export default {
           })
           this.dashboardDetails.reportsCount++
           this.dashboardDetails.unresolvedReportsCount++
-          if (report.type.category.name === 'Emergency Management') {
+          if (report.type.category.name === 'Emergency') {
             this.dashboardDetails.emergencyReportsCount++
           }
         }

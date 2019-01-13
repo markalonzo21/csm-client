@@ -59,7 +59,7 @@
       >Create Report Type</a-button>
     </div>
     <hr>
-    <!-- <table class="table-bordered w-full">
+    <!-- <table class="table-bordered :scroll="{ x: 900 }" w-full">
       <thead>
         <tr>
           <td>Name</td>
@@ -88,8 +88,8 @@
         </tr>
       </tbody>
     </table>-->
-    <a-table :loading="loadingGetReportTypes" bordered :dataSource="types" :columns="columns">
-      <template slot="operation" slot-scope="text, record">
+    <a-table :loading="loadingGetReportTypes" bordered :scroll="{ x: 900 }" :dataSource="types" :columns="columns">
+      <template slot="actions" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
       </template>
@@ -128,9 +128,9 @@ export default {
           scopedSlots: { customRender: "name" }
         },
         {
-          title: "Operation",
-          dataIndex: "operation",
-          scopedSlots: { customRender: "operation" }
+          title: "Actions",
+          dataIndex: "actions",
+          scopedSlots: { customRender: "actions" }
         }
       ],
       form: {

@@ -8,6 +8,7 @@
     <a-table
       :loading="loadingReports || loadingFilter"
       bordered
+      :scroll="{ x: 900 }"
       :pagination="false"
       :dataSource="reports"
       :columns="columns"
@@ -16,7 +17,7 @@
         slot="createdAt"
         slot-scope="text, report"
       >{{ report.createdAt ? $moment(report.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
-      <template slot="operation" slot-scope="text, report">
+      <template slot="actions" slot-scope="text, report">
         <a-button type="primary">
           <nuxt-link :to="`/command-center/reports/${report._id}`">Show</nuxt-link>
         </a-button>
@@ -169,6 +170,10 @@ export default {
               scopedSlots: { customRender: 'createdAt' }
             },
             {
+              title: 'Area',
+              dataIndex: 'area.name'
+            },
+            {
               title: 'Reporter',
               dataIndex: 'reporter.email'
             },
@@ -185,9 +190,9 @@ export default {
               dataIndex: 'remarks'
             },
             {
-              title: 'Operation',
-              dataIndex: 'operation',
-              scopedSlots: { customRender: 'operation' }
+              title: 'Actions',
+              dataIndex: 'actions',
+              scopedSlots: { customRender: 'actions' }
             }
           ],
           form: {

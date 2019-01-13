@@ -72,10 +72,7 @@
         <div class="form-group text-center">
           <label for>Actionable Report Type</label>
           <div v-for="category in reportCategories">
-            <h5
-              class="font-bold"
-              v-if="category.types.length > 0"
-            >{{ category.name }}</h5>
+            <h5 class="font-bold" v-if="category.types.length > 0">{{ category.name }}</h5>
             <div class="checkbox" v-for="type in category.types">
               <label>
                 <input type="checkbox" v-model="form.types" :value="type._id">
@@ -99,7 +96,7 @@
       >Create Responder</a-button>
     </div>
     <hr>
-    <a-table bordered :dataSource="responders" :columns="columns">
+    <a-table bordered :scroll="{ x: 900 }" :dataSource="responders" :columns="columns">
       <template slot="canRespondTo" slot-scope="text, record">
         <ul class="list-reset">
           <li
@@ -112,12 +109,12 @@
         slot="createdAt"
         slot-scope="text, responder"
       >{{ responder.createdAt ? $moment(responder.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
-      <template slot="operation" slot-scope="text, record">
+      <template slot="actions" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
       </template>
     </a-table>
-    <!-- <table class="table-bordered w-full">
+    <!-- <table class="table-bordered :scroll="{ x: 900 }" w-full">
       <thead>
         <tr>
           <td>First Name</td>
@@ -166,93 +163,93 @@ export default {
       loadingCreateUser: false,
       columns: [
         {
-          title: "First Name",
-          dataIndex: "firstName"
+          title: 'First Name',
+          dataIndex: 'firstName'
         },
         // {
         //   title: 'Middle Name',
         //   dataIndex: 'middleName'
         // },
         {
-          title: "Last Name",
-          dataIndex: "lastName"
+          title: 'Last Name',
+          dataIndex: 'lastName'
         },
         {
-          title: "Email",
-          dataIndex: "email"
+          title: 'Email',
+          dataIndex: 'email'
         },
         {
-          title: "Mobile",
-          dataIndex: "mobile"
+          title: 'Mobile',
+          dataIndex: 'mobile'
         },
         {
-          title: "Can Respond To",
-          dataIndex: "canRespondTo",
-          scopedSlots: { customRender: "canRespondTo" }
+          title: 'Can Respond To',
+          dataIndex: 'canRespondTo',
+          scopedSlots: { customRender: 'canRespondTo' }
         },
         {
-          title: "Created At",
-          dataIndex: "createdAt",
-          scopedSlots: { customRender: "createdAt" }
+          title: 'Created At',
+          dataIndex: 'createdAt',
+          scopedSlots: { customRender: 'createdAt' }
         },
         {
-          title: "Operation",
-          dataIndex: "operation",
-          scopedSlots: { customRender: "operation" }
+          title: 'Actions',
+          dataIndex: 'actions',
+          scopedSlots: { customRender: 'actions' }
         }
       ],
       form: {
-        firstName: "",
-        middleName: "",
-        lastName: "",
-        email: "",
-        mobile: "",
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        email: '',
+        mobile: '',
         types: []
       }
-    };
+    }
   },
   mounted() {
-    this.getReportTypes();
-    this.getResponders();
-    this.generateFakeData();
+    this.getReportTypes()
+    this.getResponders()
+    this.generateFakeData()
   },
   methods: {
     generateFakeData() {
-      this.form.firstName = this.$chance.first();
-      this.form.lastName = this.$chance.last();
-      this.form.email = this.$chance.email();
+      this.form.firstName = this.$chance.first()
+      this.form.lastName = this.$chance.last()
+      this.form.email = this.$chance.email()
       this.form.mobile = `92${new Date()
         .getTime()
         .toString()
-        .substr(5)}`;
-      this.form.password = "123123123";
-      this.form.password_confirmation = "123123123";
-      this.form.types = [];
+        .substr(5)}`
+      this.form.password = '123123123'
+      this.form.password_confirmation = '123123123'
+      this.form.types = []
     },
     getReportTypes() {
-      this.$axios.$get("/report-categories").then(response => {
-        this.reportCategories = response.data;
-      });
+      this.$axios.$get('/report-categories').then(response => {
+        this.reportCategories = response.data
+      })
     },
     getResponders() {
-      this.loadingGetResponders = true;
-      this.$axios.$get("/admin/responders").then(response => {
-        this.responders = response.data;
-        this.loadingGetResponders = false;
-      });
+      this.loadingGetResponders = true
+      this.$axios.$get('/admin/responders').then(response => {
+        this.responders = response.data
+        this.loadingGetResponders = false
+      })
     },
     createResponder() {
-      this.loadingCreateUser = true;
-      this.form.mobile = `0${this.form.mobile}`;
-      this.$axios.$post("/admin/responders", this.form).then(response => {
-        this.generateFakeData();
-        this.responders.push(response.data);
-        this.loadingCreateUser = false;
-        this.isCreateResponderModalVisible = false;
-      });
+      this.loadingCreateUser = true
+      this.form.mobile = `0${this.form.mobile}`
+      this.$axios.$post('/admin/responders', this.form).then(response => {
+        this.generateFakeData()
+        this.responders.push(response.data)
+        this.loadingCreateUser = false
+        this.isCreateResponderModalVisible = false
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>

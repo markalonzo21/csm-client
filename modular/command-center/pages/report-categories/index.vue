@@ -9,14 +9,14 @@
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Name" v-model="form.name" required>
         </div>
-         <!-- <div class="form-group">
+        <!-- <div class="form-group">
           <textarea
             cols="30" rows="10"
             class="form-control"
             placeholder="Description"
             v-model="form.description"
           ></textarea>
-        </div> -->
+        </div>-->
         <button
           class="btn btn-primary float-right"
           :disabled="loadingCreateReportCategory"
@@ -32,13 +32,18 @@
       >Create Report Category</a-button>
     </div>
     <hr>
-    <a-table :loading="loadingGetReportCategories" bordered :dataSource="reportCategories" :columns="columns">
-      <template slot="operation" slot-scope="text, record">
+    <a-table
+      :loading="loadingGetReportCategories"
+      bordered :scroll="{ x: 900 }"
+      :dataSource="reportCategories"
+      :columns="columns"
+    >
+      <template slot="actions" slot-scope="text, record">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
       </template>
     </a-table>
-    <!-- <table class="table-bordered w-full">
+    <!-- <table class="table-bordered :scroll="{ x: 900 }" w-full">
       <thead>
         <tr>
           <td>Name</td>
@@ -67,8 +72,8 @@
 export default {
   layout: 'command-center/default',
   asyncData({ store, redirect }) {
-    if (!store.getters["auth/hasPermission"]("view report categories")) {
-      return redirect("/");
+    if (!store.getters['auth/hasPermission']('view report categories')) {
+      return redirect('/')
     }
   },
   data() {
@@ -79,50 +84,50 @@ export default {
       reportCategories: [],
       columns: [
         {
-          title: "Name",
-          dataIndex: "name",
-          width: "80%",
-          scopedSlots: { customRender: "name" }
+          title: 'Name',
+          dataIndex: 'name',
+          width: '80%',
+          scopedSlots: { customRender: 'name' }
         },
         {
-          title: "Operation",
-          dataIndex: "operation",
-          scopedSlots: { customRender: "operation" }
+          title: 'Actions',
+          dataIndex: 'actions',
+          scopedSlots: { customRender: 'actions' }
         }
       ],
       form: {
-        name: "",
-        description: ""
+        name: '',
+        description: ''
       }
-    };
+    }
   },
   mounted() {
-    this.getReportCategories();
-    this.generateFakeData();
+    this.getReportCategories()
+    this.generateFakeData()
   },
   methods: {
     generateFakeData() {
-      this.form.name = `${this.$chance.word().toUpperCase()} Management`;
-      this.form.description = this.$chance.paragraph();
+      this.form.name = `${this.$chance.word().toUpperCase()} Management`
+      this.form.description = this.$chance.paragraph()
     },
     getReportCategories() {
-      this.loadingGetReportCategories = true;
-      this.$axios.$get("/report-categories").then(response => {
-        this.reportCategories = response.data;
-        this.loadingGetReportCategories = false;
-      });
+      this.loadingGetReportCategories = true
+      this.$axios.$get('/report-categories').then(response => {
+        this.reportCategories = response.data
+        this.loadingGetReportCategories = false
+      })
     },
     createReportCategory() {
-      this.loadingCreateReportCategory = true;
-      this.$axios.$post("/report-categories", this.form).then(response => {
-        this.generateFakeData();
-        this.reportCategories.push(response.data);
-        this.loadingCreateReportCategory = false;
-        this.isCreateReportCategoryModalVisible = false;
-      });
+      this.loadingCreateReportCategory = true
+      this.$axios.$post('/report-categories', this.form).then(response => {
+        this.generateFakeData()
+        this.reportCategories.push(response.data)
+        this.loadingCreateReportCategory = false
+        this.isCreateReportCategoryModalVisible = false
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>

@@ -70,12 +70,12 @@
     <hr>
 
     <!-- TABLE -->
-    <a-table :loading="loadingGetRoles" bordered :dataSource="roles" :columns="columns">
+    <a-table :loading="loadingGetRoles" bordered :scroll="{ x: 900 }" :dataSource="roles" :columns="columns">
       <template
         slot="createdAt"
         slot-scope="text, role"
       >{{ role.createdAt ? $moment(role.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
-      <template slot="operation" slot-scope="text, role, index">
+      <template slot="actions" slot-scope="text, role, index">
         <div v-if="!role.canDelete">
           Unactionable
         </div>
@@ -112,9 +112,9 @@ export default {
         //   dataIndex: "description"
         // },
         {
-          title: "Operation",
-          dataIndex: "operation",
-          scopedSlots: { customRender: "operation" }
+          title: "Actions",
+          dataIndex: "actions",
+          scopedSlots: { customRender: "actions" }
         }
       ],
       isEditModalVisible: false,

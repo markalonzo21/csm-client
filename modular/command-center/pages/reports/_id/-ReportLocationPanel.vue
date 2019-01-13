@@ -15,7 +15,10 @@
           :maxBoundsViscosity="map.maxBoundsViscosity"
           ref="map"
         >
-          <l-marker :lat-lng="[report.location.coordinates[1], report.location.coordinates[0]]">
+          <l-marker
+            :lat-lng="[report.location.coordinates[1], report.location.coordinates[0]]"
+            :icon="$utils.getIcon(report.type.category.color)"
+          >
             <l-popup :content="showReportContent(report)"></l-popup>
           </l-marker>
           <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>

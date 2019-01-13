@@ -15,10 +15,10 @@
 <script>
 export default {
   props: {
-    type: {
-      type: String,
-      required: true
-    },
+    // type: {
+    //   type: String,
+    //   required: true
+    // },
     total: {
       type: Number,
       required: true

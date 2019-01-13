@@ -11,8 +11,8 @@
       </nuxt-link>
     </div>
     <hr>
-    <a-table :loading="loadingGetAreas" bordered :dataSource="dataSource" :columns="columns">
-      <template slot="operation" slot-scope="text, record">
+    <a-table :loading="loadingGetAreas" bordered :scroll="{ x: 900 }" :dataSource="dataSource" :columns="columns">
+      <template slot="actions" slot-scope="text, record">
         <a-button type="primary">
           <nuxt-link :to="`/command-center/areas/${record.name}`">Show</nuxt-link>
         </a-button>
@@ -50,9 +50,9 @@ export default {
         //   scopedSlots: { customRender: "description" }
         // },
         {
-          title: 'Operation',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
+          title: 'Actions',
+          dataIndex: 'actions',
+          scopedSlots: { customRender: 'actions' }
         }
       ],
       dataSource: []

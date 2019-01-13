@@ -83,16 +83,16 @@
       >Create Resolvers</a-button>
     </div>
     <hr>
-    <a-table bordered :dataSource="resolvers" :columns="columns">
+    <a-table bordered :scroll="{ x: 900 }" :dataSource="resolvers" :columns="columns">
       <template slot="createdAt" slot-scope="text, resolver">
         {{  resolver.createdAt ? $moment(resolver.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}
       </template>
-      <template slot="operation" slot-scope="text, resolver">
+      <template slot="actions" slot-scope="text, resolver">
         <a-button type="primary" disabled>Edit</a-button>
         <a-button type="danger" disabled>Delete</a-button>
       </template>
     </a-table>
-    <!-- <table class="table-bordered w-full">
+    <!-- <table class="table-bordered :scroll="{ x: 900 }" w-full">
       <thead>
         <tr>
           <td>First Name</td>
@@ -160,9 +160,9 @@ export default {
           scopedSlots: { customRender: 'createdAt' }
         },
         {
-          title: 'Operation',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
+          title: 'Actions',
+          dataIndex: 'actions',
+          scopedSlots: { customRender: 'actions' }
         }
       ],
       form: {

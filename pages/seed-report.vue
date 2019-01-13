@@ -33,7 +33,9 @@ export default {
         return {
           areas: areas.data,
           loadingSubmitReport: false,
-          categories: categories.data,
+          categories: categories.data.filter(
+            category => category.types.length > 0
+          ),
           category: 0,
           types: categories.data[0].types,
           form: {

@@ -203,7 +203,7 @@
     <hr>
 
     <!-- TABLE -->
-    <a-table :loading="loadingGetUsers" bordered :dataSource="users" :columns="columns">
+    <a-table :loading="loadingGetUsers" bordered :scroll="{ x: 900 }" :dataSource="users" :columns="columns">
       <template slot="canRespondTo" slot-scope="text, record">
         <ul class="list-reset">
           <li
@@ -216,7 +216,7 @@
         slot="createdAt"
         slot-scope="text, user"
       >{{ user.createdAt ? $moment(user.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
-      <template slot="operation" slot-scope="text, user, index">
+      <template slot="actions" slot-scope="text, user, index">
         <a-button type="primary" @click.prevent="showEditModal(user, index)">Edit</a-button>
         <a-popconfirm title="Are you sure delete this user?" @confirm="deleteUser(user)" okText="Yes" cancelText="No">
           <a-button type="danger">Delete</a-button>
@@ -278,9 +278,9 @@ export default {
           scopedSlots: { customRender: "createdAt" }
         },
         {
-          title: "Operation",
-          dataIndex: "operation",
-          scopedSlots: { customRender: "operation" }
+          title: "Actions",
+          dataIndex: "actions",
+          scopedSlots: { customRender: "actions" }
         }
       ],
       form: {

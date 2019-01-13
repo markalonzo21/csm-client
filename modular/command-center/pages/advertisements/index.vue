@@ -13,7 +13,7 @@
     <hr>
     <a-table
       :loading="loadingGetAdvertisements"
-      bordered
+      bordered :scroll="{ x: 900 }"
       :dataSource="dataSource"
       :columns="columns"
     >
@@ -29,7 +29,7 @@
         <img class="max-h-sm max-w-sm" :src="record.image">
       </template>
       <template
-        slot="operation"
+        slot="actions"
         slot-scope="text, record, index"
         v-if="$store.getters['auth/hasPermission']('delete advertisement') || $store.getters['auth/hasPermission']('update advertisement')"
       >
@@ -81,9 +81,9 @@ export default {
           scopedSlots: { customRender: 'image' }
         },
         {
-          title: 'Operation',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
+          title: 'Actions',
+          dataIndex: 'actions',
+          scopedSlots: { customRender: 'actions' }
         }
       ],
       dataSource: []
