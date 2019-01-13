@@ -33,7 +33,7 @@ export default {
     ReportMainContentPanel,
     ReportChatbox
   },
-  asyncData({ $axios, store, params, error }) {
+  asyncData({ $axios, redirect, store, params, error }) {
     if (!store.getters['auth/hasPermission']('view reports')) {
       return redirect('/')
     }
