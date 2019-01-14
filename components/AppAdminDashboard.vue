@@ -54,10 +54,9 @@
           />
         </div>
       </div>
-      <div class="col-md-12 mt-12">
+      <!-- <div class="col-md-12 mt-12">
         <h3 class="title__gray--small">Reports Heat Map</h3>
         <div id="map-wrap" style="height: 500px; width: 100%;">
-          <no-ssr>
             <l-map
               :center="center"
               :maxBounds="maxBounds"
@@ -75,9 +74,7 @@
                 :min-opacity="0.75"
                 :blur="15"
               ></LeafletHeatmap>
-              <!-- :gradient="{'0.2': 'yellow', '0.4': 'orange', '0.6': 'red', '0.8', '1': 'maroon'}" -->
             </l-map>
-          </no-ssr>
         </div>
         <div class="my-4">
           <select v-model="type" required class="p-2">
@@ -91,7 +88,7 @@
           </select>
           <span class="ml-2" v-if="loadingHeats">LOADING HEATS</span>
         </div>
-      </div>
+      </div>-->
     </div>
   </section>
 </template>
@@ -118,19 +115,8 @@ export default {
   },
   data() {
     return {
-      loadingHeats: true,
-      center: [14.56679, 121.02059],
-      zoom: 5,
-      minZoom: 5,
-      maxZoom: 18,
-      maxBounds: null,
-      maxBoundsViscosity: 1.0,
       // Details
-      types: [],
       dashboardDetails: [],
-      resolvedOrUnresolved: 'both',
-      type: null,
-      reports: [],
       reportsPerCategory: {
         labels: [],
         datasets: []
@@ -139,36 +125,11 @@ export default {
         labels: [],
         datasets: []
       },
-      fetchingDashboardDetails: false,
-      heatmapColors: {
-        0.2: 'yellow',
-        0.4: 'orange',
-        0.6: 'red',
-        0.8: 'maroon',
-        1: 'black'
-      }
-    }
-  },
-  computed: {
-    heats() {
-      if (this.reports.length > 0) {
-        return this.reports
-          .filter(report => {
-            return report.location.coordinates[0] !== null
-          })
-          .map(report => {
-            return [
-              report.location.coordinates[1],
-              report.location.coordinates[0]
-            ]
-          })
-      }
-      return []
+      fetchingDashboardDetails: false
     }
   },
   mounted() {
     this.fetchingDashboardDetails = true
-    const getReportTypes = this.$axios.$get('/report-types')
     const getDashboardDetails = this.$axios.$get('/admin/dashboard')
     const getreportsPerCategory = this.$axios.$get(
       '/admin/dashboard/reports-per-category'
@@ -178,58 +139,20 @@ export default {
     )
 
     Promise.all([
-      getReportTypes,
       getDashboardDetails,
       getreportsPerCategory,
       getReportsPerMonth
-    ]).then(
-      ([types, dashboardDetails, reportsPerCategory, reportsPerMonth]) => {
-        this.types = types.data
-        this.type = null
-        this.resolvedOrUnresolved = 'both'
-        this.dashboardDetails = dashboardDetails.data
-        this.reportsPerCategory = reportsPerCategory.data
-        this.reportsPerMonth = reportsPerMonth.data
-        this.fetchingDashboardDetails = false
-      }
-    )
-
-    this.$nextTick(() => {
-      const check = setInterval(() => {
-        if (this.$refs.map) {
-          this.maxBounds = new L.LatLngBounds(
-            new L.LatLng(4.800675384778373, 104.94140625000001),
-            new L.LatLng(20.96143961409684, 138.99902343750003)
-          )
-
-          this.searchReports(null, 'both')
-          clearInterval(check)
-        }
-      }, 100)
+    ]).then(([dashboardDetails, reportsPerCategory, reportsPerMonth]) => {
+      this.dashboardDetails = dashboardDetails.data
+      this.reportsPerCategory = reportsPerCategory.data
+      this.reportsPerMonth = reportsPerMonth.data
+      this.fetchingDashboardDetails = false
     })
 
     this.initSocketListeners()
   },
   beforeDestroy() {
     this.$socket.off('new-report')
-  },
-  watch: {
-    type(value) {
-      if (value === null) {
-        return
-      }
-
-      this.loadingHeats = true
-      this.searchReports(value, this.resolvedOrUnresolved)
-    },
-    resolvedOrUnresolved(value) {
-      if (value === null) {
-        return
-      }
-
-      this.loadingHeats = true
-      this.searchReports(this.type, value)
-    }
   },
   methods: {
     initSocketListeners() {
@@ -267,15 +190,6 @@ export default {
           this.dashboardDetails.emergencyReportsCount++
         }
       })
-    },
-    searchReports(type, resolvedOrUnresolved) {
-      this.loadingHeats = true
-      this.$axios
-        .$get(`/admin/reports/${type}/${resolvedOrUnresolved}`)
-        .then(response => {
-          this.reports = response.data
-          this.loadingHeats = false
-        })
     }
   }
 }

@@ -51,19 +51,32 @@ const getIcon = color => {
   })
 }
 
+const serialize = obj => {
+  return (
+    '?' +
+    Object.keys(obj)
+      .reduce(function(a, k) {
+        a.push(k + '=' + encodeURIComponent(obj[k]))
+        return a
+      }, [])
+      .join('&')
+  )
+}
 // Refactor this later to dynamically load helpers based on file name
 export default function(ctx, inject) {
   ctx.$utils = {
     hasPermission,
     hasSpecificArea,
     isImage,
-    getIcon
+    getIcon,
+    serialize
   }
 
   inject('utils', {
     hasPermission,
     hasSpecificArea,
     isImage,
-    getIcon
+    getIcon,
+    serialize
   })
 }

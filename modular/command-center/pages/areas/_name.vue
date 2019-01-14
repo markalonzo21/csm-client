@@ -56,45 +56,7 @@
       </div>
     </div>
     <div class="row mt-12">
-      <div class="col-md-6">
-        <h4>Reports Heat Map</h4>
-        <hr>
-        <div style="height: 380px; width: 100%;">
-          <l-map
-            v-if="center.length > 0"
-            :center="center"
-            :zoom="zoom"
-            :minZoom="minZoom"
-            :maxZoom="maxZoom"
-            :maxBounds="maxBounds"
-            :maxBoundsViscosity="maxBoundsViscosity"
-            ref="map"
-          >
-            <!-- <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson> -->
-            <LeafletHeatmap
-              v-if="reports.length > 0 && !loadingHeats"
-              :lat-lng="heats"
-              :radius="15"
-              :min-opacity="0.75"
-              :blur="15"
-            ></LeafletHeatmap>
-            <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
-          </l-map>
-        </div>
-        <div class="my-4">
-          <select v-model="type" required class="p-2">
-            <option :value="null">Select Type</option>
-            <option v-for="type in types" :key="type._id" :value="type._id" v-text="type.name"></option>
-          </select>
-          <select v-model="resolvedOrUnresolved" required class="p-2">
-            <option value="both">Both</option>
-            <option value="resolved">Resolved Only</option>
-            <option value="unresolved">Unresolved Only</option>
-          </select>
-          <span class="ml-2" v-if="loadingHeats">LOADING HEATS</span>
-        </div>
-      </div>
-      <div class="col-md-6">
+      <div class="col-md-12">
         <h4>Details
           <a-button
             type="primary"
@@ -218,7 +180,6 @@ export default {
 
     this.initSocketListeners()
     this.getGraphsData()
-    this.searchReports(null, 'both')
   },
   beforeDestroy() {
     this.$socket.off('new-report')
@@ -262,34 +223,12 @@ export default {
         labels: [],
         datasets: []
       },
-      fetchingDashboardDetails: false,
-      // Heatmap Data
-      loadingHeats: true,
-      resolvedOrUnresolved: 'both',
-      types: [],
-      type: null,
-      reports: []
+      fetchingDashboardDetails: false
     }
   },
   watch: {
     'form.role'(value) {
       this.form.user = ''
-    },
-    type(value) {
-      if (value === null) {
-        return
-      }
-
-      this.loadingHeats = true
-      this.searchReports(value, this.resolvedOrUnresolved)
-    },
-    resolvedOrUnresolved(value) {
-      if (value === null) {
-        return
-      }
-
-      this.loadingHeats = true
-      this.searchReports(this.type, value)
     }
   },
   computed: {
@@ -302,21 +241,6 @@ export default {
             permission => permission.name === permissionNameToFind
           )
         })
-      }
-      return []
-    },
-    heats() {
-      if (this.reports.length > 0) {
-        return this.reports
-          .filter(report => {
-            return report.location.coordinates[0] !== null
-          })
-          .map(report => {
-            return [
-              report.location.coordinates[1],
-              report.location.coordinates[0]
-            ]
-          })
       }
       return []
     }
@@ -427,8 +351,6 @@ export default {
     },
     getGraphsData() {
       this.fetchingDashboardDetails = true
-      const getReportTypes = this.$axios.$get('/report-types')
-
       const getDashboardDetails = this.$axios.$get(
         `/admin/areas/${this.area._id}/dashboard`
       )
@@ -440,36 +362,16 @@ export default {
       )
 
       Promise.all([
-        getReportTypes,
         getDashboardDetails,
         getreportsPerCategory,
         getReportsPerMonth
-      ]).then(
-        ([types, dashboardDetails, reportsPerCategory, reportsPerMonth]) => {
-          // Heatmaps Data
-          this.types = types.data
-          this.type = null
-          this.resolvedOrUnresolved = 'both'
-          // Others
-          this.dashboardDetails = dashboardDetails.data
-          this.reportsPerCategory = reportsPerCategory.data
-          this.reportsPerMonth = reportsPerMonth.data
-          this.fetchingDashboardDetails = false
-        }
-      )
-    },
-    searchReports(type, resolvedOrUnresolved) {
-      this.loadingHeats = true
-      this.$axios
-        .$get(
-          `/admin/areas/${
-            this.area._id
-          }/reports/${type}/${resolvedOrUnresolved}`
-        )
-        .then(response => {
-          this.reports = response.data
-          this.loadingHeats = false
-        })
+      ]).then(([dashboardDetails, reportsPerCategory, reportsPerMonth]) => {
+        // Others
+        this.dashboardDetails = dashboardDetails.data
+        this.reportsPerCategory = reportsPerCategory.data
+        this.reportsPerMonth = reportsPerMonth.data
+        this.fetchingDashboardDetails = false
+      })
     }
   }
 }
