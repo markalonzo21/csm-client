@@ -9,9 +9,10 @@
       :loading="loadingReports || loadingFilter"
       bordered
       :scroll="{ x: 900 }"
-      :pagination="false"
+      :pagination="pagination"
       :dataSource="reports"
       :columns="columns"
+      @change="handleTableChange"
     >
       <template
         slot="createdAt"
@@ -23,14 +24,6 @@
         </a-button>
       </template>
     </a-table>
-    <br>
-    <a-button
-      type="primary"
-      class="m-auto"
-      v-if="isLoadMoreVisible"
-      :loading="loadingReports"
-      @click.prevent="loadMoreReports"
-    >Load More</a-button>
     <hr>
     <a-form @submit.prevent="filterReports">
       <h4>Filter</h4>
@@ -137,16 +130,11 @@ export default {
   layout: 'command-center/default',
   asyncData({ $axios, error }) {
     const getCategories = $axios.$get('/report-categories')
-    const getReports = $axios.$get('/admin/reports')
     const getAreas = $axios.$get('/areas')
 
-    return Promise.all([getCategories, getReports, getAreas]).then(
-      ([categories, reports, areas]) => {
+    return Promise.all([getCategories, getAreas]).then(
+      ([categories, areas]) => {
         return {
-          reports: reports.data,
-          isLoadMoreVisible: !(reports.data.length < 20),
-          loadingReports: false,
-          loadingFilter: false,
           columns: [
             {
               title: 'Report ID',
@@ -207,7 +195,8 @@ export default {
             startDate: null,
             endDate: null,
             area: '',
-            skip: 0
+            page: 1,
+            results: 10
           },
           selectList: {
             areas: areas.data,
@@ -219,7 +208,21 @@ export default {
       }
     )
   },
+  data() {
+    return {
+      reports: [],
+      pagination: {
+        current: 1,
+        defaultCurrent: 1,
+        pageSize: 10,
+        total: 0
+      },
+      loadingFilter: false,
+      loadingReports: false
+    }
+  },
   mounted() {
+    this.getReports()
     this.initSocketListeners()
   },
   beforeDestroy() {
@@ -231,9 +234,54 @@ export default {
         this.reports.unshift(report)
       })
     },
+    handleTableChange(pagination, filters, sorter) {
+      const pager = { ...this.pagination }
+      pager.current = pagination.current
+      this.pagination = pager
+      this.filterReports()
+    },
+    getReports() {
+      this.loadingReports = true
+
+      // Loop through query string and assign it to form
+      if (this.$route.query) {
+        Object.keys(this.$route.query).forEach(key => {
+          let value = this.$route.query[key]
+          if (value === 'null') {
+            value = null
+          }
+
+          this.form[key] = value
+
+          if (key === 'page') {
+            this.pagination.current = parseInt(value)
+          }
+
+          if (key === 'category') {
+            this.selectCategoryChange(value)
+          }
+        })
+      }
+
+      this.$axios
+        .$get('/admin/reports', { params: this.form })
+        .then(response => {
+          window.history.pushState(
+            this.form,
+            'Reports',
+            `/command-center/reports${this.$utils.serialize(this.form)}`
+          )
+          this.pagination.total = response.info.total
+          this.reports = response.data
+          this.loadingReports = false
+        })
+        .catch(err => {
+          console.log(err.response.data)
+          this.loadingReports = false
+        })
+    },
     filterReports() {
       this.loadingFilter = true
-      this.isLoadMoreVisible = true
 
       this.form.start = this.form.startDate
         ? this.$moment(this.form.startDate).format('YYYY-MM-DD')
@@ -242,30 +290,24 @@ export default {
         ? this.$moment(this.form.endDate).format('YYYY-MM-DD')
         : null
 
-      this.form.skip = this.reports.length
+      this.form.page = this.pagination.current
+      this.form.results = 10
+
       this.$axios
         .$get('/admin/reports', { params: this.form })
         .then(response => {
+          window.history.pushState(
+            this.form,
+            'Reports',
+            `/command-center/reports${this.$utils.serialize(this.form)}`
+          )
+
+          this.pagination.total = response.info.total
           this.reports = response.data
-          this.isLoadMoreVisible = !(response.data.length < 20)
           this.loadingFilter = false
         })
         .catch(err => {
           this.loadingFilter = false
-        })
-    },
-    loadMoreReports() {
-      this.loadingReports = true
-
-      this.form.skip = this.reports.length
-      this.$axios
-        .$get(`/admin/reports`, { params: this.form })
-        .then(response => {
-          response.data.forEach(report => {
-            this.reports.push(report)
-          })
-          this.isLoadMoreVisible = !(response.data.length < 20)
-          this.loadingReports = false
         })
     },
     selectAreaChange(value) {
