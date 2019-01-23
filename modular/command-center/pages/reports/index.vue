@@ -159,7 +159,7 @@ export default {
             },
             {
               title: 'Department',
-              dataIndex: 'department'
+              dataIndex: 'area.department'
             },
             {
               title: 'Area',

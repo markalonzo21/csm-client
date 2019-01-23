@@ -18,6 +18,7 @@
       :dataSource="dataSource"
       :columns="columns"
     >
+      <!-- <template slot="description" slot-scope="text">{{ text }}</template> -->
       <template slot="actions" slot-scope="text, record">
         <a-button type="primary">
           <nuxt-link :to="`/command-center/areas/${record.name}`">Show</nuxt-link>
@@ -52,11 +53,11 @@ export default {
           title: 'Department',
           dataIndex: 'department'
         },
-        {
-          title: 'Description',
-          dataIndex: 'description',
-          scopedSlots: { customRender: 'description' }
-        },
+        // {
+        //   title: 'Description',
+        //   dataIndex: 'description',
+        //   scopedSlots: { customRender: 'description' }
+        // },
         {
           title: 'Actions',
           dataIndex: 'actions',
