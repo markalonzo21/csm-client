@@ -10,7 +10,7 @@ export const getters = {
 }
 
 export const actions = {
-  getAreas({ commit }) {
+  getAreas ({ commit }) {
     return this.$axios.$get('/resolver/areas').then(response => {
       commit('SET_AREAS', response.data)
     })
@@ -18,7 +18,7 @@ export const actions = {
 }
 
 export const mutations = {
-  SET_AREAS(state, areas) {
+  SET_AREAS (state, areas) {
     state.areas = areas
   }
 }

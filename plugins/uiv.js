@@ -6,7 +6,7 @@ import * as uiv from 'uiv'
 
 Vue.use(uiv)
 
-export default function(ctx, inject) {
+export default function (ctx, inject) {
   ctx.$notify = uiv.Notification.notify
   inject('notify', uiv.Notification.notify)
 }

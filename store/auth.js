@@ -12,7 +12,7 @@ export const getters = {
       permission => permission.name === permissionName
     )
   },
-  hasSpecificArea(state) {
+  hasSpecificArea (state) {
     if (state.user) {
       return state.user.role.permissions.some(permission => {
         return permission.category === 'specific area management'
@@ -22,7 +22,7 @@ export const getters = {
 }
 
 export const actions = {
-  logout({ commit }) {
+  logout ({ commit }) {
     this.$auth.logout().then(() => {
       this.$router.replace('/')
       this.$notify('Logout successful!')
@@ -32,7 +32,7 @@ export const actions = {
 }
 
 export const mutations = {
-  ADD_AREA(state, area) {
+  ADD_AREA (state, area) {
     state.user.areas.push(area)
   }
 }

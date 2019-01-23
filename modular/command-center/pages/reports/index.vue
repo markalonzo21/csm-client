@@ -158,6 +158,10 @@ export default {
               scopedSlots: { customRender: 'createdAt' }
             },
             {
+              title: 'Department',
+              dataIndex: 'department'
+            },
+            {
               title: 'Area',
               dataIndex: 'area.name'
             },

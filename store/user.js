@@ -14,18 +14,18 @@ export const getters = {
 }
 
 export const actions = {
-  getResolvedReports({ commit }) {
+  getResolvedReports ({ commit }) {
     return this.$axios.$get('/reports?resolvedOnly=true').then(response => {
       commit('SET_RESOLVED_REPORTS', response.data)
       commit('SET_LOAD_MORE_STATUS', response.data)
     })
   },
-  getUnresolvedReports({ commit, dispatch }) {
+  getUnresolvedReports ({ commit, dispatch }) {
     return this.$axios.$get('/reports?unresolvedOnly=true').then(response => {
       commit('SET_UNRESOLVED_REPORTS', response.data)
     })
   },
-  getReport({ commit }, id) {
+  getReport ({ commit }, id) {
     return this.$axios.$get(`/reports/${id}`).then(response => {
       commit('SET_REPORT', response.data)
     })
@@ -33,13 +33,13 @@ export const actions = {
 }
 
 export const mutations = {
-  SET_RESOLVED_REPORTS(state, reports) {
+  SET_RESOLVED_REPORTS (state, reports) {
     state.resolvedReports = reports
   },
-  SET_UNRESOLVED_REPORTS(state, reports) {
+  SET_UNRESOLVED_REPORTS (state, reports) {
     state.unresolvedReports = reports
   },
-  SET_REPORT(state, report) {
+  SET_REPORT (state, report) {
     const lat = report.location ? report.location.coordinates[1] : 14.59804
     const lng = report.location ? report.location.coordinates[0] : 120.98385
 
@@ -53,35 +53,35 @@ export const mutations = {
 
     state.report = report
   },
-  UNSHIFT_RESOLVED_REPORT(state, report) {
+  UNSHIFT_RESOLVED_REPORT (state, report) {
     state.resolvedReports.push(report)
   },
-  SET_LOAD_MORE_STATUS(state, reports) {
+  SET_LOAD_MORE_STATUS (state, reports) {
     state.isLoadMoreVisible = !(reports.length < 10)
   },
-  UPDATE_REPORT_MILESTONE(state, payload) {
+  UPDATE_REPORT_MILESTONE (state, payload) {
     const reportIndex = state.unresolvedReports.findIndex(
       report => report._id === payload.reportId
-    );
+    )
 
     let responseIndex = state.unresolvedReports[reportIndex].responses.findIndex(
       response => response._id === payload.response._id
-    );
+    )
 
     Vue.set(
       state.unresolvedReports[reportIndex].responses,
       responseIndex,
       payload.response
-    );
+    )
   },
-  REPLACE_REPORT(state, report) {
+  REPLACE_REPORT (state, report) {
     const index = state.unresolvedReports.findIndex(item => item._id === report._id)
 
     if (index !== -1) {
       Vue.set(state.unresolvedReports, index, report)
     }
   },
-  REPORT_RESOLVED(state, report) {
+  REPORT_RESOLVED (state, report) {
     const index = state.unresolvedReports.findIndex(item => item._id === report._id)
 
     if (index !== -1) {
