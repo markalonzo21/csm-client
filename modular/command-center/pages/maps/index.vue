@@ -2,7 +2,7 @@
   <section class="w-full">
     <div class="col-md-7">
       <div class="row px-6">
-        <h3 class="mt-0">Incident Map</h3>
+        <h3 class="mt-0">Maps</h3>
         <a-checkbox @change="onChangeMarkerCheckbox" :checked="showCluster">Marker</a-checkbox>
         <a-checkbox @change="onChangeHeatmapCheckbox" :checked="showHeatmap">Heatmap</a-checkbox>
       </div>
