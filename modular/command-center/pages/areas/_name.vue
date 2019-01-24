@@ -293,7 +293,7 @@ export default {
     },
     assignInitialValue() {
       const lIsAvailable = setInterval(() => {
-        if (L && this.$refs.map) {
+        if (L) {
           this.zoom = this.area.minZoom
           this.minZoom = this.area.minZoom
           this.maxZoom = this.area.maxZoom
@@ -301,13 +301,6 @@ export default {
           const geoJSON = L.geoJSON(this.area.location)
           this.geojson = geoJSON.toGeoJSON()
           this.maxBounds = geoJSON.getBounds()
-          this.$nextTick(() => {
-            this.$refs.map.mapObject.fitBounds(this.maxBounds)
-          })
-          this.center = [
-            this.maxBounds.getCenter().lat,
-            this.maxBounds.getCenter().lng
-          ]
           this.loading = false
 
           clearInterval(lIsAvailable)

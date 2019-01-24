@@ -244,11 +244,11 @@ export default {
       this.$axios
         .$get('/admin/reports', { params: this.form })
         .then(response => {
-          window.history.pushState(
-            this.form,
-            'Incident Map',
-            `/command-center/maps${this.$utils.serialize(this.form)}`
-          )
+          // window.history.pushState(
+          //   this.form,
+          //   'Incident Map',
+          //   `/command-center/maps${this.$utils.serialize(this.form)}`
+          // )
           this.reports = response.data
           this.loadingReports = false
         })
@@ -270,11 +270,11 @@ export default {
       this.$axios
         .$get('/admin/reports', { params: this.form })
         .then(response => {
-          window.history.pushState(
-            this.form,
-            'Incident Map',
-            `/command-center/maps${this.$utils.serialize(this.form)}`
-          )
+          // window.history.pushState(
+          //   this.form,
+          //   'Incident Map',
+          //   `/command-center/maps${this.$utils.serialize(this.form)}`
+          // )
           this.reports = response.data
           this.loadingReports = false
 
