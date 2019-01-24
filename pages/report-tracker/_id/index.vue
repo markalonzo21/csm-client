@@ -2,7 +2,7 @@
   <div class="responder active-report main-content" v-if="report">
     <div class="container">
       <div class="active-report">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="border rounded bg-white py-6 px-6">
             <div class="clearfix">
               <span class="font-semibold text-blue-dark float-left">Date</span>
@@ -49,18 +49,15 @@
               <span class="font-semibold text-blue-dark float-left">Status</span>
               <span class="float-right">{{ report.status}}</span>
             </div>
-
-            <div class="border-b w-full my-4"></div>
-
+          </div>
+          <div class="border rounded bg-white py-6 px-6 mt-8">
             <div class="clearfix mt-4">
               <div class="font-semibold text-blue-dark">Notes</div>
               <p>{{ report.description }}</p>
             </div>
           </div>
-        </div>
-        <div class="col-md-8 clearfix" v-if="report.media.length > 0">
-          <div class="row border rounded bg-white py-6 px-6 mb-2">
-            <h4 class="font-bold mt-0 text-blue-darker">Media</h4>
+          <div class="border rounded bg-white py-6 px-6 mt-8" v-if="report.media.length > 0">
+            <div class="font-semibold text-blue-dark">Media</div>
             <div class="col-md-3" v-for="media in report.media" :key="media">
               <img :src="media" alt="image-media" v-if="$utils.isImage(media)">
               <video width="300" controls v-else>
@@ -69,11 +66,11 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4" v-if="report.location !== null"></div>
-        <div class="col-md-8">
-          <div class="row border rounded bg-white py-6 px-6 mb-2" v-if="report.location !== null">
+
+        <div class="col-md-6">
+          <div class="border rounded bg-white py-6 px-6" v-if="report.location !== null">
             <h4 class="font-bold mt-0 text-blue-darker">Incident Location</h4>
-            <div id="map-wrap" style="height: 300px; width: 100%;" class="mt-4">
+            <div id="map-wrap" style="height: 200px; width: 100%;" class="mt-4">
               <no-ssr>
                 <l-map
                   :center="report.map.center"
@@ -88,33 +85,34 @@
               </no-ssr>
             </div>
           </div>
+
+          <div class="border rounded bg-white py-6 px-6 mt-8">
+            <CommentBox :type="'user'"/>
+          </div>
         </div>
       </div>
     </div>
-    <ResponderChatBox :reportId="report._id" :isResolved="report.resolvedAt !== null"/>
   </div>
 </template>
 
 
 <script>
-import ResponderChatBox from '~/components/ResponderChatBox'
+import CommentBox from '~/components/CommentBox'
+
 export default {
   components: {
-    ResponderChatBox
+    CommentBox
   },
-  async fetch({ store, error, params, redirect }) {
-    if (!store.getters['auth/hasPermission']('respond')) {
-      return redirect('/')
-    }
+  async asyncData({ store, error, params, redirect }) {
     try {
-      await store.dispatch('responder/getReport', params.id)
+      await store.dispatch('user/getReport', params.id)
     } catch (err) {
       error({ status: err.response.status, message: 'Report not found!' })
     }
   },
   computed: {
     report() {
-      return this.$store.state.responder.report
+      return this.$store.state.user.report
     }
   },
   mounted() {

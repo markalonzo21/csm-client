@@ -64,7 +64,7 @@ let colors = {
 
   'blue-darkest': '#12283a',
   'blue-darker': '#304EA0',
-  'blue-dark': '#2779bd',
+  'blue-dark': '#2FA6DE',
   blue: '#3490dc',
   'blue-light': '#34c3e5',
   'blue-lighter': '#bcdefa',
