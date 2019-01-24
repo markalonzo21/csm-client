@@ -92,12 +92,12 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label="Date Started" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
-            <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.startDate"/>
+            <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.start"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="Date End" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
-            <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.endDate"/>
+            <a-date-picker format="MM-DD-YYYY" class="w-full" v-model="form.end"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -196,8 +196,8 @@ export default {
             resolver: '',
             status: '',
             type: '',
-            startDate: null,
-            endDate: null,
+            start: null,
+            end: null,
             area: '',
             page: 1,
             results: 10
@@ -251,11 +251,16 @@ export default {
       if (this.$route.query) {
         Object.keys(this.$route.query).forEach(key => {
           let value = this.$route.query[key]
+
           if (value === 'null') {
             value = null
           }
 
-          this.form[key] = value
+          if (key === 'start' || key === 'end') {
+            this.form[key] = value ? this.$moment(value) : null
+          } else {
+            this.form[key] = value
+          }
 
           if (key === 'page') {
             this.pagination.current = parseInt(value)
@@ -267,14 +272,25 @@ export default {
         })
       }
 
+      let formReference = Object.assign({}, this.form)
+      formReference.start = formReference.start
+        ? this.$moment(formReference.start).format('YYYY-MM-DD')
+        : null
+      formReference.end = formReference.end
+        ? this.$moment(formReference.end).format('YYYY-MM-DD')
+        : null
+
+      let queryString = this.$utils.serialize(formReference)
+
+      window.history.pushState(
+        formReference,
+        'Reports',
+        `/command-center/reports${queryString}`
+      )
+
       this.$axios
-        .$get('/admin/reports', { params: this.form })
+        .$get('/admin/reports', { params: formReference })
         .then(response => {
-          window.history.pushState(
-            this.form,
-            'Reports',
-            `/command-center/reports${this.$utils.serialize(this.form)}`
-          )
           this.pagination.total = response.info.total
           this.reports = response.data
           this.loadingReports = false
@@ -287,25 +303,26 @@ export default {
     filterReports() {
       this.loadingFilter = true
 
-      this.form.start = this.form.startDate
-        ? this.$moment(this.form.startDate).format('YYYY-MM-DD')
-        : null
-      this.form.end = this.form.endDate
-        ? this.$moment(this.form.endDate).format('YYYY-MM-DD')
-        : null
-
       this.form.page = this.pagination.current
       this.form.results = 10
 
-      this.$axios
-        .$get('/admin/reports', { params: this.form })
-        .then(response => {
-          window.history.pushState(
-            this.form,
-            'Reports',
-            `/command-center/reports${this.$utils.serialize(this.form)}`
-          )
+      let formReference = Object.assign({}, this.form)
+      formReference.start = formReference.start
+        ? this.$moment(formReference.start).format('YYYY-MM-DD')
+        : null
+      formReference.end = formReference.end
+        ? this.$moment(formReference.end).format('YYYY-MM-DD')
+        : null
 
+      let queryString = this.$utils.serialize(formReference)
+      window.history.pushState(
+        formReference,
+        'Reports',
+        `/command-center/reports${queryString}`
+      )
+      this.$axios
+        .$get('/admin/reports', { params: formReference })
+        .then(response => {
           this.pagination.total = response.info.total
           this.reports = response.data
           this.loadingFilter = false
