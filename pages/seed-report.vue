@@ -8,6 +8,14 @@
               <div class="panel-body text-center">
                 <h1 class="title__blue mb-12">Create Many Reports</h1>
                 <form @submit.prevent="report">
+                  <label for class="title__gray--small" style="font-size:18px;">How Many Reports?</label>
+                  <br>
+                  <input
+                    type="number"
+                    class="w-full p-4 form-control mb-10"
+                    max="5000"
+                    v-model="form.total"
+                  >
                   <button
                     type="submit"
                     class="btn btnblue w-full"
@@ -45,7 +53,7 @@ export default {
               type: 'Point',
               coordinates: { lng: null, lat: null }
             },
-            media: []
+            total: 20
           },
           area: ''
         }
@@ -77,7 +85,11 @@ export default {
     report() {
       this.loadingSubmitReport = true
 
-      for (let index = 0; index < 10; index++) {
+      if (this.form.total < 5000) {
+        this.form.total = 5000
+      }
+
+      for (let index = 0; index < this.form.total; index++) {
         // Random Type
         const category = this.categories[
           Math.floor(Math.random() * this.categories.length)

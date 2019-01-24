@@ -2,7 +2,7 @@
   <section class="w-full">
     <div class="col-md-7">
       <div class="row px-6">
-        <h3 class="mt-0">Maps</h3>
+        <h3 class="mt-0">Incident Map</h3>
         <a-checkbox @change="onChangeMarkerCheckbox" :checked="showCluster">Marker</a-checkbox>
         <a-checkbox @change="onChangeHeatmapCheckbox" :checked="showHeatmap">Heatmap</a-checkbox>
       </div>
@@ -25,13 +25,7 @@
         >
           <a-icon type="loading" style="font-size: 128px;" spin/>
         </div>
-        <LeafletHeatmap
-          v-if="showHeatmap"
-          :lat-lng="heats"
-          :radius="15"
-          :min-opacity="0.75"
-          :blur="15"
-        ></LeafletHeatmap>
+        <LeafletHeatmap v-if="showHeatmap" :lat-lng="heats" :radius="5" :min-opacity="1"></LeafletHeatmap>
         <l-marker-cluster v-if="showCluster">
           <l-marker
             v-for="(report, index) in reports"
@@ -219,7 +213,8 @@ export default {
           .map(report => {
             return [
               report.location.coordinates[1],
-              report.location.coordinates[0]
+              report.location.coordinates[0],
+              0.1
             ]
           })
       }
@@ -252,7 +247,7 @@ export default {
           window.history.pushState(
             this.form,
             'Incident Map',
-            `/command-center/incident-map${this.$utils.serialize(this.form)}`
+            `/command-center/maps${this.$utils.serialize(this.form)}`
           )
           this.reports = response.data
           this.loadingReports = false
@@ -278,7 +273,7 @@ export default {
           window.history.pushState(
             this.form,
             'Incident Map',
-            `/command-center/incident-map${this.$utils.serialize(this.form)}`
+            `/command-center/maps${this.$utils.serialize(this.form)}`
           )
           this.reports = response.data
           this.loadingReports = false

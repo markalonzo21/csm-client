@@ -113,14 +113,11 @@ L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
     )
 
     this._heat.gradient({
-      // 0.2: 'yellow',
-      // 0.4: 'orange',
-      // 0.6: 'red',
-      // 0.8: '#8B0000',
-      // 1: '#DC143C'
-      0.4: 'yellow',
-      0.65: 'orange',
-      1: 'red'
+      0.2: 'yellow',
+      0.4: 'orange',
+      0.6: 'red',
+      0.8: 'maroon',
+      1: ' #670A0A'
     })
     if (this.options.gradient) {
       // this._heat.gradient(this.options.gradient)
