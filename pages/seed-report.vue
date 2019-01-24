@@ -85,7 +85,7 @@ export default {
     report() {
       this.loadingSubmitReport = true
 
-      if (this.form.total < 5000) {
+      if (this.form.total > 5000) {
         this.form.total = 5000
       }
 
