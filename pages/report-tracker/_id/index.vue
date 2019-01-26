@@ -28,12 +28,14 @@
               <span class="font-semibold text-blue-dark float-left">Reporter</span>
               <span
                 class="float-right"
+                v-if="report.reporter"
               >{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName }} ({{ report.reporter.mobile }})</span>
             </div>
             <div class="clearfix">
               <span class="font-semibold text-blue-dark float-left">Resolver</span>
               <span
                 class="float-right"
+                v-if="report.resolver"
               >{{ report.resolver.firstName }} {{ report.resolver.middleName }} {{ report.resolver.lastName }} ({{ report.resolver.mobile }})</span>
             </div>
             <div class="clearfix">
