@@ -8,6 +8,7 @@
           <div class="panel">
             <div class="panel-body">
               <table class="table">
+                <tbody>
                 <tr>
                   <td>
                     <span class="bluelabel">Date</span>
@@ -16,6 +17,7 @@
                     <span class="basic">{{$moment(report.createdAt).format("MMM. DD, YYYY | h:mm A ")}}</span>
                   </td>
                   <td>
+                    
                   </td>
                 </tr>
 
@@ -60,6 +62,18 @@
                     <span class="basic" v-if="report.reporter">{{ report.reporter.firstName }} {{ report.reporter.middleName }} {{ report.reporter.lastName }} ({{ report.reporter.mobile }})</span>
                   </td>
                   <td>
+                    <span @click="open1=true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 12.857">
+                      <defs>
+                        <style>
+                          .cls-1 {
+                            fill: #0ca4dd;
+                          }
+                        </style>
+                      </defs>
+                      <path id="Path_529" data-name="Path 529" class="cls-1" d="M19.777,97.024a11.92,11.92,0,0,0-4.2-4.107,10.792,10.792,0,0,0-11.149,0,11.917,11.917,0,0,0-4.2,4.107,1.44,1.44,0,0,0,0,1.54,11.915,11.915,0,0,0,4.2,4.107,10.81,10.81,0,0,0,11.149.006,11.841,11.841,0,0,0,4.2-4.113,1.44,1.44,0,0,0,0-1.54ZM7.606,93.971a3.266,3.266,0,0,1,2.394-1,.536.536,0,1,1,0,1.071,2.324,2.324,0,0,0-2.321,2.322.536.536,0,1,1-1.072,0A3.266,3.266,0,0,1,7.606,93.971Zm7.244,7.467a9.349,9.349,0,0,1-9.7,0,11.52,11.52,0,0,1-3.722-3.644,10.969,10.969,0,0,1,4.252-3.94A4.877,4.877,0,0,0,5,96.365,4.816,4.816,0,0,0,6.468,99.9,4.815,4.815,0,0,0,10,101.365,4.816,4.816,0,0,0,13.532,99.9,4.814,4.814,0,0,0,15,96.365a4.877,4.877,0,0,0-.681-2.511,10.97,10.97,0,0,1,4.252,3.94A11.517,11.517,0,0,1,14.849,101.438Z" transform="translate(0 -91.365)"/>
+                    </svg>
+                    </span>
                   </td>
                 </tr>
 
@@ -97,7 +111,7 @@
                   <td>
                   </td>
                 </tr>
-                
+                </tbody>
               </table>
             </div>
           </div>
@@ -147,6 +161,20 @@
       </div>
       
     </div>
+    <modal v-model="open1" title="Responder" size="sm" :footer="false">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+            <span class="bluelabel">Name</span>
+            </td>
+            <td>
+            <span class="basic">Janno Reyes</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </modal>
   </div>
 </template>
 
@@ -155,6 +183,11 @@
 import CommentBox from "~/components/CommentBox";
 
 export default {
+  data () {
+    return {
+      open1: false,
+    }
+  },
   components: {
     CommentBox
   },
@@ -187,11 +220,18 @@ export default {
 </script>
 
 <style scoped>
+.table>tbody>tr>td {
+  border: none;
+}
 .rounded {
   border-radius: 1rem;
 }
 .bluelabel {
   color: #34c3e5;
   font-weight: 700;
+}
+svg {
+  height: 10px;
+  cursor: pointer;
 }
 </style>
