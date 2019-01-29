@@ -1,97 +1,164 @@
 <template>
-<div class="panel panel-comment">
-  <div class="panel-body">
-    <div class="comment-item" v-for="i in 5">
-      <div class="avatar">
-        <a href="#">
-          <img alt="avatar" class="media-object" src="/img/avatar.jpg">
-        </a>
-      </div>
-      <div class="media-body">
-        <label class="label-name" for="">Responder's Name</label>
-        <span class="tiny pull-right">21 mins ago</span>
-        <small class="basic">
-          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus. 
-        </small>
-      </div>
+  <div class="panel panel-comment">
+    <div
+      class="panel-body"
+      ref="messagesContainer"
+    >
+      <CommentBoxMessage
+        :key="`message-${message._id}`"
+        :message="message"
+        v-for="message in messages"
+      />
+      <div v-if="!loadingGetMessages && messages.length === 0">No Messages...</div>
     </div>
-  </div>
-  <div class="panel-footer mt10">
-    <form class="input-group">
+    <div class="panel-footer mt10">
+      <form
+        @submit.prevent="sendMessage"
+        class="input-group"
+      >
         <input
-          type="text"
+          :disabled="report.resolvedAt !== null"
           class="form-control"
           placeholder="Write something here ..."
+          ref="chatMessageInput"
+          type="text"
+          v-model="message"
         >
         <div class="input-group-btn">
           <button
-            type="submit"
+            :disabled="report.resolvedAt !== null || loadingSendMessage"
             class="btn bluelabel text-uppercase"
-          >Send</button>
+            type="submit"
+          >{{ loadingSendMessage ? 'Sending...' : 'Send' }}</button>
         </div>
       </form>
+    </div>
   </div>
-</div>
-
 </template>
 
 <script>
+import CommentBoxMessage from "./CommentBoxMessage";
+
 export default {
-  props: ['type'],
+  props: {
+    report: {
+      type: Object,
+      default: () => null
+    },
+    role: {
+      type: String,
+      default: "User"
+    }
+  },
+  components: {
+    CommentBoxMessage
+  },
+  data() {
+    return {
+      loadingSendMessage: false,
+      loadingGetMessages: true,
+      messages: [],
+      message: ""
+    };
+  },
   mounted() {
-    this.getComments()
+    this.initSocketListeners();
+    this.getMessages();
+  },
+  beforeDestroy() {
+    this.$socket.off("new-message");
+  },
+  watch: {
+    messages() {
+      this.$nextTick(() => {
+        const ul = this.$refs.messagesContainer;
+        ul.scrollTop = ul.scrollHeight;
+      });
+    }
   },
   methods: {
-    getComments() {}
+    initSocketListeners() {
+      this.$socket.on("new-message", message => {
+        if (message.report === this.report._id) {
+          this.addMessage(message);
+        }
+      });
+    },
+    getMessages() {
+      this.loadingGetMessages = true;
+      this.$axios
+        .$get(`/messages?reportId=${this.report._id}`)
+        .then(response => {
+          this.messages = response.data;
+          this.loadingGetMessages = false;
+        });
+    },
+    addMessage(newMessage) {
+      this.$nextTick(() => {
+        const alreadyExists = this.messages.some(message => {
+          return message._id.toString() === newMessage._id.toString();
+        });
+        console.log(alreadyExists);
+
+        if (alreadyExists) {
+          this.loadingSendMessage = false;
+          return;
+        }
+
+        this.messages.push(newMessage);
+        this.loadingSendMessage = false;
+      });
+    },
+    sendMessage() {
+      if (this.message.trim().length === 0) {
+        return;
+      }
+
+      this.loadingSendMessage = true;
+      this.$axios
+        .$post("/messages", {
+          content: this.message,
+          reportId: this.report._id
+        })
+        .then(response => {
+          this.message = "";
+        })
+        .catch(error => {
+          this.loadingSendMessage = false;
+        });
+    }
   }
-}
+};
 </script>
-<style>
-  .panel-comment .panel-body {
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  .panel-comment .panel-body::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	border-radius: 10px;
-	background-color: #F5F5F5;
+
+<style scoped>
+.panel-body {
+  min-height: 300px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.panel-body::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
 }
 
-.panel-comment .panel-body::-webkit-scrollbar
-{
-	width: 8px;
-	background-color: #F5F5F5;
+.panel-body::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
 }
 
-.panel-comment .panel-body::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #555;
+.panel-body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
 }
-  .avatar {
-    float: left;
-    margin-right: 10px;
-  }
-  small.basic {
-    display: inline-block;
-  }
-  .comment-item {
-    margin-bottom: 10px;
-  }
-  .avatar img {
-    border-radius: 50%;
-    object-fit: cover;
-    height: 50px;
-    width: 50px;
-  }
 
-  .panel-comment .panel-footer {
-    margin-top: 10px;
-    background-color: #fff;
-  }
-  .bluelabel {
+.panel-footer {
+  margin-top: 10px;
+  background-color: #fff;
+}
+.bluelabel {
   color: #34c3e5;
   font-weight: 700;
 }

@@ -4,7 +4,7 @@
     v-if="report"
   >
     <div class="container">
-      <h1 class="title__black mt0 uppercase">Report ID #</h1>
+      <h1 class="title__black mt0">REPORT ID #{{ report._id }}</h1>
       <div class="row">
         <div class="active-report">
           <div class="col-md-6">
@@ -202,7 +202,10 @@
                 </div>
               </div>
             </div>
-            <CommentBox :type="'user'"/>
+            <CommentBox
+              :report="report"
+              :role="'user'"
+            />
           </div>
         </div>
       </div>
