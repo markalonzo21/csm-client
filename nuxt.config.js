@@ -5,6 +5,11 @@ dotenv.config()
 module.exports = {
   mode: 'universal',
   serverMiddleware: ['~/serverMiddleware/selectiveSsr.js'],
+  env: {
+    NODE_ENV: process.env.NODE_ENV,
+    API_URL: process.env.API_URL,
+    CLOUDINARY_URL: process.env.CLOUDINARY_URL
+  },
   /*
    ** Headers of the page
    */
@@ -13,7 +18,11 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'CSM Report Application' }
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'CSM Report Application'
+      }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
@@ -41,16 +50,16 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '~/plugins/utils', ssr: true },
-    { src: '~/plugins/vue-svgicon', ssr: true },
-    { src: '~/plugins/uiv.js', ssr: true },
-    { src: '~/plugins/ant', ssr: true },
-    { src: '~/plugins/vue-chance.js', ssr: false },
-    { src: '~/plugins/vue2-leaflet.js', ssr: false },
-    { src: '~/plugins/vue2-leaflet-heatmap.js', ssr: false },
-    { src: '~/plugins/socket', ssr: false },
-    { src: '~/plugins/vue-geolocation', ssr: false },
-    { src: '~/plugins/leaflet-draw', ssr: false }
+    '~/plugins/utils.js',
+    '~/plugins/vue-svgicon.js',
+    '~/plugins/uiv.js',
+    '~/plugins/ant.js',
+    '~/plugins/vue-chance.client.js',
+    '~/plugins/vue2-leaflet.client.js',
+    '~/plugins/vue2-leaflet-heatmap.client.js',
+    '~/plugins/socket.client.js',
+    '~/plugins/vue-geolocation.client.js',
+    '~/plugins/leaflet-draw.client.js'
   ],
 
   /*
