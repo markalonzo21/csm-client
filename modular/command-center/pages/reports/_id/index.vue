@@ -2,12 +2,24 @@
   <section class="ticket-info">
     <div class="row">
       <div class="col-md-4 sidebar">
-        <ReportInformationPanel v-if="report" :report="report"/>
-        <ReportLocationPanel v-if="report" :report="report"/>
-        <ReportOptionPanel v-if="report" :report="report"/>
+        <ReportInformationPanel
+          :report="report"
+          v-if="report"
+        />
+        <ReportLocationPanel
+          :report="report"
+          v-if="report"
+        />
+        <ReportOptionPanel
+          :report="report"
+          v-if="report"
+        />
       </div>
       <div class="col-md-8 content">
-        <ReportMainContentPanel v-if="report" :report="report"/>
+        <ReportMainContentPanel
+          :report="report"
+          v-if="report"
+        />
         <div class="panel">
           <div class="panel-body">
             <ReportChatbox :report="report"/>
@@ -19,13 +31,13 @@
 </template>
 
 <script>
-import ReportInformationPanel from './-ReportInformationPanel'
-import ReportLocationPanel from './-ReportLocationPanel'
-import ReportOptionPanel from './-ReportOptionPanel'
-import ReportMainContentPanel from './-ReportMainContentPanel'
-import ReportChatbox from './-ReportChatbox'
+import ReportInformationPanel from "./-ReportInformationPanel";
+import ReportLocationPanel from "./-ReportLocationPanel";
+import ReportOptionPanel from "./-ReportOptionPanel";
+import ReportMainContentPanel from "./-ReportMainContentPanel";
+import ReportChatbox from "./-ReportChatbox";
 export default {
-  layout: 'command-center/default',
+  layout: "command-center/default",
   components: {
     ReportInformationPanel,
     ReportLocationPanel,
@@ -34,34 +46,34 @@ export default {
     ReportChatbox
   },
   asyncData({ $axios, redirect, store, params, error }) {
-    if (!store.getters['auth/hasPermission']('view reports')) {
-      return redirect('/')
+    if (!store.getters["auth/hasPermission"]("view reports")) {
+      return redirect("/");
     }
     return $axios.$get(`/admin/reports/${params.id}`).then(response => {
       return {
         report: response.data
-      }
-    })
+      };
+    });
   },
   mounted() {
-    this.initSocketListeners()
+    this.initSocketListeners();
   },
   beforeDestroy() {
-    this.$socket.off('report-updated')
+    this.$socket.off("report-updated");
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on('report-updated', payload => {
+      this.$socket.on("report-updated", payload => {
         if (this.report._id === payload._id) {
-          this.report = payload
-          this.$notification['info']({
+          this.report = payload;
+          this.$notification["info"]({
             message: `Report has been updated!`
-          })
+          });
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style>

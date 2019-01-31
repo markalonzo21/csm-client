@@ -10,7 +10,12 @@
           <section class="user-dashboard mx-auto">
             <h1 class="title__black mt0 uppercase">Reports History</h1>
             <div v-if="reports.length > 0">
-              <div class="panel" style="border: none;" v-for="report in reports" :key="report._id">
+              <div
+                :key="report._id"
+                class="panel"
+                style="border: none;"
+                v-for="report in reports"
+              >
                 <div class="panel-body border h-32 rounded shadow bg-white flex items-center">
                   <div class="col-sm-3">
                     <strong>Date</strong>
@@ -25,9 +30,9 @@
                     <div>{{ report.resolvedAt ? $moment(report.resolvedAt).format('MMM. DD, YYYY | h:mm A ') : 'Unresolved' }}</div>
                   </div>
                   <button
-                    type="button"
-                    class="btn btnblue col-sm-3 outline-none"
                     @click.prevent="$router.push(`/responder/reports/${report._id}`)"
+                    class="btn btnblue col-sm-3 outline-none"
+                    type="button"
                   >View More</button>
                 </div>
               </div>
@@ -91,7 +96,7 @@ export default {
 </script>
 
 <style scoped>
-  .rounded {
-    border-radius: 12px;
-  }
+.rounded {
+  border-radius: 12px;
+}
 </style>
