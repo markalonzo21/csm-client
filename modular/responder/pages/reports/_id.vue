@@ -1,5 +1,8 @@
 <template>
-  <div class="responder active-report main-content" v-if="report">
+  <div
+    class="responder active-report main-content"
+    v-if="report"
+  >
     <div class="container">
       <div class="active-report">
         <div class="col-md-4">
@@ -10,7 +13,10 @@
                 class="float-right"
               >{{$moment(report.createdAt).format("MMM. DD, YYYY | h:mm A ")}}</span>
             </div>
-            <div class="clearfix" v-if="report.resolvedAt">
+            <div
+              class="clearfix"
+              v-if="report.resolvedAt"
+            >
               <span class="font-semibold text-blue-dark float-left">Date Resolved</span>
               <span
                 class="float-right"
@@ -57,29 +63,51 @@
               <p>{{ report.description }}</p>
             </div>
           </div>
-        </div>
-        <div class="col-md-8 clearfix" v-if="report.media.length > 0">
-          <div class="row border rounded bg-white py-6 px-6 mb-2">
+          <div
+            class="border rounded bg-white py-6 px-6 mt-4"
+            v-if="report.media.length > 0"
+          >
             <h4 class="font-bold mt-0 text-blue-darker">Media</h4>
-            <div class="col-md-3" v-for="media in report.media" :key="media">
-              <img :src="media" alt="image-media" v-if="$utils.isImage(media)">
-              <video width="300" controls v-else>
-                <source :src="media" type="video/mp4">
+            <div
+              :key="media"
+              class="col-md-3"
+              v-for="media in report.media"
+            >
+              <img
+                :src="media"
+                alt="image-media"
+                v-if="$utils.isImage(media)"
+              >
+              <video
+                controls
+                v-else
+                width="300"
+              >
+                <source
+                  :src="media"
+                  type="video/mp4"
+                >
               </video>
             </div>
           </div>
         </div>
-        <div class="col-md-4" v-if="report.location !== null"></div>
         <div class="col-md-8">
-          <div class="row border rounded bg-white py-6 px-6 mb-2" v-if="report.location !== null">
+          <div
+            class="row border rounded bg-white py-6 px-6 mb-2"
+            v-if="report.location !== null"
+          >
             <h4 class="font-bold mt-0 text-blue-darker">Incident Location</h4>
-            <div id="map-wrap" style="height: 300px; width: 100%;" class="mt-4">
+            <div
+              class="mt-4"
+              id="map-wrap"
+              style="height: 300px; width: 100%;"
+            >
               <no-ssr>
                 <l-map
                   :center="report.map.center"
-                  :zoom="report.map.zoom"
-                  :minZoom="report.map.minZoom"
                   :maxZoom="report.map.maxZoom"
+                  :minZoom="report.map.minZoom"
+                  :zoom="report.map.zoom"
                   ref="map"
                 >
                   <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
@@ -88,49 +116,55 @@
               </no-ssr>
             </div>
           </div>
+
+          <div class="row border rounded mb-0 mt-4">
+            <ResponderCommentBox
+              :report="report"
+              :role="'responder'"
+            />
+          </div>
         </div>
       </div>
     </div>
-    <ResponderChatBox :reportId="report._id" :isResolved="report.resolvedAt !== null"/>
   </div>
 </template>
 
 
 <script>
-import ResponderChatBox from '~/components/ResponderChatBox'
+import ResponderCommentBox from "~/components/ResponderCommentBox";
 export default {
   components: {
-    ResponderChatBox
+    ResponderCommentBox
   },
   async fetch({ store, error, params, redirect }) {
-    if (!store.getters['auth/hasPermission']('respond')) {
-      return redirect('/')
+    if (!store.getters["auth/hasPermission"]("respond")) {
+      return redirect("/");
     }
     try {
-      await store.dispatch('responder/getReport', params.id)
+      await store.dispatch("responder/getReport", params.id);
     } catch (err) {
-      error({ status: err.response.status, message: 'Report not found!' })
+      error({ status: err.response.status, message: "Report not found!" });
     }
   },
   computed: {
     report() {
-      return this.$store.state.responder.report
+      return this.$store.state.responder.report;
     }
   },
   mounted() {
-    this.initSocketListener()
+    this.initSocketListener();
   },
   beforeDestroy() {
-    this.$socket.off('report-updated')
+    this.$socket.off("report-updated");
   },
   methods: {
     initSocketListener() {
-      this.$socket.on('report-updated', report => {
-        this.$store.commit('responder/SET_REPORT', report)
-      })
+      this.$socket.on("report-updated", report => {
+        this.$store.commit("responder/SET_REPORT", report);
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -10,9 +10,10 @@
       </a>
     </div>-->
     <div class="media-body">
-      <label
-        class="label-name"
-      >{{ message.user.firstName }} {{ message.user.middleName }} {{ message.user.lastName }}</label>
+      <label class="label-name">
+        {{ message.user.firstName }} {{ message.user.middleName }} {{ message.user.lastName }}
+        <small>({{ message.sentAs === 'user' ? 'reporter' : message.sentAs }})</small>:
+      </label>
       <span class="tiny pull-right">{{ $moment(message.createdAt).fromNow() }}</span>
       <small class="basic">{{ message.content }}</small>
     </div>
