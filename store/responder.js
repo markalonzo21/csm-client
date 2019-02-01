@@ -1,7 +1,6 @@
 export const state = () => ({
   reports: [],
-  report: null,
-  loadingMarkAsDone: false
+  report: null
 })
 
 export const getters = {
@@ -14,32 +13,16 @@ export const actions = {
   getReports ({ commit }) {
     return this.$axios.$get('/responder/reports').then(response => {
       commit('SET_REPORTS', response.data)
-      commit('SET_REPORT', response.data.find(report => report.resolvedAt === null))
+      commit(
+        'SET_REPORT',
+        response.data.find(report => report.resolvedAt === null)
+      )
     })
   },
   getReport ({ commit }, id) {
     return this.$axios.$get(`/responder/reports/${id}`).then(response => {
       commit('SET_REPORT', response.data)
     })
-  },
-  markAsDone ({ state, commit }, id) {
-    commit('LOADING_MARK_AS_DONE', true)
-    this.$axios
-      .$post('/responder/respond', {
-        reportId: state.report._id,
-        responseId: id
-      })
-      .then(response => {
-        commit('SET_REPORT', response.data)
-        commit('LOADING_MARK_AS_DONE', false)
-
-        if (state.report.resolvedAt !== null) {
-          alert('incident is resolved!')
-        }
-      })
-      .catch(error => {
-        commit('LOADING_MARK_AS_DONE', false)
-      })
   }
 }
 
@@ -65,8 +48,5 @@ export const mutations = {
     }
 
     state.report = report
-  },
-  LOADING_MARK_AS_DONE (state, trueOrFalse) {
-    state.loadingMarkAsDone = trueOrFalse
   }
 }

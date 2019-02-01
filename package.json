@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "devlive": "cross-env API_URL=https://ireport-api.now.sh nuxt",
+    "dev:live": "cross-env API_URL=https://ireport-api.now.sh nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",

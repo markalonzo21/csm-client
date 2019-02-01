@@ -126,7 +126,7 @@
           </div>
 
           <div class="row border rounded mb-0 mt-4">
-            <ResponderCommentBox
+            <ResolverCommentBox
               :report="report"
               :role="'responder'"
             />
@@ -139,24 +139,24 @@
 
 
 <script>
-import ResponderCommentBox from "~/components/ResponderCommentBox";
+import ResolverCommentBox from "~/components/ResolverCommentBox";
 export default {
   components: {
-    ResponderCommentBox
+    ResolverCommentBox
   },
   async fetch({ store, error, params, redirect }) {
-    if (!store.getters["auth/hasPermission"]("respond")) {
+    if (!store.getters["auth/hasPermission"]("resolve")) {
       return redirect("/");
     }
     try {
-      await store.dispatch("responder/getReport", params.id);
+      await store.dispatch("resolver/getReport", params.id);
     } catch (err) {
       error({ status: err.response.status, message: "Report not found!" });
     }
   },
   computed: {
     report() {
-      return this.$store.state.responder.report;
+      return this.$store.state.resolver.report;
     }
   },
   mounted() {
@@ -168,7 +168,7 @@ export default {
   methods: {
     initSocketListener() {
       this.$socket.on("report-updated", report => {
-        this.$store.commit("responder/SET_REPORT", report);
+        this.$store.commit("resolver/SET_REPORT", report);
       });
     }
   }

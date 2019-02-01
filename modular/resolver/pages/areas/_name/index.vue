@@ -7,32 +7,8 @@
     <h1 class="text-blue-dark mt-10 uppercase">{{ area.name }}</h1>
     <hr>
     <div class="row">
-      <div class="col-md-4">
-        <h4>INCIDENT MAP</h4>
-
-        <div class="border rounded bg-white p-4">
-          <div style="height: 380px; width: 100%;">
-            <no-ssr>
-              <l-map
-                :center="center"
-                :maxBounds="maxBounds"
-                :maxBoundsViscosity="maxBoundsViscosity"
-                :maxZoom="maxZoom"
-                :minZoom="minZoom"
-                :zoom="zoom"
-                ref="map"
-                v-if="center.length > 0"
-              >
-                <!-- <l-geojson v-if="geojson" :geojson="geojson" :options-style="{fillOpacity: 0 }"></l-geojson> -->
-                <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
-              </l-map>
-            </no-ssr>
-          </div>
-        </div>
-      </div>
-
       <div
-        class="col-md-8"
+        class="col-md-12"
         v-if="$store.state.auth.loggedIn"
       >
         <h4>Active Reports</h4>
@@ -84,11 +60,6 @@
         </div>
       </div>
     </div>
-    <ResolverChatBox
-      :isResolved="chat.isResolved"
-      :reportId="chat.reportId"
-      v-if="chat.reportId !== null"
-    />
   </div>
 </template>
 
@@ -180,9 +151,9 @@ export default {
       const geoJSON = L.geoJSON(this.area.location);
       this.geojson = geoJSON.toGeoJSON();
       this.maxBounds = geoJSON.getBounds();
-      this.$nextTick(() => {
-        this.$refs.map.mapObject.fitBounds(this.maxBounds);
-      });
+      // this.$nextTick(() => {
+      //   this.$refs.map.mapObject.fitBounds(this.maxBounds);
+      // });
 
       this.$axios
         .$get(`/resolver/areas/${this.$route.params.name}`)
