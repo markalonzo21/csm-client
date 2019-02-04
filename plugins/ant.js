@@ -15,7 +15,8 @@ import {
   Menu,
   Layout,
   Drawer,
-  Breadcrumb
+  Breadcrumb,
+  Dropdown
 } from 'ant-design-vue/lib'
 
 Vue.use(Button)
@@ -31,3 +32,4 @@ Vue.use(Menu)
 Vue.use(Layout)
 Vue.use(Drawer)
 Vue.use(Breadcrumb)
+Vue.use(Dropdown)
