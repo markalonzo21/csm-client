@@ -1,16 +1,9 @@
 <template>
-  <div
-    class="container"
-    style="min-height: 88.3vh;"
-    v-if="area"
-  >
+  <div class="container" style="min-height: 88.3vh;" v-if="area">
     <h1 class="text-blue-dark mt-10 uppercase">{{ area.name }}</h1>
     <hr>
     <div class="row">
-      <div
-        class="col-md-12"
-        v-if="$store.state.auth.loggedIn"
-      >
+      <div class="col-md-12" v-if="$store.state.auth.loggedIn">
         <h4>Active Reports</h4>
         <div v-if="loadingGetReports">
           <div class="panel">
@@ -24,7 +17,6 @@
             :activeChat="chat"
             :key="report._id"
             :report="report"
-            @chatToggled="setResolverChatBoxData"
             v-for="report in activeReports"
           />
         </div>
@@ -44,12 +36,8 @@
             </div>
           </div>
         </div>
-        <div v-else-if="newReports.length > 0">
-          <NewReportResolver
-            :key="report._id"
-            :report="report"
-            v-for="report in newReports"
-          />
+        <div v-else-if="reports.length > 0">
+          <NewReportResolver :key="report._id" :report="report" v-for="report in reports"/>
         </div>
         <div v-else>
           <div class="panel">
@@ -64,9 +52,9 @@
 </template>
 
 <script>
-import ActiveReportResolver from "~/components/ActiveReportResolver";
-import NewReportResolver from "~/components/NewReportResolver";
-import ResolverChatBox from "~/components/ResolverChatBox";
+import ActiveReportResolver from '~/components/ActiveReportResolver'
+import NewReportResolver from '~/components/NewReportResolver'
+import ResolverChatBox from '~/components/ResolverChatBox'
 
 export default {
   components: {
@@ -75,16 +63,17 @@ export default {
     ResolverChatBox
   },
   asyncData({ $axios, store, redirect, params }) {
-    if (!store.getters["auth/hasPermission"]("resolve")) {
-      return redirect("/");
+    if (!store.getters['auth/hasPermission']('resolve')) {
+      return redirect('/')
     }
 
     return {
       area: store.state.auth.user.areas.find(area => area.name === params.name)
-    };
+    }
   },
   data() {
     return {
+      activeReports: [],
       reports: [],
       chat: {
         reportId: null,
@@ -98,59 +87,49 @@ export default {
       maxBounds: [],
       maxBoundsViscosity: 1.0,
       loadingGetReports: true
-    };
+    }
   },
   mounted() {
-    this.getReports();
-    this.initSocketListener();
-  },
-  computed: {
-    newReports() {
-      return this.reports
-        .filter(report => !report.resolver)
-        .filter(report => report.resolvedAt === null);
-    },
-    activeReports() {
-      return this.reports
-        .filter(report => report.resolvedAt === null)
-        .filter(
-          report =>
-            report.resolver &&
-            report.resolver._id.toString() ===
-              this.$store.state.auth.user._id.toString()
-        );
-    }
+    this.getReports()
+    this.initSocketListener()
   },
   methods: {
     initSocketListener() {
-      this.$socket.on("new-report", report => {
+      this.$socket.on('new-report', report => {
         const contains = this.maxBounds.contains(
           L.latLng(
             report.location.coordinates[1],
             report.location.coordinates[0]
           )
-        );
+        )
 
         if (contains) {
-          this.reports.unshift(report);
+          if (!report.resolver) {
+            this.reports.push(report)
+          } else if (
+            report.resolver._id.toString() === this.$auth.user._id.toString()
+          ) {
+            this.activeReports.push(report)
+            console.log(this.activeReports.length)
+          }
         }
-      });
+      })
 
-      this.$socket.on("report-updated", payload => {
+      this.$socket.on('report-updated', payload => {
         const index = this.reports.findIndex(
           report => report._id === payload._id
-        );
+        )
 
         if (index !== -1) {
-          this.$set(this.reports, index, payload);
+          this.$set(this.reports, index, payload)
         }
-      });
+      })
     },
     getReports() {
-      this.loadingGetReports = true;
-      const geoJSON = L.geoJSON(this.area.location);
-      this.geojson = geoJSON.toGeoJSON();
-      this.maxBounds = geoJSON.getBounds();
+      this.loadingGetReports = true
+      const geoJSON = L.geoJSON(this.area.location)
+      this.geojson = geoJSON.toGeoJSON()
+      this.maxBounds = geoJSON.getBounds()
       // this.$nextTick(() => {
       //   this.$refs.map.mapObject.fitBounds(this.maxBounds);
       // });
@@ -158,20 +137,21 @@ export default {
       this.$axios
         .$get(`/resolver/areas/${this.$route.params.name}`)
         .then(response => {
-          this.reports = response.data.reports;
-          this.loadingGetReports = false;
+          this.activeReports = response.data.activeReports
+          this.reports = response.data.reports
+          this.loadingGetReports = false
         })
         .catch(err => {
-          this.loadingGetReports = false;
-        });
+          this.loadingGetReports = false
+        })
     },
     setResolverChatBoxData(data) {
-      this.chat.reportId = null;
+      this.chat.reportId = null
       this.$nextTick(() => {
-        this.chat.reportId = data.reportId;
-        this.chat.isResolved = data.isResolved;
-      });
+        this.chat.reportId = data.reportId
+        this.chat.isResolved = data.isResolved
+      })
     }
   }
-};
+}
 </script>

@@ -12,7 +12,7 @@
     <div class="media-body">
       <label class="label-name">
         {{ message.user.firstName }} {{ message.user.middleName }} {{ message.user.lastName }}
-        <small>({{ message.sentAs === 'user' ? 'reporter' : message.sentAs }})</small>:
+        <small>({{ message.sentAs === 'user' ? 'reporter' : message.sentAs }} -> {{ message.sentTo === 'user' ? 'reporter' : message.sentTo }})</small>:
       </label>
       <span class="tiny pull-right">{{ $moment(message.createdAt).fromNow() }}</span>
       <small class="basic">{{ message.content }}</small>
@@ -31,12 +31,12 @@ export default {
   computed: {
     isSender() {
       const isUser =
-        this.$route.path.includes("report-tracker") ||
-        this.$route.path.includes("report-history");
-      return this.message.sentAs === "user" && isUser;
+        this.$route.path.includes('report-tracker') ||
+        this.$route.path.includes('report-history')
+      return this.message.sentAs === 'user' && isUser
     }
   }
-};
+}
 </script>
 
 <style scoped>
