@@ -1,5 +1,7 @@
 <template>
   <div class="h-65">
+    <LoginModal/>
+    <RegistrationModal/>
     <navbar class="user-menu h-65" :fixed-top="true">
       <div class="container h-65">
         <nuxt-link class="float-left pt-4 mr-6" slot="brand" to="/">
@@ -71,6 +73,18 @@
     </navbar>
   </div>
 </template>
+
+<script>
+import LoginModal from '~/components/LoginModal'
+import RegistrationModal from '~/components/RegistrationModal'
+
+export default {
+  components: {
+    LoginModal,
+    RegistrationModal
+  }
+}
+</script>
 
 <style scoped>
 .h-65 {

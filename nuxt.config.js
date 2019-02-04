@@ -53,6 +53,7 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    '~/plugins/globals.js',
     '~/plugins/utils.js',
     '~/plugins/vue-svgicon.js',
     '~/plugins/uiv.js',
@@ -134,7 +135,7 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend (config, ctx) {
+    extend(config, ctx) {
       config.resolve.alias['leaflet'] = path.join(
         __dirname,
         'node_modules/leaflet'
