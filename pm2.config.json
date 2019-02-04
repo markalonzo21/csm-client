@@ -1,0 +1,16 @@
+{
+  "apps": [
+    {
+      "name": "csm",
+      "script": "npm",
+      "args": "run start",
+      "instances": "max",
+      "exec_mode": "cluster",
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": "3000",
+        "HOST": "127.0.0.1"
+      }
+    }
+  ]
+}
