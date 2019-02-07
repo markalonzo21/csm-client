@@ -40,17 +40,17 @@
         <div class="col-md-6 text-center">
           <h4>Reports Per Month</h4>
           <ReportsBarChart
-            v-if="reportsPerMonth.labels.length > 0"
-            :labels="reportsPerMonth.labels"
             :datasets="reportsPerMonth.datasets"
+            :labels="reportsPerMonth.labels"
+            v-if="reportsPerMonth.labels.length > 0"
           />
         </div>
         <div class="col-md-6 text-center">
           <h4>Reports Per Category</h4>
           <ReportsPieChart
-            v-if="reportsPerCategory.labels.length > 0"
-            :labels="reportsPerCategory.labels"
             :datasets="reportsPerCategory.datasets"
+            :labels="reportsPerCategory.labels"
+            v-if="reportsPerCategory.labels.length > 0"
           />
         </div>
       </div>
@@ -94,16 +94,16 @@
 </template>
 
 <script>
-import TotalReportsCard from '~/components/DashboardCards/TotalReportsCard'
-import ResolvedReportsCard from '~/components/DashboardCards/ResolvedReportsCard'
-import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReportsCard'
-import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
-import EmergencyReportCards from '~/components/DashboardCards/EmergencyReportCards'
-import ReportsPieChart from '~/components/DashboardCharts/ReportsPieChart'
-import ReportsBarChart from '~/components/DashboardCharts/ReportsBarChart'
+import TotalReportsCard from "~/components/DashboardCards/TotalReportsCard";
+import ResolvedReportsCard from "~/components/DashboardCards/ResolvedReportsCard";
+import UnresolvedReportsCard from "~/components/DashboardCards/UnresolvedReportsCard";
+import CancelledReportsCard from "~/components/DashboardCards/CancelledReportsCard";
+import EmergencyReportCards from "~/components/DashboardCards/EmergencyReportCards";
+import ReportsPieChart from "~/components/DashboardCharts/ReportsPieChart";
+import ReportsBarChart from "~/components/DashboardCharts/ReportsBarChart";
 
 export default {
-  layout: 'command-center',
+  layout: "command-center",
   components: {
     TotalReportsCard,
     ResolvedReportsCard,
@@ -126,73 +126,73 @@ export default {
         datasets: []
       },
       fetchingDashboardDetails: false
-    }
+    };
   },
   mounted() {
-    this.fetchingDashboardDetails = true
-    const getDashboardDetails = this.$axios.$get('/admin/dashboard')
+    this.fetchingDashboardDetails = true;
+    const getDashboardDetails = this.$axios.$get("/admin/dashboard");
     const getreportsPerCategory = this.$axios.$get(
-      '/admin/dashboard/reports-per-category'
-    )
+      "/admin/dashboard/reports-per-category"
+    );
     const getReportsPerMonth = this.$axios.$get(
-      '/admin/dashboard/reports-per-month'
-    )
+      "/admin/dashboard/reports-per-month"
+    );
 
     Promise.all([
       getDashboardDetails,
       getreportsPerCategory,
       getReportsPerMonth
     ]).then(([dashboardDetails, reportsPerCategory, reportsPerMonth]) => {
-      this.dashboardDetails = dashboardDetails.data
-      this.reportsPerCategory = reportsPerCategory.data
-      this.reportsPerMonth = reportsPerMonth.data
-      this.fetchingDashboardDetails = false
-    })
+      this.dashboardDetails = dashboardDetails.data;
+      this.reportsPerCategory = reportsPerCategory.data;
+      this.reportsPerMonth = reportsPerMonth.data;
+      this.fetchingDashboardDetails = false;
+    });
 
-    this.initSocketListeners()
+    this.initSocketListeners();
   },
   beforeDestroy() {
-    this.$socket.off('new-report')
+    this.$socket.off("new-report");
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on('new-report', report => {
-        this.$notification['info']({
+      this.$socket.on("new-report", report => {
+        this.$notification["info"]({
           message: `New report received!`,
           description: `You received a ${
             report.type.name
           } report in ${report.type.category.name.toLowerCase()}.`,
           btn: h => {
             return h(
-              'a-button',
+              "a-button",
               {
                 props: {
-                  type: 'primary',
-                  size: 'small'
+                  type: "primary",
+                  size: "small"
                 },
                 on: {
                   click: () => {
                     var win = window.open(
                       `/command-center/reports/${report._id}`,
-                      '_blank'
-                    )
-                    win.focus()
+                      "_blank"
+                    );
+                    win.focus();
                   }
                 }
               },
-              'View report details.'
-            )
+              "View report details."
+            );
           }
-        })
-        this.dashboardDetails.reportsCount++
-        this.dashboardDetails.unresolvedReportsCount++
-        if (report.type.category.name === 'Emergency') {
-          this.dashboardDetails.emergencyReportsCount++
+        });
+        this.dashboardDetails.reportsCount++;
+        this.dashboardDetails.unresolvedReportsCount++;
+        if (report.type.category.name === "Emergency") {
+          this.dashboardDetails.emergencyReportsCount++;
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

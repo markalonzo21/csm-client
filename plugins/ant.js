@@ -17,7 +17,8 @@ import {
   Drawer,
   Breadcrumb,
   Dropdown,
-  Select
+  Select,
+  notification
 } from 'ant-design-vue/lib'
 
 Vue.use(Button)
@@ -35,3 +36,8 @@ Vue.use(Drawer)
 Vue.use(Breadcrumb)
 Vue.use(Dropdown)
 Vue.use(Select)
+
+export default function (ctx, inject) {
+  ctx.$notification = notification
+  inject('notification', notification)
+}

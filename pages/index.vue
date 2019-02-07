@@ -22,7 +22,10 @@
                   quibusdam aliquid, fugiat laboriosam maiores earum sint odio
                   quisquam harum deserunt. Aliquam, magnam.
                 </p>
-                <a href="#" class="btn btnblue">button</a>
+                <a
+                  class="btn btnblue"
+                  href="#"
+                >button</a>
               </div>
             </div>
           </div>
@@ -30,8 +33,17 @@
             <div class="panel">
               <div class="panel-body">
                 <h3 class="title__blue--large text-uppercase">Help us improve our site</h3>
-                <textarea name id cols="30" rows="6" class="form-control mb20"></textarea>
-                <a href="#" class="btn btnblue">Submit</a>
+                <textarea
+                  class="form-control mb20"
+                  cols="30"
+                  id
+                  name
+                  rows="6"
+                ></textarea>
+                <a
+                  class="btn btnblue"
+                  href="#"
+                >Submit</a>
               </div>
             </div>
           </div>
@@ -39,18 +51,22 @@
       </div>
     </section>
     <div class="ads ptpb40">
-      <img src="/img/wide-ads.png" alt class="img-responsive mrgnauto">
+      <img
+        alt
+        class="img-responsive mrgnauto"
+        src="/img/wide-ads.png"
+      >
     </div>
   </div>
 </template>
 <script>
-import HomeBanner from '~/components/Home/HomeBanner'
-import HomeFab from '~/components/Home/HomeFab'
-import HomeAnnouncements from '~/components/Home/HomeAnnouncements'
-import HomeNews from '~/components/Home/HomeNews'
+import HomeBanner from "~/components/Home/HomeBanner";
+import HomeFab from "~/components/Home/HomeFab";
+import HomeAnnouncements from "~/components/Home/HomeAnnouncements";
+import HomeNews from "~/components/Home/HomeNews";
 export default {
   auth: false,
-  layout: 'public',
+  layout: "public",
   components: {
     HomeBanner,
     HomeFab,
@@ -58,66 +74,66 @@ export default {
     HomeNews
   },
   asyncData({ $axios }) {
-    return $axios.$get('/advertisements').then(response => {
+    return $axios.$get("/advertisements").then(response => {
       return {
         advertisements: response.data
-      }
-    })
+      };
+    });
   }
-}
+};
 </script>
 <style>
-  .ptpb40 {
-    padding: 40px 0;
-  }
+.ptpb40 {
+  padding: 40px 0;
+}
 
-  .actionbtn {
-    position: fixed;
-    bottom: 5px;
-    right: 0;
-    z-index: 6;
-  }
-  .carousel-control.right,
-  .carousel-control.left {
-    background: transparent;
-  }
-  .banner img {
-     object-fit: cover;
-     height: 700px !important;
-     width: 100%;
-  }
-  .banner .left.carousel-control {
-    left: 15px;
-  }
-  .banner .right.carousel-control {
-    right: 15px;
-  }
-  .banner .carousel-control,
-  .ads .carousel-control {
-    width: 0;
-    opacity: 1;
-  }
-  .ads .carousel-control .glyphicon:before {
-    color: #344fa0;
-  }
-  .ads .left.carousel-control {
-    left: -15px;
-  }
-  .ads .right.carousel-control {
-    right: -15px;
-  }
-  .news.ads .item {
-    height: 150px;
-  }
-  .news.ads a {
-    font-size: 36px;
-    font-weight: 700;
-    color: #5f6772;
-    text-decoration: none;
-  }
-  .news.ads .newsitem {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.actionbtn {
+  position: fixed;
+  bottom: 5px;
+  right: 0;
+  z-index: 6;
+}
+.carousel-control.right,
+.carousel-control.left {
+  background: transparent;
+}
+.banner img {
+  object-fit: cover;
+  height: 700px !important;
+  width: 100%;
+}
+.banner .left.carousel-control {
+  left: 15px;
+}
+.banner .right.carousel-control {
+  right: 15px;
+}
+.banner .carousel-control,
+.ads .carousel-control {
+  width: 0;
+  opacity: 1;
+}
+.ads .carousel-control .glyphicon:before {
+  color: #344fa0;
+}
+.ads .left.carousel-control {
+  left: -15px;
+}
+.ads .right.carousel-control {
+  right: -15px;
+}
+.news.ads .item {
+  height: 150px;
+}
+.news.ads a {
+  font-size: 36px;
+  font-weight: 700;
+  color: #5f6772;
+  text-decoration: none;
+}
+.news.ads .newsitem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

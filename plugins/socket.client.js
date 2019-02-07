@@ -1,18 +1,17 @@
 import io from 'socket.io-client'
+import dotenv from 'dotenv'
+dotenv.config()
 
 export default function (ctx, inject) {
-  const API_URL =
-    process.env.API_URL === undefined
-      ? 'https://ireport-api.now.sh'
-      : process.env.API_URL
-
-  const socket = io(API_URL, {
+  const socket = io(process.env.API_URL, {
     reconnect: true,
     forceNew: true,
     transports: ['websocket'],
     query: {
       token: window.localStorage.getItem('auth._token.local')
-        ? window.localStorage.getItem('auth._token.local').replace('Bearer ', '')
+        ? window.localStorage
+          .getItem('auth._token.local')
+          .replace('Bearer ', '')
         : ''
     }
   })
