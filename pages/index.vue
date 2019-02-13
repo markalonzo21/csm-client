@@ -83,7 +83,7 @@ export default {
   }
   .banner img {
      object-fit: cover;
-     height: 700px !important;
+     height: 700px;
      width: 100%;
   }
   .banner .left.carousel-control {
