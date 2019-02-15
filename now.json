@@ -5,7 +5,11 @@
     "enabled": true
   },
   "env": {
-    "API_URL": "https://ireport-api.now.sh"
+    "NODE_ENV": "production",
+    "API_PROXY": true,
+    "API_URL": "https://csm.now.sh/api/v1",
+    "API_PROXY_TARGET": "https://csm-api.now.sh",
+    "API_URL_BROWSER": "https://csm.now.sh/api/v1"
   },
   "scale": {
     "sfo1": {

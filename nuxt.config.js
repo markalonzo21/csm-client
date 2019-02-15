@@ -7,11 +7,10 @@ module.exports = {
   serverMiddleware: ['~/serverMiddleware/selectiveSsr.js'],
   env: {
     NODE_ENV: process.env.NODE_ENV,
-    API_URL: process.env.API_URL,
-    API_URL_BROWSER: process.env.API_URL_BROWSER,
     API_PROXY: process.env.API_PROXY,
     API_PROXY_TARGET: process.env.API_PROXY_TARGET,
-    CLOUDINARY_URL: process.env.CLOUDINARY_URL
+    API_URL: process.env.API_URL,
+    API_URL_BROWSER: process.env.API_URL_BROWSER
   },
   /*
    ** Headers of the page
@@ -79,24 +78,17 @@ module.exports = {
   ],
 
   /**
-   * Proxy Module
-   */
-  proxy: {
-    '/api/': {
-      target: process.env.API_PROXY_TARGET
-        ? process.env.API_PROXY_TARGET
-        : 'http://localhost:3333',
-      pathRewrite: { '^/api/': '' }
-    }
-  },
-
-  /*
-   ** Axios module configuration
+   * Axios and Proxy Module
    */
   axios: {
     https: process.NODE_ENV === 'production',
-    proxy: process.env.API_PROXY == 'true'
-    // debug: true,
+    proxy: process.env.API_PROXY == 'true',
+    debug: process.env.API_DEBUG == 'true'
+  },
+  proxy: {
+    '/api': process.env.API_PROXY_TARGET
+      ? process.env.API_PROXY_TARGET
+      : 'http://localhost:3333'
   },
 
   router: {

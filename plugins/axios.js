@@ -9,5 +9,7 @@ export default function ({ $axios }) {
     return config
   })
 
-  $axios.onError(error => {})
+  $axios.onError(error => {
+    console.log(error.response.body)
+  })
 }
