@@ -1,0 +1,64 @@
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+     //Nav
+     .user-menu{
+        height: auto !important;
+        .navbar-brand {
+            padding: 5px 15px;
+        }
+        .navbar-nav {
+            display: inherit;
+            background: #fff;
+            margin-top: 0;
+            margin-bottom: 0;
+            box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, .75);
+        }
+    }
+
+    //Action button
+    .banner .actionbtn {
+        bottom: 35% !important;
+    }
+    .banner .actionbtn .forreport {
+        padding: 10px;
+    }
+    .banner .actionbtn a {
+        font-size: 18px;
+    }
+
+    //Banner
+    .banner img {
+        height: 200px !important;
+    }
+
+    //Ads
+    .ads .slide .left.carousel-control {
+        left: 0;
+        font-size: 18px;
+    }
+    .ads .slide .right.carousel-control {
+        right: 0;
+        font-size: 18px;
+    } 
+
+    .news.ads .slide a {
+        font-size: 18px;
+    }
+    
+    .container-bottom .row {
+        display: initial;
+        .panel-body {
+            padding: 15px;
+        }
+    }
+
+    //Report Tracker
+    .report-tracker {
+
+        .panel-body {
+            height: auto;
+            div {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}

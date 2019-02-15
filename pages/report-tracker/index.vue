@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content">
+  <div class="report-tracker main-content">
     <div class="container">
       <h1 class="title__black mt0 uppercase mb-10">Report Tracker</h1>
       <div v-if="reports.length === 0">
@@ -11,22 +11,22 @@
       </div>
       <div class="panel shadow" v-for="report in reports" :key="report._id">
         <div class="panel-body h-32 rounded-md">
-          <div class="col-sm-3">
+          <div class="col-sm-3 col-xs-6">
             <span class="bluelabel">Report ID</span>
             <br>
             {{ report._id }}
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-3 col-xs-6">
             <span class="bluelabel">Category</span>
             <br>
             {{ report.type.category.name }}
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-3 col-xs-6">
             <span class="bluelabel">Type</span>
             <br>
             {{ report.type.name }}
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-3 col-xs-6">
             <button
               class="btn btnblue"
               @click.prevent="$router.push(`/report-tracker/${report._id}`)"
