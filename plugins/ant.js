@@ -1,37 +1,43 @@
 import Vue from 'vue'
-// import Ant from 'ant-design-vue/lib'
-// Vue.use(Ant)
+import Ant from 'ant-design-vue/lib'
+Vue.use(Ant)
 
-import {
-  Button,
-  Tooltip,
-  Table,
-  Pagination,
-  Form,
-  Input,
-  Icon,
-  Checkbox,
-  Spin,
-  Menu,
-  Layout,
-  Drawer,
-  Breadcrumb,
-  Dropdown,
-  Select
-} from 'ant-design-vue/lib'
+// import {
+//   Button,
+//   Tooltip,
+//   Table,
+//   Pagination,
+//   Form,
+//   Input,
+//   Icon,
+//   Checkbox,
+//   Spin,
+//   Menu,
+//   Layout,
+//   Drawer,
+//   Breadcrumb,
+//   Dropdown,
+//   Select,
+//   notification
+// } from 'ant-design-vue/lib'
 
-Vue.use(Button)
-Vue.use(Tooltip)
-Vue.use(Table)
-Vue.use(Pagination)
-Vue.use(Form)
-Vue.use(Input)
-Vue.use(Icon)
-Vue.use(Checkbox)
-Vue.use(Spin)
-Vue.use(Menu)
-Vue.use(Layout)
-Vue.use(Drawer)
-Vue.use(Breadcrumb)
-Vue.use(Dropdown)
-Vue.use(Select)
+// Vue.use(Button)
+// Vue.use(Tooltip)
+// Vue.use(Table)
+// Vue.use(Pagination)
+// Vue.use(Form)
+// Vue.use(Input)
+// Vue.use(Icon)
+// Vue.use(Checkbox)
+// Vue.use(Spin)
+// Vue.use(Menu)
+// Vue.use(Layout)
+// Vue.use(Drawer)
+// Vue.use(Breadcrumb)
+// Vue.use(Dropdown)
+// Vue.use(Select)
+
+// export default function (ctx, inject) {
+//   ctx.$notification = notification
+//   inject('notification', notification)
+// }
