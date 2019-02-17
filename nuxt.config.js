@@ -88,6 +88,9 @@ module.exports = {
   proxy: {
     '/api': process.env.API_PROXY_TARGET
       ? process.env.API_PROXY_TARGET
+      : 'http://localhost:3333',
+    '/swagger': process.env.API_PROXY_TARGET
+      ? process.env.API_PROXY_TARGET
       : 'http://localhost:3333'
   },
 

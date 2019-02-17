@@ -1,24 +1,44 @@
 <template>
-  <modal v-model="loginModal" size="sm" :footer="false" class="login text-center mt-32">
+  <modal
+    :footer="false"
+    class="login text-center mt-32"
+    size="sm"
+    v-model="loginModal"
+  >
     <span slot="title">
-      <img src="/img/megaworld-logo.png" alt class="img-responsive mrgnauto">
+      <img
+        alt
+        class="img-responsive mrgnauto"
+        src="/img/megaworld-logo.png"
+      >
     </span>
-    <form @submit.prevent="login" class>
-      <input type="text" class="form-control mb20" placeholder="Email" v-model="form.email">
+    <form
+      @submit.prevent="login"
+      class
+    >
       <input
-        type="password"
+        class="form-control mb20"
+        placeholder="Email"
+        type="text"
+        v-model="form.email"
+      >
+      <input
         class="form-control mb20"
         placeholder="Enter Password"
+        type="password"
         v-model="form.password"
       >
       <small>
-        <a class="tiny pull-right mb20" href="#">Forgot password</a>
+        <a
+          class="tiny pull-right mb20"
+          href="#"
+        >Forgot password</a>
       </small>
       <div class="clearfix"></div>
       <button
-        type="submit"
-        class="btn btnblue w-100 text-uppercase"
         :disabled="loading"
+        class="btn btnblue w-100 text-uppercase"
+        type="submit"
       >{{ loading ? "Logging in..." : "Sign In" }}</button>
     </form>
   </modal>
@@ -29,10 +49,10 @@ export default {
   computed: {
     loginModal: {
       get() {
-        return this.$store.state.modals.login
+        return this.$store.state.modals.login;
       },
       set() {
-        return this.$store.commit('TOGGLE_LOGIN_MODAL')
+        return this.$store.commit("TOGGLE_LOGIN_MODAL");
       }
     }
   },
@@ -40,67 +60,69 @@ export default {
     return {
       loading: false,
       form: {
-        email: 'admin@gmail.com',
-        password: '123123123'
+        email: "admin@gmail.com",
+        password: "123123123"
       }
-    }
+    };
   },
   methods: {
     login() {
-      this.loading = true
+      this.loading = true;
       this.$auth
-        .loginWith('local', {
+        .loginWith("local", {
           data: {
             email: this.form.email,
             password: this.form.password
           }
         })
         .then(() => {
-          this.loading = false
-          const permissions = this.$store.state.auth.user.role.permissions
-          let redirectToHome = true
-          this.$store.commit('TOGGLE_LOGIN_MODAL')
+          this.loading = false;
+          const permissions = this.$store.state.auth.user.role.permissions;
+          let redirectToHome = true;
+          this.$store.commit("TOGGLE_LOGIN_MODAL");
+
+          this.socketConnect();
 
           for (let index = 0; index < permissions.length; index++) {
-            const permission = permissions[index]
+            const permission = permissions[index];
 
-            if (permission.name === 'view command center') {
-              redirectToHome = false
-              this.$router.push(`/command-center`)
-              break
+            if (permission.name === "view command center") {
+              redirectToHome = false;
+              this.$router.push(`/command-center`);
+              break;
             }
 
-            if (permission.name === 'resolve') {
-              redirectToHome = false
-              this.$router.push('/resolver')
-              break
+            if (permission.name === "resolve") {
+              redirectToHome = false;
+              this.$router.push("/resolver");
+              break;
             }
 
-            if (permission.name === 'respond') {
-              redirectToHome = false
-              this.$router.push('/responder')
-              break
+            if (permission.name === "respond") {
+              redirectToHome = false;
+              this.$router.push("/responder");
+              break;
             }
           }
 
           if (redirectToHome) {
-            this.$router.push('/')
+            this.$router.push("/");
           }
 
-          this.$notify('Login successful!')
+          this.$notify("Login successful!");
         })
         .catch(errors => {
-          console.log(errors.response.data)
-          alert('Invalid Credentials!')
-          this.loading = false
-        })
+          console.log(errors.response.data);
+          alert("Invalid Credentials!");
+          this.loading = false;
+        });
     },
     socketConnect() {
       this.$socket.query.token = localStorage
-        .getItem('auth._token.local')
-        .replace('Bearer ', '')
-      this.$socket.connect()
+        .getItem("auth._token.local")
+        .replace("Bearer ", "");
+      this.$socket.connect();
     }
   }
-}
+};
 </script>
