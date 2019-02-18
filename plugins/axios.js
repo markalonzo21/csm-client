@@ -10,6 +10,6 @@ export default function ({ $axios }) {
   })
 
   $axios.onError(error => {
-    console.log(error.response.body)
+    console.log({ 'error-response': error.response.body })
   })
 }

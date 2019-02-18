@@ -101,7 +101,7 @@ export default {
         const alreadyExists = this.messages.some(message => {
           return message._id.toString() === newMessage._id.toString();
         });
-        console.log(alreadyExists);
+        // console.log(alreadyExists);
 
         if (alreadyExists) {
           this.loadingSendMessage = false;
@@ -169,4 +169,3 @@ export default {
   color: #ccc;
 }
 </style>
-

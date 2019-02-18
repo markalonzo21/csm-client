@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export default function (ctx, inject) {
-  const socket = io(process.env.API_URL, {
+  const socket = io(process.env.API_PROXY_TARGET, {
     reconnect: true,
     forceNew: true,
     transports: ['websocket'],
