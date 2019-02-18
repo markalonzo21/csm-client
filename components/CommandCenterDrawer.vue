@@ -1,31 +1,30 @@
 <template>
   <div>
     <a-drawer
-      title="Navigate"
-      placement="left"
-      :closable="false"
-      @close="onClose"
       :visible="visible"
+      @close="onClose"
+      placement="left"
+      title="Navigate"
     >
       <a-menu
-        :defaultSelectedKeys="[$route.path]"
         :defaultOpenKeys="defaultOpenKeys"
+        :defaultSelectedKeys="[$route.path]"
         :style="{ height: '100%', borderRight: 0 }"
         theme="dark"
       >
         <a-menu-item
-          key="/command-center"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center' }"
+          key="/command-center"
           v-if="$store.getters['auth/hasPermission']('view command center')"
         >
           <nuxt-link to="/command-center">
             <a-icon type="dashboard"/>
             <span>Dashboard</span>
-          </nuxt-link>>
+          </nuxt-link>
         </a-menu-item>
         <a-menu-item
-          key="/command-center/incident-map"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/maps' }"
+          key="/command-center/incident-map"
           v-if="$store.getters['auth/hasPermission']('view maps')"
         >
           <nuxt-link to="/command-center/maps">
@@ -34,8 +33,8 @@
           </nuxt-link>>
         </a-menu-item>
         <a-menu-item
-          key="/command-center/roles"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/roles' }"
+          key="/command-center/roles"
           v-if="$store.getters['auth/hasPermission']('view roles')"
         >
           <nuxt-link to="/command-center/roles">
@@ -44,8 +43,8 @@
           </nuxt-link>
         </a-menu-item>
         <a-menu-item
-          key="/command-center/users"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/users' }"
+          key="/command-center/users"
           v-if="$store.getters['auth/hasPermission']('view users')"
         >
           <nuxt-link to="/command-center/users">
@@ -54,8 +53,8 @@
           </nuxt-link>
         </a-menu-item>
         <a-menu-item
-          key="/command-center/areas"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/areas' }"
+          key="/command-center/areas"
           v-if="$store.getters['auth/hasPermission']('view areas') || $store.getters['auth/hasSpecificArea']"
         >
           <nuxt-link to="/command-center/areas">
@@ -64,8 +63,8 @@
           </nuxt-link>
         </a-menu-item>
         <a-menu-item
-          key="/command-center/reports"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/reports' }"
+          key="/command-center/reports"
           v-if="$store.getters['auth/hasPermission']('view reports')"
         >
           <nuxt-link to="/command-center/reports">
@@ -74,8 +73,8 @@
           </nuxt-link>
         </a-menu-item>
         <a-menu-item
-          key="/command-center/report-categories"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/report-categories' }"
+          key="/command-center/report-categories"
           v-if="$store.getters['auth/hasPermission']('view report categories')"
         >
           <nuxt-link to="/command-center/report-categories">
@@ -84,8 +83,8 @@
           </nuxt-link>
         </a-menu-item>
         <a-menu-item
-          key="/command-center/report-types"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/report-types' }"
+          key="/command-center/report-types"
           v-if="$store.getters['auth/hasPermission']('view report types')"
         >
           <nuxt-link to="/command-center/report-types">
@@ -93,19 +92,9 @@
             <span>Report Types</span>
           </nuxt-link>
         </a-menu-item>
-        <!--       <a-menu-item
-        key="/command-center/response-types"
-        :class="{ 'ant-menu-item-selected': $route.path === '/command-center/response-types' }"
-        v-if="$store.getters['auth/hasPermission']('view response types')"
-      >
-        <nuxt-link to="/command-center/response-types">
-          <a-icon type="bars"/>
-          <span>Response Types</span>
-        </nuxt-link>
-        </a-menu-item>-->
         <a-menu-item
-          key="/command-center/advertisements"
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/advertisements' }"
+          key="/command-center/advertisements"
           v-if="$store.getters['auth/hasPermission']('view advertisements')"
         >
           <nuxt-link to="/command-center/advertisements">
@@ -120,14 +109,14 @@
 
 <script>
 export default {
-  props: ['visible'],
+  props: ["visible"],
   computed: {
     defaultOpenKeys() {
       return this.list
         .filter(item => {
-          return this.$route.path.includes(item.link)
+          return this.$route.path.includes(item.link);
         })
-        .map(item => item.link)
+        .map(item => item.link);
     }
   },
   data() {
@@ -146,22 +135,19 @@ export default {
         //   permissionNeeded: ["administrator"]
         // }
       ]
-    }
+    };
   },
   watch: {
     $route() {
-      this.$emit('close')
+      this.$emit("close");
     }
   },
   methods: {
-    showDrawer() {
-      this.$emit('open')
-    },
     onClose() {
-      this.$emit('close')
+      this.$emit("close");
     }
   }
-}
+};
 </script>
 
 <style>

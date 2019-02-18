@@ -72,30 +72,35 @@
             </div>
           </div>
           <div
-            class="border rounded bg-white py-6 px-6 mt-4"
+            class="border rounded bg-white py-6 px-6 mt-4 mb-4"
             v-if="report.media.length > 0"
           >
             <h4 class="font-bold mt-0 text-blue-darker">Media</h4>
-            <div
-              :key="media"
-              class="col-md-3"
-              v-for="media in report.media"
-            >
-              <img
-                :src="media"
-                alt="image-media"
-                v-if="$utils.isImage(media)"
-              >
-              <video
-                controls
-                v-else
-                width="300"
-              >
-                <source
-                  :src="media"
-                  type="video/mp4"
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  :key="media"
+                  class="inline-block mx-2"
+                  v-for="media in report.media"
                 >
-              </video>
+                  <img
+                    :src="media"
+                    alt="image-media"
+                    style="max-width: 80px; max-height: 80px;"
+                    v-if="$utils.isImage(media)"
+                  >
+                  <video
+                    controls
+                    v-else
+                    width="300"
+                  >
+                    <source
+                      :src="media"
+                      type="video/mp4"
+                    >
+                  </video>
+                </div>
+              </div>
             </div>
           </div>
         </div>
