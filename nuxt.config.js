@@ -81,6 +81,8 @@ module.exports = {
    * Axios and Proxy Module
    */
   axios: {
+    baseURL: process.env.API_URL ? process.env.API_URL : 'http://localhost:3000/api/v1',
+    browserBaseURL: process.env.API_URL_BROWSER ? process.env.API_URL_BROWSER : 'http://localhost:3000/api/v1',
     https: process.NODE_ENV === 'production',
     proxy: process.env.API_PROXY == 'true',
     debug: process.env.API_DEBUG == 'true'
