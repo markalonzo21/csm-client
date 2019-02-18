@@ -4,7 +4,7 @@
     <RegistrationModal/>
     <navbar class="user-menu h-65" :fixed-top="true">
       <a class="navbar-brand" slot="brand" href="/">
-          <img src="/img/megaworld-logo.png" alt class="responsive mrgnauto">
+          <img src="/img/sentinel-logo.png" alt class="responsive mrgnauto">
       </a>
       <template slot="collapse">
         <navbar-nav left v-if="$store.state.auth.loggedIn">

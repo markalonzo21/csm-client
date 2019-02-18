@@ -9,7 +9,7 @@
       <img
         alt
         class="img-responsive mrgnauto"
-        src="/img/megaworld-logo.png"
+        src="/img/sentinel-logo.png"
       >
     </span>
     <form
