@@ -9,7 +9,18 @@
         >
       </a>
     </div>-->
-    <div class="media-body">
+    <div
+      class="media-body text-center"
+      v-if="message.isSystemMessage"
+    >
+      <a-tooltip :title="$moment(message.createdAt).format('MMM. DD, YYYY | h:mm A ')">
+        <strong class="basic">{{ message.user.email }} {{ message.content.toLowerCase() }}</strong>
+      </a-tooltip>
+    </div>
+    <div
+      class="media-body"
+      v-else
+    >
       <label class="label-name">
         {{ message.user.firstName }} {{ message.user.middleName }} {{ message.user.lastName }}
         <small>({{ message.sentAs === 'user' ? 'reporter' : message.sentAs }} -> {{ message.sentTo === 'user' ? 'reporter' : message.sentTo }})</small>:
@@ -31,12 +42,12 @@ export default {
   computed: {
     isSender() {
       const isUser =
-        this.$route.path.includes('report-tracker') ||
-        this.$route.path.includes('report-history')
-      return this.message.sentAs === 'user' && isUser
+        this.$route.path.includes("report-tracker") ||
+        this.$route.path.includes("report-history");
+      return this.message.sentAs === "user" && isUser;
     }
   }
-}
+};
 </script>
 
 <style scoped>

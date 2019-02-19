@@ -172,7 +172,7 @@
               <span v-if="!report.responder">{{ report.status }}</span>
               <select class="capitalize" @change="statusChanged" v-else>
                 <option
-                  v-for="status in ['pending', 'in-progress', 'resolved', 'cancelled']"
+                  v-for="status in ['pending', 'in progress', 'resolved', 'cancelled']"
                   class="capitalize"
                   :selected="status === form.status"
                 >{{ status }}</option>

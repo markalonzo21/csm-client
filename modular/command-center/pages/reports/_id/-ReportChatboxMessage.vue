@@ -1,10 +1,20 @@
 <template>
   <div>
-    <div class :class="isSender ? 'me' : 'chatmate'">
+    <div
+      :class="isSender ? 'me' : 'chatmate'"
+      class
+      v-if="!message.isSystemMessage"
+    >
       <p class="basic">
-        <strong v-if="!isSender" class="capitalize">{{ message.sentAs }}:&nbsp;</strong>
+        <strong class="capitalize">{{ message.sentAs }}:&nbsp;</strong>
         {{ message.content }}
       </p>
+    </div>
+    <div
+      class="text-center"
+      v-else
+    >
+      <p class="basic">{{ message.user.email }} {{ message.content.toLowerCase() }}</p>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -21,10 +31,10 @@ export default {
   computed: {
     isSender() {
       const isUser =
-        this.$route.path.includes('report-tracker') ||
-        this.$route.path.includes('report-history')
-      return this.message.sentAs === 'user' && isUser
+        this.$route.path.includes("report-tracker") ||
+        this.$route.path.includes("report-history");
+      return this.message.sentAs === "user" && isUser;
     }
   }
-}
+};
 </script>

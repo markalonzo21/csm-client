@@ -19,8 +19,8 @@
           <div class="col-md-3">
             <div class="text-blue-light font-semibold"></div>
             <button
-              class="btn btnblue capitalize"
               @click.prevent="showChatHistory = !showChatHistory"
+              class="btn btnblue capitalize"
             >View Chat History</button>
           </div>
           <div class="col-md-3 mt-4">
@@ -39,27 +39,52 @@
             <div class="text-blue-light font-semibold">Resolved Date</div>
             <div>{{ $moment(report.resolvedAt).format('MMM. DD, YYYY | h:mm A') }}</div>
           </div>
-          <div class="col-md-12" v-if="report.media.length > 0">
+          <div
+            class="col-md-12"
+            v-if="report.media.length > 0"
+          >
             <h3 class="title__blue mb30">Media</h3>
             <div class="row">
-              <div class="col-md-3" v-for="media in report.media" :key="media">
-                <img :src="media" alt="image-media" v-if="$utils.isImage(media)">
-                <video width="300" controls v-else>
-                  <source :src="media" type="video/mp4">
+              <div
+                :key="media"
+                class="col-md-3"
+                v-for="media in report.media"
+              >
+                <img
+                  :src="media"
+                  alt="image-media"
+                  v-if="$utils.isImage(media)"
+                >
+                <video
+                  controls
+                  v-else
+                  width="300"
+                >
+                  <source
+                    :src="media"
+                    type="video/mp4"
+                  >
                 </video>
               </div>
             </div>
           </div>
         </div>
-        <div class="row border rounded bg-white py-6 px-6" v-if="report.location !== null">
+        <div
+          class="row border rounded bg-white py-6 px-6"
+          v-if="report.location !== null"
+        >
           <h4 class="font-bold mt-0 text-blue-darker">Incident Location</h4>
-          <div id="map-wrap" style="height: 300px; width: 100%;" class="mt-4">
+          <div
+            class="mt-4"
+            id="map-wrap"
+            style="height: 300px; width: 100%;"
+          >
             <no-ssr>
               <l-map
                 :center="report.map.center"
-                :zoom="report.map.zoom"
-                :minZoom="report.map.minZoom"
                 :maxZoom="report.map.maxZoom"
+                :minZoom="report.map.minZoom"
+                :zoom="report.map.zoom"
                 ref="map"
               >
                 <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
@@ -71,19 +96,15 @@
       </div>
     </div>
     <ChatBox
-      v-if="showChatHistory"
-      :reportId="report._id"
       :isResolved="report.resolvedAt !== null"
+      :reportId="report._id"
+      v-if="showChatHistory"
     />
   </div>
 </template>
 
 <script>
-import ChatBox from "~/components/ChatBox";
 export default {
-  components: {
-    ChatBox
-  },
   asyncData({ $axios, params, isServer }) {
     return $axios.$get(`/reports/${params.id}`).then(response => {
       const lat = response.data.location

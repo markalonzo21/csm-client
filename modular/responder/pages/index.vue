@@ -52,11 +52,9 @@
 </template>
 
 <script>
-import ChatBox from "~/components/ChatBox";
 import ResponderActiveReportPanel from "~/components/ResponderActiveReportPanel";
 export default {
   components: {
-    ChatBox,
     ResponderActiveReportPanel
   },
   async fetch({ $axios, store, redirect }) {
