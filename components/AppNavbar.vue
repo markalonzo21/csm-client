@@ -12,9 +12,9 @@
         slot="brand"
       >
         <img
+          :src="$store.state.settings.logo"
           alt
           class="responsive mrgnauto"
-          src="/img/sentinel-logo.png"
         >
       </a>
       <template slot="collapse">

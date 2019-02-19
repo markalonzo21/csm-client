@@ -6,6 +6,7 @@ module.exports = {
   mode: 'universal',
   serverMiddleware: ['~/serverMiddleware/selectiveSsr.js'],
   env: {
+    APP_NAME: process.env.APP_NAME,
     NODE_ENV: process.env.NODE_ENV,
     API_PROXY: process.env.API_PROXY,
     API_PROXY_TARGET: process.env.API_PROXY_TARGET,
@@ -16,14 +17,14 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: 'CSM Report',
+    title: 'IEM',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: 'CSM Report Application'
+        content: 'IEM Application'
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -81,8 +82,12 @@ module.exports = {
    * Axios and Proxy Module
    */
   axios: {
-    baseURL: process.env.API_URL ? process.env.API_URL : 'http://localhost:3000/api/v1',
-    browserBaseURL: process.env.API_URL_BROWSER ? process.env.API_URL_BROWSER : 'http://localhost:3000/api/v1',
+    baseURL: process.env.API_URL
+      ? process.env.API_URL
+      : 'http://localhost:3000/api/v1',
+    browserBaseURL: process.env.API_URL_BROWSER
+      ? process.env.API_URL_BROWSER
+      : 'http://localhost:3000/api/v1',
     https: process.NODE_ENV === 'production',
     proxy: process.env.API_PROXY == 'true',
     debug: process.env.API_DEBUG == 'true'

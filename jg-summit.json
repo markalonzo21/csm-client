@@ -1,0 +1,24 @@
+{
+  "name": "jg-summit",
+  "alias": "jg-summit.now.sh",
+  "github": {
+    "enabled": true
+  },
+  "env": {
+    "APP_NAME": "JG-SUMMMIT",
+    "NODE_ENV": "production",
+    "API_PROXY": "true",
+    "API_URL": "https://jg-summit.now.sh/api/v1",
+    "API_PROXY_TARGET": "https://jg-summit-api.now.sh",
+    "API_URL_BROWSER": "https://jg-summit.now.sh/api/v1"
+  },
+  "scale": {
+    "sfo1": {
+      "min": 1,
+      "max": 1
+    }
+  },
+  "engines": {
+    "node": "^10.0.0"
+  }
+}

@@ -48,6 +48,9 @@
               v-if="windowWidth <= 330"
             >{{ $store.state.auth.user.email }}</a-menu-item>
             <a-menu-divider v-if="windowWidth <= 330"></a-menu-divider>
+            <a-menu-item key="5">
+              <nuxt-link to="/">Home</nuxt-link>
+            </a-menu-item>
             <a-menu-item
               key="0"
               v-if="$store.getters['auth/hasPermission']('resolve')"
@@ -60,6 +63,7 @@
             >
               <nuxt-link to="/responder">Responder Dashboard</nuxt-link>
             </a-menu-item>
+
             <a-menu-item key="2">
               <a @click.prevent="$store.dispatch('auth/logout')">Log Out</a>
             </a-menu-item>
@@ -144,9 +148,9 @@ export default {
 <style>
 #components-layout-demo-fixed .logo {
   width: 120px;
-  height: 31px;
+  /* height: 31px; */
   background-image: url("/img/sentinel-logo.png");
-  background-size: 120px 31px !important;
+  /* background-size: 120px 31px !important; */
   background-size: cover;
   /* background-color: white; */
   margin: 16px 24px 16px 0;
