@@ -14,7 +14,7 @@
         <img
           alt
           class="responsive mrgnauto"
-          src="/img/megaworld-logo.png"
+          src="/img/sentinel-logo.png"
         >
       </a>
       <template slot="collapse">

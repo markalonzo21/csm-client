@@ -67,9 +67,14 @@
         </a-dropdown>
       </a-menu>
     </a-layout-header>
+<<<<<<< HEAD
 
     <a-layout-content :style="{ padding: isDesktopWidth ? '0 50px' : '0', marginTop: '64px' }">
       <a-breadcrumb style="margin: 16px 20px">
+=======
+    <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
+      <a-breadcrumb style="margin: 16px 0">
+>>>>>>> 3ff9bc8ce731954fc1ab2eba7e87dcacee2d5140
         <a-breadcrumb-item
           :key="`crumb-${index}`"
           v-for="(crumb, index) in crumbs"
@@ -115,13 +120,17 @@ export default {
         });
       }
       return items;
+<<<<<<< HEAD
     },
     isDesktopWidth() {
       return this.windowWidth >= 1024;
+=======
+>>>>>>> 3ff9bc8ce731954fc1ab2eba7e87dcacee2d5140
     }
   },
   data() {
     return {
+<<<<<<< HEAD
       isDrawerVisible: false,
       windowWidth: window.innerWidth
     };
@@ -137,6 +146,10 @@ export default {
         this.windowWidth = window.innerWidth;
       });
     });
+=======
+      isDrawerVisible: false
+    };
+>>>>>>> 3ff9bc8ce731954fc1ab2eba7e87dcacee2d5140
   }
 };
 </script>
@@ -145,9 +158,14 @@ export default {
 #components-layout-demo-fixed .logo {
   width: 120px;
   height: 31px;
-  background-image: url("/img/megaworld-logo.png");
+<<<<<<< HEAD
+  background-image: url("/img/sentinel-logo.png");
+=======
+  background-image: url("/img/sentinel-logo.png");
+  background-size: 120px 31px !important;
+>>>>>>> 3ff9bc8ce731954fc1ab2eba7e87dcacee2d5140
   background-size: cover;
-  background-color: white;
+  /* background-color: white; */
   margin: 16px 24px 16px 0;
   float: left;
 }
