@@ -12,7 +12,7 @@ export const state = () => ({
 export const actions = {
   async nuxtServerInit ({ commit }, context) {
     let logoPath = '/img/sentinel-logo.png'
-    if (process.env.APP_NAME === 'CSM') {
+    if (process.env.APP_NAME.includes('CSM')) {
       logoPath = '/img/megaworld-logo.png'
     }
     commit('SET_LOGO', logoPath)

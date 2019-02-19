@@ -7,7 +7,7 @@
     />
     <a-layout-header :style="{ position: 'fixed', zIndex: 401, width: '100%' }">
       <nuxt-link
-        class="logo cursor-pointer"
+        class="cursor-pointer"
         to="/"
       ></nuxt-link>
       <a-menu

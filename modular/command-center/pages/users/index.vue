@@ -1,214 +1,318 @@
 <template>
-  <section class="w-full select-none" style="width: 100%">
+  <section
+    class="w-full select-none"
+    style="width: 100%"
+  >
     <!-- CREATE USER -->
-    <modal v-model="isCreateUserModalVisible" title="Create User" :footer="false">
-      <form @submit.prevent="createUser" class="clearfix">
+    <modal
+      :footer="false"
+      title="Create User"
+      v-model="isCreateUserModalVisible"
+    >
+      <form
+        @submit.prevent="createUser"
+        class="clearfix"
+      >
         <div class="form-group">
           <input
-            type="text"
             class="form-control"
             placeholder="first name"
-            v-model="form.firstName"
             required
+            type="text"
+            v-model="form.firstName"
           >
         </div>
         <div class="form-group">
           <input
-            type="text"
             class="form-control"
             placeholder="middle name"
+            type="text"
             v-model="form.middleName"
           >
         </div>
         <div class="form-group">
           <input
-            type="text"
             class="form-control"
             placeholder="last name"
-            v-model="form.lastName"
             required
+            type="text"
+            v-model="form.lastName"
           >
         </div>
         <div class="form-group">
           <input
-            type="email"
             class="form-control"
             placeholder="email"
-            v-model="form.email"
             required
+            type="email"
+            v-model="form.email"
           >
         </div>
         <div class="form-group">
           <div class="input-group">
             <span class="input-group-addon">+63</span>
             <input
-              type="text"
               class="form-control"
-              pattern="\d*"
               maxlength="10"
+              pattern="\d*"
               placeholder="mobile"
-              v-model="form.mobile"
               required
+              type="text"
+              v-model="form.mobile"
             >
           </div>
         </div>
         <div class="form-group">
           <input
-            type="password"
             class="form-control"
             placeholder="password"
-            v-model="form.password"
             required
+            type="password"
+            v-model="form.password"
           >
         </div>
         <div class="form-group">
           <input
-            type="password"
             class="form-control"
             placeholder="password confirmation"
-            v-model="form.password_confirmation"
             required
+            type="password"
+            v-model="form.password_confirmation"
           >
         </div>
         <div class="form-group">
-          <select v-model="form.role" class="form-control">
-            <option v-for="role in roles" :key="role._id" :value="role.slug">{{ role.name }}</option>
+          <select
+            class="form-control"
+            v-model="form.role"
+          >
+            <option
+              :key="role._id"
+              :value="role.slug"
+              v-for="role in roles"
+            >{{ role.name }}</option>
           </select>
         </div>
-        <div class="form-group text-center" v-if="selectedRoleCanRespond">
-          <label for>Actionable Report Type</label>
-          <div v-for="category in reportCategories">
+        <div
+          class="form-group text-center"
+          v-if="selectedRoleNeedsArea"
+        >
+          <label for>Assign Areas</label>
+          <div
+            :key="area._id"
+            class="checkbox"
+            v-for="area in areas"
+          >
+            <label>
+              <input
+                :value="area._id"
+                type="checkbox"
+                v-model="form.areas"
+              >
+              {{ area.name }}
+            </label>
+          </div>
+        </div>
+        <div
+          class="form-group text-center"
+          v-if="selectedRoleCanRespond"
+        >
+          <label for>Assign Actionable Report Types</label>
+          <div
+            :key="category._id"
+            v-for="category in reportCategories"
+          >
             <h5
               class="font-bold"
               v-if="category.types.length > 0"
             >{{ category.name }}</h5>
-            <div class="checkbox" v-for="type in category.types">
+            <div
+              class="checkbox"
+              v-for="type in category.types"
+            >
               <label>
-                <input type="checkbox" v-model="form.types" :value="type._id">
+                <input
+                  :value="type._id"
+                  type="checkbox"
+                  v-model="form.types"
+                >
                 {{ type.name }}
               </label>
             </div>
           </div>
         </div>
         <button
-          class="btn btn-primary float-right"
           :disabled="loadingCreateUser"
+          class="btn btn-primary float-right"
         >{{ loadingCreateUser ? 'Loading' : 'Save' }}</button>
       </form>
     </modal>
     <!-- EDIT USER -->
-    <modal v-model="isEditModalVisible" title="Edit User" :footer="false">
-      <form @submit.prevent="updateUser" class="clearfix">
+    <modal
+      :footer="false"
+      title="Edit User"
+      v-model="isEditModalVisible"
+    >
+      <form
+        @submit.prevent="updateUser"
+        class="clearfix"
+      >
         <div class="form-group">
           <input
-            type="text"
             class="form-control"
             placeholder="first name"
-            v-model="editForm.firstName"
             required
+            type="text"
+            v-model="editForm.firstName"
           >
         </div>
         <div class="form-group">
           <input
-            type="text"
             class="form-control"
             placeholder="middle name"
+            type="text"
             v-model="editForm.middleName"
           >
         </div>
         <div class="form-group">
           <input
-            type="text"
             class="form-control"
             placeholder="last name"
-            v-model="editForm.lastName"
             required
+            type="text"
+            v-model="editForm.lastName"
           >
         </div>
         <div class="form-group">
           <input
-            type="email"
             class="form-control"
             placeholder="email"
-            v-model="editForm.email"
             required
+            type="email"
+            v-model="editForm.email"
           >
         </div>
         <div class="form-group">
           <div class="input-group">
             <span class="input-group-addon">+63</span>
             <input
-              type="text"
               class="form-control"
-              pattern="\d*"
               maxlength="10"
+              pattern="\d*"
               placeholder="mobile"
-              v-model="editForm.mobile"
               required
+              type="text"
+              v-model="editForm.mobile"
             >
           </div>
         </div>
         <div class="form-group">
           <input
-            type="password"
             class="form-control"
             placeholder="password"
-            v-model="editForm.password"
             required
+            type="password"
+            v-model="editForm.password"
           >
         </div>
         <div class="form-group">
           <input
-            type="password"
             class="form-control"
             placeholder="password confirmation"
-            v-model="editForm.password_confirmation"
             required
+            type="password"
+            v-model="editForm.password_confirmation"
           >
         </div>
         <div class="form-group">
-          <select v-model="editForm.role" class="form-control">
-            <option v-for="role in roles" :key="role._id" :value="role.slug">{{ role.name }}</option>
+          <select
+            class="form-control"
+            v-model="editForm.role"
+          >
+            <option
+              :key="role._id"
+              :value="role.slug"
+              v-for="role in roles"
+            >{{ role.name }}</option>
           </select>
         </div>
-        <div class="form-group text-center" v-if="editSelectedRoleCanRespond">
+        <div
+          class="form-group text-center"
+          v-if="editSelectedRoleNeedsArea"
+        >
+          <label for>Assign Areas</label>
+          <div
+            :key="area._id"
+            class="checkbox"
+            v-for="area in areas"
+          >
+            <label>
+              <input
+                :value="area._id"
+                type="checkbox"
+                v-model="editForm.areas"
+              >
+              {{ area.name }}
+            </label>
+          </div>
+        </div>
+        <div
+          class="form-group text-center"
+          v-if="editSelectedRoleCanRespond"
+        >
           <label for>Actionable Report Type</label>
           <div v-for="category in reportCategories">
             <h5
               class="font-bold"
               v-if="category.types.length > 0"
             >{{ category.name }}</h5>
-            <div class="checkbox" v-for="type in category.types">
+            <div
+              class="checkbox"
+              v-for="type in category.types"
+            >
               <label>
-                <input type="checkbox" v-model="editForm.types" :value="type._id">
+                <input
+                  :value="type._id"
+                  type="checkbox"
+                  v-model="editForm.types"
+                >
                 {{ type.name }}
               </label>
             </div>
           </div>
         </div>
         <button
-          class="btn btn-primary float-right"
           :disabled="loadingUpdateUser"
+          class="btn btn-primary float-right"
         >{{ loadingUpdateUser ? 'Loading' : 'Update' }}</button>
       </form>
     </modal>
     <div class="clearfix">
       <h3 class="float-left">Users</h3>
       <a-button
-        type="primary"
-        class="float-right my-6"
         @click.prevent="isCreateUserModalVisible = true"
+        class="float-right my-6"
+        type="primary"
       >Create User</a-button>
     </div>
     <hr>
 
     <!-- TABLE -->
-    <a-table :loading="loadingGetUsers" bordered :scroll="{ x: 900 }" :dataSource="users" :columns="columns">
-      <template slot="canRespondTo" slot-scope="text, record">
+    <a-table
+      :columns="columns"
+      :dataSource="users"
+      :loading="loadingGetUsers"
+      :rowKey="record => record._id"
+      :scroll="{ x: 900 }"
+      bordered
+    >
+      <template
+        slot="canRespondTo"
+        slot-scope="text, record"
+      >
         <ul class="list-reset">
           <li
-            v-for="(item, index) in record.canRespondTo"
             :key="`respond-${index}`"
+            v-for="(item, index) in record.canRespondTo"
           >{{ index + 1 }}. {{ item.name }}</li>
         </ul>
       </template>
@@ -216,9 +320,20 @@
         slot="createdAt"
         slot-scope="text, user"
       >{{ user.createdAt ? $moment(user.createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
-      <template slot="actions" slot-scope="text, user, index">
-        <a-button type="primary" @click.prevent="showEditModal(user, index)">Edit</a-button>
-        <a-popconfirm title="Are you sure delete this user?" @confirm="deleteUser(user)" okText="Yes" cancelText="No">
+      <template
+        slot="actions"
+        slot-scope="text, user, index"
+      >
+        <a-button
+          @click.prevent="showEditModal(user, index)"
+          type="primary"
+        >Edit</a-button>
+        <a-popconfirm
+          @confirm="deleteUser(user)"
+          cancelText="No"
+          okText="Yes"
+          title="Are you sure delete this user?"
+        >
           <a-button type="danger">Delete</a-button>
         </a-popconfirm>
       </template>
@@ -229,17 +344,19 @@
 
 <script>
 export default {
-  layout: 'command-center/default',
+  layout: "command-center/default",
   data() {
     return {
       isCreateUserModalVisible: false,
       isEditModalVisible: false,
       loadingGetUsers: false,
       loadingGetRoles: false,
+      loadingGetAreas: false,
       loadingGetReportTypes: false,
       loadingUpdateUser: false,
       users: [],
       roles: [],
+      areas: [],
       reportCategories: [],
       loadingCreateUser: false,
       columns: [
@@ -289,8 +406,9 @@ export default {
         lastName: "",
         email: "",
         mobile: "",
-        role: 'user',
-        types: []
+        role: "user",
+        types: [],
+        areas: []
       },
       editForm: {
         id: null,
@@ -300,8 +418,9 @@ export default {
         lastName: "",
         email: "",
         mobile: "",
-        role: 'user',
-        types: []
+        role: "user",
+        types: [],
+        areas: []
       }
     };
   },
@@ -309,40 +428,50 @@ export default {
     this.getReportTypes();
     this.getUsers();
     this.getRoles();
+    this.getAreas();
     this.generateFakeData();
   },
   computed: {
     selectedRole() {
-      return this.roles.find(role => role.slug === this.form.role)
+      return this.roles.find(role => role.slug === this.form.role);
+    },
+    selectedRoleNeedsArea() {
+      if (!this.selectedRole) return false;
+      return this.selectedRole.slug !== "user";
     },
     selectedRoleCanRespond() {
-      if (this.selectedRole) {
-        return this.selectedRole.permissions.find(permission => permission.name === 'respond')
-      }
+      if (!this.selectedRole) return false;
 
-      return false
+      return this.selectedRole.permissions.find(
+        permission => permission.name === "respond"
+      );
     },
     editSelectedRole() {
-      return this.roles.find(role => role.slug === this.editForm.role)
+      return this.roles.find(role => role.slug === this.editForm.role);
     },
     editSelectedRoleCanRespond() {
-      if (this.editSelectedRole) {
-        return this.editSelectedRole.permissions.find(permission => permission.name === 'respond')
-      }
-
-      return false
+      if (!this.editSelectedRole) return false;
+      return this.editSelectedRole.permissions.find(
+        permission => permission.name === "respond"
+      );
     },
+    editSelectedRoleNeedsArea() {
+      if (!this.editSelectedRole) return false;
+      return this.editSelectedRole.slug !== "user";
+    }
   },
   methods: {
     showEditModal(user, index) {
+      console.log(user);
       this.isEditModalVisible = true;
-      this.editForm.index = index
-      this.editForm.id = user._id
+      this.editForm.index = index;
+      this.editForm.id = user._id;
       this.editForm.firstName = user.firstName;
       this.editForm.lastName = user.lastName;
       this.editForm.email = user.email;
       this.editForm.mobile = user.mobile;
       this.editForm.role = user.role.slug;
+      this.editForm.areas = user.areas ? user.areas : [];
       this.editForm.password = "123123123";
       this.editForm.password_confirmation = "123123123";
       this.editForm.types = user.canRespondTo.map(type => type._id);
@@ -355,7 +484,7 @@ export default {
         .getTime()
         .toString()
         .substr(5)}`;
-      this.form.role = 'user'
+      this.form.role = "user";
       this.form.password = "123123123";
       this.form.password_confirmation = "123123123";
       this.form.types = [];
@@ -374,6 +503,13 @@ export default {
         this.loadingGetRoles = false;
       });
     },
+    getAreas() {
+      this.loadingGetAreas = true;
+      this.$axios.$get("/admin/areas").then(response => {
+        this.areas = response.data;
+        this.loadingGetAreas = false;
+      });
+    },
     getUsers() {
       this.loadingGetUsers = true;
       this.$axios.$get("/admin/users").then(response => {
@@ -382,56 +518,76 @@ export default {
       });
     },
     updateUser() {
-      if (! this.$store.getters['auth/hasPermission']('update user')) {
-        this.isEditModalVisible = false
-        this.$message.error('You don\'t have the permission to update a user.')
-        return
+      if (!this.$store.getters["auth/hasPermission"]("update user")) {
+        this.isEditModalVisible = false;
+        this.$message.error("You don't have the permission to update a user.");
+        return;
       }
 
       this.loadingUpdateUser = true;
 
       this.editForm.mobile = `0${this.editForm.mobile}`;
       if (!this.editSelectedRoleCanRespond) {
-        this.types = []
+        this.types = [];
       }
-      this.editForm.role = this.editSelectedRole._id
+      this.editForm.role = this.editSelectedRole._id;
 
-      this.$axios.$patch(`/admin/users/${this.editForm.id}`, this.editForm).then(response => {
-        this.users[this.editForm.index] = response.data
-        this.editForm.index = null
-        this.editForm.id = null
-        this.generateFakeData()
-        this.loadingUpdateUser = false;
-        this.isEditModalVisible = false;
-      });
+      this.$axios
+        .$patch(`/admin/users/${this.editForm.id}`, this.editForm)
+        .then(response => {
+          this.users[this.editForm.index] = response.data;
+          this.editForm.index = null;
+          this.editForm.id = null;
+          this.loadingUpdateUser = false;
+          this.isEditModalVisible = false;
+        });
     },
     createUser() {
+      if (!this.$store.getters["auth/hasPermission"]("create user")) {
+        this.isCreateUserModalVisible = false;
+        this.$message.error("You don't have the permission to create a user.");
+        return;
+      }
+
       this.loadingCreateUser = true;
       this.form.mobile = `0${this.form.mobile}`;
       if (!this.selectedRoleCanRespond) {
-        this.types = []
+        this.types = [];
       }
-      this.form.role = this.selectedRole._id
+      this.form.role = this.selectedRole._id;
       this.$axios.$post("/admin/users", this.form).then(response => {
         this.generateFakeData();
-        this.users.push(response.data);
         this.loadingCreateUser = false;
         this.isCreateUserModalVisible = false;
+
+        this.$nextTick(() => {
+          this.users.push(response.data);
+        });
       });
     },
+    resetFormData() {
+      this.form.firstName = "";
+      this.form.lastName = "";
+      this.form.email = "";
+      this.form.mobile = "";
+      this.form.role = "user";
+      this.form.password = "";
+      this.form.password_confirmation = "";
+      this.form.types = [];
+    },
     deleteUser(user, index) {
-      if (! this.$store.getters['auth/hasPermission']('delete user')) {
-        this.$message.error('You don\'t have the permission to delete a user.')
-        return
+      if (!this.$store.getters["auth/hasPermission"]("delete user")) {
+        this.$message.error("You don't have the permission to delete a user.");
+        return;
       }
 
-      if (['admin', 'super-admin'].includes(user.role.slug)) {
-        this.$message.error('This user can\'t be deleted')
-        return
+      if (["admin", "super-admin"].includes(user.role.slug)) {
+        this.$message.error("This user can't be deleted");
+        return;
       }
 
       this.$axios.$delete(`/admin/users/${user._id}`).then(response => {
-        this.users.splice(index, 1)
+        this.users.splice(index, 1);
       });
     }
   }

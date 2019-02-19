@@ -5,7 +5,7 @@
     "enabled": true
   },
   "env": {
-    "APP_NAME": "CSM",
+    "APP_NAME": "CSM Report",
     "NODE_ENV": "production",
     "API_PROXY": "true",
     "API_URL": "https://csm.now.sh/api/v1",

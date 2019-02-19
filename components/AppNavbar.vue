@@ -13,7 +13,8 @@
       >
         <img
           :src="$store.state.settings.logo"
-          alt
+          :style="{ margin: $store.state.settings.logo.includes('sentinel') ? '-5px auto' : ''}"
+          alt="logo"
           class="responsive mrgnauto"
         >
       </a>

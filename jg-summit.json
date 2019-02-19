@@ -5,7 +5,7 @@
     "enabled": true
   },
   "env": {
-    "APP_NAME": "JG-SUMMMIT",
+    "APP_NAME": "IEM",
     "NODE_ENV": "production",
     "API_PROXY": "true",
     "API_URL": "https://jg-summit.now.sh/api/v1",
