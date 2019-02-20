@@ -133,7 +133,7 @@
                 <input
                   :value="type._id"
                   type="checkbox"
-                  v-model="form.types"
+                  v-model="form.canRespondTo"
                 >
                 {{ type.name }}
               </label>
@@ -273,7 +273,7 @@
                 <input
                   :value="type._id"
                   type="checkbox"
-                  v-model="editForm.types"
+                  v-model="editForm.canRespondTo"
                 >
                 {{ type.name }}
               </label>
@@ -407,7 +407,7 @@ export default {
         email: "",
         mobile: "",
         role: "user",
-        types: [],
+        canRespondTo: [],
         areas: []
       },
       editForm: {
@@ -419,7 +419,7 @@ export default {
         email: "",
         mobile: "",
         role: "user",
-        types: [],
+        canRespondTo: [],
         areas: []
       }
     };
@@ -474,7 +474,7 @@ export default {
       this.editForm.areas = user.areas ? user.areas : [];
       this.editForm.password = "123123123";
       this.editForm.password_confirmation = "123123123";
-      this.editForm.types = user.canRespondTo.map(type => type._id);
+      this.editForm.canRespondTo = user.canRespondTo.map(type => type._id);
     },
     generateFakeData() {
       this.form.firstName = this.$chance.first();
@@ -487,7 +487,7 @@ export default {
       this.form.role = "user";
       this.form.password = "123123123";
       this.form.password_confirmation = "123123123";
-      this.form.types = [];
+      this.form.canRespondTo = [];
     },
     getReportTypes() {
       this.loadingGetReportTypes = true;
@@ -573,7 +573,7 @@ export default {
       this.form.role = "user";
       this.form.password = "";
       this.form.password_confirmation = "";
-      this.form.types = [];
+      this.form.canRespondTo = [];
     },
     deleteUser(user, index) {
       if (!this.$store.getters["auth/hasPermission"]("delete user")) {
