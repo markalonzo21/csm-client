@@ -93,6 +93,22 @@
           </select>
         </div>
         <div
+          class="form-group"
+          v-if="selectedRoleCanRespond"
+        >
+          <select
+            class="form-control"
+            placeholder="Select Main Category"
+            v-model="form.category"
+          >
+            <option
+              :key="category._id"
+              :value="category._id"
+              v-for="category in categories"
+            >{{ category.name }}</option>
+          </select>
+        </div>
+        <div
           class="form-group text-center"
           v-if="selectedRoleNeedsArea"
         >
@@ -119,13 +135,14 @@
           <label for>Assign Actionable Report Types</label>
           <div
             :key="category._id"
-            v-for="category in reportCategories"
+            v-for="category in createAvailableCategories"
           >
             <h5
               class="font-bold"
               v-if="category.types.length > 0"
             >{{ category.name }}</h5>
             <div
+              :key="type._id"
               class="checkbox"
               v-for="type in category.types"
             >
@@ -235,6 +252,18 @@
             >{{ role.name }}</option>
           </select>
         </div>
+        <select
+          class="form-control"
+          placeholder="Select Main Category"
+          v-if="editSelectedRoleCanRespond"
+          v-model="editForm.category"
+        >
+          <option
+            :key="category._id"
+            :value="category._id"
+            v-for="category in categories"
+          >{{ category.name }}</option>
+        </select>
         <div
           class="form-group text-center"
           v-if="editSelectedRoleNeedsArea"
@@ -260,12 +289,16 @@
           v-if="editSelectedRoleCanRespond"
         >
           <label for>Actionable Report Type</label>
-          <div v-for="category in reportCategories">
+          <div
+            :key="category._id"
+            v-for="category in editAvailableCategories"
+          >
             <h5
               class="font-bold"
               v-if="category.types.length > 0"
             >{{ category.name }}</h5>
             <div
+              :key="type._id"
               class="checkbox"
               v-for="type in category.types"
             >
@@ -357,7 +390,7 @@ export default {
       users: [],
       roles: [],
       areas: [],
-      reportCategories: [],
+      categories: [],
       loadingCreateUser: false,
       columns: [
         {
@@ -407,6 +440,7 @@ export default {
         email: "",
         mobile: "",
         role: "user",
+        category: "",
         canRespondTo: [],
         areas: []
       },
@@ -419,6 +453,7 @@ export default {
         email: "",
         mobile: "",
         role: "user",
+        category: "",
         canRespondTo: [],
         areas: []
       }
@@ -430,6 +465,24 @@ export default {
     this.getRoles();
     this.getAreas();
     this.generateFakeData();
+  },
+  watch: {
+    "selectedRole.slug"(value) {
+      if (value === "responder") {
+        this.form.category = this.categories[0]._id;
+      }
+    },
+    "editSelectedRole.slug"(value) {
+      if (value === "responder") {
+        this.editForm.category = this.categories[0]._id;
+      }
+    },
+    "form.category"(value) {
+      this.form.canRespondTo = [];
+    },
+    "editForm.category"(newValue, oldValue) {
+      this.editForm.canRespondTo = [];
+    }
   },
   computed: {
     selectedRole() {
@@ -458,11 +511,20 @@ export default {
     editSelectedRoleNeedsArea() {
       if (!this.editSelectedRole) return false;
       return this.editSelectedRole.slug !== "user";
+    },
+    createAvailableCategories() {
+      return this.categories.filter(
+        item => item._id.toString() === this.form.category.toString()
+      );
+    },
+    editAvailableCategories() {
+      return this.categories.filter(
+        item => String(item._id) === String(this.editForm.category)
+      );
     }
   },
   methods: {
     showEditModal(user, index) {
-      console.log(user);
       this.isEditModalVisible = true;
       this.editForm.index = index;
       this.editForm.id = user._id;
@@ -474,7 +536,10 @@ export default {
       this.editForm.areas = user.areas ? user.areas : [];
       this.editForm.password = "123123123";
       this.editForm.password_confirmation = "123123123";
-      this.editForm.canRespondTo = user.canRespondTo.map(type => type._id);
+      this.editForm.category = user.category;
+      this.$nextTick(() => {
+        this.editForm.canRespondTo = user.canRespondTo.map(type => type._id);
+      });
     },
     generateFakeData() {
       this.form.firstName = this.$chance.first();
@@ -492,7 +557,7 @@ export default {
     getReportTypes() {
       this.loadingGetReportTypes = true;
       this.$axios.$get("/report-categories").then(response => {
-        this.reportCategories = response.data;
+        this.categories = response.data;
         this.loadingGetReportTypes = false;
       });
     },

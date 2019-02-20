@@ -108,6 +108,11 @@ module.exports = {
   auth: {
     redirect: false,
     watchLoggedIn: false,
+    cookies: {
+      options: {
+        expires: 1000
+      }
+    },
     strategies: {
       local: {
         endpoints: {

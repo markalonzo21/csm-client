@@ -18,7 +18,7 @@
             v-model="form.name"
           >
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <input
             class="form-control"
             placeholder="Color"
@@ -26,7 +26,7 @@
             type="color"
             v-model="form.color"
           >
-        </div>
+        </div> -->
         <!-- <div class="form-group">
           <textarea
             type="text"
@@ -167,10 +167,10 @@ export default {
           dataIndex: "name",
           scopedSlots: { customRender: "name" }
         },
-        {
-          title: "Color",
-          dataIndex: "color"
-        },
+        // {
+        //   title: "Color",
+        //   dataIndex: "color"
+        // },
         {
           title: "Actions",
           dataIndex: "actions",
@@ -179,7 +179,7 @@ export default {
       ],
       form: {
         name: "",
-        color: "",
+        // color: "",
         description: "",
         category: "",
         milestones: []
@@ -204,7 +204,7 @@ export default {
     },
     generateFakeData() {
       this.form.name = "";
-      this.form.color = this.$chance.color({ format: "hex" });
+      // this.form.color = this.$chance.color({ format: "hex" });
       this.form.description = "";
     },
     getReportTypes() {
