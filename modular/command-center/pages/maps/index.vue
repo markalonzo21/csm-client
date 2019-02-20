@@ -51,6 +51,14 @@
             <l-popup :content="showReportContent(report)"></l-popup>
           </l-marker>
         </l-marker-cluster>
+        <l-marker
+          :icon="$utils.getHumanIcon(asset.user.category.color)"
+          :key="`asset-${index}`"
+          :lat-lng="[asset.location.coordinates[1], asset.location.coordinates[0]]"
+          v-for="(asset, index) in assetsLocation"
+        >
+          <l-popup :content="showAssetContent(asset)"></l-popup>
+        </l-marker>
         <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
       </l-map>
       <hr>
@@ -262,6 +270,7 @@ export default {
           area: null,
           loadingReports: false,
           reports: [],
+          assetsLocation: [],
           // Filter Form
           form: {
             id: "",
@@ -290,6 +299,7 @@ export default {
     );
   },
   mounted() {
+    this.initSocketListeners();
     this.getReports();
   },
   computed: {
@@ -311,6 +321,20 @@ export default {
     }
   },
   methods: {
+    initSocketListeners() {
+      this.$socket.on("send-location", assetLocation => {
+        const index = this.assetsLocation.findIndex(
+          asset =>
+            asset.user._id.toString() === assetLocation.user._id.toString()
+        );
+
+        if (index !== -1) {
+          this.assetsLocation.splice(index, 1);
+        }
+
+        this.assetsLocation.push(assetLocation);
+      });
+    },
     getReports() {
       this.loadingReports = true;
 
@@ -446,6 +470,26 @@ export default {
           <tr>
             <td>Type</td>
             <td>${report.type.name}</td>
+          </tr>
+        </tbody>
+      </table>`;
+    },
+    showAssetContent(assetLocation) {
+      return `      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <td>Responder</td>
+            <td>${assetLocation.user.email}</td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td>${assetLocation.user.category.name}</td>
+          </tr>
+          <tr>
+            <td>Time Location Sent</td>
+            <td>${this.$moment(assetLocation.createdAt).format(
+              "MMM. DD, YYYY | h:mm A "
+            )}</td>
           </tr>
         </tbody>
       </table>`;

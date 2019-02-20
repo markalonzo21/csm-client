@@ -29,6 +29,22 @@ const isImage = src => {
   return false
 }
 
+const getHumanIcon = color => {
+  const svg = `<svg style="fill: ${color};  width: 3rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zM7 6v2a3 3 0 1 0 6 0V6a3 3 0 1 0-6 0zm-3.65 8.44a8 8 0 0 0 13.3 0 15.94 15.94 0 0 0-13.3 0z"/></svg>`
+  return L.divIcon({
+    className: 'human-pin',
+    // iconAnchor: [0, 24],
+    // labelAnchor: [-6, 0],
+    // popupAnchor: [0, -36],
+    html: svg
+  })
+  // var iconUrl = 'data:image/svg+xml;base64,' + btoa(svg)
+
+  // return L.icon({
+  //   iconUrl: iconUrl
+  // })
+}
+
 const getIcon = color => {
   const markerHtmlStyles = `
     background-color: ${color};
@@ -68,6 +84,7 @@ export default function (ctx, inject) {
     hasPermission,
     hasSpecificArea,
     isImage,
+    getHumanIcon,
     getIcon,
     serialize
   }
@@ -76,6 +93,7 @@ export default function (ctx, inject) {
     hasPermission,
     hasSpecificArea,
     isImage,
+    getHumanIcon,
     getIcon,
     serialize
   })
