@@ -91,7 +91,9 @@
         <nuxt/>
       </div>
     </a-layout-content>
-    <a-layout-footer :style="{ textAlign: 'center' }">© 2018 Powered by Systems Terasoft Inc.</a-layout-footer>
+    <!-- <a-layout-footer :style="{ textAlign: 'center' }">© 2018
+      Powered by Systems Terasoft Inc.
+    </a-layout-footer>-->
   </a-layout>
 </template>
 

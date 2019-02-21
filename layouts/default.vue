@@ -2,7 +2,7 @@
   <div class="bg-grey-lighter">
     <AppNavbar/>
     <nuxt/>
-    <AppFooter/>
+    <!-- <AppFooter/> -->
   </div>
 </template>
 
