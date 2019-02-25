@@ -75,7 +75,8 @@ module.exports = {
     '@nuxtjs/auth',
     '@nuxtjs/dotenv',
     '@nuxtjs/moment',
-    '@cknow/nuxt-modular'
+    '@cknow/nuxt-modular',
+    'nuxt-client-init-module'
   ],
 
   /**
@@ -106,7 +107,12 @@ module.exports = {
   },
 
   auth: {
-    redirect: false,
+    redirect: {
+      login: '/',
+      logout: '/',
+      callback: false,
+      home: false
+    },
     watchLoggedIn: false,
     cookies: {
       options: {

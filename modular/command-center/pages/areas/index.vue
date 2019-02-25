@@ -4,22 +4,26 @@
       <h3 class="float-left">Areas</h3>
       <nuxt-link to="/command-center/areas/create">
         <a-button
-          type="primary"
           class="float-right my-6"
+          type="primary"
           v-if="$store.getters['auth/hasPermission']('create area')"
         >Create Area</a-button>
       </nuxt-link>
     </div>
     <hr>
     <a-table
-      :loading="loadingGetAreas"
-      bordered
-      :scroll="{ x: 900 }"
-      :dataSource="dataSource"
       :columns="columns"
+      :dataSource="dataSource"
+      :loading="loadingGetAreas"
+      :rowKey="area => area._id"
+      :scroll="{ x: 900 }"
+      bordered
     >
       <!-- <template slot="description" slot-scope="text">{{ text }}</template> -->
-      <template slot="actions" slot-scope="text, record">
+      <template
+        slot="actions"
+        slot-scope="text, record"
+      >
         <a-button type="primary">
           <nuxt-link :to="`/command-center/areas/${record.name}`">Show</nuxt-link>
         </a-button>
@@ -30,28 +34,28 @@
 
 <script>
 export default {
-  layout: 'command-center/default',
+  layout: "command-center/default",
   asyncData({ store, redirect }) {
     if (
-      store.getters['auth/hasPermission']('view areas') ||
-      store.getters['auth/hasSpecificArea']
+      store.getters["auth/hasPermission"]("view areas") ||
+      store.getters["auth/hasSpecificArea"]
     ) {
-      return
+      return;
     }
-    return redirect('/')
+    return redirect("/");
   },
   data() {
     return {
       loadingGetAreas: true,
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          scopedSlots: { customRender: 'name' }
+          title: "Name",
+          dataIndex: "name",
+          scopedSlots: { customRender: "name" }
         },
         {
-          title: 'Department',
-          dataIndex: 'department'
+          title: "Department",
+          dataIndex: "department"
         },
         // {
         //   title: 'Description',
@@ -59,22 +63,22 @@ export default {
         //   scopedSlots: { customRender: 'description' }
         // },
         {
-          title: 'Actions',
-          dataIndex: 'actions',
-          scopedSlots: { customRender: 'actions' }
+          title: "Actions",
+          dataIndex: "actions",
+          scopedSlots: { customRender: "actions" }
         }
       ],
       dataSource: []
-    }
+    };
   },
   mounted() {
-    this.loadingGetAreas = true
-    this.$axios.$get('/admin/areas').then(response => {
-      this.dataSource = response.data
-      this.loadingGetAreas = false
-    })
+    this.loadingGetAreas = true;
+    this.$axios.$get("/admin/areas").then(response => {
+      this.dataSource = response.data;
+      this.loadingGetAreas = false;
+    });
   }
-}
+};
 </script>
 
 <!--<script>

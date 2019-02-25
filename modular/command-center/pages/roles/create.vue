@@ -1,94 +1,102 @@
 <template>
-  <a-form class="container clearfix" @submit.prevent="createRole">
+  <a-form
+    @submit.prevent="createRole"
+    class="container clearfix"
+  >
     <h3 class="mt-0">Create Role</h3>
     <div class="form-group">
-      <a-input v-model="form.name" placeholder="Role Name" />
+      <a-input
+        placeholder="Role Name"
+        v-model="form.name"
+      />
     </div>
     <div class="form-group">
       <h5 class="font-bold">Permissions</h5>
-      <CommandCenterCreateRolePermissionGroup
-        v-if="categories"
-        v-for="(category, index) in categories"
-        :permissions="permissions"
-        :selectedPermissions="form.permissions"
+      <RolePermissionGroup
         :category="category"
         :key="`category-${index}`"
-        @removePermissions="removePermissions"
+        :permissions="permissions"
+        :selectedPermissions="form.permissions"
         @mergePermissions="mergePermissions"
+        @removePermissions="removePermissions"
+        v-for="(category, index) in categories"
       />
     </div>
-    </div>
     <a-button
-      type="primary"
+      :loading="loadingCreateRole"
       htmlType="submit"
-      :disabled="loadingCreateRole"
-    >{{ loadingCreateRole ? 'Loading' : 'Save' }}</a-button>
+      type="primary"
+    >Save</a-button>
   </a-form>
 </template>
 
 <script>
-  import CommandCenterCreateRolePermissionGroup from '~/components/CommandCenterCreateRolePermissionGroup'
-  export default {
-    layout: 'command-center/default',
-    components: {
-      CommandCenterCreateRolePermissionGroup
+import RolePermissionGroup from "./-RolePermissionGroup";
+export default {
+  layout: "command-center/default",
+  components: {
+    RolePermissionGroup
+  },
+  asyncData({ $axios, store, redirect }) {
+    if (!store.getters["auth/hasPermission"]("create role")) {
+      return redirect("/");
+    }
+
+    return $axios.$get("/admin/permissions").then(response => {
+      return {
+        loadingCreateRole: false,
+        permissions: response.data,
+        form: {
+          name: "",
+          description: "",
+          permissions: []
+        }
+      };
+    });
+  },
+  computed: {
+    categories() {
+      return this.permissions
+        .map(permission => permission.category)
+        .filter((v, i, a) => a.indexOf(v) === i);
+    }
+  },
+  methods: {
+    mergePermissions(values) {
+      for (var i = 0; i < values.length; i++) {
+        const value = this.permissions.find(
+          permission => permission.name === values[i]
+        )._id;
+        this.form.permissions.push(value);
+      }
     },
-    asyncData({ $axios, store, redirect }) {
-      if (!store.getters["auth/hasPermission"]("create role")) {
-        return redirect("/");
+    removePermissions(values) {
+      for (var i = 0; i < values.length; i++) {
+        const value = this.permissions.find(
+          permission => permission.name === values[i]
+        )._id;
+        this.form.permissions.splice(value, 1);
+      }
+    },
+    createRole() {
+      this.loadingCreateRole = true;
+
+      if (this.form.name.trim().length === 0) {
+        this.$message.error("Role name is required!");
+        this.loadingCreateRole = false;
+        return;
       }
 
-      return $axios.$get("/admin/permissions").then(response => {
-        return {
-          loadingCreateRole: false,
-          permissions:  response.data,
-          form: {
-            name: "",
-            description: "",
-            permissions: []
-          }
-        }
-      })
-    },
-    computed: {
-      categories() {
-        return this.permissions
-          .map(permission => permission.category)
-          .filter((v, i, a) => a.indexOf(v) === i)
+      if (this.form.permissions.length === 0) {
+        this.$message.error("A permission is required!");
+        this.loadingCreateRole = false;
+        return;
       }
-    },
-    methods: {
-      mergePermissions(values) {
-        for (var i = 0; i < values.length; i++) {
-          const value = this.permissions.find(permission => permission.name === values[i])._id
-          this.form.permissions.push(value)
-        }
-      },
-      removePermissions(values) {
-        for (var i = 0; i < values.length; i++) {
-          const value = this.permissions.find(permission => permission.name === values[i])._id
-          this.form.permissions.splice(value, 1);
-        }
-      },
-      createRole() {
-        this.loadingCreateRole = true;
 
-        if (this.form.name.trim().length === 0) {
-          this.$message.error('Role name is required!')
-          this.loadingCreateRole = false;
-          return
-        }
-
-        if (this.form.permissions.length === 0) {
-          this.$message.error('A permission is required!')
-          this.loadingCreateRole = false;
-          return
-        }
-
-        this.$axios.$post("/admin/roles", this.form).then(response => {
-          this.$router.push('/command-center/roles')
-        });
-      },
+      this.$axios.$post("/admin/roles", this.form).then(response => {
+        this.$router.push("/command-center/roles");
+      });
     }
   }
+};
 </script>

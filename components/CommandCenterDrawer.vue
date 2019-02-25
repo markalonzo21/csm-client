@@ -102,6 +102,16 @@
             <span>Advertisements</span>
           </nuxt-link>
         </a-menu-item>
+        <a-menu-item
+          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/canned-responses' }"
+          key="/command-center/canned-responses"
+          v-if="$store.getters['auth/hasPermission']('view canned responses')"
+        >
+          <nuxt-link to="/command-center/canned-responses">
+            <a-icon type="bars"/>
+            <span>Canned Responses</span>
+          </nuxt-link>
+        </a-menu-item>
       </a-menu>
     </a-drawer>
   </div>

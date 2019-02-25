@@ -197,7 +197,7 @@
 
 
 <script>
-import ResolverCommentBox from "~/components/ResolverCommentBox";
+import ResolverCommentBox from "./-ResolverCommentBox";
 export default {
   components: {
     ResolverCommentBox

@@ -26,7 +26,7 @@
             type="color"
             v-model="form.color"
           >
-        </div> -->
+        </div>-->
         <!-- <div class="form-group">
           <textarea
             type="text"
@@ -118,6 +118,7 @@
       :columns="columns"
       :dataSource="types"
       :loading="loadingGetReportTypes"
+      :rowKey="type => type._id"
       :scroll="{ x: 900 }"
       bordered
     >
@@ -189,7 +190,7 @@ export default {
   mounted() {
     this.getReportTypes();
     this.getReportCategories();
-    this.getResponseTypes();
+    // this.getResponseTypes();
     this.generateFakeData();
   },
   watch: {

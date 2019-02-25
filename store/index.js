@@ -16,6 +16,13 @@ export const actions = {
       logoPath = '/img/megaworld-logo.png'
     }
     commit('SET_LOGO', logoPath)
+  },
+  async nuxtClientInit ({ commit }, context) {
+    let logoPath = '/img/sentinel-logo.png'
+    if (process.env.APP_NAME.includes('CSM')) {
+      logoPath = '/img/megaworld-logo.png'
+    }
+    commit('SET_LOGO', logoPath)
   }
 }
 

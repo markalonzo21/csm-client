@@ -151,7 +151,7 @@ export default {
 #components-layout-demo-fixed .logo {
   width: 120px;
   /* height: 31px; */
-  background-image: url("/img/sentinel-logo.png");
+  /* background-image: url("/img/sentinel-logo.png"); */
   /* background-size: 120px 31px !important; */
   background-size: cover;
   /* background-color: white; */

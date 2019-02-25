@@ -7,9 +7,9 @@
   >
     <span slot="title">
       <img
+        :src="$store.state.settings.logo"
         alt
         class="img-responsive mrgnauto"
-        src="/img/sentinel-logo.png"
       >
     </span>
     <form

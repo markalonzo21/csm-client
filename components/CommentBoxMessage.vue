@@ -21,12 +21,15 @@
       class="media-body"
       v-else
     >
-      <label class="label-name">
+      <label class="label-name pull-left">
         {{ message.user.firstName }} {{ message.user.middleName }} {{ message.user.lastName }}
-        <small>({{ message.sentAs === 'user' ? 'reporter' : message.sentAs }} -> {{ message.sentTo === 'user' ? 'reporter' : message.sentTo }})</small>:
+        <small>({{ message.sentAs === 'user' ? 'reporter' : message.sentAs }} to {{ message.sentTo === 'user' ? 'reporter' : message.sentTo }})</small>:
       </label>
       <span class="tiny pull-right">{{ $moment(message.createdAt).fromNow() }}</span>
-      <small class="basic">{{ message.content }}</small>
+      <small
+        class="basic"
+        style="white-space: pre-wrap;"
+      >{{ message.content }}</small>
     </div>
   </div>
 </template>
