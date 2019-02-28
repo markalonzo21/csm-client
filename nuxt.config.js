@@ -52,20 +52,20 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [
-    '~/plugins/axios.js',
-    '~/plugins/globals.js',
-    '~/plugins/utils.js',
-    '~/plugins/vue-svgicon.js',
-    '~/plugins/uiv.js',
-    '~/plugins/ant.js',
-    '~/plugins/vue-chance.client.js',
-    '~/plugins/vue2-leaflet.client.js',
-    '~/plugins/vue2-leaflet-heatmap.client.js',
-    '~/plugins/socket.client.js',
-    '~/plugins/vue-geolocation.client.js',
-    '~/plugins/leaflet-draw.client.js'
-  ],
+  // plugins: [
+  //   '~/plugins/axios.js',
+  //   '~/plugins/globals.js',
+  //   '~/plugins/utils.js',
+  //   '~/plugins/vue-svgicon.js',
+  //   '~/plugins/uiv.js',
+  //   '~/plugins/ant.js',
+  //   '~/plugins/vue-chance.client.js',
+  //   '~/plugins/vue2-leaflet.client.js',
+  //   '~/plugins/vue2-leaflet-heatmap.client.js',
+  //   '~/plugins/socket.client.js',
+  //   '~/plugins/vue-geolocation.client.js',
+  //   '~/plugins/leaflet-draw.client.js'
+  // ],
 
   /*
    ** Nuxt.js modules
