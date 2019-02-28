@@ -144,7 +144,7 @@
 
 
 <script>
-import ResponderCommentBox from "~/components/ResponderCommentBox";
+import ResponderCommentBox from "./-ResponderCommentBox";
 export default {
   components: {
     ResponderCommentBox

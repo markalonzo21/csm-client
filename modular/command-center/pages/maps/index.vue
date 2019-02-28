@@ -251,8 +251,12 @@
 </template>
 
 <script>
+import LeafletHeatmap from "./-LeafletHeatmap";
 export default {
   layout: "command-center/default",
+  components: {
+    LeafletHeatmap
+  },
   asyncData({ $axios, error }) {
     const getCategories = $axios.$get("/report-categories");
     const getReports = $axios.$get("/admin/reports");

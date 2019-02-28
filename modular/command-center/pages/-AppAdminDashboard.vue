@@ -54,53 +54,18 @@
           />
         </div>
       </div>
-      <!-- <div class="col-md-12 mt-12">
-        <h3 class="title__gray--small">Reports Heat Map</h3>
-        <div id="map-wrap" style="height: 500px; width: 100%;">
-            <l-map
-              :center="center"
-              :maxBounds="maxBounds"
-              :zoom="zoom"
-              :minZoom="minZoom"
-              :maxZoom="maxZoom"
-              :maxBoundsViscosity="maxBoundsViscosity"
-              ref="map"
-            >
-              <l-tile-layer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
-              <LeafletHeatmap
-                v-if="reports.length > 0 && !loadingHeats"
-                :lat-lng="heats"
-                :radius="15"
-                :min-opacity="0.75"
-                :blur="15"
-              ></LeafletHeatmap>
-            </l-map>
-        </div>
-        <div class="my-4">
-          <select v-model="type" required class="p-2">
-            <option :value="null">Select Type</option>
-            <option v-for="type in types" :key="type._id" :value="type._id" v-text="type.name"></option>
-          </select>
-          <select v-model="resolvedOrUnresolved" required class="p-2">
-            <option value="both">Both</option>
-            <option value="resolved">Resolved Only</option>
-            <option value="unresolved">Unresolved Only</option>
-          </select>
-          <span class="ml-2" v-if="loadingHeats">LOADING HEATS</span>
-        </div>
-      </div>-->
     </div>
   </section>
 </template>
 
 <script>
-import TotalReportsCard from "~/components/DashboardCards/TotalReportsCard";
-import ResolvedReportsCard from "~/components/DashboardCards/ResolvedReportsCard";
-import UnresolvedReportsCard from "~/components/DashboardCards/UnresolvedReportsCard";
-import CancelledReportsCard from "~/components/DashboardCards/CancelledReportsCard";
-import EmergencyReportCards from "~/components/DashboardCards/EmergencyReportCards";
-import ReportsPieChart from "~/components/DashboardCharts/ReportsPieChart";
-import ReportsBarChart from "~/components/DashboardCharts/ReportsBarChart";
+import TotalReportsCard from "~/modular/command-center/components/DashboardCards/TotalReportsCard";
+import ResolvedReportsCard from "~/modular/command-center/components/DashboardCards/ResolvedReportsCard";
+import UnresolvedReportsCard from "~/modular/command-center/components/DashboardCards/UnresolvedReportsCard";
+import CancelledReportsCard from "~/modular/command-center/components/DashboardCards/CancelledReportsCard";
+import EmergencyReportCards from "~/modular/command-center/components/DashboardCards/EmergencyReportCards";
+import ReportsPieChart from "~/modular/command-center/components/DashboardCharts/ReportsPieChart";
+import ReportsBarChart from "~/modular/command-center/components/DashboardCharts/ReportsBarChart";
 
 export default {
   layout: "command-center",

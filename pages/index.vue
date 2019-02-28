@@ -60,10 +60,10 @@
   </div>
 </template>
 <script>
-import HomeBanner from "~/components/Home/HomeBanner";
-import HomeFab from "~/components/Home/HomeFab";
-import HomeAnnouncements from "~/components/Home/HomeAnnouncements";
-import HomeNews from "~/components/Home/HomeNews";
+import HomeBanner from "./-HomeBanner";
+import HomeFab from "./-HomeFab";
+import HomeAnnouncements from "./-HomeAnnouncements";
+import HomeNews from "./-HomeNews";
 export default {
   auth: false,
   layout: "public",

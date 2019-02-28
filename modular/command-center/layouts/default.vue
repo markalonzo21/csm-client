@@ -1,6 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-fixed">
-    <CommandCenterDrawer
+    <Drawer
       :visible="isDrawerVisible"
       @close="isDrawerVisible = false"
       @open="isDrawerVisible = true"
@@ -98,11 +98,11 @@
 </template>
 
 <script>
-import CommandCenterDrawer from "~/components/CommandCenterDrawer";
+import Drawer from "~/modular/command-center/layouts/-Drawer";
 
 export default {
   components: {
-    CommandCenterDrawer
+    Drawer
   },
   computed: {
     crumbs() {

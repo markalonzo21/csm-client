@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-4 left-content">
           <h1 class="title__black mt0 uppercase ml-2">Active Reports</h1>
-          <ResponderActiveReportPanel :report="report"/>
+          <ActiveReportPanel :report="report"/>
         </div>
         <div class="col-md-8 right-content">
           <section class="user-dashboard mx-auto">
@@ -52,10 +52,10 @@
 </template>
 
 <script>
-import ResponderActiveReportPanel from "~/components/ResponderActiveReportPanel";
+import ActiveReportPanel from "./-ActiveReportPanel";
 export default {
   components: {
-    ResponderActiveReportPanel
+    ActiveReportPanel
   },
   async fetch({ $axios, store, redirect }) {
     if (!store.getters["auth/hasPermission"]("respond")) {

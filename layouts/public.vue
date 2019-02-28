@@ -2,13 +2,13 @@
   <section>
     <AppNavbar/>
     <nuxt/>
-    <!-- <AppFooter/> -->
+    <AppFooter v-if="$store.state.settings.logo === '/img/megaworld-logo.png'"/>
   </section>
 </template>
 
 <script>
-import AppNavbar from "~/components/AppNavbar";
-import AppFooter from "~/components/AppFooter";
+import AppNavbar from "~/layouts/-AppNavbar";
+import AppFooter from "~/layouts/-AppFooter";
 
 export default {
   components: {

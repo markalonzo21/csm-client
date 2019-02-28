@@ -20,7 +20,7 @@
         class="input-group"
       >
         <input
-          :disabled="report.resolvedAt !== null || loadingGetMessages"
+          :disabled="report.resolvedAt !== null"
           class="form-control"
           placeholder="Write something here ..."
           ref="chatMessageInput"
@@ -29,7 +29,7 @@
         >
         <div class="input-group-btn">
           <button
-            :disabled="report.resolvedAt !== null || loadingSendMessage || loadingGetMessages"
+            :disabled="report.resolvedAt !== null || loadingSendMessage"
             class="btn bluelabel text-uppercase"
             type="submit"
           >{{ loadingSendMessage ? 'Sending...' : 'Send' }}</button>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import CommentBoxMessage from "./CommentBoxMessage";
+import CommentBoxMessage from "~/components/CommentBoxMessage";
 
 export default {
   props: {
@@ -90,7 +90,7 @@ export default {
     getMessages() {
       this.loadingGetMessages = true;
       this.$axios
-        .$get(`/resolver/messages?reportId=${this.report._id}`)
+        .$get(`/messages?reportId=${this.report._id}`)
         .then(response => {
           this.messages = response.data;
           this.loadingGetMessages = false;
@@ -101,6 +101,7 @@ export default {
         const alreadyExists = this.messages.some(message => {
           return message._id.toString() === newMessage._id.toString();
         });
+        // console.log(alreadyExists);
 
         if (alreadyExists) {
           this.loadingSendMessage = false;
@@ -116,27 +117,11 @@ export default {
         return;
       }
 
-      let sentTo = prompt(
-        "Input the number to select where to send. \n [1] Reporter [2] Responder"
-      );
-
-      if (sentTo != "1" && sentTo != "2") {
-        alert("Input is invalid!");
-        return;
-      }
-
-      if (sentTo == "1") {
-        sentTo = "user";
-      } else {
-        sentTo = "responder";
-      }
-
       this.loadingSendMessage = true;
       this.$axios
-        .$post("/resolver/messages", {
+        .$post("/messages", {
           content: this.message,
-          reportId: this.report._id,
-          sentTo: sentTo
+          reportId: this.report._id
         })
         .then(response => {
           this.message = "";
@@ -184,4 +169,3 @@ export default {
   color: #ccc;
 }
 </style>
-

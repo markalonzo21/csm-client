@@ -61,7 +61,6 @@ module.exports = {
     '~/plugins/ant.js',
     '~/plugins/vue-chance.client.js',
     '~/plugins/vue2-leaflet.client.js',
-    '~/plugins/vue2-leaflet-heatmap.client.js',
     '~/plugins/socket.client.js',
     '~/plugins/vue-geolocation.client.js',
     '~/plugins/leaflet-draw.client.js'

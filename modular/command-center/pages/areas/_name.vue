@@ -40,17 +40,17 @@
         <div class="col-md-6 text-center">
           <h4>Reports Per Month</h4>
           <ReportsBarChart
-            v-if="reportsPerMonth.labels.length > 0"
-            :labels="reportsPerMonth.labels"
             :datasets="reportsPerMonth.datasets"
+            :labels="reportsPerMonth.labels"
+            v-if="reportsPerMonth.labels.length > 0"
           />
         </div>
         <div class="col-md-6 text-center">
           <h4>Reports Per Category</h4>
           <ReportsPieChart
-            v-if="reportsPerCategory.labels.length > 0"
-            :labels="reportsPerCategory.labels"
             :datasets="reportsPerCategory.datasets"
+            :labels="reportsPerCategory.labels"
+            v-if="reportsPerCategory.labels.length > 0"
           />
         </div>
       </div>
@@ -59,42 +59,83 @@
       <div class="col-md-12">
         <h4>Details
           <a-button
-            type="primary"
             @click="isAddModalVisible = true"
             class="float-right"
+            type="primary"
             v-if="$store.getters['auth/hasPermission']('update area')"
           >Add Area User</a-button>
         </h4>
         <hr>
         <h5>Resolvers</h5>
-        <a-table :columns="columns" :dataSource="resolvers">
-          <a slot="firstName" slot-scope="text" href="javascript:;">{{text}}</a>
-          <a slot="lastName" slot-scope="text" href="javascript:;">{{text}}</a>
-          <a slot="email" slot-scope="text" href="javascript:;">{{text}}</a>
+        <a-table
+          :columns="columns"
+          :dataSource="resolvers"
+        >
+          <a
+            href="javascript:;"
+            slot="firstName"
+            slot-scope="text"
+          >{{text}}</a>
+          <a
+            href="javascript:;"
+            slot="lastName"
+            slot-scope="text"
+          >{{text}}</a>
+          <a
+            href="javascript:;"
+            slot="email"
+            slot-scope="text"
+          >{{text}}</a>
         </a-table>
         <h5>Responders</h5>
-        <a-table :columns="columns" :dataSource="responders">
-          <a slot="firstName" slot-scope="text" href="javascript:;">{{text}}</a>
-          <a slot="lastName" slot-scope="text" href="javascript:;">{{text}}</a>
-          <a slot="email" slot-scope="text" href="javascript:;">{{text}}</a>
+        <a-table
+          :columns="columns"
+          :dataSource="responders"
+        >
+          <a
+            href="javascript:;"
+            slot="firstName"
+            slot-scope="text"
+          >{{text}}</a>
+          <a
+            href="javascript:;"
+            slot="lastName"
+            slot-scope="text"
+          >{{text}}</a>
+          <a
+            href="javascript:;"
+            slot="email"
+            slot-scope="text"
+          >{{text}}</a>
         </a-table>
       </div>
     </div>
-    <a-modal title="Add Area User" v-model="isAddModalVisible" @ok="handleSave">
+    <a-modal
+      @ok="handleSave"
+      title="Add Area User"
+      v-model="isAddModalVisible"
+    >
       <a-form :layout="'vertical'">
         <a-form-item label="Role">
-          <a-select placeholder="Select a role" v-model="form.role" required>
+          <a-select
+            placeholder="Select a role"
+            required
+            v-model="form.role"
+          >
             <a-select-option value="resolver">Resolver</a-select-option>
             <a-select-option value="responder">Responder</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="User">
-          <a-select v-model="form.user" required>
+          <a-select
+            required
+            v-model="form.user"
+          >
             <a-select-option value>Select a user</a-select-option>
             <a-select-option
-              v-for="user in filteredUsers"
               :key="user._id"
               :value="user._id"
+              v-for="user in filteredUsers"
             >{{ user.email }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -104,15 +145,15 @@
 </template>
 
 <script>
-import TotalReportsCard from '~/components/DashboardCards/TotalReportsCard'
-import ResolvedReportsCard from '~/components/DashboardCards/ResolvedReportsCard'
-import UnresolvedReportsCard from '~/components/DashboardCards/UnresolvedReportsCard'
-import CancelledReportsCard from '~/components/DashboardCards/CancelledReportsCard'
-import EmergencyReportCards from '~/components/DashboardCards/EmergencyReportCards'
-import ReportsPieChart from '~/components/DashboardCharts/ReportsPieChart'
-import ReportsBarChart from '~/components/DashboardCharts/ReportsBarChart'
+import TotalReportsCard from "~/modular/command-center/components/DashboardCards/TotalReportsCard";
+import ResolvedReportsCard from "~/modular/command-center/components/DashboardCards/ResolvedReportsCard";
+import UnresolvedReportsCard from "~/modular/command-center/components/DashboardCards/UnresolvedReportsCard";
+import CancelledReportsCard from "~/modular/command-center/components/DashboardCards/CancelledReportsCard";
+import EmergencyReportCards from "~/modular/command-center/components/DashboardCards/EmergencyReportCards";
+import ReportsPieChart from "~/modular/command-center/components/DashboardCharts/ReportsPieChart";
+import ReportsBarChart from "~/modular/command-center/components/DashboardCharts/ReportsBarChart";
 export default {
-  layout: 'command-center/default',
+  layout: "command-center/default",
   components: {
     TotalReportsCard,
     ResolvedReportsCard,
@@ -125,9 +166,9 @@ export default {
   asyncData({ $axios, store, redirect, params }) {
     const hasAccessToThisArea = store.state.auth.user.role.permissions.some(
       permission => permission.name === params.name
-    )
+    );
 
-    if (store.getters['auth/hasPermission']('view areas')) {
+    if (store.getters["auth/hasPermission"]("view areas")) {
       return $axios.$get(`/admin/areas/${params.name}`).then(response => {
         return {
           area: response.data.area,
@@ -136,8 +177,8 @@ export default {
           allAvailableUsers: response.data.allAvailableUsers,
           form: {
             areaName: params.name,
-            user: '',
-            role: 'resolver'
+            user: "",
+            role: "resolver"
           },
           geojson: null,
           center: [14.53116, 121.04653],
@@ -146,8 +187,8 @@ export default {
           maxZoom: 18,
           maxBounds: [],
           maxBoundsViscosity: 1.0
-        }
-      })
+        };
+      });
     }
 
     if (hasAccessToThisArea) {
@@ -167,22 +208,22 @@ export default {
           maxZoom: 18,
           maxBounds: [],
           maxBoundsViscosity: 1.0
-        }
-      })
+        };
+      });
     }
 
-    return redirect('/')
+    return redirect("/");
   },
   mounted() {
     this.$nextTick(() => {
-      this.assignInitialValue()
-    })
+      this.assignInitialValue();
+    });
 
-    this.initSocketListeners()
-    this.getGraphsData()
+    this.initSocketListeners();
+    this.getGraphsData();
   },
   beforeDestroy() {
-    this.$socket.off('new-report')
+    this.$socket.off("new-report");
   },
   data() {
     return {
@@ -191,27 +232,27 @@ export default {
       isAddModalVisible: false,
       columns: [
         {
-          title: 'First Name',
-          dataIndex: 'firstName',
-          key: 'firstName'
+          title: "First Name",
+          dataIndex: "firstName",
+          key: "firstName"
         },
         {
-          title: 'Last Name',
-          dataIndex: 'lastName',
-          key: 'lastName'
+          title: "Last Name",
+          dataIndex: "lastName",
+          key: "lastName"
         },
         {
-          title: 'Email',
-          dataIndex: 'email',
-          key: 'email'
+          title: "Email",
+          dataIndex: "email",
+          key: "email"
         }
       ],
       allAvailableUsers: [],
       resolvers: [],
       responders: [],
       form: {
-        role: 'resolver',
-        user: '',
+        role: "resolver",
+        user: "",
         area: null
       },
       dashboardDetails: [],
@@ -224,135 +265,136 @@ export default {
         datasets: []
       },
       fetchingDashboardDetails: false
-    }
+    };
   },
   watch: {
-    'form.role'(value) {
-      this.form.user = ''
+    "form.role"(value) {
+      this.form.user = "";
     }
   },
   computed: {
     filteredUsers() {
       if (!this.loading) {
         const permissionNameToFind =
-          this.form.role === 'resolver' ? 'resolve' : 'respond'
+          this.form.role === "resolver" ? "resolve" : "respond";
         return this.allAvailableUsers.filter(user => {
           return user.role.permissions.some(
             permission => permission.name === permissionNameToFind
-          )
-        })
+          );
+        });
       }
-      return []
+      return [];
     }
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on('new-report', report => {
+      this.$socket.on("new-report", report => {
         const contains = this.maxBounds.contains(
           L.latLng(
             report.location.coordinates[1],
             report.location.coordinates[0]
           )
-        )
+        );
 
         if (contains) {
-          this.$notification['info']({
+          this.$notification["info"]({
             message: `New report received!`,
             description: `You received a ${
               report.type.name
             } report in ${report.type.category.name.toLowerCase()}.`,
             btn: h => {
               return h(
-                'a-button',
+                "a-button",
                 {
                   props: {
-                    type: 'primary',
-                    size: 'small'
+                    type: "primary",
+                    size: "small"
                   },
                   on: {
                     click: () => {
                       var win = window.open(
                         `/command-center/reports/${report._id}`,
-                        '_blank'
-                      )
-                      win.focus()
+                        "_blank"
+                      );
+                      win.focus();
                     }
                   }
                 },
-                'View report details.'
-              )
+                "View report details."
+              );
             }
-          })
-          this.dashboardDetails.reportsCount++
-          this.dashboardDetails.unresolvedReportsCount++
-          if (report.type.category.name === 'Emergency') {
-            this.dashboardDetails.emergencyReportsCount++
+          });
+          this.dashboardDetails.reportsCount++;
+          this.dashboardDetails.unresolvedReportsCount++;
+          if (report.type.category.name === "Emergency") {
+            this.dashboardDetails.emergencyReportsCount++;
           }
         }
-      })
+      });
     },
     assignInitialValue() {
       const lIsAvailable = setInterval(() => {
         if (L) {
-          this.zoom = this.area.minZoom
-          this.minZoom = this.area.minZoom
-          this.maxZoom = this.area.maxZoom
+          this.zoom = this.area.minZoom;
+          this.minZoom = this.area.minZoom;
+          this.maxZoom = this.area.maxZoom;
 
-          const geoJSON = L.geoJSON(this.area.location)
-          this.geojson = geoJSON.toGeoJSON()
-          this.maxBounds = geoJSON.getBounds()
-          this.loading = false
+          const geoJSON = L.geoJSON(this.area.location);
+          this.geojson = geoJSON.toGeoJSON();
+          this.maxBounds = geoJSON.getBounds();
+          this.loading = false;
 
-          clearInterval(lIsAvailable)
+          clearInterval(lIsAvailable);
         }
-      }, 100)
+      }, 100);
     },
     handleSave() {
       if (this.form.user && this.form.role) {
-        this.$axios.$post('/admin/areas/add-user', this.form).then(response => {
+        this.$axios.$post("/admin/areas/add-user", this.form).then(response => {
           const index = this.allAvailableUsers.findIndex(
             user => user._id === this.form.user
-          )
+          );
 
-          const user = this.allAvailableUsers[index]
+          const user = this.allAvailableUsers[index];
           const canResolve = user.role.permissions.find(
-            permission => permission.name === 'resolve'
-          )
+            permission => permission.name === "resolve"
+          );
           const canRespond = user.role.permissions.find(
-            permission => permission.name === 'respond'
-          )
-          const selectedUserIsYou = user._id === this.$store.state.auth.user._id
+            permission => permission.name === "respond"
+          );
+          const selectedUserIsYou =
+            user._id === this.$store.state.auth.user._id;
           if (canResolve) {
-            this.resolvers.push(response.data)
+            this.resolvers.push(response.data);
           }
           if (canRespond) {
-            this.responders.push(response.data)
+            this.responders.push(response.data);
           }
           if (selectedUserIsYou) {
-            this.$store.commit('auth/ADD_AREA', this.area)
+            this.$store.commit("auth/ADD_AREA", this.area);
           }
 
-          this.allAvailableUsers.splice(index, 1)
+          this.allAvailableUsers.splice(index, 1);
 
-          this.form.role = 'resolver'
-          this.form.user = ''
-          this.form.areaId = null
+          this.form.role = "resolver";
+          this.form.user = "";
+          this.form.areaId = null;
 
-          this.isAddModalVisible = false
-        })
+          this.isAddModalVisible = false;
+        });
       }
     },
     getGraphsData() {
-      this.fetchingDashboardDetails = true
+      this.fetchingDashboardDetails = true;
       const getDashboardDetails = this.$axios.$get(
         `/admin/areas/${this.area._id}/dashboard`
-      )
+      );
       const getreportsPerCategory = this.$axios.$get(
         `/admin/areas/${this.area._id}/dashboard/reports-per-category`
-      )
+      );
       const getReportsPerMonth = this.$axios.$get(
         `/admin/areas/${this.area._id}/dashboard/reports-per-month`
-      )
+      );
 
       Promise.all([
         getDashboardDetails,
@@ -360,12 +402,12 @@ export default {
         getReportsPerMonth
       ]).then(([dashboardDetails, reportsPerCategory, reportsPerMonth]) => {
         // Others
-        this.dashboardDetails = dashboardDetails.data
-        this.reportsPerCategory = reportsPerCategory.data
-        this.reportsPerMonth = reportsPerMonth.data
-        this.fetchingDashboardDetails = false
-      })
+        this.dashboardDetails = dashboardDetails.data;
+        this.reportsPerCategory = reportsPerCategory.data;
+        this.reportsPerMonth = reportsPerMonth.data;
+        this.fetchingDashboardDetails = false;
+      });
     }
   }
-}
+};
 </script>

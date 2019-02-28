@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import ActiveReportResolver from "~/components/ActiveReportResolver";
-import NewReportResolver from "~/components/NewReportResolver";
+import ActiveReportResolver from "./-ActiveReportResolver";
+import NewReportResolver from "./-NewReportResolver";
 
 export default {
   components: {

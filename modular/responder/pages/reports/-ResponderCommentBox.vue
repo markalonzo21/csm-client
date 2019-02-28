@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import CommentBoxMessage from "./CommentBoxMessage";
+import CommentBoxMessage from "~/components/CommentBoxMessage";
 
 export default {
   props: {
@@ -90,7 +90,7 @@ export default {
     getMessages() {
       this.loadingGetMessages = true;
       this.$axios
-        .$get(`/messages?reportId=${this.report._id}`)
+        .$get(`/responder/messages?reportId=${this.report._id}`)
         .then(response => {
           this.messages = response.data;
           this.loadingGetMessages = false;
@@ -119,7 +119,7 @@ export default {
 
       this.loadingSendMessage = true;
       this.$axios
-        .$post("/messages", {
+        .$post("/responder/messages", {
           content: this.message,
           reportId: this.report._id
         })

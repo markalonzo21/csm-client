@@ -4,7 +4,12 @@
       <section class="user-dashboard mx-auto">
         <h1 class="title__black mt0 uppercase">Reports History</h1>
         <div v-if="reports.length > 0">
-          <div class="panel" style="border: none;" v-for="report in reports">
+          <div
+            :key="`report-${report._id}`"
+            class="panel"
+            style="border: none;"
+            v-for="report in reports"
+          >
             <div class="panel-body border h-32 rounded shadow bg-white flex items-center">
               <div class="col-sm-3">
                 <strong>Date</strong>
@@ -19,9 +24,9 @@
                 <div>{{ report.resolvedAt ? $moment(report.resolvedAt).format('MMM. DD, YYYY | h:mm A ') : 'Unresolved' }}</div>
               </div>
               <button
-                type="button"
+                @click.prevent="$router.push(`/report-tracker/${report._id}`)"
                 class="btn btnblue col-sm-3 outline-none"
-                @click.prevent="$router.push(`/report-history/${report._id}`)"
+                type="button"
               >View More</button>
             </div>
           </div>

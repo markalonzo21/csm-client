@@ -80,37 +80,3 @@ export default {
   }
 };
 </script>
-
-<!--<script>
-import AreaMap from '~/components/AreaMap'
-export default {
-  layout: 'command-center/default',
-  components: {
-    AreaMap: AreaMap
-  },
-  mounted() {
-    this.$axios.$get('/admin/areas').then(response => {
-      this.areas = response.data
-    })
-
-    this.$nextTick(() => {
-      this.assignInitialValue()
-    })
-  },
-  data() {
-    return {
-      loading: true,
-      areas: []
-    }
-  },
-  methods: {
-    assignInitialValue() {
-      const lIsAvailable = setInterval(() => {
-        if (L) {
-          this.loading = false
-        }
-      }, 100)
-    }
-  }
-}
-</script>-->

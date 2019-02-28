@@ -6,16 +6,16 @@
 </template>
 
 <script>
-import AppAdminDashboard from '~/components/AppAdminDashboard'
+import AppAdminDashboard from "./-AppAdminDashboard";
 export default {
-  layout: 'command-center/default',
+  layout: "command-center/default",
   components: {
     AppAdminDashboard
   },
   asyncData({ store, redirect }) {
-    if (!store.getters['auth/hasPermission']('view command center')) {
-      return redirect('/')
+    if (!store.getters["auth/hasPermission"]("view command center")) {
+      return redirect("/");
     }
   }
-}
+};
 </script>

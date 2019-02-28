@@ -9,7 +9,11 @@
           >No reports...</div>
         </div>
       </div>
-      <div class="panel shadow" v-for="report in reports" :key="report._id">
+      <div
+        :key="report._id"
+        class="panel shadow"
+        v-for="report in reports"
+      >
         <div class="panel-body h-32 rounded-md">
           <div class="col-sm-3 col-xs-6">
             <span class="bluelabel">Report ID</span>
@@ -28,8 +32,8 @@
           </div>
           <div class="col-sm-3 col-xs-6">
             <button
-              class="btn btnblue"
               @click.prevent="$router.push(`/report-tracker/${report._id}`)"
+              class="btn btnblue"
             >View More</button>
           </div>
         </div>
@@ -41,32 +45,31 @@
 <script>
 export default {
   async fetch({ $axios, store, redirect }) {
-    await store.dispatch('user/getUnresolvedReports')
+    await store.dispatch("user/getUnresolvedReports");
   },
   computed: {
     reports() {
-      return this.$store.state.user.unresolvedReports
+      return this.$store.state.user.unresolvedReports;
     }
   },
   mounted() {
-    this.initSocketListener()
+    this.initSocketListener();
+  },
+  beforeDestroy() {
+    this.$socket.off("report-updated");
   },
   methods: {
     initSocketListener() {
-      this.$socket.on('report-updated', report => {
-        if (report.status === 'resolved' || report.status === 'cancelled') {
-          if (this.chat.reportId === report._id) {
-            this.chat.reportId = null
-          }
-
-          this.$store.commit('user/REPORT_RESOLVED', report)
+      this.$socket.on("report-updated", report => {
+        if (report.status === "resolved" || report.status === "cancelled") {
+          this.$store.commit("user/REPORT_RESOLVED", report);
         }
 
-        this.$store.commit('user/REPLACE_REPORT', report)
-      })
+        this.$store.commit("user/REPLACE_REPORT", report);
+      });
     }
   }
-}
+};
 </script>
 
 

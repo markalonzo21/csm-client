@@ -268,7 +268,7 @@
 
 
 <script>
-import CommentBox from "~/components/CommentBox";
+import CommentBox from "./-CommentBox";
 
 export default {
   data() {

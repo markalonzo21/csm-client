@@ -112,8 +112,8 @@
 </template>
 
 <script>
-import LoginModal from "~/components/LoginModal";
-import RegistrationModal from "~/components/RegistrationModal";
+import LoginModal from "~/components/Modals/LoginModal";
+import RegistrationModal from "~/components/Modals/RegistrationModal";
 
 export default {
   components: {
