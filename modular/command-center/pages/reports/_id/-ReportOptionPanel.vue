@@ -5,7 +5,7 @@
     </div>
     <div class="panel-body p0">
       <form>
-        <!-- <ReportOptionUpdateType :report="report"/> -->
+        <ReportOptionUpdateType :report="report"/>
         <ReportOptionUpdateResolver :report="report"/>
         <ReportOptionUpdateResponder :report="report"/>
         <ReportOptionUpdateStatus :report="report"/>
@@ -15,29 +15,29 @@
 </template>
 
 <script>
-  import ReportOptionUpdateStatus from './-ReportOptionUpdateStatus'
-  import ReportOptionUpdateResolver from './-ReportOptionUpdateResolver'
-  import ReportOptionUpdateResponder from './-ReportOptionUpdateResponder'
-  import ReportOptionUpdateType from './-ReportOptionUpdateType'
-  export default {
-    components: {
-      ReportOptionUpdateStatus,
-      ReportOptionUpdateResolver,
-      ReportOptionUpdateResponder,
-      ReportOptionUpdateType
-    },
-    props: {
-      report: {
-        type: Object,
-        required: true
-      }
-    },
-    data() {
-      return {
-        form: {
-          status: this.report.status
-        }
-      }
+import ReportOptionUpdateStatus from "./-ReportOptionUpdateStatus";
+import ReportOptionUpdateResolver from "./-ReportOptionUpdateResolver";
+import ReportOptionUpdateResponder from "./-ReportOptionUpdateResponder";
+import ReportOptionUpdateType from "./-ReportOptionUpdateType";
+export default {
+  components: {
+    ReportOptionUpdateStatus,
+    ReportOptionUpdateResolver,
+    ReportOptionUpdateResponder,
+    ReportOptionUpdateType
+  },
+  props: {
+    report: {
+      type: Object,
+      required: true
     }
+  },
+  data() {
+    return {
+      form: {
+        status: this.report.status
+      }
+    };
   }
+};
 </script>
