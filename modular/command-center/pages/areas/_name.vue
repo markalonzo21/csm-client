@@ -70,6 +70,7 @@
         <a-table
           :columns="columns"
           :dataSource="resolvers"
+          :rowKey="user => user._id"
         >
           <a
             href="javascript:;"
@@ -91,6 +92,7 @@
         <a-table
           :columns="columns"
           :dataSource="responders"
+          :rowKey="user => user._id"
         >
           <a
             href="javascript:;"
