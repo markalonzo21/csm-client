@@ -39,10 +39,10 @@
           >
             <option :value="null">Select Report Type</option>
             <option
-              :key="category._id"
-              :value="category._id"
-              v-for="category in categories"
-            >{{ category.name }}</option>
+              :key="type._id"
+              :value="type._id"
+              v-for="type in types"
+            >{{ type.name }}</option>
           </select>
         </div>
       </div>
@@ -51,7 +51,7 @@
         slot="footer"
       >
         <button
-          :disabled="!loadingUpdate"
+          :disabled="loadingUpdate"
           @click.prevent="changeType"
           class="btn btn-primary float-right"
           style="width: auto;"
@@ -85,11 +85,16 @@ export default {
       currentType: this.report.type ? this.report.type._id : null
     };
   },
+  computed: {
+    types() {
+      return this.categories.map(category => category.types).flat();
+    }
+  },
   methods: {
     changeType() {
       this.$axios
-        .$post("/admin/v1/update-report-type", {
-          type: this.currentType,
+        .$post("/admin/update-report-type", {
+          typeId: this.currentType,
           reportId: this.report._id
         })
         .then(response => {

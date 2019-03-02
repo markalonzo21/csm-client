@@ -30,7 +30,7 @@ import {
   message,
   Menu,
   Modal,
-  // notification,
+  notification,
   Pagination,
   Popconfirm,
   Popover,
@@ -84,6 +84,8 @@ Vue.use(Popover)
 Vue.use(Modal)
 
 export default function (ctx, inject) {
+  ctx.$notification = notification
+  inject('notification', notification)
   ctx.$message = message
   inject('message', message)
 }
