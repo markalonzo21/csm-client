@@ -22,10 +22,10 @@
                   quibusdam aliquid, fugiat laboriosam maiores earum sint odio
                   quisquam harum deserunt. Aliquam, magnam.
                 </p>
-                <a
+                <!-- <a
                   class="btn btnblue"
                   href="#"
-                >button</a>
+                >button</a> -->
               </div>
             </div>
           </div>
