@@ -22,10 +22,10 @@ export const getters = {
 }
 
 export const actions = {
-  logout ({ commit }) {
+  logout () {
     this.$auth.logout().then(() => {
       this.$router.replace('/')
-      this.$notify('Logout successful!')
+      this.$message.success('Logout successful!')
       this.$socket.disconnect()
     })
   }

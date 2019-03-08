@@ -109,7 +109,7 @@ export default {
             this.$router.push("/");
           }
 
-          this.$notify("Login successful!");
+          this.$message.success("Login successful!", 2);
         })
         .catch(errors => {
           console.log(errors.response.data);

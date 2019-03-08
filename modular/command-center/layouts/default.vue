@@ -1,5 +1,8 @@
 <template>
-  <a-layout id="components-layout-demo-fixed">
+  <a-layout
+    id="components-layout-demo-fixed"
+    v-if="$store.state.auth.user"
+  >
     <Drawer
       :visible="isDrawerVisible"
       @close="isDrawerVisible = false"
