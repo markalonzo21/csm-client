@@ -7,39 +7,38 @@
             <div class="row">
                 <div class="col-sm-3">
                     <label for="" class="bluelabel">Firstname</label><br />
-                    <label for="">Some text</label>
+                    <input class="form-control" type="text" name="" id="">
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="bluelabel">Lastname</label><br />
-                    <label for="">Some text</label>
+                    <input class="form-control" type="text" name="" id="">
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="bluelabel">Gender</label><br />
-                    <label for="">Some text</label>
+                    <input class="form-control" type="text" name="" id="">
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="bluelabel">Birthday</label><br />
-                    <label for="">Some text</label>
+                    <input class="form-control" type="text" name="" id="">
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="bluelabel">Email</label><br />
-                    <label for="">Some text</label>
+                    <input class="form-control" type="text" name="" id="">
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="bluelabel">Mobile Number</label><br />
-                    <label for="">Some text</label>
+                    <input class="form-control" type="text" name="" id="">
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="bluelabel">Area</label><br />
-                    <label for="">Some text</label>
+                    <input class="form-control" type="text" name="" id="">                    
                 </div>
                 <div class="col-sm-3">
                     <label for="" class="bluelabel">Address</label><br />
-                    <label for="">Some text</label>
+                    <textarea class="form-control" name="" id="" cols="30" rows="5"></textarea>
                 </div>
                 <div class="col-sm-6">
-                    <a href="edit-user-profile" class="btn btnblue mt20">Edit Profile</a><br />
-                    <a href="edit-user-password" class="btn btnblue mt20">Edit Password</a><br />
+                    <a href="#" class="btn btnblue">Update Profile</a><br />
                 </div>
             </div>
         </div>
@@ -70,5 +69,8 @@ export default {};
 
 .title__blue {
   font-weight: 700;
+}
+textarea {
+    resize: none;
 }
 </style>
