@@ -2,6 +2,7 @@
   <div class="h-65">
     <LoginModal/>
     <RegistrationModal/>
+    <VerificationModal/>
     <navbar
       :fixed-top="true"
       class="user-menu h-65"
@@ -114,11 +115,13 @@
 <script>
 import LoginModal from "~/components/Modals/LoginModal";
 import RegistrationModal from "~/components/Modals/RegistrationModal";
+import VerificationModal from "~/components/Modals/VerificationModal";
 
 export default {
   components: {
     LoginModal,
-    RegistrationModal
+    RegistrationModal,
+    VerificationModal
   }
 };
 </script>
