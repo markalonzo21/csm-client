@@ -24,12 +24,13 @@
         v-model="emailOrMobile"
       >
       <input
-        class="form-control mb20"
+        class="form-control"
         placeholder="Enter Verification Code"
         type="text"
         v-model="verificationCode"
       >
-      <div class="clearfix"></div>
+      <small class="mt-2 text-red">{{ showError }}</small>
+      <div class="clearfix mb20"></div>
       <button
         :disabled="loading"
         class="btn btnblue w-100 text-uppercase"
@@ -69,8 +70,18 @@ export default {
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      showError: ""
     };
+  },
+  watch: {
+    verificationCode() {
+      this.showError = "";
+    },
+    emailOrMobile() {
+      this.showError = "";
+      this.$store.commit("verification/SET_VERIFICATION_CODE", "");
+    }
   },
   methods: {
     verify() {
@@ -101,6 +112,13 @@ export default {
             "Verification successful. Please wait for your accounts confirmation before you can login.",
             20
           );
+
+          this.showError = "";
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          this.showError = "Verification code is invalid.";
         });
     },
     socketConnect() {

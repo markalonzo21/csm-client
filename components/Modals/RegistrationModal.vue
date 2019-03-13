@@ -80,8 +80,8 @@
             placeholder="Gender*"
             v-model="form.gender"
           >
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
           </select>
         </div>
         <div class="col-md-6 mb-6 select-none">
@@ -179,7 +179,7 @@ export default {
         firstName: "",
         lastName: "",
         emailOrMobile: "",
-        gender: "male",
+        gender: "Male",
         tenant: false,
         password: "",
         password_confirmation: "",
@@ -190,10 +190,16 @@ export default {
   methods: {
     register() {
       this.loadingRegister = true;
+
+      const form = { ...this.form };
+      form.gender = form.gender.toLowerCase();
+
       this.$axios
-        .$post("/auth/register", this.form)
+        .$post("/auth/register", form)
         .then(response => {
           this.form.reset();
+          this.form.gender = "Male";
+
           this.form.errors.clear();
           this.$store.commit("TOGGLE_REGISTRATION_MODAL");
 
