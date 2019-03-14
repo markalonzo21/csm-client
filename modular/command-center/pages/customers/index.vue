@@ -1,15 +1,22 @@
 <template>
   <section class="w-full flex flex-col">
+    <a-button
+      @click.prevent="filterIsVisible = true"
+      class="pin-r fixed z-10 rounded-none"
+      type="primary"
+    >
+      <a-icon type="filter"/>
+    </a-button>
     <div class="clearfix">
-      <h3 class="float-left">Reports</h3>
+      <h3 class="float-left">Customers</h3>
     </div>
     <hr>
     <a-table
       :columns="columns"
-      :dataSource="reports"
-      :loading="loadingReports || loadingFilter"
+      :dataSource="customers"
+      :loading="loadingCustomers || loadingFilter"
       :pagination="pagination"
-      :rowKey="report => report._id"
+      :rowKey="customer => customer._id"
       :scroll="{ x: 900 }"
       @change="handleTableChange"
       bordered
@@ -19,112 +26,85 @@
         slot-scope="createdAt"
       >{{ createdAt ? $moment(createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
       <template
+        slot="verifiedEmail"
+        slot-scope="verifiedEmail"
+      >{{ verifiedEmail ? 'Yes' : 'No' }}</template>
+      <template
+        slot="verifiedMobile"
+        slot-scope="verifiedMobile"
+      >{{ verifiedMobile ? 'Yes' : 'No' }}</template>
+      <template
+        slot="confirmed"
+        slot-scope="confirmed"
+      >{{ confirmed ? 'Yes' : 'No' }}</template>
+
+      <template
         slot="actions"
-        slot-scope="report"
+        slot-scope="customer"
       >
         <a-button type="primary">
-          <nuxt-link :to="`/command-center/reports/${report._id}`">Show</nuxt-link>
+          <nuxt-link :to="`/command-center/customers/${customer._id}`">Show</nuxt-link>
         </a-button>
       </template>
     </a-table>
     <hr>
-    <a-form @submit.prevent="getReports">
-      <h4>Filter</h4>
-      <a-row :gutter="24">
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Report ID"
-          >
-            <a-input
-              placeholder="Enter Report ID"
-              v-model="form.id"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Status"
-          >
-            <a-select
-              :value="form.status"
-              @change="selectStatusChange"
-              placeholder="Select a Status"
-            >
-              <a-select-option value>Any</a-select-option>
-              <a-select-option
-                :key="`status-${status}`"
-                :value="status"
-                v-for="status in selectList.statuses"
-              >{{ status }}</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Type"
-          >
-            <a-select
-              :value="form.type"
-              @change="selectTypeChange"
-              placeholder="Select a Type"
-            >
-              <a-select-option value>Any</a-select-option>
-              <a-select-option
-                :key="`type-${type._id}`"
-                :value="type._id"
-                v-for="type in selectList.types"
-              >{{ type.name }}</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Date Started"
-          >
-            <a-date-picker
-              class="w-full"
-              format="MM-DD-YYYY"
-              v-model="form.start"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Date End"
-          >
-            <a-date-picker
-              class="w-full"
-              format="MM-DD-YYYY"
-              v-model="form.end"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col
-          :offset="1"
-          :span="22"
+    <a-drawer
+      :closable="true"
+      :visible="filterIsVisible"
+      @close="filterIsVisible = false"
+      placement="right"
+      title="Filter"
+      width="350"
+      wrapClassName="drawer-filter"
+    >
+      <a-form
+        @submit.prevent="getCustomers"
+        class="mt-4"
+      >
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="First Name"
         >
-          <a-form-item>
-            <a-button
-              :loading="loadingReports"
-              class="float-right w-full"
-              htmlType="submit"
-              type="primary"
-            >Filter</a-button>
-          </a-form-item>
-        </a-col>
-      </a-row>
-    </a-form>
+          <a-input
+            placeholder="Enter customer's first name"
+            v-model="form.firstName"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Middle Name"
+        >
+          <a-input
+            placeholder="Enter customer's middle name"
+            v-model="form.middleName"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Email"
+        >
+          <a-input
+            placeholder="Enter customer email"
+            v-model="form.email"
+          />
+        </a-form-item>
+
+        <a-form-item>
+          <a-button
+            :loading="loadingCustomers"
+            class="float-right w-full"
+            htmlType="submit"
+            type="primary"
+          >Filter</a-button>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
   </section>
 </template>
 
@@ -132,71 +112,74 @@
 export default {
   layout: "command-center/default",
   asyncData({ $axios, error }) {
-    const getCategories = $axios.$get("/api/v1/report-categories");
-    const getAreas = $axios.$get("/api/v1/areas");
+    return {
+      columns: [
+        {
+          title: "First Name",
+          dataIndex: "firstName"
+        },
+        {
+          title: "Middle Name",
+          dataIndex: "middleName"
+        },
+        {
+          title: "Last Name",
+          dataIndex: "lastName"
+        },
+        {
+          title: "Email",
+          dataIndex: "email"
+        },
+        {
+          title: "Email Verified",
+          dataIndex: "verifiedEmail",
+          scopedSlots: { customRender: "verifiedEmail" }
+        },
+        {
+          title: "Mobile Number",
+          dataIndex: "mobile"
+        },
+        {
+          title: "Mobile Verified",
+          dataIndex: "verifiedMobile",
+          scopedSlots: { customRender: "verifiedMobile" }
+        },
+        {
+          title: "Confirmed",
+          dataIndex: "confirmed",
+          scopedSlots: { customRender: "confirmed" }
+        },
+        {
+          title: "Date Submitted",
+          dataIndex: "createdAt",
+          scopedSlots: { customRender: "createdAt" }
+        },
+        {
+          title: "Actions",
+          scopedSlots: { customRender: "actions" }
+        }
+      ],
+      form: {
+        id: "",
+        category: "",
+        page: 1,
+        results: 10
+      },
 
-    return Promise.all([getCategories, getAreas]).then(
-      ([categories, areas]) => {
-        return {
-          columns: [
-            {
-              title: "Report ID",
-              dataIndex: "_id"
-            },
-            {
-              title: "Type",
-              dataIndex: "type.name"
-            },
-            {
-              title: "Status",
-              dataIndex: "status"
-            },
-            {
-              title: "Date Reported",
-              dataIndex: "createdAt",
-              scopedSlots: { customRender: "createdAt" }
-            },
-            {
-              title: "Actions",
-              scopedSlots: { customRender: "actions" }
-            }
-          ],
-          form: {
-            id: "",
-            category: "",
-            type: "",
-            reporter: "",
-            responder: "",
-            resolver: "",
-            status: "",
-            type: "",
-            start: null,
-            end: null,
-            area: "",
-            page: 1,
-            results: 10
-          },
-          selectList: {
-            areas: areas.data,
-            categories: categories.data,
-            types: [],
-            statuses: ["pending", "in-progress", "resolved", "cancelled"]
-          },
-          reports: [],
-          pagination: {
-            current: 1,
-            pageSize: 10,
-            total: 0
-          },
-          loadingFilter: false,
-          loadingReports: false
-        };
-      }
-    );
+      customers: [],
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        total: 0
+      },
+      loadingFilter: false,
+      loadingCustomers: false,
+      filterIsVisible: false
+    };
   },
   mounted() {
     this.assignFormValuesFromQueryString();
-    this.getReports();
+    this.getCustomers();
     this.initSocketListeners();
   },
   beforeDestroy() {
@@ -204,17 +187,20 @@ export default {
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on("new-customer", report => this.reports.unshift(report));
+      this.$socket.on("new-customer", customer =>
+        this.customers.unshift(customer)
+      );
     },
     // Events on pagination
     handleTableChange(pagination, filters, sorter) {
       this.pagination.current = pagination.current;
       this.form.page = this.pagination.current;
-      this.getReports();
+      this.getCustomers();
     },
 
-    getReports() {
-      this.loadingReports = true;
+    getCustomers() {
+      this.loadingCustomers = true;
+      this.filterIsVisible = false;
 
       // Creates necessary format for query string
       let queryString = this.createQueryStringFromForm();
@@ -222,21 +208,21 @@ export default {
       // Update url
       window.history.pushState(
         queryString,
-        "Reports",
-        `/command-center/reports${queryString}`
+        "Customers",
+        `/command-center/customers${queryString}`
       );
 
-      // Get the reports
+      // Get the customers
       this.$axios
-        .$get(`/api/v1/admin/reports${queryString}`)
+        .$get(`/api/v1/admin/customers${queryString}`)
         .then(response => {
           this.pagination.total = response.info.total;
-          this.reports = response.data;
-          this.loadingReports = false;
+          this.customers = response.data;
+          this.loadingCustomers = false;
         })
         .catch(err => {
-          console.log(err.response.data);
-          this.loadingReports = false;
+          console.log(err);
+          this.loadingCustomers = false;
         });
     },
     assignFormValuesFromQueryString() {
@@ -270,12 +256,6 @@ export default {
         : "";
 
       return this.$utils.serialize(formReference);
-    },
-    selectTypeChange(value) {
-      this.form.type = value;
-    },
-    selectStatusChange(value) {
-      this.form.status = value;
     }
   }
 };

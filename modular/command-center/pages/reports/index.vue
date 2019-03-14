@@ -2,7 +2,7 @@
   <section class="w-full flex flex-col">
     <a-button
       @click.prevent="filterIsVisible = true"
-      class="pin-r fixed"
+      class="pin-r fixed z-10 rounded-none"
       type="primary"
     >
       <a-icon type="filter"/>
@@ -271,7 +271,7 @@
             placeholder="Enter resolver email"
             v-model="form.resolver"
           />
-        </a-form-item>>
+        </a-form-item>
         <a-form-item>
           <a-button
             :loading="loadingReports"
@@ -407,6 +407,7 @@ export default {
     },
     getReports() {
       this.loadingReports = true;
+      this.filterIsVisible = false;
 
       // Creates necessary format for query string it to form
       let queryString = this.createQueryStringFromForm();
@@ -540,7 +541,7 @@ export default {
 
 <style>
 .drawer-filter .ant-drawer-body {
-  @apply mx-10;
+  @apply mx-8;
   @apply mt-4;
 }
 .drawer-filter .ant-form-item {
