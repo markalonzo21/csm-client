@@ -28,7 +28,7 @@
       </template>
     </a-table>
     <hr>
-    <a-form @submit.prevent="filterReports">
+    <a-form @submit.prevent="getReports">
       <h4>Filter</h4>
       <a-row :gutter="24">
         <a-col :span="12">
@@ -185,7 +185,6 @@ export default {
           reports: [],
           pagination: {
             current: 1,
-            defaultCurrent: 1,
             pageSize: 10,
             total: 0
           },
@@ -196,6 +195,7 @@ export default {
     );
   },
   mounted() {
+    this.assignFormValuesFromQueryString();
     this.getReports();
     this.initSocketListeners();
   },
@@ -204,42 +204,27 @@ export default {
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on("new-customer", report => {
-        this.reports.unshift(report);
-      });
+      this.$socket.on("new-customer", report => this.reports.unshift(report));
     },
     // Events on pagination
     handleTableChange(pagination, filters, sorter) {
-      const pager = { ...this.pagination };
-      pager.current = pagination.current;
-      this.pagination = pager;
-      // this.filterReports();
-      this.$router.replace({
-        path: this.$route.path,
-        query: {
-          ...this.$route.query,
-          page: pagination.current,
-          perPage: pagination.pageSize
-          // sort: sort
-        }
-      });
+      this.pagination.current = pagination.current;
+      this.form.page = this.pagination.current;
+      this.getReports();
     },
 
     getReports() {
       this.loadingReports = true;
 
-      // Loop through query string and assign it to form
-      this.assignFormValuesFromQueryString();
-
       // Creates necessary format for query string
       let queryString = this.createQueryStringFromForm();
-      console.log(queryString);
-      // // Update Url
-      // window.history.pushState(
-      //   formReference,
-      //   "Customers",
-      //   `/command-center/customers${queryString}`
-      // );
+
+      // Update url
+      window.history.pushState(
+        queryString,
+        "Reports",
+        `/command-center/reports${queryString}`
+      );
 
       // Get the reports
       this.$axios
@@ -254,28 +239,6 @@ export default {
           this.loadingReports = false;
         });
     },
-    // filterReports() {
-    //   this.loadingFilter = true;
-
-    //   // Assign default values
-    //   this.form.page = this.pagination.current;
-    //   this.form.results = 10;
-
-    //   // Creates necessary format for query string
-    //   let queryString = this.createQueryStringFromForm();
-
-    //   // Get the reports
-    //   this.$axios
-    //     .$get(`/api/v1/admin/reports${queryString}`)
-    //     .then(response => {
-    //       this.pagination.total = response.info.total;
-    //       this.reports = response.data;
-    //       this.loadingFilter = false;
-    //     })
-    //     .catch(err => {
-    //       this.loadingFilter = false;
-    //     });
-    // },
     assignFormValuesFromQueryString() {
       if (this.$route.query) {
         Object.keys(this.$route.query).forEach(key => {

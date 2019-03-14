@@ -17,6 +17,9 @@
   li a.nuxt-link-exact-active {
     color: $irs__aqua !important;
   }
+  li a.nuxt-link-active {
+    color: $irs__aqua !important;
+  }
 }
 
 // Override bootstrap dropdown default styling

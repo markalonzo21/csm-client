@@ -1,11 +1,14 @@
 <template>
   <section class="w-full flex flex-col">
+    <a-button
+      @click.prevent="filterIsVisible = true"
+      class="pin-r fixed"
+      type="primary"
+    >
+      <a-icon type="filter"/>
+    </a-button>
     <div class="clearfix">
       <h3 class="float-left">Reports</h3>
-      <a-button
-        class="float-right invisible my-6"
-        type="primary"
-      >Hidden</a-button>
     </div>
     <hr>
     <a-table
@@ -111,174 +114,174 @@
       </template>
     </a-table>
     <hr>
-    <a-form @submit.prevent="filterReports">
-      <h4>Filter</h4>
-      <a-row :gutter="24">
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Area"
-          >
-            <a-select
-              :value="form.area"
-              @change="selectAreaChange"
-              placeholder="Select Area"
-            >
-              <a-select-option value>Any</a-select-option>
-              <a-select-option
-                :key="`area-${item._id}`"
-                :value="item._id"
-                v-for="item in selectList.areas"
-              >{{ item.name }}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Category"
-          >
-            <a-select
-              :value="form.category"
-              @change="selectCategoryChange"
-              placeholder="Select a Category"
-            >
-              <a-select-option value>Any</a-select-option>
-              <a-select-option
-                :key="`category-${category._id}`"
-                :value="category._id"
-                v-for="category in selectList.categories"
-              >{{ category.name }}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Report ID"
-          >
-            <a-input
-              placeholder="Enter Report ID"
-              v-model="form.id"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Status"
-          >
-            <a-select
-              :value="form.status"
-              @change="selectStatusChange"
-              placeholder="Select a Status"
-            >
-              <a-select-option value>Any</a-select-option>
-              <a-select-option
-                :key="`status-${status}`"
-                :value="status"
-                v-for="status in selectList.statuses"
-              >{{ status }}</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Type"
-          >
-            <a-select
-              :value="form.type"
-              @change="selectTypeChange"
-              placeholder="Select a Type"
-            >
-              <a-select-option value>Any</a-select-option>
-              <a-select-option
-                :key="`type-${type._id}`"
-                :value="type._id"
-                v-for="type in selectList.types"
-              >{{ type.name }}</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Reporter"
-          >
-            <a-input
-              placeholder="Enter reporter email"
-              v-model="form.reporter"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Date Started"
-          >
-            <a-date-picker
-              class="w-full"
-              format="MM-DD-YYYY"
-              v-model="form.start"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Date End"
-          >
-            <a-date-picker
-              class="w-full"
-              format="MM-DD-YYYY"
-              v-model="form.end"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Responder"
-          >
-            <a-input
-              placeholder="Enter responder email"
-              v-model="form.responder"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item
-            :labelCol="{ span: 4 }"
-            :wrapperCol="{ span: 20 }"
-            label="Resolver"
-          >
-            <a-input
-              placeholder="Enter resolver email"
-              v-model="form.resolver"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col
-          :offset="1"
-          :span="22"
+    <a-drawer
+      :closable="true"
+      :visible="filterIsVisible"
+      @close="filterIsVisible = false"
+      placement="right"
+      title="Filter"
+      width="350"
+      wrapClassName="drawer-filter"
+    >
+      <a-form
+        @submit.prevent="getReports"
+        class="mt-4"
+      >
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Area"
         >
-          <a-form-item>
-            <a-button
-              :loading="loadingReports"
-              class="float-right w-full"
-              htmlType="submit"
-              type="primary"
-            >Filter</a-button>
-          </a-form-item>
-        </a-col>
-      </a-row>
-    </a-form>
+          <a-select
+            :value="form.area"
+            @change="selectAreaChange"
+            placeholder="Select Area"
+          >
+            <a-select-option value>Any</a-select-option>
+            <a-select-option
+              :key="`area-${item._id}`"
+              :value="item._id"
+              v-for="item in selectList.areas"
+            >{{ item.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Category"
+        >
+          <a-select
+            :value="form.category"
+            @change="selectCategoryChange"
+            placeholder="Select a Category"
+          >
+            <a-select-option value>Any</a-select-option>
+            <a-select-option
+              :key="`category-${category._id}`"
+              :value="category._id"
+              v-for="category in selectList.categories"
+            >{{ category.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Report ID"
+        >
+          <a-input
+            placeholder="Enter Report ID"
+            v-model="form.id"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Status"
+        >
+          <a-select
+            :value="form.status"
+            @change="selectStatusChange"
+            placeholder="Select a Status"
+          >
+            <a-select-option value>Any</a-select-option>
+            <a-select-option
+              :key="`status-${status}`"
+              :value="status"
+              v-for="status in selectList.statuses"
+            >{{ status }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Type"
+        >
+          <a-select
+            :value="form.type"
+            @change="selectTypeChange"
+            placeholder="Select a Type"
+          >
+            <a-select-option value>Any</a-select-option>
+            <a-select-option
+              :key="`type-${type._id}`"
+              :value="type._id"
+              v-for="type in selectList.types"
+            >{{ type.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Date Started"
+        >
+          <a-date-picker
+            class="w-full"
+            format="MM-DD-YYYY"
+            v-model="form.start"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Date End"
+        >
+          <a-date-picker
+            class="w-full"
+            format="MM-DD-YYYY"
+            v-model="form.end"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Reporter"
+        >
+          <a-input
+            placeholder="Enter reporter email"
+            v-model="form.reporter"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Responder"
+        >
+          <a-input
+            placeholder="Enter responder email"
+            v-model="form.responder"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Resolver"
+        >
+          <a-input
+            placeholder="Enter resolver email"
+            v-model="form.resolver"
+          />
+        </a-form-item>>
+        <a-form-item>
+          <a-button
+            :loading="loadingReports"
+            class="float-right w-full"
+            htmlType="submit"
+            type="primary"
+          >Filter</a-button>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
   </section>
 </template>
 
@@ -361,32 +364,30 @@ export default {
             end: null,
             area: "",
             page: 1,
-            results: 10
+            limit: 10
           },
           selectList: {
             areas: areas.data,
             categories: categories.data,
             types: [],
             statuses: ["pending", "in-progress", "resolved", "cancelled"]
-          }
+          },
+          reports: [],
+          pagination: {
+            current: 1,
+            defaultCurrent: 1,
+            pageSize: 10,
+            total: 0
+          },
+          loadingFilter: false,
+          loadingReports: false,
+          filterIsVisible: false
         };
       }
     );
   },
-  data() {
-    return {
-      reports: [],
-      pagination: {
-        current: 1,
-        defaultCurrent: 1,
-        pageSize: 10,
-        total: 0
-      },
-      loadingFilter: false,
-      loadingReports: false
-    };
-  },
   mounted() {
+    this.assignFormValuesFromQueryString();
     this.getReports();
     this.initSocketListeners();
   },
@@ -400,15 +401,37 @@ export default {
       });
     },
     handleTableChange(pagination, filters, sorter) {
-      const pager = { ...this.pagination };
-      pager.current = pagination.current;
-      this.pagination = pager;
-      this.filterReports();
+      this.pagination.current = pagination.current;
+      this.form.page = this.pagination.current;
+      this.getReports();
     },
     getReports() {
       this.loadingReports = true;
 
-      // Loop through query string and assign it to form
+      // Creates necessary format for query string it to form
+      let queryString = this.createQueryStringFromForm();
+
+      // Update url
+      window.history.pushState(
+        queryString,
+        "Reports",
+        `/command-center/reports${queryString}`
+      );
+
+      // Get the reports
+      this.$axios
+        .$get(`/api/v1/admin/reports${queryString}`)
+        .then(response => {
+          this.pagination.total = response.info.total;
+          this.reports = response.data;
+          this.loadingReports = false;
+        })
+        .catch(err => {
+          console.log(err.response.data);
+          this.loadingReports = false;
+        });
+    },
+    assignFormValuesFromQueryString() {
       if (this.$route.query) {
         Object.keys(this.$route.query).forEach(key => {
           let value = this.$route.query[key];
@@ -432,65 +455,17 @@ export default {
           }
         });
       }
-
-      let formReference = Object.assign({}, this.form);
-      formReference.start = formReference.start
-        ? this.$moment(formReference.start).format("YYYY-MM-DD")
-        : null;
-      formReference.end = formReference.end
-        ? this.$moment(formReference.end).format("YYYY-MM-DD")
-        : null;
-
-      let queryString = this.$utils.serialize(formReference);
-
-      window.history.pushState(
-        formReference,
-        "Reports",
-        `/command-center/reports${queryString}`
-      );
-
-      this.$axios
-        .$get("/api/v1/admin/reports", { params: formReference })
-        .then(response => {
-          this.pagination.total = response.info.total;
-          this.reports = response.data;
-          this.loadingReports = false;
-        })
-        .catch(err => {
-          console.log(err.response.data);
-          this.loadingReports = false;
-        });
     },
-    filterReports() {
-      this.loadingFilter = true;
-
-      this.form.page = this.pagination.current;
-      this.form.results = 10;
-
+    createQueryStringFromForm() {
       let formReference = Object.assign({}, this.form);
       formReference.start = formReference.start
         ? this.$moment(formReference.start).format("YYYY-MM-DD")
-        : null;
+        : "";
       formReference.end = formReference.end
         ? this.$moment(formReference.end).format("YYYY-MM-DD")
-        : null;
+        : "";
 
-      let queryString = this.$utils.serialize(formReference);
-      window.history.pushState(
-        formReference,
-        "Reports",
-        `/command-center/reports${queryString}`
-      );
-      this.$axios
-        .$get("/api/v1/admin/reports", { params: formReference })
-        .then(response => {
-          this.pagination.total = response.info.total;
-          this.reports = response.data;
-          this.loadingFilter = false;
-        })
-        .catch(err => {
-          this.loadingFilter = false;
-        });
+      return this.$utils.serialize(formReference);
     },
     selectAreaChange(value) {
       this.form.area = value;
@@ -562,6 +537,22 @@ export default {
   }
 };
 </script>
+
+<style>
+.drawer-filter .ant-drawer-body {
+  @apply mx-10;
+  @apply mt-4;
+}
+.drawer-filter .ant-form-item {
+  @apply mb-4;
+}
+.drawer-filter label {
+  @apply text-white;
+}
+.drawer-filter .anticon-close {
+  @apply text-white;
+}
+</style>
 
 <style scoped>
 table {

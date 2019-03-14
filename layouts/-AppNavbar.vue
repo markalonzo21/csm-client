@@ -25,22 +25,13 @@
           v-if="$store.state.auth.loggedIn"
         >
           <li>
-            <nuxt-link
-              class="text-blue-light"
-              to="/new-report"
-            >New Report</nuxt-link>
+            <nuxt-link to="/new-report">New Report</nuxt-link>
           </li>
           <li>
-            <nuxt-link
-              class="text-blue-light"
-              to="/report-tracker"
-            >Report Tracker</nuxt-link>
+            <nuxt-link to="/report-tracker">Report Tracker</nuxt-link>
           </li>
           <li>
-            <nuxt-link
-              class="text-blue-light"
-              to="/report-history"
-            >Report History</nuxt-link>
+            <nuxt-link to="/report-history">Report History</nuxt-link>
           </li>
         </navbar-nav>
         <navbar-nav
