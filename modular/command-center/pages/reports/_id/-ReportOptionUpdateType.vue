@@ -71,7 +71,7 @@ export default {
   },
   mounted() {
     this.loadingGetReportCategories = true;
-    this.$axios.$get("/report-categories").then(response => {
+    this.$axios.$get("/api/v1/report-categories").then(response => {
       this.categories = response.data;
       this.loadingGetReportCategories = false;
     });
@@ -93,7 +93,7 @@ export default {
   methods: {
     changeType() {
       this.$axios
-        .$post("/admin/update-report-type", {
+        .$post("/api/v1/admin/update-report-type", {
           typeId: this.currentType,
           reportId: this.report._id
         })

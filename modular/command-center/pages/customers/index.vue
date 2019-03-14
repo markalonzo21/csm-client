@@ -132,8 +132,8 @@
 export default {
   layout: "command-center/default",
   asyncData({ $axios, error }) {
-    const getCategories = $axios.$get("/report-categories");
-    const getAreas = $axios.$get("/areas");
+    const getCategories = $axios.$get("/api/v1/report-categories");
+    const getAreas = $axios.$get("/api/v1/areas");
 
     return Promise.all([getCategories, getAreas]).then(
       ([categories, areas]) => {
@@ -181,49 +181,102 @@ export default {
             categories: categories.data,
             types: [],
             statuses: ["pending", "in-progress", "resolved", "cancelled"]
-          }
+          },
+          reports: [],
+          pagination: {
+            current: 1,
+            defaultCurrent: 1,
+            pageSize: 10,
+            total: 0
+          },
+          loadingFilter: false,
+          loadingReports: false
         };
       }
     );
-  },
-  data() {
-    return {
-      reports: [],
-      pagination: {
-        current: 1,
-        defaultCurrent: 1,
-        pageSize: 10,
-        total: 0
-      },
-      loadingFilter: false,
-      loadingReports: false
-    };
   },
   mounted() {
     this.getReports();
     this.initSocketListeners();
   },
   beforeDestroy() {
-    this.$socket.off("new-report");
+    this.$socket.off("new-customer");
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on("new-report", report => {
+      this.$socket.on("new-customer", report => {
         this.reports.unshift(report);
       });
     },
     // Events on pagination
     handleTableChange(pagination, filters, sorter) {
-      console.log(pagination);
       const pager = { ...this.pagination };
       pager.current = pagination.current;
       this.pagination = pager;
-      this.filterReports();
+      // this.filterReports();
+      this.$router.replace({
+        path: this.$route.path,
+        query: {
+          ...this.$route.query,
+          page: pagination.current,
+          perPage: pagination.pageSize
+          // sort: sort
+        }
+      });
     },
+
     getReports() {
       this.loadingReports = true;
 
       // Loop through query string and assign it to form
+      this.assignFormValuesFromQueryString();
+
+      // Creates necessary format for query string
+      let queryString = this.createQueryStringFromForm();
+      console.log(queryString);
+      // // Update Url
+      // window.history.pushState(
+      //   formReference,
+      //   "Customers",
+      //   `/command-center/customers${queryString}`
+      // );
+
+      // Get the reports
+      this.$axios
+        .$get(`/api/v1/admin/reports${queryString}`)
+        .then(response => {
+          this.pagination.total = response.info.total;
+          this.reports = response.data;
+          this.loadingReports = false;
+        })
+        .catch(err => {
+          console.log(err.response.data);
+          this.loadingReports = false;
+        });
+    },
+    // filterReports() {
+    //   this.loadingFilter = true;
+
+    //   // Assign default values
+    //   this.form.page = this.pagination.current;
+    //   this.form.results = 10;
+
+    //   // Creates necessary format for query string
+    //   let queryString = this.createQueryStringFromForm();
+
+    //   // Get the reports
+    //   this.$axios
+    //     .$get(`/api/v1/admin/reports${queryString}`)
+    //     .then(response => {
+    //       this.pagination.total = response.info.total;
+    //       this.reports = response.data;
+    //       this.loadingFilter = false;
+    //     })
+    //     .catch(err => {
+    //       this.loadingFilter = false;
+    //     });
+    // },
+    assignFormValuesFromQueryString() {
       if (this.$route.query) {
         Object.keys(this.$route.query).forEach(key => {
           let value = this.$route.query[key];
@@ -243,65 +296,17 @@ export default {
           }
         });
       }
-
-      let formReference = Object.assign({}, this.form);
-      formReference.start = formReference.start
-        ? this.$moment(formReference.start).format("YYYY-MM-DD")
-        : null;
-      formReference.end = formReference.end
-        ? this.$moment(formReference.end).format("YYYY-MM-DD")
-        : null;
-
-      let queryString = this.$utils.serialize(formReference);
-
-      window.history.pushState(
-        formReference,
-        "Customers",
-        `/command-center/customers${queryString}`
-      );
-
-      this.$axios
-        .$get("/admin/reports", { params: formReference })
-        .then(response => {
-          this.pagination.total = response.info.total;
-          this.reports = response.data;
-          this.loadingReports = false;
-        })
-        .catch(err => {
-          console.log(err.response.data);
-          this.loadingReports = false;
-        });
     },
-    filterReports() {
-      this.loadingFilter = true;
-
-      this.form.page = this.pagination.current;
-      this.form.results = 10;
-
+    createQueryStringFromForm() {
       let formReference = Object.assign({}, this.form);
       formReference.start = formReference.start
         ? this.$moment(formReference.start).format("YYYY-MM-DD")
-        : null;
+        : "";
       formReference.end = formReference.end
         ? this.$moment(formReference.end).format("YYYY-MM-DD")
-        : null;
+        : "";
 
-      let queryString = this.$utils.serialize(formReference);
-      window.history.pushState(
-        formReference,
-        "Reports",
-        `/command-center/customers${queryString}`
-      );
-      this.$axios
-        .$get("/admin/reports", { params: formReference })
-        .then(response => {
-          this.pagination.total = response.info.total;
-          this.reports = response.data;
-          this.loadingFilter = false;
-        })
-        .catch(err => {
-          this.loadingFilter = false;
-        });
+      return this.$utils.serialize(formReference);
     },
     selectTypeChange(value) {
       this.form.type = value;

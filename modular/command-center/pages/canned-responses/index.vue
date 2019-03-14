@@ -80,7 +80,7 @@ export default {
   methods: {
     getCannedResponses() {
       this.loadingGetCannedResponses = true;
-      this.$axios.$get("/admin/canned-responses").then(response => {
+      this.$axios.$get("/api/v1/admin/canned-responses").then(response => {
         this.cannedResponses = response.data;
         this.loadingGetCannedResponses = false;
       });
@@ -97,7 +97,7 @@ export default {
       }
 
       this.$axios
-        .$delete(`/admin/canned-responses/${cannedResponse._id}`)
+        .$delete(`/api/v1/admin/canned-responses/${cannedResponse._id}`)
         .then(response => {
           this.cannedResponses.splice(index, 1);
         });

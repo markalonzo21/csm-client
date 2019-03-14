@@ -42,7 +42,7 @@ export default {
       return redirect("/");
     }
 
-    return $axios.$get("/admin/permissions").then(response => {
+    return $axios.$get("/api/v1/admin/permissions").then(response => {
       return {
         loadingCreateRole: false,
         permissions: response.data,
@@ -93,7 +93,7 @@ export default {
         return;
       }
 
-      this.$axios.$post("/admin/roles", this.form).then(response => {
+      this.$axios.$post("/api/v1/admin/roles", this.form).then(response => {
         this.$router.push("/command-center/roles");
       });
     }

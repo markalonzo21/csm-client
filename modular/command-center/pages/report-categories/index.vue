@@ -148,19 +148,21 @@ export default {
     },
     getReportCategories() {
       this.loadingGetReportCategories = true;
-      this.$axios.$get("/report-categories").then(response => {
+      this.$axios.$get("/api/v1/report-categories").then(response => {
         this.reportCategories = response.data;
         this.loadingGetReportCategories = false;
       });
     },
     createReportCategory() {
       this.loadingCreateReportCategory = true;
-      this.$axios.$post("/report-categories", this.form).then(response => {
-        this.generateFakeData();
-        this.reportCategories.push(response.data);
-        this.loadingCreateReportCategory = false;
-        this.isCreateReportCategoryModalVisible = false;
-      });
+      this.$axios
+        .$post("/api/v1/report-categories", this.form)
+        .then(response => {
+          this.generateFakeData();
+          this.reportCategories.push(response.data);
+          this.loadingCreateReportCategory = false;
+          this.isCreateReportCategoryModalVisible = false;
+        });
     }
   }
 };

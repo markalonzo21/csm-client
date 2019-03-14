@@ -37,7 +37,7 @@ export default {
 
       if (confirmed) {
         this.$axios
-          .$post("/admin/update-report-status", {
+          .$post("/api/v1/admin/update-report-status", {
             status: event.target.value,
             reportId: this.report._id
           })

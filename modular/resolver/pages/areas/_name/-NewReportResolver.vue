@@ -191,7 +191,7 @@ export default {
       this.isAssignModalVisible = true;
       this.$axios
         .$get(
-          `/admin/available-responders?type=${this.report.type._id}&areaName=${
+          `/api/v1/admin/available-responders?type=${this.report.type._id}&areaName=${
             this.$route.params.name
           }`
         )
@@ -223,7 +223,7 @@ export default {
     selectReport() {
       this.loadingSelectReport = true;
       this.$axios
-        .$post("/resolver/select-report", {
+        .$post("/api/v1/resolver/select-report", {
           reportId: this.report._id,
           areaName: this.$route.params.name
         })
@@ -238,7 +238,7 @@ export default {
     confirmResponse(response) {
       this.loadingConfirmation = true;
       this.$axios
-        .$post(`/admin/confirm-response`, {
+        .$post(`/api/v1/admin/confirm-response`, {
           reportId: this.report._id,
           responseId: response._id
         })

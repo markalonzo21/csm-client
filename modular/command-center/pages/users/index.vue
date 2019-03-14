@@ -121,28 +121,28 @@ export default {
   methods: {
     getReportTypes() {
       this.loadingGetReportTypes = true;
-      this.$axios.$get("/report-categories").then(response => {
+      this.$axios.$get("/api/v1/report-categories").then(response => {
         this.categories = response.data;
         this.loadingGetReportTypes = false;
       });
     },
     getRoles() {
       this.loadingGetRoles = true;
-      this.$axios.$get("/admin/roles").then(response => {
+      this.$axios.$get("/api/v1/admin/roles").then(response => {
         this.roles = response.data;
         this.loadingGetRoles = false;
       });
     },
     getAreas() {
       this.loadingGetAreas = true;
-      this.$axios.$get("/admin/areas").then(response => {
+      this.$axios.$get("/api/v1/admin/areas").then(response => {
         this.areas = response.data;
         this.loadingGetAreas = false;
       });
     },
     getUsers() {
       this.loadingGetUsers = true;
-      this.$axios.$get("/admin/users").then(response => {
+      this.$axios.$get("/api/v1/admin/users").then(response => {
         this.users = response.data;
         this.loadingGetUsers = false;
       });
@@ -159,7 +159,7 @@ export default {
         return;
       }
 
-      this.$axios.$delete(`/admin/users/${user._id}`).then(response => {
+      this.$axios.$delete(`/api/v1/admin/users/${user._id}`).then(response => {
         this.users.splice(index, 1);
       });
     }

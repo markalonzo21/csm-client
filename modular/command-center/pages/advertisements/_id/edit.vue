@@ -5,34 +5,44 @@
     </div>
     <hr>
     <div class="content">
-      <a-form id='components-form-demo-normal-login' @submit.prevent="handleSubmit" class='login-form'>
+      <a-form
+        @submit.prevent="handleSubmit"
+        class="login-form"
+        id="components-form-demo-normal-login"
+      >
         <a-form-item>
           <a-input
-            placeholder='Advertisement Name'
             name="name"
+            placeholder="Advertisement Name"
             v-model="form.name"
-          >
-          </a-input>
+          ></a-input>
         </a-form-item>
         <a-form-item>
           <a-input
-            placeholder='Advertisement link'
             name="link"
+            placeholder="Advertisement link"
             v-model="form.link"
-          >
-          </a-input>
+          ></a-input>
         </a-form-item>
-        <a-form-item
-          label='Image'
-        >
-          <input type="file" @change="processFile($event)">
+        <a-form-item label="Image">
+          <input
+            @change="processFile($event)"
+            type="file"
+          >
 
-          <img :src="form.image.src" class="mt-6 max-w-md max-h-md" alt="Image">
+          <img
+            :src="form.image.src"
+            alt="Image"
+            class="mt-6 max-w-md max-h-md"
+          >
         </a-form-item>
         <a-form-item>
-          <a-button type='primary' htmlType='submit' class='login-form-button' :loading="loadingUpdateAdvertisement">
-            Submit
-          </a-button>
+          <a-button
+            :loading="loadingUpdateAdvertisement"
+            class="login-form-button"
+            htmlType="submit"
+            type="primary"
+          >Submit</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -41,29 +51,32 @@
 
 <script>
 export default {
-  layout: 'command-center/default',
+  layout: "command-center/default",
   asyncData({ store, redirect, error, $axios, params }) {
     if (!store.getters["auth/hasPermission"]("update advertisement")) {
       return redirect("/");
     }
 
-    return $axios.$get(`/admin/advertisements/${params.id}`).then(response => {
-      return {
-        form: {
-          name: response.data.name,
-          link: response.data.link,
-          image: { file: null, src: response.data.image }
-        }
-      }
-    }).catch(err => {
-      error({ status: 404, message: 'Advertisement does not exists.' })
-    })
+    return $axios
+      .$get(`/api/v1/admin/advertisements/${params.id}`)
+      .then(response => {
+        return {
+          form: {
+            name: response.data.name,
+            link: response.data.link,
+            image: { file: null, src: response.data.image }
+          }
+        };
+      })
+      .catch(err => {
+        error({ status: 404, message: "Advertisement does not exists." });
+      });
   },
   data() {
     return {
       loadingUpdateAdvertisement: false,
-      fileList: [],
-    }
+      fileList: []
+    };
   },
   methods: {
     processFile(event) {
@@ -80,25 +93,31 @@ export default {
         const file = files[i];
         let reader = new FileReader();
         reader.onload = e => {
-          this.form.image.file = file
-          this.form.image.src = e.target.result
+          this.form.image.file = file;
+          this.form.image.src = e.target.result;
         };
         reader.readAsDataURL(file);
       }
     },
-    handleSubmit () {
-      let formData = new FormData()
-      formData.append('name', this.form.name)
-      formData.append('link', this.form.link)
-      formData.append('image', this.form.image.file)
+    handleSubmit() {
+      let formData = new FormData();
+      formData.append("name", this.form.name);
+      formData.append("link", this.form.link);
+      formData.append("image", this.form.image.file);
 
-      this.$axios.$patch(`/admin/advertisements/${this.$route.params.id}`, formData).then(response => {
-        this.$router.push('/command-center/advertisements')
-        this.loadingUpdateAdvertisement = true
-      }).catch(error => {
-        console.log(error)
-        this.loadingUpdateAdvertisement = true
-      })
+      this.$axios
+        .$patch(
+          `/api/v1/admin/advertisements/${this.$route.params.id}`,
+          formData
+        )
+        .then(response => {
+          this.$router.push("/command-center/advertisements");
+          this.loadingUpdateAdvertisement = true;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loadingUpdateAdvertisement = true;
+        });
     }
   }
 };

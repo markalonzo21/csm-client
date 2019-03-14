@@ -90,7 +90,7 @@ export default {
     getMessages() {
       this.loadingGetMessages = true;
       this.$axios
-        .$get(`/responder/messages?reportId=${this.report._id}`)
+        .$get(`/api/v1/responder/messages?reportId=${this.report._id}`)
         .then(response => {
           this.messages = response.data;
           this.loadingGetMessages = false;
@@ -119,7 +119,7 @@ export default {
 
       this.loadingSendMessage = true;
       this.$axios
-        .$post("/responder/messages", {
+        .$post("/api/v1/responder/messages", {
           content: this.message,
           reportId: this.report._id
         })

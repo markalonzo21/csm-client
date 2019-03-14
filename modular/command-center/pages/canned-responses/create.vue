@@ -52,7 +52,7 @@ export default {
       this.loadingCreateCannedResponse = true;
 
       this.$axios
-        .$post(`/admin/canned-responses`, this.form)
+        .$post(`/api/v1/admin/canned-responses`, this.form)
         .then(response => {
           this.form.reset();
           this.form.errors.clear();

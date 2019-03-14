@@ -71,7 +71,7 @@
         this.updateModalVisible = true
 
         this.loadingGetAvailableResolvers = true
-        this.$axios.$get(`/admin/available-resolvers?type=${this.report.type._id}&areaId=${this.$route.params.id}`).then(response => {
+        this.$axios.$get(`/api/v1/admin/available-resolvers?type=${this.report.type._id}&areaId=${this.$route.params.id}`).then(response => {
           this.availableResolvers = response.data
           this.loadingGetAvailableResolvers = false
           this.selectedResolver = this.report.resolver ? this.report.resolver._id : null

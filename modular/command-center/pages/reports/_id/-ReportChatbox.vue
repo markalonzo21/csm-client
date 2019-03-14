@@ -2,18 +2,18 @@
   <div class="panel">
     <div class="panel-heading text-white">Chatbox</div>
     <div
-      id="chatbox"
       class="panel-body chatbody overflow-y-auto"
+      id="chatbox"
       ref="messagesContainer"
       style="max-height: 295px;"
     >
       <div v-if="loadingGetMessages">Loading messages...</div>
       <div v-else-if="messages.length === 0">No messages...</div>
       <ReportChatboxMessage
-        v-else
-        v-for="(message, index) in messages"
         :key="`${index}-${message._id}`"
         :message="message"
+        v-else
+        v-for="(message, index) in messages"
       />
     </div>
     <!-- <div class="panel-footer">
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import ReportChatboxMessage from './-ReportChatboxMessage'
+import ReportChatboxMessage from "./-ReportChatboxMessage";
 
 export default {
   props: {
@@ -57,75 +57,75 @@ export default {
       loadingSendMessage: false,
       loadingGetMessages: true,
       messages: [],
-      message: ''
-    }
+      message: ""
+    };
   },
   mounted() {
-    this.getMessages()
+    this.getMessages();
   },
   beforeDestroy() {
-    this.$socket.off('new-message')
+    this.$socket.off("new-message");
   },
   watch: {
     messages() {
       this.$nextTick(() => {
-        const ul = this.$refs.messagesContainer
-        ul.scrollTop = ul.scrollHeight
-      })
+        const ul = this.$refs.messagesContainer;
+        ul.scrollTop = ul.scrollHeight;
+      });
     }
   },
   methods: {
     getMessages() {
-      this.loadingGetMessages = true
+      this.loadingGetMessages = true;
       this.$axios
-        .$get(`/admin/messages?reportId=${this.report._id}`)
+        .$get(`/api/v1/admin/messages?reportId=${this.report._id}`)
         .then(response => {
-          this.messages = response.data
-          this.loadingGetMessages = false
-        })
+          this.messages = response.data;
+          this.loadingGetMessages = false;
+        });
 
-      this.$socket.on('new-message', message => {
+      this.$socket.on("new-message", message => {
         if (message.report === this.report._id) {
-          this.addMessage(message)
+          this.addMessage(message);
         }
-      })
+      });
     },
     addMessage(message) {
       this.$nextTick(() => {
         const alreadyExists = this.messages.find(
           item => item._id === message._id
-        )
+        );
 
         if (alreadyExists) {
-          this.loadingSendMessage = false
-          return
+          this.loadingSendMessage = false;
+          return;
         }
 
         setTimeout(() => {
-          this.messages.push(message)
-          this.loadingSendMessage = false
-        }, 500)
-      })
+          this.messages.push(message);
+          this.loadingSendMessage = false;
+        }, 500);
+      });
     },
     sendMessage() {
       if (this.message.trim().length === 0) {
-        return
+        return;
       }
 
-      this.loadingSendMessage = true
+      this.loadingSendMessage = true;
       this.$axios
-        .$post('/admin/messages', {
+        .$post("/api/v1/admin/messages", {
           content: this.message,
           reportId: this.report._id
         })
         .then(response => {
-          this.message = ''
+          this.message = "";
         })
         .catch(error => {
-          this.loadingSendMessage = false
-        })
+          this.loadingSendMessage = false;
+        });
     }
   }
-}
+};
 </script>
 

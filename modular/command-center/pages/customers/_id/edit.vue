@@ -200,10 +200,10 @@ export default {
       return redirect("/");
     }
 
-    const getRoles = $axios.get("/admin/roles");
-    const getAreas = $axios.get("/admin/areas");
-    const getCategories = $axios.get("/report-categories");
-    const getUser = $axios.get(`/admin/users/${params.id}`);
+    const getRoles = $axios.get("/api/v1/admin/roles");
+    const getAreas = $axios.get("/api/v1/admin/areas");
+    const getCategories = $axios.get("/api/v1/report-categories");
+    const getUser = $axios.get(`/api/v1/admin/users/${params.id}`);
 
     const [roles, areas, categories, userResponse] = await Promise.all([
       getRoles,
@@ -281,7 +281,7 @@ export default {
       form.role = this.roles.find(role => role.slug === this.form.role)._id;
 
       this.$axios
-        .$patch(`/admin/users/${this.$route.params.id}`, form)
+        .$patch(`/api/v1/admin/users/${this.$route.params.id}`, form)
         .then(response => {
           this.form.errors.clear();
           this.loadingUpdateUser = false;
@@ -298,7 +298,7 @@ export default {
       const form = { ...this.passwordForm };
 
       this.$axios
-        .$patch(`/admin/users/${this.$route.params.id}/password`, form)
+        .$patch(`/api/v1/admin/users/${this.$route.params.id}/password`, form)
         .then(response => {
           this.passwordForm.reset();
           this.passwordForm.errors.clear();

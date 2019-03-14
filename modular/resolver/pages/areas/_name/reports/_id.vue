@@ -246,9 +246,9 @@ export default {
       this.loadingGetAvailableResponders = true;
       this.$axios
         .$get(
-          `/resolver/available-responders?type=${this.report.type._id}&areaId=${
-            this.$route.params.id
-          }`
+          `/api/v1/resolver/available-responders?type=${
+            this.report.type._id
+          }&areaId=${this.$route.params.id}`
         )
         .then(response => {
           this.availableResponders = response.data;
@@ -265,7 +265,7 @@ export default {
     updateResponder() {
       this.loadingAssignResponder = true;
       this.$axios
-        .$post(`/resolver/assign-responder`, {
+        .$post(`/api/v1/resolver/assign-responder`, {
           reportId: this.report._id,
           responderId: this.selectedResponder
         })
@@ -279,7 +279,7 @@ export default {
 
       if (confirmed) {
         this.$axios
-          .$post("/resolver/update-report-status", {
+          .$post("/api/v1/resolver/update-report-status", {
             status: event.target.value,
             reportId: this.report._id
           })

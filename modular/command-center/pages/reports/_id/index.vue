@@ -49,7 +49,7 @@ export default {
     if (!store.getters["auth/hasPermission"]("view reports")) {
       return redirect("/");
     }
-    return $axios.$get(`/admin/reports/${params.id}`).then(response => {
+    return $axios.$get(`/api/v1/admin/reports/${params.id}`).then(response => {
       return {
         report: response.data
       };

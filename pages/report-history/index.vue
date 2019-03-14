@@ -65,7 +65,7 @@ export default {
     loadMoreReports() {
       this.isReportsLoading = true;
       this.$axios
-        .$get(`/reports?resolvedOnly=true&skip=${this.reports.length}`)
+        .$get(`/api/v1/reports?resolvedOnly=true&skip=${this.reports.length}`)
         .then(response => {
           this.$store.commit("user/SET_LOAD_MORE_STATUS", response.data);
           response.data.forEach(report => {

@@ -84,10 +84,10 @@ module.exports = {
   axios: {
     baseURL: process.env.API_URL
       ? process.env.API_URL
-      : 'http://localhost:3000/api/v1',
+      : 'http://localhost:3000',
     browserBaseURL: process.env.API_URL_BROWSER
       ? process.env.API_URL_BROWSER
-      : 'http://localhost:3000/api/v1',
+      : 'http://localhost:3000',
     https: process.NODE_ENV === 'production',
     proxy: process.env.API_PROXY == 'true',
     debug: process.env.API_DEBUG == 'true'
@@ -122,17 +122,17 @@ module.exports = {
       local: {
         endpoints: {
           login: {
-            url: '/auth/login',
+            url: '/api/v1/auth/login',
             method: 'post',
             propertyName: 'data.token'
           },
           logout: false,
           // logout: {
-          //   url: '/auth/logout',
+          //   url: '/api/v1/auth/logout',
           //   method: 'post'
           // },
           user: {
-            url: '/auth/me',
+            url: '/api/v1/auth/me',
             method: 'get',
             propertyName: 'data'
           }

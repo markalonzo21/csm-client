@@ -122,13 +122,13 @@ export default {
       );
     },
     getPermissions() {
-      this.$axios.$get("/admin/permissions").then(response => {
+      this.$axios.$get("/api/v1/admin/permissions").then(response => {
         this.permissions = response.data;
       });
     },
     getRoles() {
       this.loadingGetRoles = true;
-      this.$axios.$get("/admin/roles").then(response => {
+      this.$axios.$get("/api/v1/admin/roles").then(response => {
         this.roles = response.data;
         this.loadingGetRoles = false;
       });
@@ -175,7 +175,7 @@ export default {
 
       this.loadingUpdateRole = true;
       this.$axios
-        .$patch(`/admin/roles/${this.editForm.id}`, this.editForm)
+        .$patch(`/api/v1/admin/roles/${this.editForm.id}`, this.editForm)
         .then(response => {
           window.location.reload();
 
@@ -199,7 +199,7 @@ export default {
         return;
       }
 
-      this.$axios.$delete(`/admin/roles/${role._id}`).then(response => {
+      this.$axios.$delete(`/api/v1/admin/roles/${role._id}`).then(response => {
         this.roles.splice(index, 1);
       });
     }

@@ -171,47 +171,51 @@ export default {
     );
 
     if (store.getters["auth/hasPermission"]("view areas")) {
-      return $axios.$get(`/admin/areas/${params.name}`).then(response => {
-        return {
-          area: response.data.area,
-          resolvers: response.data.resolvers,
-          responders: response.data.responders,
-          allAvailableUsers: response.data.allAvailableUsers,
-          form: {
-            areaName: params.name,
-            user: "",
-            role: "resolver"
-          },
-          geojson: null,
-          center: [14.53116, 121.04653],
-          zoom: 13,
-          minZoom: 13,
-          maxZoom: 18,
-          maxBounds: [],
-          maxBoundsViscosity: 1.0
-        };
-      });
+      return $axios
+        .$get(`/api/v1/admin/areas/${params.name}`)
+        .then(response => {
+          return {
+            area: response.data.area,
+            resolvers: response.data.resolvers,
+            responders: response.data.responders,
+            allAvailableUsers: response.data.allAvailableUsers,
+            form: {
+              areaName: params.name,
+              user: "",
+              role: "resolver"
+            },
+            geojson: null,
+            center: [14.53116, 121.04653],
+            zoom: 13,
+            minZoom: 13,
+            maxZoom: 18,
+            maxBounds: [],
+            maxBoundsViscosity: 1.0
+          };
+        });
     }
 
     if (hasAccessToThisArea) {
-      return $axios.$get(`/admin/areas/${params.name}`).then(response => {
-        return {
-          area: response.data.area,
-          resolvers: response.data.resolvers,
-          responders: response.data.responders,
-          allAvailableUsers: response.data.allAvailableUsers,
-          form: {
-            area: params.name
-          },
-          center: [14.53116, 121.04653],
-          zoom: 13,
-          geojson: null,
-          minZoom: 13,
-          maxZoom: 18,
-          maxBounds: [],
-          maxBoundsViscosity: 1.0
-        };
-      });
+      return $axios
+        .$get(`/api/v1/admin/areas/${params.name}`)
+        .then(response => {
+          return {
+            area: response.data.area,
+            resolvers: response.data.resolvers,
+            responders: response.data.responders,
+            allAvailableUsers: response.data.allAvailableUsers,
+            form: {
+              area: params.name
+            },
+            center: [14.53116, 121.04653],
+            zoom: 13,
+            geojson: null,
+            minZoom: 13,
+            maxZoom: 18,
+            maxBounds: [],
+            maxBoundsViscosity: 1.0
+          };
+        });
     }
 
     return redirect("/");
@@ -352,50 +356,52 @@ export default {
     },
     handleSave() {
       if (this.form.user && this.form.role) {
-        this.$axios.$post("/admin/areas/add-user", this.form).then(response => {
-          const index = this.allAvailableUsers.findIndex(
-            user => user._id === this.form.user
-          );
+        this.$axios
+          .$post("/api/v1/admin/areas/add-user", this.form)
+          .then(response => {
+            const index = this.allAvailableUsers.findIndex(
+              user => user._id === this.form.user
+            );
 
-          const user = this.allAvailableUsers[index];
-          const canResolve = user.role.permissions.find(
-            permission => permission.name === "resolve"
-          );
-          const canRespond = user.role.permissions.find(
-            permission => permission.name === "respond"
-          );
-          const selectedUserIsYou =
-            user._id === this.$store.state.auth.user._id;
-          if (canResolve) {
-            this.resolvers.push(response.data);
-          }
-          if (canRespond) {
-            this.responders.push(response.data);
-          }
-          if (selectedUserIsYou) {
-            this.$store.commit("auth/ADD_AREA", this.area);
-          }
+            const user = this.allAvailableUsers[index];
+            const canResolve = user.role.permissions.find(
+              permission => permission.name === "resolve"
+            );
+            const canRespond = user.role.permissions.find(
+              permission => permission.name === "respond"
+            );
+            const selectedUserIsYou =
+              user._id === this.$store.state.auth.user._id;
+            if (canResolve) {
+              this.resolvers.push(response.data);
+            }
+            if (canRespond) {
+              this.responders.push(response.data);
+            }
+            if (selectedUserIsYou) {
+              this.$store.commit("auth/ADD_AREA", this.area);
+            }
 
-          this.allAvailableUsers.splice(index, 1);
+            this.allAvailableUsers.splice(index, 1);
 
-          this.form.role = "resolver";
-          this.form.user = "";
-          this.form.areaId = null;
+            this.form.role = "resolver";
+            this.form.user = "";
+            this.form.areaId = null;
 
-          this.isAddModalVisible = false;
-        });
+            this.isAddModalVisible = false;
+          });
       }
     },
     getGraphsData() {
       this.fetchingDashboardDetails = true;
       const getDashboardDetails = this.$axios.$get(
-        `/admin/areas/${this.area._id}/dashboard`
+        `/api/v1/admin/areas/${this.area._id}/dashboard`
       );
       const getreportsPerCategory = this.$axios.$get(
-        `/admin/areas/${this.area._id}/dashboard/reports-per-category`
+        `/api/v1/admin/areas/${this.area._id}/dashboard/reports-per-category`
       );
       const getReportsPerMonth = this.$axios.$get(
-        `/admin/areas/${this.area._id}/dashboard/reports-per-month`
+        `/api/v1/admin/areas/${this.area._id}/dashboard/reports-per-month`
       );
 
       Promise.all([

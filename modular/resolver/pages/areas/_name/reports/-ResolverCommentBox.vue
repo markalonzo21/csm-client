@@ -106,7 +106,7 @@ export default {
     getMessages() {
       this.loadingGetMessages = true;
       this.$axios
-        .$get(`/resolver/messages?reportId=${this.report._id}`)
+        .$get(`/api/v1/resolver/messages?reportId=${this.report._id}`)
         .then(response => {
           this.messages = response.data;
           this.loadingGetMessages = false;
@@ -114,7 +114,7 @@ export default {
     },
     getCannedResponses() {
       this.loadingCannedResponses = true;
-      this.$axios.$get("/resolver/canned-responses").then(response => {
+      this.$axios.$get("/api/v1/resolver/canned-responses").then(response => {
         this.cannedResponses = response.data;
         this.loadingCannedResponses = false;
       });
@@ -166,7 +166,7 @@ export default {
 
       this.loadingSendMessage = true;
       this.$axios
-        .$post("/resolver/messages", {
+        .$post("/api/v1/resolver/messages", {
           content: this.message,
           reportId: this.report._id,
           sentTo: sentTo

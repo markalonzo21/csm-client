@@ -229,7 +229,7 @@ export default {
       this.loadingGetAvailableResponders = true;
       this.$axios
         .$get(
-          `/admin/available-responders?type=${this.report.type._id}&areaId=${
+          `/api/v1/admin/available-responders?type=${this.report.type._id}&areaId=${
             this.$route.params.id
           }`
         )
@@ -264,7 +264,7 @@ export default {
 
       if (confirmed) {
         this.$axios
-          .$post("/resolver/update-report", {
+          .$post("/api/v1/resolver/update-report", {
             status: event.target.value,
             reportId: this.report._id
           })
@@ -283,7 +283,7 @@ export default {
     confirmResponse(response) {
       this.loadingConfirmation = true;
       this.$axios
-        .$post(`/admin/confirm-response`, {
+        .$post(`/api/v1/admin/confirm-response`, {
           reportId: this.report._id,
           responseId: response._id
         })

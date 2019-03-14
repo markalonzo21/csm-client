@@ -95,12 +95,12 @@ export default {
   },
   mounted() {
     this.fetchingDashboardDetails = true;
-    const getDashboardDetails = this.$axios.$get("/admin/dashboard");
+    const getDashboardDetails = this.$axios.$get("/api/v1/admin/dashboard");
     const getreportsPerCategory = this.$axios.$get(
-      "/admin/dashboard/reports-per-category"
+      "/api/v1/admin/dashboard/reports-per-category"
     );
     const getReportsPerMonth = this.$axios.$get(
-      "/admin/dashboard/reports-per-month"
+      "/api/v1/admin/dashboard/reports-per-month"
     );
 
     Promise.all([

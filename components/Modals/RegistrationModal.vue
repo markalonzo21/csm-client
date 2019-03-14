@@ -195,7 +195,7 @@ export default {
       form.gender = form.gender.toLowerCase();
 
       this.$axios
-        .$post("/auth/register", form)
+        .$post("/api/v1/auth/register", form)
         .then(response => {
           this.form.reset();
           this.form.gender = "Male";

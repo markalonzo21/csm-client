@@ -15,18 +15,18 @@ export const getters = {
 
 export const actions = {
   getResolvedReports ({ commit }) {
-    return this.$axios.$get('/reports?resolvedOnly=true').then(response => {
+    return this.$axios.$get('/api/v1/reports?resolvedOnly=true').then(response => {
       commit('SET_RESOLVED_REPORTS', response.data)
       commit('SET_LOAD_MORE_STATUS', response.data)
     })
   },
   getUnresolvedReports ({ commit, dispatch }) {
-    return this.$axios.$get('/reports?unresolvedOnly=true').then(response => {
+    return this.$axios.$get('/api/v1/reports?unresolvedOnly=true').then(response => {
       commit('SET_UNRESOLVED_REPORTS', response.data)
     })
   },
   getReport ({ commit }, id) {
-    return this.$axios.$get(`/reports/${id}`).then(response => {
+    return this.$axios.$get(`/api/v1/reports/${id}`).then(response => {
       commit('SET_REPORT', response.data)
     })
   }
@@ -64,9 +64,9 @@ export const mutations = {
       report => report._id === payload.reportId
     )
 
-    let responseIndex = state.unresolvedReports[reportIndex].responses.findIndex(
-      response => response._id === payload.response._id
-    )
+    let responseIndex = state.unresolvedReports[
+      reportIndex
+    ].responses.findIndex(response => response._id === payload.response._id)
 
     Vue.set(
       state.unresolvedReports[reportIndex].responses,
@@ -75,14 +75,18 @@ export const mutations = {
     )
   },
   REPLACE_REPORT (state, report) {
-    const index = state.unresolvedReports.findIndex(item => item._id === report._id)
+    const index = state.unresolvedReports.findIndex(
+      item => item._id === report._id
+    )
 
     if (index !== -1) {
       Vue.set(state.unresolvedReports, index, report)
     }
   },
   REPORT_RESOLVED (state, report) {
-    const index = state.unresolvedReports.findIndex(item => item._id === report._id)
+    const index = state.unresolvedReports.findIndex(
+      item => item._id === report._id
+    )
 
     if (index !== -1) {
       state.unresolvedReports.splice(index, 1)

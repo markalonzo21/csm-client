@@ -7,12 +7,12 @@ export const state = () => ({
 
 export const actions = {
   getAreas ({ commit }) {
-    return this.$axios.$get('/resolver/areas').then(response => {
+    return this.$axios.$get('/api/v1/resolver/areas').then(response => {
       commit('SET_AREAS', response.data)
     })
   },
   getReports ({ commit }) {
-    return this.$axios.$get('/resolver/reports').then(response => {
+    return this.$axios.$get('/api/v1/resolver/reports').then(response => {
       commit('SET_REPORTS', response.data)
       commit(
         'SET_REPORT',
@@ -21,7 +21,7 @@ export const actions = {
     })
   },
   getReport ({ commit }, id) {
-    return this.$axios.$get(`/resolver/reports/${id}`).then(response => {
+    return this.$axios.$get(`/api/v1/resolver/reports/${id}`).then(response => {
       commit('SET_REPORT', response.data)
     })
   }

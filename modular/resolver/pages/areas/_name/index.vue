@@ -144,7 +144,7 @@ export default {
       // });
 
       this.$axios
-        .$get(`/resolver/areas/${this.$route.params.name}`)
+        .$get(`/api/v1/resolver/areas/${this.$route.params.name}`)
         .then(response => {
           this.activeReports = response.data.activeReports;
           this.reports = response.data.reports;

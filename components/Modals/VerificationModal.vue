@@ -101,7 +101,7 @@ export default {
 
       this.$axios
         .$post(
-          `/auth/verify-${
+          `/api/v1/auth/verify-${
             this.$store.getters["verification/emailOrMobileSlug"]
           }`,
           form

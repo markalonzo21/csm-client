@@ -5,34 +5,35 @@
     </div>
     <hr>
     <div class="content">
-      <a-form :form="form" id='components-form-demo-normal-login' @submit="handleSubmit" class='login-form'>
+      <a-form
+        :form="form"
+        @submit="handleSubmit"
+        class="login-form"
+        id="components-form-demo-normal-login"
+      >
         <a-form-item>
           <a-input
-            placeholder='Advertisement Name'
+            placeholder="Advertisement Name"
             v-decorator="[
               'name',
               { rules: [{ required: true, message: 'Please input advertisement name!' }] }
             ]"
-          >
-          </a-input>
+          ></a-input>
         </a-form-item>
         <a-form-item>
           <a-input
+            placeholder="Advertisement link (Optional)"
             v-decorator="[
               'link',
               { rules: [] }
             ]"
-            placeholder='Advertisement link (Optional)'
-          >
-          </a-input>
+          ></a-input>
         </a-form-item>
-        <a-form-item
-          label='Image'
-        >
+        <a-form-item label="Image">
           <a-upload
-            :fileList="fileList"
             :beforeUpload="beforeUpload"
             :disabled="fileList.length > 0"
+            :fileList="fileList"
             :remove="handleRemove"
             v-decorator="[
               'image',
@@ -40,14 +41,17 @@
             ]"
           >
             <a-button>
-              <a-icon type="upload" /> Select File
+              <a-icon type="upload"/>Select File
             </a-button>
           </a-upload>
         </a-form-item>
         <a-form-item>
-          <a-button type='primary' htmlType='submit' class='login-form-button' :loading="loadingCreateAdvertisement">
-            Submit
-          </a-button>
+          <a-button
+            :loading="loadingCreateAdvertisement"
+            class="login-form-button"
+            htmlType="submit"
+            type="primary"
+          >Submit</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -56,7 +60,7 @@
 
 <script>
 export default {
-  layout: 'command-center/default',
+  layout: "command-center/default",
   asyncData({ store, redirect }) {
     if (!store.getters["auth/hasPermission"]("create advertisement")) {
       return redirect("/");
@@ -66,18 +70,18 @@ export default {
     return {
       loadingCreateAdvertisement: false,
       fileList: [],
-      form: this.$form.createForm(this),
-    }
+      form: this.$form.createForm(this)
+    };
   },
   methods: {
     handleRemove(file) {
       const index = this.fileList.indexOf(file);
       const newFileList = this.fileList.slice();
       newFileList.splice(index, 1);
-      this.fileList = newFileList
+      this.fileList = newFileList;
     },
     beforeUpload(file) {
-      this.fileList = [...this.fileList, file]
+      this.fileList = [...this.fileList, file];
       return false;
     },
     processFile(event) {
@@ -102,27 +106,30 @@ export default {
         reader.readAsDataURL(file);
       }
     },
-    handleSubmit (e) {
-      e.preventDefault()
+    handleSubmit(e) {
+      e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.loadingCreateAdvertisement = true
-          console.log('Received values of form: ', values)
+          this.loadingCreateAdvertisement = true;
+          console.log("Received values of form: ", values);
 
-          let formData = new FormData()
-          formData.append('name', values.name)
-          formData.append('link', values.link)
-          formData.append('image', values.image.file)
+          let formData = new FormData();
+          formData.append("name", values.name);
+          formData.append("link", values.link);
+          formData.append("image", values.image.file);
 
-          this.$axios.$post('/admin/advertisements', formData).then(response => {
-            this.$router.push('/command-center/advertisements')
-            this.loadingCreateAdvertisement = true
-          }).catch(error => {
-            console.log(error)
-            this.loadingCreateAdvertisement = true
-          })
+          this.$axios
+            .$post("/api/v1/admin/advertisements", formData)
+            .then(response => {
+              this.$router.push("/command-center/advertisements");
+              this.loadingCreateAdvertisement = true;
+            })
+            .catch(error => {
+              console.log(error);
+              this.loadingCreateAdvertisement = true;
+            });
         }
-      })
+      });
     }
   }
 };

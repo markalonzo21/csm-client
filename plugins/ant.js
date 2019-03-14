@@ -53,7 +53,7 @@ import {
   // Timeline,
   Tooltip,
   // Mention,
-  // Upload,
+  Upload,
   Drawer
   // Skeleton,
   // Comment,
@@ -82,11 +82,12 @@ Vue.use(DatePicker)
 Vue.use(Popconfirm)
 Vue.use(Popover)
 Vue.use(Modal)
+Vue.use(Upload)
 
 export default function (ctx, inject) {
   ctx.$notification = notification
   inject('notification', notification)
-  
+
   ctx.$message = message
   inject('message', message)
 }

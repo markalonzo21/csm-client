@@ -11,7 +11,7 @@ export const getters = {
 
 export const actions = {
   getReports ({ commit }) {
-    return this.$axios.$get('/responder/reports').then(response => {
+    return this.$axios.$get('/api/v1/responder/reports').then(response => {
       commit('SET_REPORTS', response.data)
       commit(
         'SET_REPORT',
@@ -20,9 +20,11 @@ export const actions = {
     })
   },
   getReport ({ commit }, id) {
-    return this.$axios.$get(`/responder/reports/${id}`).then(response => {
-      commit('SET_REPORT', response.data)
-    })
+    return this.$axios
+      .$get(`/api/v1/responder/reports/${id}`)
+      .then(response => {
+        commit('SET_REPORT', response.data)
+      })
   }
 }
 

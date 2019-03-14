@@ -209,19 +209,19 @@ export default {
       this.form.description = "";
     },
     getReportTypes() {
-      this.$axios.$get("/report-types").then(response => {
+      this.$axios.$get("/api/v1/report-types").then(response => {
         this.types = response.data;
       });
     },
     getReportCategories() {
-      this.$axios.$get("/report-categories").then(response => {
+      this.$axios.$get("/api/v1/report-categories").then(response => {
         this.reportCategories = response.data;
         this.form.category = response.data[0]._id;
       });
     },
     getResponseTypes() {
       this.loadingGetReportTypes = true;
-      this.$axios.$get("/response-types").then(response => {
+      this.$axios.$get("/api/v1/response-types").then(response => {
         this.responseTypes = response.data;
         this.loadingGetReportTypes = false;
       });
@@ -241,7 +241,7 @@ export default {
     },
     createReportType() {
       this.loadingCreateReportType = true;
-      this.$axios.$post("/report-types", this.form).then(response => {
+      this.$axios.$post("/api/v1/report-types", this.form).then(response => {
         this.generateFakeData();
         this.types.push(response.data);
         this.loadingCreateReportType = false;

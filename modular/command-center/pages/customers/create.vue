@@ -184,9 +184,9 @@ export default {
       return redirect("/");
     }
 
-    const getRoles = $axios.get("/admin/roles");
-    const getAreas = $axios.get("/admin/areas");
-    const getCategories = $axios.get("/report-categories");
+    const getRoles = $axios.get("/api/v1/admin/roles");
+    const getAreas = $axios.get("/api/v1/admin/areas");
+    const getCategories = $axios.get("/api/v1/report-categories");
 
     const [roles, areas, categories] = await Promise.all([
       getRoles,
@@ -258,7 +258,7 @@ export default {
       form.role = this.roles.find(role => role.slug === this.form.role)._id;
 
       this.$axios
-        .$post(`/admin/users`, form)
+        .$post(`/api/v1/admin/users`, form)
         .then(response => {
           this.form.reset();
           this.form.errors.clear();

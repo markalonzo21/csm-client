@@ -45,8 +45,8 @@ export default {
       return redirect("/");
     }
 
-    const getPermissions = $axios.$get("/admin/permissions");
-    const getRole = $axios.$get(`/admin/roles/${params.id}`);
+    const getPermissions = $axios.$get("/api/v1/admin/permissions");
+    const getRole = $axios.$get(`/api/v1/admin/roles/${params.id}`);
 
     return Promise.all([getPermissions, getRole])
       .then(([permissions, role]) => {
@@ -106,7 +106,7 @@ export default {
 
       this.loadingUpdateRole = true;
       this.$axios
-        .$patch(`/admin/roles/${this.form.id}`, this.form)
+        .$patch(`/api/v1/admin/roles/${this.form.id}`, this.form)
         .then(response => {
           this.$router.push("/command-center/roles");
         });

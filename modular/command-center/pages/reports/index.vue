@@ -286,8 +286,8 @@
 export default {
   layout: "command-center/default",
   asyncData({ $axios, error }) {
-    const getCategories = $axios.$get("/report-categories");
-    const getAreas = $axios.$get("/areas");
+    const getCategories = $axios.$get("/api/v1/report-categories");
+    const getAreas = $axios.$get("/api/v1/areas");
 
     return Promise.all([getCategories, getAreas]).then(
       ([categories, areas]) => {
@@ -450,7 +450,7 @@ export default {
       );
 
       this.$axios
-        .$get("/admin/reports", { params: formReference })
+        .$get("/api/v1/admin/reports", { params: formReference })
         .then(response => {
           this.pagination.total = response.info.total;
           this.reports = response.data;
@@ -482,7 +482,7 @@ export default {
         `/command-center/reports${queryString}`
       );
       this.$axios
-        .$get("/admin/reports", { params: formReference })
+        .$get("/api/v1/admin/reports", { params: formReference })
         .then(response => {
           this.pagination.total = response.info.total;
           this.reports = response.data;

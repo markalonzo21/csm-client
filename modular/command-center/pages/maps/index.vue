@@ -258,9 +258,9 @@ export default {
     LeafletHeatmap
   },
   asyncData({ $axios, error }) {
-    const getCategories = $axios.$get("/report-categories");
-    const getReports = $axios.$get("/admin/reports");
-    const getAreas = $axios.$get("/areas");
+    const getCategories = $axios.$get("/api/v1/report-categories");
+    const getReports = $axios.$get("/api/v1/admin/reports");
+    const getAreas = $axios.$get("/api/v1/areas");
 
     return Promise.all([getCategories, getReports, getAreas]).then(
       ([categories, reports, areas]) => {
@@ -359,7 +359,7 @@ export default {
       }
 
       this.$axios
-        .$get("/admin/reports", { params: this.form })
+        .$get("/api/v1/admin/reports", { params: this.form })
         .then(response => {
           // window.history.pushState(
           //   this.form,
@@ -385,7 +385,7 @@ export default {
         : null;
 
       this.$axios
-        .$get("/admin/reports", { params: this.form })
+        .$get("/api/v1/admin/reports", { params: this.form })
         .then(response => {
           // window.history.pushState(
           //   this.form,

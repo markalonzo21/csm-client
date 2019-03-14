@@ -25,7 +25,7 @@
                 <!-- <a
                   class="btn btnblue"
                   href="#"
-                >button</a> -->
+                >button</a>-->
               </div>
             </div>
           </div>
@@ -74,7 +74,7 @@ export default {
     HomeNews
   },
   asyncData({ $axios }) {
-    return $axios.$get("/advertisements").then(response => {
+    return $axios.$get("/api/v1/advertisements").then(response => {
       return {
         advertisements: response.data
       };

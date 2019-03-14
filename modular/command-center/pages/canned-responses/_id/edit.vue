@@ -39,7 +39,7 @@ export default {
     }
 
     return $axios
-      .$get(`/admin/canned-responses/${params.id}`)
+      .$get(`/api/v1/admin/canned-responses/${params.id}`)
       .then(response => {
         return {
           form: new Form({
@@ -62,7 +62,10 @@ export default {
       this.loadingUpdateCannedResponse = true;
 
       this.$axios
-        .$patch(`/admin/canned-responses/${this.$route.params.id}`, this.form)
+        .$patch(
+          `/api/v1/admin/canned-responses/${this.$route.params.id}`,
+          this.form
+        )
         .then(response => {
           this.form.errors.clear();
           this.loadingUpdateCannedResponse = false;

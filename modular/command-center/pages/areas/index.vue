@@ -73,7 +73,7 @@ export default {
   },
   mounted() {
     this.loadingGetAreas = true;
-    this.$axios.$get("/admin/areas").then(response => {
+    this.$axios.$get("/api/v1/admin/areas").then(response => {
       this.dataSource = response.data;
       this.loadingGetAreas = false;
     });

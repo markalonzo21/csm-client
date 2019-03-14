@@ -19,7 +19,7 @@ export const getters = {
 
 export const actions = {
   // getAreas ({ commit }) {
-  //   return this.$axios.$get('/resolver/areas').then(response => {
+  //   return this.$axios.$get('/api/v1/resolver/areas').then(response => {
   //     commit('SET_AREAS', response.data)
   //   })
   // }
