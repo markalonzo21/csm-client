@@ -42,7 +42,7 @@ import {
   // Slider,
   Spin,
   // Steps,
-  // Switch,
+  Switch,
   Table,
   // Transfer,
   // Tree,
@@ -83,6 +83,7 @@ Vue.use(Popconfirm)
 Vue.use(Popover)
 Vue.use(Modal)
 Vue.use(Upload)
+Vue.use(Switch)
 
 export default function (ctx, inject) {
   ctx.$notification = notification

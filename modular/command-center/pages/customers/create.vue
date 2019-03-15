@@ -96,68 +96,6 @@
       </a-select>
     </a-form-item>
 
-    <a-form-item
-      :labelCol="{span: 4}"
-      :wrapperCol="{span: 18}"
-      label="* Role"
-    >
-      <a-select
-        @change="handleFormRoleChange"
-        defaultValue="user"
-      >
-        <a-select-option
-          :key="role._id"
-          :value="role.slug"
-          v-for="role in roles"
-        >{{role.name}}</a-select-option>
-      </a-select>
-    </a-form-item>
-
-    <a-form-item
-      :labelCol="{span: 4}"
-      :wrapperCol="{span: 18}"
-      label="* Areas"
-      v-if="roleRequiresArea"
-    >
-      <FormItemArea
-        :areas="areas"
-        @mergeAreas="(areas) => form.areas = areas"
-      />
-    </a-form-item>
-
-    <a-form-item
-      :labelCol="{span: 4}"
-      :wrapperCol="{span: 18}"
-      label="* Category"
-      v-if="roleRequiresCategory"
-    >
-      <a-select
-        :defaultValue="categories[0]._id"
-        @change="handleFormCategory"
-      >
-        <a-select-option
-          :key="category._id"
-          :value="category._id"
-          v-for="category in categories"
-        >{{category.name}}</a-select-option>
-      </a-select>
-    </a-form-item>
-
-    <a-form-item
-      :labelCol="{span: 4}"
-      :wrapperCol="{span: 18}"
-      label="Response Types"
-      v-if="roleRequiresCategory"
-    >
-      <FormItemResponseTypes
-        :canRespondTo="canRespondTo"
-        :key="form.category"
-        @mergeCanRespondTo="(canRespondTo) => form.canRespondTo = canRespondTo"
-        v-if="canRespondTo.length > 0"
-      />
-      <span v-else>No Response Types Available</span>
-    </a-form-item>
-
     <a-form-item :wrapperCol="{offset: 20}">
       <a-button
         :loading="loadingCreateUser"
@@ -169,36 +107,14 @@
 </template>
 
 <script>
-import FormItemArea from "./-FormItemArea";
-import FormItemResponseTypes from "./-FormItemResponseTypes";
 import Form from "@/utils/Form";
 
 export default {
   layout: "command-center/default",
-  components: {
-    FormItemArea,
-    FormItemResponseTypes
-  },
   async asyncData({ $axios, store, error, redirect }) {
-    if (!store.getters["auth/hasPermission"]("create user")) {
+    if (!store.getters["auth/hasPermission"]("create customer")) {
       return redirect("/");
     }
-
-    const getRoles = $axios.get("/api/v1/admin/roles");
-    const getAreas = $axios.get("/api/v1/admin/areas");
-    const getCategories = $axios.get("/api/v1/report-categories");
-
-    const [roles, areas, categories] = await Promise.all([
-      getRoles,
-      getAreas,
-      getCategories
-    ]);
-
-    return {
-      roles: roles.data.data,
-      areas: areas.data.data,
-      categories: categories.data.data
-    };
   },
   data() {
     return {
@@ -211,51 +127,15 @@ export default {
         mobile: "",
         password: "",
         password_confirmation: "",
-        gender: "male",
-        role: "user",
-        category: "",
-        canRespondTo: [],
-        areas: []
+        gender: "male"
       })
     };
-  },
-  computed: {
-    roleRequiresArea() {
-      return this.roles
-        .find(role => {
-          return role.slug === this.form.role;
-        })
-        .permissions.some(permission => {
-          return ["resolve", "respond"].includes(permission.name);
-        });
-    },
-    roleRequiresCategory() {
-      return this.roles
-        .find(role => {
-          return role.slug === this.form.role;
-        })
-        .permissions.some(permission => {
-          return ["respond"].includes(permission.name);
-        });
-    },
-    canRespondTo() {
-      const category = this.categories.find(
-        category => category._id === this.form.category
-      );
-
-      if (!category) {
-        return [];
-      }
-
-      return category.types;
-    }
   },
   methods: {
     createUser() {
       this.loadingCreateUser = true;
       const form = { ...this.form };
       form.mobile = `0${this.form.mobile}`;
-      form.role = this.roles.find(role => role.slug === this.form.role)._id;
 
       this.$axios
         .$post(`/api/v1/admin/users`, form)
@@ -269,14 +149,6 @@ export default {
           this.form.errors.record(error.response.data.errors);
           this.loadingCreateUser = false;
         });
-    },
-    handleFormRoleChange(value) {
-      this.form.areas = [];
-      this.form.role = value;
-      this.form.category = this.categories[0]._id;
-    },
-    handleFormCategory(value) {
-      this.form.category = value;
     }
   }
 };

@@ -73,65 +73,9 @@
       <a-form-item
         :labelCol="{span: 4}"
         :wrapperCol="{span: 18}"
-        label="* Role"
+        label="Confirmed"
       >
-        <a-select
-          :defaultValue="form.role"
-          @change="handleFormRoleChange"
-        >
-          <a-select-option
-            :key="role._id"
-            :value="role.slug"
-            v-for="role in roles"
-          >{{role.name}}</a-select-option>
-        </a-select>
-      </a-form-item>
-
-      <a-form-item
-        :labelCol="{span: 4}"
-        :wrapperCol="{span: 18}"
-        label="* Areas"
-        v-if="roleRequiresArea"
-      >
-        <FormItemArea
-          :areas="areas"
-          :selectedAreas="form.areas"
-          @mergeAreas="(areas) => form.areas = areas"
-        />
-      </a-form-item>
-
-      <a-form-item
-        :labelCol="{span: 4}"
-        :wrapperCol="{span: 18}"
-        label="* Category"
-        v-if="roleRequiresCategory"
-      >
-        <a-select
-          :defaultValue="categories[0]._id"
-          @change="handleFormCategory"
-        >
-          <a-select-option
-            :key="category._id"
-            :value="category._id"
-            v-for="category in categories"
-          >{{category.name}}</a-select-option>
-        </a-select>
-      </a-form-item>
-
-      <a-form-item
-        :labelCol="{span: 4}"
-        :wrapperCol="{span: 18}"
-        label="Response Types"
-        v-if="roleRequiresCategory"
-      >
-        <FormItemResponseTypes
-          :canRespondTo="canRespondTo"
-          :key="form.category"
-          :selectedCanRespondTo="form.canRespondTo"
-          @mergeCanRespondTo="(canRespondTo) => form.canRespondTo = canRespondTo"
-          v-if="canRespondTo.length > 0"
-        />
-        <span v-else>No Response Types Available</span>
+        <a-switch v-model="form.confirmed"/>
       </a-form-item>
 
       <a-form-item :wrapperCol="{offset: 20}">
@@ -185,38 +129,23 @@
 </template>
 
 <script>
-import FormItemArea from "../-FormItemArea";
-import FormItemResponseTypes from "../-FormItemResponseTypes";
 import Form from "@/utils/Form";
 
 export default {
   layout: "command-center/default",
-  components: {
-    FormItemArea,
-    FormItemResponseTypes
-  },
   async asyncData({ $axios, store, error, params }) {
-    if (!store.getters["auth/hasPermission"]("update user")) {
+    if (!store.getters["auth/hasPermission"]("update customer")) {
       return redirect("/");
     }
 
     const getRoles = $axios.get("/api/v1/admin/roles");
-    const getAreas = $axios.get("/api/v1/admin/areas");
-    const getCategories = $axios.get("/api/v1/report-categories");
-    const getUser = $axios.get(`/api/v1/admin/users/${params.id}`);
+    const getUser = $axios.get(`/api/v1/admin/customers/${params.id}`);
 
-    const [roles, areas, categories, userResponse] = await Promise.all([
-      getRoles,
-      getAreas,
-      getCategories,
-      getUser
-    ]);
+    const [roles, userResponse] = await Promise.all([getRoles, getUser]);
 
     const user = userResponse.data.data;
     return {
       roles: roles.data.data,
-      areas: areas.data.data,
-      categories: categories.data.data,
       form: new Form({
         firstName: user.firstName,
         middleName: user.middleName,
@@ -224,10 +153,9 @@ export default {
         email: user.email,
         mobile: user.mobile ? user.mobile.substring(1, user.mobile.length) : "",
         gender: user.gender,
-        role: user.role.slug,
-        category: user.category,
-        canRespondTo: user.canRespondTo.map(type => type._id),
-        areas: user.areas.map(area => area._id)
+        confirmed: user.confirmed,
+        verifiedEmail: user.verifiedEmail,
+        verifiedMobile: user.verifiedMobile
       }),
       passwordForm: new Form({
         password: "",
@@ -241,37 +169,7 @@ export default {
       loadingUpdateUserPassword: false
     };
   },
-  computed: {
-    roleRequiresArea() {
-      return this.roles
-        .find(role => {
-          return role.slug === this.form.role;
-        })
-        .permissions.some(permission => {
-          return ["resolve", "respond"].includes(permission.name);
-        });
-    },
-    roleRequiresCategory() {
-      return this.roles
-        .find(role => {
-          return role.slug === this.form.role;
-        })
-        .permissions.some(permission => {
-          return ["respond"].includes(permission.name);
-        });
-    },
-    canRespondTo() {
-      const category = this.categories.find(
-        category => category._id === this.form.category
-      );
 
-      if (!category) {
-        return [];
-      }
-
-      return category.types;
-    }
-  },
   methods: {
     updateUser() {
       this.loadingUpdateUser = true;
@@ -298,7 +196,10 @@ export default {
       const form = { ...this.passwordForm };
 
       this.$axios
-        .$patch(`/api/v1/admin/users/${this.$route.params.id}/password`, form)
+        .$patch(
+          `/api/v1/admin/customers/${this.$route.params.id}/password`,
+          form
+        )
         .then(response => {
           this.passwordForm.reset();
           this.passwordForm.errors.clear();
@@ -309,14 +210,6 @@ export default {
           this.passwordForm.errors.record(error.response.data.errors);
           this.loadingUpdateUserPassword = false;
         });
-    },
-    handleFormRoleChange(value) {
-      this.form.areas = [];
-      this.form.role = value;
-      this.form.category = this.categories[0]._id;
-    },
-    handleFormCategory(value) {
-      this.form.category = value;
     }
   }
 };

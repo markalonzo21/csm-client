@@ -6,7 +6,7 @@
 export default {
   layout: "command-center/default",
   mounted() {
-    this.$router.replace("/command-center/users");
+    this.$router.replace("/command-center/customers");
   }
 };
 </script>

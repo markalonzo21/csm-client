@@ -7,8 +7,14 @@
     >
       <a-icon type="filter"/>
     </a-button>
+
     <div class="clearfix">
       <h3 class="float-left">Customers</h3>
+      <a-button
+        @click.prevent="$router.push('/command-center/customers/create')"
+        class="float-right my-6"
+        type="primary"
+      >Create User</a-button>
     </div>
     <hr>
     <a-table
@@ -43,7 +49,7 @@
         slot-scope="customer"
       >
         <a-button type="primary">
-          <nuxt-link :to="`/command-center/customers/${customer._id}`">Show</nuxt-link>
+          <nuxt-link :to="`/command-center/customers/${customer._id}/edit`">Edit</nuxt-link>
         </a-button>
       </template>
     </a-table>
@@ -187,9 +193,13 @@ export default {
   },
   methods: {
     initSocketListeners() {
-      this.$socket.on("new-customer", customer =>
-        this.customers.unshift(customer)
-      );
+      this.$socket.emit("joinCustomersRoom");
+      this.$socket.on("new-customer", customer => {
+        this.$notification["info"]({
+          message: `New customer added to the list.`
+        });
+        this.customers.unshift(customer);
+      });
     },
     // Events on pagination
     handleTableChange(pagination, filters, sorter) {
