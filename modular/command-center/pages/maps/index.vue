@@ -1,6 +1,13 @@
 <template>
   <section class="w-full">
-    <div class="col-md-7">
+    <a-button
+      @click.prevent="filterIsVisible = true"
+      class="pin-r fixed z-10 rounded-none clearfix"
+      type="primary"
+    >
+      <a-icon type="filter"/>
+    </a-button>
+    <div class="col-md-12">
       <div class="row px-6">
         <h3 class="mt-0">Incident Map</h3>
         <a-checkbox
@@ -77,176 +84,169 @@
         </div>
       </div>
     </div>
-    <div class="col-md-5">
-      <a-form @submit.prevent="filterReports">
-        <h3 class="text-center">Filter</h3>
-        <a-row :gutter="24">
-          <a-col :span="24">
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Area"
-            >
-              <a-select
-                :value="form.area"
-                @change="selectAreaChange"
-                placeholder="Select Area"
-              >
-                <a-select-option value>Any</a-select-option>
-                <a-select-option
-                  :key="`area-${item._id}`"
-                  :value="item._id"
-                  v-for="item in selectList.areas"
-                >{{ item.name }}</a-select-option>
-              </a-select>
-            </a-form-item>
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Category"
-            >
-              <a-select
-                :value="form.category"
-                @change="selectCategoryChange"
-                placeholder="Select a Category"
-              >
-                <a-select-option value>Any</a-select-option>
-                <a-select-option
-                  :key="`category-${category._id}`"
-                  :value="category._id"
-                  v-for="category in selectList.categories"
-                >{{ category.name }}</a-select-option>
-              </a-select>
-            </a-form-item>
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Report ID"
-            >
-              <a-input
-                placeholder="Enter Report ID"
-                v-model="form.id"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Status"
-            >
-              <a-select
-                :value="form.status"
-                @change="selectStatusChange"
-                placeholder="Select a Status"
-              >
-                <a-select-option value>Any</a-select-option>
-                <a-select-option
-                  :key="`status-${status}`"
-                  :value="status"
-                  v-for="status in selectList.statuses"
-                >{{ status }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Type"
-            >
-              <a-select
-                :value="form.type"
-                @change="selectTypeChange"
-                placeholder="Select a Type"
-              >
-                <a-select-option value>Any</a-select-option>
-                <a-select-option
-                  :key="`type-${type._id}`"
-                  :value="type._id"
-                  v-for="type in selectList.types"
-                >{{ type.name }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Reporter"
-            >
-              <a-input
-                placeholder="Enter reporter email"
-                v-model="form.reporter"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Date Started"
-            >
-              <a-date-picker
-                class="w-full"
-                format="MM-DD-YYYY"
-                v-model="form.startDate"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Date End"
-            >
-              <a-date-picker
-                class="w-full"
-                format="MM-DD-YYYY"
-                v-model="form.endDate"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Responder"
-            >
-              <a-input
-                placeholder="Enter responder email"
-                v-model="form.responder"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item
-              :labelCol="{ span: 4 }"
-              :wrapperCol="{ span: 20 }"
-              label="Resolver"
-            >
-              <a-input
-                placeholder="Enter resolver email"
-                v-model="form.resolver"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col
-            :offset="12"
-            :span="12"
+    <a-drawer
+      :closable="true"
+      :visible="filterIsVisible"
+      @close="filterIsVisible = false"
+      placement="right"
+      title="Filter"
+      width="350"
+      wrapClassName="drawer-filter"
+    >
+      <a-form
+        @submit.prevent="filterReports"
+        class="mt-4"
+      >
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Area"
+        >
+          <a-select
+            :value="form.area"
+            @change="selectAreaChange"
+            placeholder="Select Area"
           >
-            <a-form-item>
-              <a-button
-                :loading="loadingReports"
-                class="float-right w-full"
-                htmlType="submit"
-                type="primary"
-              >Filter</a-button>
-            </a-form-item>
-          </a-col>
-        </a-row>
+            <a-select-option value>Any</a-select-option>
+            <a-select-option
+              :key="`area-${item._id}`"
+              :value="item._id"
+              v-for="item in selectList.areas"
+            >{{ item.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Category"
+        >
+          <a-select
+            :value="form.category"
+            @change="selectCategoryChange"
+            placeholder="Select a Category"
+          >
+            <a-select-option value>Any</a-select-option>
+            <a-select-option
+              :key="`category-${category._id}`"
+              :value="category._id"
+              v-for="category in selectList.categories"
+            >{{ category.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Report ID"
+        >
+          <a-input
+            placeholder="Enter Report ID"
+            v-model="form.id"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Status"
+        >
+          <a-select
+            :value="form.status"
+            @change="selectStatusChange"
+            placeholder="Select a Status"
+          >
+            <a-select-option value>Any</a-select-option>
+            <a-select-option
+              :key="`status-${status}`"
+              :value="status"
+              v-for="status in selectList.statuses"
+            >{{ status }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Type"
+        >
+          <a-select
+            :value="form.type"
+            @change="selectTypeChange"
+            placeholder="Select a Type"
+          >
+            <a-select-option value>Any</a-select-option>
+            <a-select-option
+              :key="`type-${type._id}`"
+              :value="type._id"
+              v-for="type in selectList.types"
+            >{{ type.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Reporter"
+        >
+          <a-input
+            placeholder="Enter reporter email"
+            v-model="form.reporter"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Date Started"
+        >
+          <a-date-picker
+            class="w-full"
+            format="MM-DD-YYYY"
+            v-model="form.startDate"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Date End"
+        >
+          <a-date-picker
+            class="w-full"
+            format="MM-DD-YYYY"
+            v-model="form.endDate"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Responder"
+        >
+          <a-input
+            placeholder="Enter responder email"
+            v-model="form.responder"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          label="Resolver"
+        >
+          <a-input
+            placeholder="Enter resolver email"
+            v-model="form.resolver"
+          />
+        </a-form-item>
+        <a-form-item>
+          <a-button
+            :disabled="loadingReports"
+            @click.prevent="resetFilter"
+            class="w-1/8 mr-2"
+            type="danger"
+          >Reset</a-button>
+          <a-button
+            :loading="loadingReports"
+            class="w-3/4"
+            htmlType="submit"
+            type="primary"
+          >Filter</a-button>
+        </a-form-item>
       </a-form>
-    </div>
+    </a-drawer>
   </section>
 </template>
 
@@ -297,7 +297,8 @@ export default {
             statuses: ["pending", "in-progress", "resolved", "cancelled"]
           },
           showCluster: true,
-          showHeatmap: false
+          showHeatmap: false,
+          filterIsVisible: false
         };
       }
     );
@@ -412,6 +413,21 @@ export default {
         .catch(err => {
           this.loadingReports = false;
         });
+    },
+    resetFilter() {
+      this.form.id = "";
+      this.form.category = "";
+      this.form.type = "";
+      this.form.reporter = "";
+      this.form.responder = "";
+      this.form.resolver = "";
+      this.form.status = "";
+      this.form.type = "";
+      this.form.area = "";
+      this.form.startDate = null;
+      this.form.endDate = null;
+      this.form.limit = 999999;
+      this.filterReports();
     },
     selectAreaChange(value) {
       this.form.area = value;

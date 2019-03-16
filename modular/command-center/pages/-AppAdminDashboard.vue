@@ -4,33 +4,45 @@
     <h3 style="margin-top: 0;">As of {{ $moment().format('MMM. DD, YYYY') }}</h3>
     <div class="row">
       <div class="col-md-3">
-        <TotalReportsCard
+        <DashboardCard
+          :labelValue="dashboardDetails.reportsCount ? dashboardDetails.reportsCount : 0"
           :loading="fetchingDashboardDetails"
-          :total="dashboardDetails.reportsCount ? dashboardDetails.reportsCount : 0"
+          label="total no. of reports"
         />
       </div>
       <div class="col-md-3">
-        <ResolvedReportsCard
+        <DashboardCard
+          :labelValue="dashboardDetails.resolvedReportsCount ? dashboardDetails.resolvedReportsCount : 0"
           :loading="fetchingDashboardDetails"
-          :total="dashboardDetails.resolvedReportsCount ? dashboardDetails.resolvedReportsCount : 0"
+          label="resolved reports"
         />
       </div>
       <div class="col-md-3">
-        <UnresolvedReportsCard
+        <DashboardCard
+          :labelValue="dashboardDetails.unresolvedReportsCount ? dashboardDetails.unresolvedReportsCount : 0"
           :loading="fetchingDashboardDetails"
-          :total="dashboardDetails.unresolvedReportsCount ? dashboardDetails.unresolvedReportsCount : 0"
+          label="unresolved reports"
         />
       </div>
       <div class="col-md-3">
-        <CancelledReportsCard
+        <DashboardCard
+          :labelValue="dashboardDetails.cancelledReportsCount ? dashboardDetails.cancelledReportsCount : 0"
           :loading="fetchingDashboardDetails"
-          :total="dashboardDetails.cancelledReportsCount ? dashboardDetails.cancelledReportsCount : 0"
+          label="cancelled reports"
         />
       </div>
       <div class="col-md-3">
-        <EmergencyReportCards
+        <DashboardCard
+          :labelValue="dashboardDetails.emergencyReportsCount ? dashboardDetails.emergencyReportsCount : 0"
           :loading="fetchingDashboardDetails"
-          :total="dashboardDetails.emergencyReportsCount ? dashboardDetails.emergencyReportsCount : 0"
+          label="emergency reports"
+        />
+      </div>
+      <div class="col-md-3">
+        <DashboardCard
+          :labelValue="dashboardDetails.resolvingReportAverageTime"
+          :loading="fetchingDashboardDetails"
+          label="resolving report avg. time"
         />
       </div>
     </div>
@@ -59,22 +71,14 @@
 </template>
 
 <script>
-import TotalReportsCard from "~/modular/command-center/components/DashboardCards/TotalReportsCard";
-import ResolvedReportsCard from "~/modular/command-center/components/DashboardCards/ResolvedReportsCard";
-import UnresolvedReportsCard from "~/modular/command-center/components/DashboardCards/UnresolvedReportsCard";
-import CancelledReportsCard from "~/modular/command-center/components/DashboardCards/CancelledReportsCard";
-import EmergencyReportCards from "~/modular/command-center/components/DashboardCards/EmergencyReportCards";
+import DashboardCard from "~/modular/command-center/components/DashboardCard";
 import ReportsPieChart from "~/modular/command-center/components/DashboardCharts/ReportsPieChart";
 import ReportsBarChart from "~/modular/command-center/components/DashboardCharts/ReportsBarChart";
 
 export default {
   layout: "command-center",
   components: {
-    TotalReportsCard,
-    ResolvedReportsCard,
-    UnresolvedReportsCard,
-    CancelledReportsCard,
-    EmergencyReportCards,
+    DashboardCard,
     ReportsPieChart,
     ReportsBarChart
   },

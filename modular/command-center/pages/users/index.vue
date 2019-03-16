@@ -104,6 +104,7 @@ export default {
         {
           title: "Actions",
           dataIndex: "actions",
+          fixed: "right",
           scopedSlots: { customRender: "actions" }
         }
       ]
@@ -159,9 +160,17 @@ export default {
         return;
       }
 
-      this.$axios.$delete(`/api/v1/admin/users/${user._id}`).then(response => {
-        this.users.splice(index, 1);
-      });
+      this.$axios
+        .$delete(`/api/v1/admin/users/${user._id}`)
+        .then(response => {
+          this.users.splice(index, 1);
+        })
+        .catch(error => {
+          if (error.response.status === 403) {
+            this.$message.error(error.response.data.message);
+            return;
+          }
+        });
     }
   }
 };

@@ -76,12 +76,14 @@ export default {
           }
         })
         .then(() => {
+          this.$nextTick(() => {
+            this.socketConnect();
+          });
+
           this.loading = false;
           const permissions = this.$store.state.auth.user.role.permissions;
           let redirectToHome = true;
           this.$store.commit("TOGGLE_LOGIN_MODAL");
-
-          this.socketConnect();
 
           for (let index = 0; index < permissions.length; index++) {
             const permission = permissions[index];

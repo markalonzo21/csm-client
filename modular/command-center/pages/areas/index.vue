@@ -22,7 +22,7 @@
       <!-- <template slot="description" slot-scope="text">{{ text }}</template> -->
       <template
         slot="actions"
-        slot-scope="text, record"
+        slot-scope="record"
       >
         <a-button type="primary">
           <nuxt-link :to="`/command-center/areas/${record.name}`">Show</nuxt-link>
@@ -64,7 +64,6 @@ export default {
         // },
         {
           title: "Actions",
-          dataIndex: "actions",
           scopedSlots: { customRender: "actions" }
         }
       ],

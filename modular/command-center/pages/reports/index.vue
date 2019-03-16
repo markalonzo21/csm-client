@@ -2,7 +2,7 @@
   <section class="w-full flex flex-col">
     <a-button
       @click.prevent="filterIsVisible = true"
-      class="pin-r fixed z-10 rounded-none"
+      class="pin-r fixed z-10 rounded-none clearfix"
       type="primary"
     >
       <a-icon type="filter"/>
@@ -274,8 +274,14 @@
         </a-form-item>
         <a-form-item>
           <a-button
+            :disabled="loadingReports"
+            @click.prevent="resetFilter"
+            class="w-1/8 mr-2"
+            type="danger"
+          >Reset</a-button>
+          <a-button
             :loading="loadingReports"
-            class="float-right w-full"
+            class="w-3/4"
             htmlType="submit"
             type="primary"
           >Filter</a-button>
@@ -347,7 +353,7 @@ export default {
             },
             {
               title: "Actions",
-              // dataIndex: "actions",
+              fixed: "right",
               scopedSlots: { customRender: "actions" }
             }
           ],
@@ -431,6 +437,24 @@ export default {
           console.log(err.response.data);
           this.loadingReports = false;
         });
+    },
+    resetFilter() {
+      this.form.id = "";
+      this.form.category = "";
+      this.form.type = "";
+      this.form.reporter = "";
+      this.form.responder = "";
+      this.form.resolver = "";
+      this.form.status = "";
+      this.form.type = "";
+      this.form.area = "";
+      this.form.startDate = null;
+      this.form.endDate = null;
+      this.form.page = 1;
+      this.form.limit = 999999;
+      this.pagination.current = 1;
+
+      this.getReports();
     },
     assignFormValuesFromQueryString() {
       if (this.$route.query) {
@@ -538,22 +562,6 @@ export default {
   }
 };
 </script>
-
-<style>
-.drawer-filter .ant-drawer-body {
-  @apply mx-8;
-  @apply mt-4;
-}
-.drawer-filter .ant-form-item {
-  @apply mb-4;
-}
-.drawer-filter label {
-  @apply text-white;
-}
-.drawer-filter .anticon-close {
-  @apply text-white;
-}
-</style>
 
 <style scoped>
 table {

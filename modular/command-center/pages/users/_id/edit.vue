@@ -4,7 +4,7 @@
       @submit.prevent="updateUser"
       class="container clearfix"
     >
-      <h3 class="mt-0 mb-12">Edit User</h3>
+      <h3 class="mt-0 mb-12 text-center">Edit User</h3>
 
       <a-form-item
         :labelCol="{span: 4}"
@@ -222,7 +222,7 @@ export default {
         middleName: user.middleName,
         lastName: user.lastName,
         email: user.email,
-        mobile: user.mobile ? user.mobile.substring(1, user.mobile.length) : "",
+        mobile: user.mobile,
         gender: user.gender,
         role: user.role.slug,
         category: user.category,
@@ -277,7 +277,6 @@ export default {
       this.loadingUpdateUser = true;
 
       const form = { ...this.form };
-      form.mobile = `0${this.form.mobile}`;
       form.role = this.roles.find(role => role.slug === this.form.role)._id;
 
       this.$axios

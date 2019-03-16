@@ -50,9 +50,13 @@
               ></span>
             </a>
             <template slot="dropdown">
-              <!-- <nuxt-link to="/my-profile" tag="li">
-            <a class="button">My Profile</a>
-              </nuxt-link>-->
+              <nuxt-link
+                tag="li"
+                to="/my-profile"
+                v-if="$auth.user.role.name === 'User'"
+              >
+                <a class="button">My Profile</a>
+              </nuxt-link>
               <nuxt-link
                 tag="li"
                 to="/command-center"

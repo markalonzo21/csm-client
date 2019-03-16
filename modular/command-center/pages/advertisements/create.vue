@@ -1,59 +1,60 @@
 <template>
   <div class="ant-col-xs-24">
-    <div class="clearfix">
-      <h3 class="float-left">Create Advertisement</h3>
-    </div>
-    <hr>
-    <div class="content">
-      <a-form
-        :form="form"
-        @submit="handleSubmit"
-        class="login-form"
-        id="components-form-demo-normal-login"
-      >
-        <a-form-item>
-          <a-input
-            placeholder="Advertisement Name"
-            v-decorator="[
+    <div class="container">
+      <div class="clearfix">
+        <h3 class="text-center">Create Advertisement</h3>
+      </div>
+      <hr>
+      <div class="content">
+        <a-form
+          :form="form"
+          @submit="handleSubmit"
+          class="login-form"
+          id="components-form-demo-normal-login"
+        >
+          <a-form-item>
+            <a-input
+              placeholder="Advertisement Name"
+              v-decorator="[
               'name',
               { rules: [{ required: true, message: 'Please input advertisement name!' }] }
             ]"
-          ></a-input>
-        </a-form-item>
-        <a-form-item>
-          <a-input
-            placeholder="Advertisement link (Optional)"
-            v-decorator="[
+            ></a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-input
+              placeholder="Advertisement link (Optional)"
+              v-decorator="[
               'link',
               { rules: [] }
             ]"
-          ></a-input>
-        </a-form-item>
-        <a-form-item label="Image">
-          <a-upload
-            :beforeUpload="beforeUpload"
-            :disabled="fileList.length > 0"
-            :fileList="fileList"
-            :remove="handleRemove"
-            v-decorator="[
+            ></a-input>
+          </a-form-item>
+          <a-form-item label="Image">
+            <a-upload
+              :beforeUpload="beforeUpload"
+              :disabled="fileList.length > 0"
+              :fileList="fileList"
+              :remove="handleRemove"
+              v-decorator="[
               'image',
               { rules: [{ required: true, message: 'Image is required!' }] }
             ]"
-          >
-            <a-button>
-              <a-icon type="upload"/>Select File
-            </a-button>
-          </a-upload>
-        </a-form-item>
-        <a-form-item>
+            >
+              <a-button>
+                <a-icon type="upload"/>Select File
+              </a-button>
+            </a-upload>
+          </a-form-item>
+
           <a-button
             :loading="loadingCreateAdvertisement"
-            class="login-form-button"
+            class="float-right"
             htmlType="submit"
             type="primary"
-          >Submit</a-button>
-        </a-form-item>
-      </a-form>
+          >Create</a-button>
+        </a-form>
+      </div>
     </div>
   </div>
 </template>

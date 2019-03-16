@@ -151,14 +151,5 @@ export default {
 </script>
 
 <style>
-#components-layout-demo-fixed .logo {
-  width: 120px;
-  /* height: 31px; */
-  /* background-image: url("/img/sentinel-logo.png"); */
-  /* background-size: 120px 31px !important; */
-  background-size: cover;
-  /* background-color: white; */
-  margin: 16px 24px 16px 0;
-  float: left;
-}
+@import "~assets/sass/antd.scss";
 </style>

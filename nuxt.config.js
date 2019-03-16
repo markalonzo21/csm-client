@@ -145,6 +145,10 @@ module.exports = {
    ** Build configuration
    */
   build: {
+    cache: true, // expiremental
+    hardSource: true, // expiremental
+    parallel: true, // expiremental
+
     /*
      ** You can extend webpack config here
      */

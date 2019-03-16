@@ -233,7 +233,6 @@ export default {
     },
     createResolvers() {
       this.loadingCreateUser = true;
-      this.form.mobile = `0${this.form.mobile}`;
       this.$axios.$post("/api/v1/admin/resolvers", this.form).then(response => {
         this.generateFakeData();
         this.resolvers.push(response.data);

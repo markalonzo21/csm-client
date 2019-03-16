@@ -1,9 +1,9 @@
 <template>
   <a-form
     @submit.prevent="createRole"
-    class="container clearfix"
+    class="container clearfix text-center"
   >
-    <h3 class="mt-0">Create Role</h3>
+    <h3 class="mt-0 mb-4">Create Role</h3>
     <div class="form-group">
       <a-input
         placeholder="Role Name"
@@ -11,7 +11,7 @@
       />
     </div>
     <div class="form-group">
-      <h5 class="font-bold">Permissions</h5>
+      <h5 class="font-bold text-3xl mt-12 mb-4">Permissions</h5>
       <RolePermissionGroup
         :category="category"
         :key="`category-${index}`"
@@ -24,9 +24,10 @@
     </div>
     <a-button
       :loading="loadingCreateRole"
+      class="float-right"
       htmlType="submit"
       type="primary"
-    >Save</a-button>
+    >Create</a-button>
   </a-form>
 </template>
 

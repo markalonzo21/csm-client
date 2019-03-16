@@ -10,11 +10,11 @@
 
     <div class="clearfix">
       <h3 class="float-left">Customers</h3>
-      <a-button
+      <!-- <a-button
         @click.prevent="$router.push('/command-center/customers/create')"
         class="float-right my-6"
         type="primary"
-      >Create User</a-button>
+      >Create Customer</a-button>-->
     </div>
     <hr>
     <a-table
@@ -32,13 +32,13 @@
         slot-scope="createdAt"
       >{{ createdAt ? $moment(createdAt).format('MMM. DD, YYYY | h:mm A ') : '' }}</template>
       <template
-        slot="verifiedEmail"
-        slot-scope="verifiedEmail"
-      >{{ verifiedEmail ? 'Yes' : 'No' }}</template>
+        slot="emailVerified"
+        slot-scope="emailVerified"
+      >{{ emailVerified ? 'Yes' : 'No' }}</template>
       <template
-        slot="verifiedMobile"
-        slot-scope="verifiedMobile"
-      >{{ verifiedMobile ? 'Yes' : 'No' }}</template>
+        slot="mobileVerified"
+        slot-scope="mobileVerified"
+      >{{ mobileVerified ? 'Yes' : 'No' }}</template>
       <template
         slot="confirmed"
         slot-scope="confirmed"
@@ -89,6 +89,18 @@
             v-model="form.middleName"
           />
         </a-form-item>
+
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Middle Name"
+        >
+          <a-input
+            placeholder="Enter customer's last name"
+            v-model="form.lastName"
+          />
+        </a-form-item>
         <a-form-item
           :labelCol="{ span: 24 }"
           :wrapperCol="{ span: 24 }"
@@ -96,9 +108,35 @@
           label="Email"
         >
           <a-input
-            placeholder="Enter customer email"
+            placeholder="Enter customer's email"
             v-model="form.email"
           />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Mobile Number"
+        >
+          <a-input
+            placeholder="Enter customer's mobile number"
+            v-model="form.mobile"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="{ span: 24 }"
+          :wrapperCol="{ span: 24 }"
+          class="text-white"
+          label="Confirmed"
+        >
+          <a-select
+            placeholder="Select Confirmation Status"
+            v-model="form.confirmed"
+          >
+            <a-select-option value>Any</a-select-option>
+            <a-select-option :value="true">Yes</a-select-option>
+            <a-select-option :value="false">No</a-select-option>
+          </a-select>
         </a-form-item>
 
         <a-form-item>
@@ -138,8 +176,8 @@ export default {
         },
         {
           title: "Email Verified",
-          dataIndex: "verifiedEmail",
-          scopedSlots: { customRender: "verifiedEmail" }
+          dataIndex: "emailVerified",
+          scopedSlots: { customRender: "emailVerified" }
         },
         {
           title: "Mobile Number",
@@ -147,8 +185,8 @@ export default {
         },
         {
           title: "Mobile Verified",
-          dataIndex: "verifiedMobile",
-          scopedSlots: { customRender: "verifiedMobile" }
+          dataIndex: "mobileVerified",
+          scopedSlots: { customRender: "mobileVerified" }
         },
         {
           title: "Confirmed",
@@ -162,12 +200,17 @@ export default {
         },
         {
           title: "Actions",
+          fixed: "right",
           scopedSlots: { customRender: "actions" }
         }
       ],
       form: {
-        id: "",
-        category: "",
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        email: "",
+        mobile: "",
+        confirmed: "",
         page: 1,
         results: 10
       },

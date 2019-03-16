@@ -3,7 +3,7 @@
     @submit.prevent="createCannedResponse"
     class="container clearfix"
   >
-    <h3 class="mt-0 mb-12">Create Canned Response</h3>
+    <h3 class="mt-0 mb-12 text-center">Create Canned Response</h3>
 
     <a-form-item
       :labelCol="{span: 4}"

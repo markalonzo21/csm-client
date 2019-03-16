@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <h3 class="mt-0">Create Area</h3>
+    <h3 class="mt-0 text-center mb-4">Create Area</h3>
     <div
-      class="mt-4"
+      class="mt-4 mb-4"
       id="map-wrap"
       style="height: 500px; width: 50vw; margin: auto;"
     >
@@ -40,8 +40,9 @@
     <div class="my-4">
       <a-button
         @click.prevent="saveArea"
+        class="float-right"
         type="primary"
-      >Save Area</a-button>
+      >Create</a-button>
     </div>
   </div>
 </template>

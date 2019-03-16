@@ -62,40 +62,27 @@
       bordered
     >
       <template
-        slot="actions"
-        slot-scope="text, record"
+        slot="color"
+        slot-scope="color"
       >
-        <a-button
-          disabled
-          type="primary"
-        >Edit</a-button>
+        <div
+          :style="`background-color: ${color};width: 20px ;height: 20px  ;`"
+          class="rounded-full"
+        ></div>
+      </template>
+      <template
+        slot="actions"
+        slot-scope="record"
+      >
+        <a-button type="primary">
+          <nuxt-link :to="`/command-center/report-categories/${record._id}/edit`">Edit</nuxt-link>
+        </a-button>
         <a-button
           disabled
           type="danger"
         >Delete</a-button>
       </template>
     </a-table>
-    <!-- <table class="table-bordered :scroll="{ x: 900 }" w-full">
-      <thead>
-        <tr>
-          <td>Name</td>
-          <td>Description</td>
-          <td>Created At</td>
-          <td>Actions</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="category in reportCategories">
-          <td>{{ category.name }}</td>
-          <td>{{ category.description }}</td>
-          <td>{{ category.createdAt }}</td>
-          <td>
-            <button class="m-2 btn btn-info" disabled>Edit</button>
-            <button class="m-2 btn btn-danger" disabled>Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>-->
   </section>
 </template>
 
@@ -118,15 +105,17 @@ export default {
         {
           title: "Name",
           dataIndex: "name",
-          scopedSlots: { customRender: "name" }
+          scopedSlots: { customRender: "name" },
+          width: "80%"
         },
         {
           title: "Color",
-          dataIndex: "color"
+          dataIndex: "color",
+          scopedSlots: { customRender: "color" },
+          width: "10%"
         },
         {
           title: "Actions",
-          dataIndex: "actions",
           scopedSlots: { customRender: "actions" }
         }
       ],
@@ -148,7 +137,7 @@ export default {
     },
     getReportCategories() {
       this.loadingGetReportCategories = true;
-      this.$axios.$get("/api/v1/report-categories").then(response => {
+      this.$axios.$get("/api/v1/admin/report-categories").then(response => {
         this.reportCategories = response.data;
         this.loadingGetReportCategories = false;
       });
@@ -156,7 +145,7 @@ export default {
     createReportCategory() {
       this.loadingCreateReportCategory = true;
       this.$axios
-        .$post("/api/v1/report-categories", this.form)
+        .$post("/api/v1/admin/report-categories", this.form)
         .then(response => {
           this.generateFakeData();
           this.reportCategories.push(response.data);

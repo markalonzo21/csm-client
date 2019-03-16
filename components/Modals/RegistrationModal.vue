@@ -56,21 +56,21 @@
         </div>
         <div class="col-md-12 mb-6">
           <div
-            :class="{'has-error': form.errors.has('emailOrMobile')}"
+            :class="{'has-error': form.errors.has('email')}"
             class="form-group"
           >
             <input
               class="form-control"
-              name="emailOrMobile"
-              placeholder="Email or Mobile *"
-              type="text"
-              v-model="form.emailOrMobile"
+              name="email"
+              placeholder="Email *"
+              type="email"
+              v-model="form.email"
             >
             <span
               class="help-block"
               style="margin: 0"
-              v-if="form.errors.has('emailOrMobile')"
-              v-text="form.errors.first('emailOrMobile')"
+              v-if="form.errors.has('email')"
+              v-text="form.errors.first('email')"
             ></span>
           </div>
         </div>
@@ -178,7 +178,7 @@ export default {
       form: new Form({
         firstName: "",
         lastName: "",
-        emailOrMobile: "",
+        email: "",
         gender: "Male",
         tenant: false,
         password: "",
@@ -205,7 +205,7 @@ export default {
 
           this.$store.commit(
             "verification/SET_EMAIL_OR_MOBILE",
-            response.data.emailOrMobile
+            response.data.email
           );
           this.$store.commit("TOGGLE_VERIFICATION_MODAL");
           this.loadingRegister = false;

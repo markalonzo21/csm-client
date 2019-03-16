@@ -277,7 +277,6 @@ export default {
     },
     createResponder() {
       this.loadingCreateUser = true;
-      this.form.mobile = `0${this.form.mobile}`;
       this.$axios
         .$post("/api/v1/admin/responders", this.form)
         .then(response => {

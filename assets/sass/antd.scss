@@ -1,0 +1,27 @@
+.drawer-filter .ant-drawer-body {
+  @apply mx-8;
+  @apply mt-4;
+}
+.drawer-filter .ant-form-item {
+  @apply mb-4;
+}
+.drawer-filter label {
+  @apply text-white;
+}
+.drawer-filter .anticon-close {
+  @apply text-white;
+}
+
+#components-layout-demo-fixed .logo {
+  width: 120px;
+  /* height: 31px; */
+  /* background-image: url("/img/sentinel-logo.png"); */
+  /* background-size: 120px 31px !important; */
+  background-size: cover;
+  /* background-color: white; */
+  margin: 16px 24px 16px 0;
+  float: left;
+}
+.ant-drawer-close {
+  color: white;
+}

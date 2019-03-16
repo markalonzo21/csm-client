@@ -3,7 +3,7 @@
     @submit.prevent="createUser"
     class="container clearfix"
   >
-    <h3 class="mt-0 mb-12">Create User</h3>
+    <h3 class="mt-0 mb-12 text-center">Create User</h3>
 
     <a-form-item
       :labelCol="{span: 4}"
@@ -254,7 +254,6 @@ export default {
     createUser() {
       this.loadingCreateUser = true;
       const form = { ...this.form };
-      form.mobile = `0${this.form.mobile}`;
       form.role = this.roles.find(role => role.slug === this.form.role)._id;
 
       this.$axios

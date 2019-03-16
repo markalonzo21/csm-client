@@ -1,10 +1,10 @@
 <template>
   <div>
     <a-form
-      @submit.prevent="updateUser"
+      @submit.prevent="updateCustomer"
       class="container clearfix"
     >
-      <h3 class="mt-0 mb-12">Edit User</h3>
+      <h3 class="mt-0 mb-12 text-center">Edit Customer</h3>
 
       <a-form-item
         :labelCol="{span: 4}"
@@ -78,16 +78,32 @@
         <a-switch v-model="form.confirmed"/>
       </a-form-item>
 
+      <a-form-item
+        :labelCol="{span: 4}"
+        :wrapperCol="{span: 18}"
+        label="Email Verified"
+      >
+        <a-switch v-model="form.emailVerified"/>
+      </a-form-item>
+
+      <a-form-item
+        :labelCol="{span: 4}"
+        :wrapperCol="{span: 18}"
+        label="Mobile Verified"
+      >
+        <a-switch v-model="form.mobileVerified"/>
+      </a-form-item>
+
       <a-form-item :wrapperCol="{offset: 20}">
         <a-button
-          :loading="loadingUpdateUser"
+          :loading="loadingUpdateCustomer"
           htmlType="submit"
           type="primary"
         >Update</a-button>
       </a-form-item>
     </a-form>
     <a-form
-      @submit.prevent="updateUserPassword"
+      @submit.prevent="updateCustomerPassword"
       class="container clearfix"
     >
       <h4>New Password</h4>
@@ -119,7 +135,7 @@
 
       <a-form-item :wrapperCol="{offset: 20}">
         <a-button
-          :loading="loadingUpdateUserPassword"
+          :loading="loadingUpdateCustomerPassword"
           htmlType="submit"
           type="primary"
         >Update</a-button>
@@ -139,23 +155,26 @@ export default {
     }
 
     const getRoles = $axios.get("/api/v1/admin/roles");
-    const getUser = $axios.get(`/api/v1/admin/customers/${params.id}`);
+    const getCustomer = $axios.get(`/api/v1/admin/customers/${params.id}`);
 
-    const [roles, userResponse] = await Promise.all([getRoles, getUser]);
+    const [roles, customerResponse] = await Promise.all([
+      getRoles,
+      getCustomer
+    ]);
 
-    const user = userResponse.data.data;
+    const customer = customerResponse.data.data;
     return {
       roles: roles.data.data,
       form: new Form({
-        firstName: user.firstName,
-        middleName: user.middleName,
-        lastName: user.lastName,
-        email: user.email,
-        mobile: user.mobile ? user.mobile.substring(1, user.mobile.length) : "",
-        gender: user.gender,
-        confirmed: user.confirmed,
-        verifiedEmail: user.verifiedEmail,
-        verifiedMobile: user.verifiedMobile
+        firstName: customer.firstName,
+        middleName: customer.middleName,
+        lastName: customer.lastName,
+        email: customer.email,
+        mobile: customer.mobile,
+        gender: customer.gender,
+        confirmed: customer.confirmed,
+        emailVerified: customer.emailVerified,
+        mobileVerified: customer.mobileVerified
       }),
       passwordForm: new Form({
         password: "",
@@ -165,33 +184,31 @@ export default {
   },
   data() {
     return {
-      loadingUpdateUser: false,
-      loadingUpdateUserPassword: false
+      loadingUpdateCustomer: false,
+      loadingUpdateCustomerPassword: false
     };
   },
 
   methods: {
-    updateUser() {
-      this.loadingUpdateUser = true;
+    updateCustomer() {
+      this.loadingUpdateCustomer = true;
 
       const form = { ...this.form };
-      form.mobile = `0${this.form.mobile}`;
-      form.role = this.roles.find(role => role.slug === this.form.role)._id;
 
       this.$axios
-        .$patch(`/api/v1/admin/users/${this.$route.params.id}`, form)
+        .$patch(`/api/v1/admin/customers/${this.$route.params.id}`, form)
         .then(response => {
           this.form.errors.clear();
-          this.loadingUpdateUser = false;
-          this.$message.info("User details has been updated!");
+          this.loadingUpdateCustomer = false;
+          this.$message.info("Customer details has been updated!");
         })
         .catch(error => {
           this.form.errors.record(error.response.data.errors);
-          this.loadingUpdateUser = false;
+          this.loadingUpdateCustomer = false;
         });
     },
-    updateUserPassword() {
-      this.loadingUpdateUserPassword = true;
+    updateCustomerPassword() {
+      this.loadingUpdateCustomerPassword = true;
 
       const form = { ...this.passwordForm };
 
@@ -203,12 +220,12 @@ export default {
         .then(response => {
           this.passwordForm.reset();
           this.passwordForm.errors.clear();
-          this.loadingUpdateUserPassword = false;
-          this.$message.info("User password has been updated!");
+          this.loadingUpdateCustomerPassword = false;
+          this.$message.info("Customer password has been updated!");
         })
         .catch(error => {
           this.passwordForm.errors.record(error.response.data.errors);
-          this.loadingUpdateUserPassword = false;
+          this.loadingUpdateCustomerPassword = false;
         });
     }
   }

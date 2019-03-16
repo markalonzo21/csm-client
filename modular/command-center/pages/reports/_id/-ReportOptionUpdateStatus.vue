@@ -9,6 +9,7 @@
         class="capitalize form-control"
       >
         <option
+          :key="`status-${status}`"
           :selected="status === currentStatus"
           class="capitalize"
           v-for="status in ['pending', 'in progress', 'resolved', 'cancelled']"

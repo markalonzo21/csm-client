@@ -85,35 +85,6 @@
       >Create Report Type</a-button>
     </div>
     <hr>
-    <!-- <table class="table-bordered :scroll="{ x: 900 }" w-full">
-      <thead>
-        <tr>
-          <td>Name</td>
-          <td>Description</td>
-          <td>Category</td>
-          <td>Milestones</td>
-          <td>Created At</td>
-          <td>Actions</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="type in types">
-          <td>{{ type.name }}</td>
-          <td>{{ type.description }}</td>
-          <td>{{ type.category.name }}</td>
-          <td>
-            <ul class="list-reset">
-              <li v-for="item in type.milestones">{{ item.name }}</li>
-            </ul>
-          </td>
-          <td>{{ type.createdAt }}</td>
-          <td>
-            <button class="m-2 btn btn-info" disabled>Edit</button>
-            <button class="m-2 btn btn-danger" disabled>Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>-->
     <a-table
       :columns="columns"
       :dataSource="types"
@@ -124,12 +95,11 @@
     >
       <template
         slot="actions"
-        slot-scope="text, record"
+        slot-scope="record"
       >
-        <a-button
-          disabled
-          type="primary"
-        >Edit</a-button>
+        <a-button type="primary">
+          <nuxt-link :to="`/command-center/report-types/${record._id}/edit`">Edit</nuxt-link>
+        </a-button>
         <a-button
           disabled
           type="danger"
@@ -174,8 +144,8 @@ export default {
         // },
         {
           title: "Actions",
-          dataIndex: "actions",
-          scopedSlots: { customRender: "actions" }
+          scopedSlots: { customRender: "actions" },
+          width: "20%"
         }
       ],
       form: {

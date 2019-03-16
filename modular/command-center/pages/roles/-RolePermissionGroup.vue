@@ -9,7 +9,7 @@
         :indeterminate="indeterminate"
         @change="onCheckAllChange"
       >
-        <span class="capitalize">{{ category }}</span>
+        <span class="capitalize text-2xl">{{ category }}</span>
       </a-checkbox>
     </div>
 
@@ -18,6 +18,7 @@
       @change="onChange"
       v-model="checkedList"
     />
+    <br>
     <br>
     <br>
   </div>

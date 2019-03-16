@@ -29,7 +29,7 @@
         >
           <nuxt-link to="/command-center/maps">
             <a-icon type="global"/>
-            <span>Maps</span>
+            <span>Incident Map</span>
           </nuxt-link>>
         </a-menu-item>
         <a-menu-item
