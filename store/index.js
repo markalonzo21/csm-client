@@ -6,7 +6,8 @@ export const state = () => ({
   modals: {
     login: false,
     registration: false,
-    verify: false
+    verify: false,
+    emailChange: false
   }
 })
 
@@ -39,5 +40,8 @@ export const mutations = {
   },
   TOGGLE_REGISTRATION_MODAL (state) {
     state.modals.registration = !state.modals.registration
+  },
+  TOGGLE_EMAIL_CHANGE_MODAL (state) {
+    state.modals.emailChange = !state.modals.emailChange
   }
 }

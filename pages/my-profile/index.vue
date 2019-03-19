@@ -1,5 +1,6 @@
 <template>
   <section class="user-profile main-content">
+    <EmailChangeModal v-if="$store.state.modals.emailChange"/>
     <div class="container">
       <h2 class="title__blue">USER # {{ $auth.user._id }}</h2>
       <div class="panel">
@@ -12,38 +13,42 @@
               >First Name</label>
               <br>
               <input
+                :disabled="true"
                 class="form-control"
                 name="firstName"
                 type="text"
-                v-model="form.firstName"
+                v-model="$store.state.auth.user.firstName"
               >
             </div>
             <div class="col-sm-3">
               <label class="bluelabel">Middle Name</label>
               <br>
               <input
+                :disabled="true"
                 class="form-control"
                 name="middleName"
                 type="text"
-                v-model="form.middleName"
+                v-model="$store.state.auth.user.middleName"
               >
             </div>
             <div class="col-sm-3">
               <label class="bluelabel">Last Name</label>
               <br>
               <input
+                :disabled="true"
                 class="form-control"
                 name="lastName"
                 type="text"
-                v-model="form.lastName"
+                v-model="$store.state.auth.user.lastName"
               >
             </div>
             <div class="col-sm-3">
               <label class="bluelabel">Gender</label>
               <br>
               <select
+                :disabled="true"
                 class="form-control"
-                v-model="form.gender"
+                v-model="$store.state.auth.user.gender"
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -57,29 +62,31 @@
               >Email</label>
               <br>
               <input
-                class="form-control"
+                :disabled="true"
+                class="form-control mb-2"
                 name="email"
                 type="email"
-                v-model="form.email"
+                v-model="$store.state.auth.user.email"
               >
+
+              <a
+                @click.prevent="$store.commit('TOGGLE_EMAIL_CHANGE_MODAL')"
+                class="my-4"
+              >Change Email</a>
             </div>
             <div class="col-sm-3 mt-4">
               <label class="bluelabel">Mobile Number</label>
               <br>
-              <input
-                class="form-control"
-                name="mobile"
-                type="text"
-                v-model="form.mobile"
-              >
-            </div>
-
-            <div class="col-md-12 mt-12">
-              <a
-                class="btn btnblue"
-                href="#"
-              >Update Profile</a>
-              <br>
+              <div class="input-group">
+                <span class="input-group-addon">+63</span>
+                <input
+                  class="form-control"
+                  disabled
+                  name="mobile"
+                  type="text"
+                  v-model="$store.state.auth.user.mobile"
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -92,7 +99,7 @@
               <label
                 class="bluelabel"
                 for
-              >Old Password</label>
+              >Current Password</label>
               <br>
               <input
                 class="form-control"
@@ -114,7 +121,7 @@
               <label
                 class="bluelabel mt20"
                 for
-              >Confirm New Password</label>
+              >Verify New Password</label>
               <br>
               <input
                 class="form-control"
@@ -138,17 +145,14 @@
 </template>
 
 <script>
+import EmailChangeModal from "~/components/Modals/EmailChangeModal";
+
 export default {
+  components: {
+    EmailChangeModal
+  },
   data() {
     return {
-      form: {
-        firstName: this.$auth.user.firstName,
-        middleName: this.$auth.user.middleName,
-        lastName: this.$auth.user.lastName,
-        gender: this.$auth.user.gender,
-        email: this.$auth.user.email,
-        mobile: this.$auth.user.mobile
-      },
       passwordForm: {
         oldPassword: "",
         newPassword: "",
