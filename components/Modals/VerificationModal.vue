@@ -120,12 +120,6 @@ export default {
           this.loading = false;
           this.showError = "Verification code is invalid.";
         });
-    },
-    socketConnect() {
-      this.$socket.query.token = localStorage
-        .getItem("auth._token.local")
-        .replace("Bearer ", "");
-      this.$socket.connect();
     }
   }
 };

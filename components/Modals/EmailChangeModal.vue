@@ -8,20 +8,29 @@
     <template v-if="step === 1">
       <span slot="title">Update Email</span>
       <form
+        @keydown="form.errors.clear($event.target.name)"
         @submit.prevent="submitUpdateEmail"
         class
       >
-        <label
-          class="float-left"
-          for="email"
-        >Email</label>
-        <input
-          class="form-control mb20"
-          id="email"
-          placeholder="Enter new email"
-          type="text"
-          v-model="form.email"
+        <div
+          :class="{'has-error': form.errors.has('email')}"
+          class="form-group"
         >
+          <input
+            :disabled="loading"
+            class="form-control"
+            name="email"
+            placeholder="Email *"
+            type="email"
+            v-model="form.email"
+          >
+          <span
+            class="help-block"
+            style="margin: 0"
+            v-if="form.errors.has('email')"
+            v-text="form.errors.first('email')"
+          ></span>
+        </div>
         <button
           :disabled="loading"
           class="btn btnblue w-100 text-uppercase"
@@ -32,20 +41,30 @@
     <template v-if="step === 2">
       <span slot="title">Enter Verification Code</span>
       <form
+        @keydown="form.errors.clear($event.target.name)"
         @submit.prevent="submitEmailVerificationCode"
         class
       >
-        <label
-          class="float-left"
-          for="verificationCode"
-        >Verification Code</label>
-        <input
-          class="form-control mb20"
-          id="verificationCode"
-          placeholder="Enter verification code"
-          type="text"
-          v-model="form.verificationCode"
+        <div
+          :class="{'has-error': form.errors.has('verificationCode')}"
+          class="form-group"
         >
+          <input
+            :disabled="loading"
+            class="form-control"
+            name="verificationCode"
+            placeholder="Verification Code *"
+            ref="verificationCode"
+            type="verificationCode"
+            v-model="form.verificationCode"
+          >
+          <span
+            class="help-block"
+            style="margin: 0"
+            v-if="form.errors.has('verificationCode')"
+            v-text="form.errors.first('verificationCode')"
+          ></span>
+        </div>
         <button
           :disabled="loading"
           class="btn btnblue w-100 text-uppercase"
@@ -57,6 +76,8 @@
 </template>
 
 <script>
+import Form from "@/utils/Form";
+
 export default {
   computed: {
     emailChangeModalVisible: {
@@ -72,10 +93,10 @@ export default {
     return {
       step: 1,
       loading: false,
-      form: {
+      form: new Form({
         email: "",
         verificationCode: ""
-      }
+      })
     };
   },
   methods: {
@@ -86,8 +107,13 @@ export default {
         .then(response => {
           this.step++;
           this.loading = false;
+          this.$message.success("Enter your verification code.", 2);
+          this.$nextTick(() => {
+            this.$refs.verificationCode.focus();
+          });
         })
         .catch(error => {
+          this.form.errors.record(error.response.data.errors);
           this.loading = false;
         });
     },
@@ -101,8 +127,10 @@ export default {
           this.step++;
           this.$auth.fetchUser();
           this.$store.commit("TOGGLE_EMAIL_CHANGE_MODAL");
+          this.$message.success("You have changed your email successfully.", 5);
         })
         .catch(error => {
+          this.form.errors.record(error.response.data.errors);
           this.loading = false;
         });
     }
