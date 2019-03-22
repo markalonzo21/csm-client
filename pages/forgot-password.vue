@@ -1,23 +1,31 @@
 <template>
-<section class="user-profile main-content">
-<div class="container">
-    <h2 class="title__blue">Forgot Password</h2>
-    <div class="panel">
+  <section class="user-profile main-content">
+    <div class="container">
+      <h2 class="title__blue">Forgot Password</h2>
+      <div class="panel">
         <div class="panel-body">
-            <label for="" class="bluelabel">Enter email address</label><br />
-            <input class="form-control" type="email" name="" id="">
-                    <button class="btn btnblue">Reset Password</button>
-
+          <label
+            class="bluelabel"
+            for
+          >Enter email address</label>
+          <br>
+          <input
+            class="form-control"
+            id
+            name
+            type="email"
+          >
+          <button class="btn btnblue">Reset Password</button>
         </div>
+      </div>
     </div>
-    </div>
-</section>
-    
-    
+  </section>
 </template>
 
 <script>
-export default {};
+export default {
+  auth: false
+};
 </script>
 
 <style scoped>

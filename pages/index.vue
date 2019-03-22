@@ -74,11 +74,11 @@ export default {
     HomeNews
   },
   asyncData({ $axios }) {
-    return $axios.$get("/api/v1/advertisements").then(response => {
-      return {
-        advertisements: response.data
-      };
-    });
+    // return $axios.$get("/api/v1/advertisements").then(response => {
+    //   return {
+    //     advertisements: response.data
+    //   };
+    // });
   }
 };
 </script>
