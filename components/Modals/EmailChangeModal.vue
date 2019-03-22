@@ -39,7 +39,11 @@
       </form>
     </template>
     <template v-if="step === 2">
-      <span slot="title">Enter Verification Code</span>
+      <span slot="title">
+        Enter Verification Code
+        <br>
+        <small>Demo Verification Code: 000000</small>
+      </span>
       <form
         @keydown="form.errors.clear($event.target.name)"
         @submit.prevent="submitEmailVerificationCode"
