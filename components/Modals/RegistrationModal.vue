@@ -131,14 +131,19 @@
         <div class="col-md-12 mb-6 select-none">
           <div
             :class="{'has-error': form.errors.has('password')}"
-            class="form-group"
+            class="form-group m-0"
           >
             <label>
               <input
                 name="term_agreement"
                 type="checkbox"
                 v-model="form.term_agreement"
-              > Terms and Conditions
+              >
+              <a
+                class="no-underline m-0"
+                href="/terms-and-conditions"
+                target="_blank"
+              >Terms and Conditions</a>
             </label>
             <span
               class="help-block"

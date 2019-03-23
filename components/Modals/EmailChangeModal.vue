@@ -39,8 +39,7 @@
       </form>
     </template>
     <template v-if="step === 2">
-      <span slot="title">
-        Enter Verification Code
+      <span slot="title">Enter Verification Code
         <br>
         <small>Demo Verification Code: 000000</small>
       </span>
@@ -107,7 +106,7 @@ export default {
     submitUpdateEmail() {
       this.loading = true;
       this.$axios
-        .$post("/api/v1/update-email", { email: this.form.email })
+        .$post("/api/v1/profile/update-email", { email: this.form.email })
         .then(response => {
           this.step++;
           this.loading = false;
@@ -124,7 +123,7 @@ export default {
     submitEmailVerificationCode() {
       this.loading = true;
       this.$axios
-        .$patch("/api/v1/update-email", {
+        .$patch("/api/v1/profile/update-email", {
           verificationCode: this.form.verificationCode
         })
         .then(response => {

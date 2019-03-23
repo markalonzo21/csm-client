@@ -2,7 +2,8 @@
   <section class="user-profile main-content">
     <EmailChangeModal v-if="$store.state.modals.emailChange"/>
     <div class="container">
-      <h2 class="title__blue">USER # {{ $auth.user._id }}</h2>
+      <!-- <h2 class="title__blue">USER # {{ $auth.user._id }}</h2> -->
+      <h2 class="title__blue">Profile</h2>
       <div class="panel">
         <div class="panel-body">
           <div class="row">
@@ -94,50 +95,83 @@
 
       <div class="panel">
         <div class="panel-body">
-          <div class="row">
+          <form
+            @keydown="passwordForm.errors.clear($event.target.name)"
+            @submit.prevent="submitUpdatePassword"
+            class="row"
+          >
             <div class="col-sm-3">
+              <label class="bluelabel">Current Password</label>
+              <div
+                :class="{'has-error': passwordForm.errors.has('current_password')}"
+                class="form-group"
+              >
+                <input
+                  class="form-control"
+                  name="current_password"
+                  type="password"
+                  v-model="passwordForm.current_password"
+                >
+                <span
+                  class="help-block"
+                  style="margin: 0"
+                  v-if="passwordForm.errors.has('current_password')"
+                  v-text="passwordForm.errors.first('current_password')"
+                ></span>
+              </div>
+
               <label
                 class="bluelabel"
                 for
-              >Current Password</label>
-              <br>
-              <input
-                class="form-control"
-                type="password"
-                v-model="passwordForm.oldPassword"
-              >
-              <br>
-              <label
-                class="bluelabel mt20"
-                for
               >New Password</label>
-              <br>
-              <input
-                class="form-control"
-                type="password"
-                v-model="passwordForm.newPassword"
+              <div
+                :class="{'has-error': passwordForm.errors.has('password')}"
+                class="form-group"
               >
-              <br>
+                <input
+                  class="form-control"
+                  name="password"
+                  type="password"
+                  v-model="passwordForm.password"
+                >
+                <span
+                  class="help-block"
+                  style="margin: 0"
+                  v-if="passwordForm.errors.has('password')"
+                  v-text="passwordForm.errors.first('password')"
+                ></span>
+              </div>
+
               <label
-                class="bluelabel mt20"
+                class="bluelabel"
                 for
-              >Verify New Password</label>
-              <br>
-              <input
-                class="form-control"
-                type="password"
-                v-model="passwordForm.newPasswordConfirmation"
+              >Password Confirmation</label>
+              <div
+                :class="{'has-error': passwordForm.errors.has('password_confirmation')}"
+                class="form-group"
               >
-              <br>
+                <input
+                  class="form-control"
+                  name="password_confirmation"
+                  type="password"
+                  v-model="passwordForm.password_confirmation"
+                >
+                <span
+                  class="help-block"
+                  style="margin: 0"
+                  v-if="passwordForm.errors.has('password_confirmation')"
+                  v-text="passwordForm.errors.first('password_confirmation')"
+                ></span>
+              </div>
             </div>
             <div class="col-sm-12">
-              <a
+              <button
                 class="btn btnblue mt20"
-                href="edit-user-password"
-              >Update Password</a>
+                type="submit"
+              >Update Password</button>
               <br>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -146,6 +180,7 @@
 
 <script>
 import EmailChangeModal from "~/components/Modals/EmailChangeModal";
+import Form from "@/utils/Form";
 
 export default {
   components: {
@@ -153,12 +188,31 @@ export default {
   },
   data() {
     return {
-      passwordForm: {
-        oldPassword: "",
-        newPassword: "",
-        newPasswordConfirmation: ""
-      }
+      loadingUpdatePassword: false,
+      passwordForm: new Form({
+        current_password: "",
+        password: "",
+        password_confirmation: ""
+      })
     };
+  },
+  methods: {
+    submitUpdatePassword() {
+      this.loadingUpdatePassword = true;
+      this.$axios
+        .$patch("/api/v1/profile/update-password", this.passwordForm)
+        .then(response => {
+          this.$message.success("Password has been updated successfully");
+          this.passwordForm.current_password = "";
+          this.passwordForm.password = "";
+          this.passwordForm.password_confirmation = "";
+          this.loadingUpdatePassword = false;
+        })
+        .catch(error => {
+          this.passwordForm.errors.record(error.response.data.errors);
+          this.loadingUpdatePassword = false;
+        });
+    }
   }
 };
 </script>
