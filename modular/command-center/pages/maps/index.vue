@@ -257,7 +257,11 @@ export default {
   components: {
     LeafletHeatmap
   },
-  asyncData({ $axios, error }) {
+  asyncData({ $axios, store, error }) {
+    if (!store.getters["auth/hasPermission"]("view maps")) {
+      return redirect("/");
+    }
+
     const getCategories = $axios.$get("/api/v1/report-categories");
     const getReports = $axios.$get("/api/v1/admin/reports");
     const getAreas = $axios.$get("/api/v1/areas");

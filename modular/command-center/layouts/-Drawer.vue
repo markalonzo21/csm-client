@@ -63,6 +63,16 @@
           </nuxt-link>
         </a-menu-item>
         <a-menu-item
+          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/contents' }"
+          key="/command-center/contents"
+          v-if="$store.getters['auth/hasPermission']('view banners') || $store.getters['auth/hasPermission']('view articles')"
+        >
+          <nuxt-link to="/command-center/contents">
+            <a-icon type="bars"/>
+            <span>Contents</span>
+          </nuxt-link>
+        </a-menu-item>
+        <a-menu-item
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/areas' }"
           key="/command-center/areas"
           v-if="$store.getters['auth/hasPermission']('view areas') || $store.getters['auth/hasSpecificArea']"

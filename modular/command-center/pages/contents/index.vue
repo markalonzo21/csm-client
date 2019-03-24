@@ -155,11 +155,13 @@
 <script>
 export default {
   layout: "command-center/default",
-  asyncData({ $axios, store, error }) {
-    if (!store.getters["auth/hasPermission"]("view customers")) {
+  asyncData({ $axios, error }) {
+    if (
+      !store.getters["auth/hasPermission"]("view banners") &&
+      !store.getters["auth/hasPermission"]("view articles")
+    ) {
       return redirect("/");
     }
-
     return {
       columns: [
         {

@@ -1,12 +1,16 @@
 <template>
   <div class="news">
     <div class="container">
-      <h2 class="title__blue text-uppercase text-center mt0 mb45">News &amp; announcenement</h2>
+      <!-- <h2 class="title__blue text-uppercase text-center mt0 mb45">Articles</h2> -->
       <div class="row clrmargin">
         <div class="col-md-4 clrpadding item">
           <div class="panel">
             <div class="panel-heading p0">
-              <img src="/img/townships-01.jpg" alt class="img-responsive mrgnauto">
+              <img
+                alt
+                class="img-responsive mrgnauto"
+                src="/img/townships-01.jpg"
+              >
             </div>
             <div class="panel-body">
               <h2 class="title__black--lato mt0">Townships</h2>
@@ -16,25 +20,28 @@
               </p>
             </div>
             <div class="panel-footer p0">
-              <a href="#" class="btn btnmore pull-right">
+              <a
+                class="btn btnmore pull-right"
+                href="#"
+              >
                 More
                 <svg
-                  version="1.1"
+                  height="30px"
                   id="Layer_1"
+                  style="enable-background:new 0 0 17.4 30;"
+                  version="1.1"
+                  viewBox="0 0 17.4 30"
+                  width="17.4px"
+                  x="0px"
                   xmlns="https://www.w3.org/2000/svg"
                   xmlns:xlink="https://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  width="17.4px"
-                  height="30px"
-                  viewBox="0 0 17.4 30"
-                  style="enable-background:new 0 0 17.4 30;"
                   xml:space="preserve"
+                  y="0px"
                 >
                   <path
-                    id="XMLID_4_"
                     d="M2.4,30C3,30,3.6,29.8,4,29.3l12.6-12.6c0.4-0.4,0.7-1,0.7-1.7c0-0.6-0.2-1.2-0.7-1.7L4,0.7
                      c-0.9-0.9-2.4-0.9-3.3,0c-0.9,0.9-0.9,2.4,0,3.3l11,11l-11,11c-0.9,0.9-0.9,2.4,0,3.3C1.2,29.8,1.8,30,2.4,30"
+                    id="XMLID_4_"
                   ></path>
                 </svg>
               </a>
@@ -44,7 +51,11 @@
         <div class="col-md-4 clrpadding item">
           <div class="panel">
             <div class="panel-heading p0">
-              <img src="/img/stmortiz-01.jpg" alt class="img-responsive mrgnauto">
+              <img
+                alt
+                class="img-responsive mrgnauto"
+                src="/img/stmortiz-01.jpg"
+              >
             </div>
             <div class="panel-body">
               <h2 class="title__black--lato mt0">St. Moritz Private Estate</h2>
@@ -54,25 +65,28 @@
               </p>
             </div>
             <div class="panel-footer p0">
-              <a href="#" class="btn btnmore pull-right">
+              <a
+                class="btn btnmore pull-right"
+                href="#"
+              >
                 More
                 <svg
-                  version="1.1"
+                  height="30px"
                   id="Layer_1"
+                  style="enable-background:new 0 0 17.4 30;"
+                  version="1.1"
+                  viewBox="0 0 17.4 30"
+                  width="17.4px"
+                  x="0px"
                   xmlns="https://www.w3.org/2000/svg"
                   xmlns:xlink="https://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  width="17.4px"
-                  height="30px"
-                  viewBox="0 0 17.4 30"
-                  style="enable-background:new 0 0 17.4 30;"
                   xml:space="preserve"
+                  y="0px"
                 >
                   <path
-                    id="XMLID_4_"
                     d="M2.4,30C3,30,3.6,29.8,4,29.3l12.6-12.6c0.4-0.4,0.7-1,0.7-1.7c0-0.6-0.2-1.2-0.7-1.7L4,0.7
                      c-0.9-0.9-2.4-0.9-3.3,0c-0.9,0.9-0.9,2.4,0,3.3l11,11l-11,11c-0.9,0.9-0.9,2.4,0,3.3C1.2,29.8,1.8,30,2.4,30"
+                    id="XMLID_4_"
                   ></path>
                 </svg>
               </a>
@@ -82,7 +96,11 @@
         <div class="col-md-4 clrpadding item">
           <div class="panel">
             <div class="panel-heading p0">
-              <img src="/img/event.jpg" alt class="img-responsive mrgnauto">
+              <img
+                alt
+                class="img-responsive mrgnauto"
+                src="/img/event.jpg"
+              >
             </div>
             <div class="panel-body">
               <h2 class="title__black--lato mt0">Sample Title</h2>
@@ -92,25 +110,28 @@
               </p>
             </div>
             <div class="panel-footer p0">
-              <a href="#" class="btn btnmore pull-right">
+              <a
+                class="btn btnmore pull-right"
+                href="#"
+              >
                 More
                 <svg
-                  version="1.1"
+                  height="30px"
                   id="Layer_1"
+                  style="enable-background:new 0 0 17.4 30;"
+                  version="1.1"
+                  viewBox="0 0 17.4 30"
+                  width="17.4px"
+                  x="0px"
                   xmlns="https://www.w3.org/2000/svg"
                   xmlns:xlink="https://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  width="17.4px"
-                  height="30px"
-                  viewBox="0 0 17.4 30"
-                  style="enable-background:new 0 0 17.4 30;"
                   xml:space="preserve"
+                  y="0px"
                 >
                   <path
-                    id="XMLID_4_"
                     d="M2.4,30C3,30,3.6,29.8,4,29.3l12.6-12.6c0.4-0.4,0.7-1,0.7-1.7c0-0.6-0.2-1.2-0.7-1.7L4,0.7
                      c-0.9-0.9-2.4-0.9-3.3,0c-0.9,0.9-0.9,2.4,0,3.3l11,11l-11,11c-0.9,0.9-0.9,2.4,0,3.3C1.2,29.8,1.8,30,2.4,30"
+                    id="XMLID_4_"
                   ></path>
                 </svg>
               </a>
@@ -120,7 +141,11 @@
         <div class="col-md-4 clrpadding item">
           <div class="panel">
             <div class="panel-heading p0">
-              <img src="/img/three central-01.jpg" alt class="img-responsive mrgnauto">
+              <img
+                alt
+                class="img-responsive mrgnauto"
+                src="/img/three central-01.jpg"
+              >
             </div>
             <div class="panel-body">
               <h2 class="title__black--lato mt0">Three Central</h2>
@@ -131,25 +156,28 @@
               </p>
             </div>
             <div class="panel-footer p0">
-              <a href="#" class="btn btnmore pull-right">
+              <a
+                class="btn btnmore pull-right"
+                href="#"
+              >
                 More
                 <svg
-                  version="1.1"
+                  height="30px"
                   id="Layer_1"
+                  style="enable-background:new 0 0 17.4 30;"
+                  version="1.1"
+                  viewBox="0 0 17.4 30"
+                  width="17.4px"
+                  x="0px"
                   xmlns="https://www.w3.org/2000/svg"
                   xmlns:xlink="https://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  width="17.4px"
-                  height="30px"
-                  viewBox="0 0 17.4 30"
-                  style="enable-background:new 0 0 17.4 30;"
                   xml:space="preserve"
+                  y="0px"
                 >
                   <path
-                    id="XMLID_4_"
                     d="M2.4,30C3,30,3.6,29.8,4,29.3l12.6-12.6c0.4-0.4,0.7-1,0.7-1.7c0-0.6-0.2-1.2-0.7-1.7L4,0.7
                      c-0.9-0.9-2.4-0.9-3.3,0c-0.9,0.9-0.9,2.4,0,3.3l11,11l-11,11c-0.9,0.9-0.9,2.4,0,3.3C1.2,29.8,1.8,30,2.4,30"
+                    id="XMLID_4_"
                   ></path>
                 </svg>
               </a>
@@ -159,7 +187,11 @@
         <div class="col-md-4 clrpadding item">
           <div class="panel">
             <div class="panel-heading p0">
-              <img src="/img/mckinley-01.jpg" alt class="img-responsive mrgnauto">
+              <img
+                alt
+                class="img-responsive mrgnauto"
+                src="/img/mckinley-01.jpg"
+              >
             </div>
             <div class="panel-body">
               <h2 class="title__black--lato mt0">McKinley</h2>
@@ -169,25 +201,28 @@
               </p>
             </div>
             <div class="panel-footer p0">
-              <a href="#" class="btn btnmore pull-right">
+              <a
+                class="btn btnmore pull-right"
+                href="#"
+              >
                 More
                 <svg
-                  version="1.1"
+                  height="30px"
                   id="Layer_1"
+                  style="enable-background:new 0 0 17.4 30;"
+                  version="1.1"
+                  viewBox="0 0 17.4 30"
+                  width="17.4px"
+                  x="0px"
                   xmlns="https://www.w3.org/2000/svg"
                   xmlns:xlink="https://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  width="17.4px"
-                  height="30px"
-                  viewBox="0 0 17.4 30"
-                  style="enable-background:new 0 0 17.4 30;"
                   xml:space="preserve"
+                  y="0px"
                 >
                   <path
-                    id="XMLID_4_"
                     d="M2.4,30C3,30,3.6,29.8,4,29.3l12.6-12.6c0.4-0.4,0.7-1,0.7-1.7c0-0.6-0.2-1.2-0.7-1.7L4,0.7
                      c-0.9-0.9-2.4-0.9-3.3,0c-0.9,0.9-0.9,2.4,0,3.3l11,11l-11,11c-0.9,0.9-0.9,2.4,0,3.3C1.2,29.8,1.8,30,2.4,30"
+                    id="XMLID_4_"
                   ></path>
                 </svg>
               </a>
@@ -197,7 +232,11 @@
         <div class="col-md-4 clrpadding item">
           <div class="panel">
             <div class="panel-heading p0">
-              <img src="/img/security-01.jpg" alt class="img-responsive mrgnauto">
+              <img
+                alt
+                class="img-responsive mrgnauto"
+                src="/img/security-01.jpg"
+              >
             </div>
             <div class="panel-body">
               <h2 class="title__black--lato mt0">Security Force is Important</h2>
@@ -208,25 +247,28 @@
               </p>
             </div>
             <div class="panel-footer p0">
-              <a href="#" class="btn btnmore pull-right">
+              <a
+                class="btn btnmore pull-right"
+                href="#"
+              >
                 More
                 <svg
-                  version="1.1"
+                  height="30px"
                   id="Layer_1"
+                  style="enable-background:new 0 0 17.4 30;"
+                  version="1.1"
+                  viewBox="0 0 17.4 30"
+                  width="17.4px"
+                  x="0px"
                   xmlns="https://www.w3.org/2000/svg"
                   xmlns:xlink="https://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  width="17.4px"
-                  height="30px"
-                  viewBox="0 0 17.4 30"
-                  style="enable-background:new 0 0 17.4 30;"
                   xml:space="preserve"
+                  y="0px"
                 >
                   <path
-                    id="XMLID_4_"
                     d="M2.4,30C3,30,3.6,29.8,4,29.3l12.6-12.6c0.4-0.4,0.7-1,0.7-1.7c0-0.6-0.2-1.2-0.7-1.7L4,0.7
                      c-0.9-0.9-2.4-0.9-3.3,0c-0.9,0.9-0.9,2.4,0,3.3l11,11l-11,11c-0.9,0.9-0.9,2.4,0,3.3C1.2,29.8,1.8,30,2.4,30"
+                    id="XMLID_4_"
                   ></path>
                 </svg>
               </a>
@@ -235,7 +277,10 @@
         </div>
       </div>
       <div class="loadmore text-center mt60">
-        <a href="#" class="btn btnblue text-uppercase">Load more</a>
+        <a
+          class="btn btnblue text-uppercase"
+          href="#"
+        >Load more</a>
       </div>
     </div>
   </div>

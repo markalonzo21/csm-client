@@ -9,7 +9,7 @@
       <HomeAnnouncements/>
     </section>
 
-    <section class="container-bottom">
+    <!-- <section class="container-bottom">
       <div class="container">
         <div class="row">
           <div class="col-md-6 left-content">
@@ -22,10 +22,10 @@
                   quibusdam aliquid, fugiat laboriosam maiores earum sint odio
                   quisquam harum deserunt. Aliquam, magnam.
                 </p>
-                <!-- <a
+                <a
                   class="btn btnblue"
                   href="#"
-                >button</a>-->
+                >button</a>
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section>-->
     <div class="ads ptpb40">
       <img
         alt
