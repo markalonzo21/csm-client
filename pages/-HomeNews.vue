@@ -6,6 +6,7 @@
         :indicators="indicators"
         :interval="interval"
         ref="carousel"
+        v-if="news.length > 0"
       >
         <slide>
           <div class="newsitem">
@@ -40,7 +41,8 @@ export default {
     return {
       interval: 5000,
       indicators: false,
-      controls: true
+      controls: true,
+      news: []
     };
   }
 };

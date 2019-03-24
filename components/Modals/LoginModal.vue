@@ -121,6 +121,8 @@ export default {
               "verification/SET_EMAIL_OR_MOBILE",
               this.form.email
             );
+            this.form.email = "";
+            this.form.password = "";
             this.$store.commit("TOGGLE_LOGIN_MODAL");
             this.$store.commit("TOGGLE_VERIFICATION_MODAL");
           } else if (errors.response.status === 401) {

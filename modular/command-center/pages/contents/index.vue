@@ -155,7 +155,7 @@
 <script>
 export default {
   layout: "command-center/default",
-  asyncData({ $axios, error }) {
+  asyncData({ $axios, store, error }) {
     if (
       !store.getters["auth/hasPermission"]("view banners") &&
       !store.getters["auth/hasPermission"]("view articles")

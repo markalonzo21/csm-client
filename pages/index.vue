@@ -82,7 +82,11 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
+.main-content {
+  height: auto;
+  min-height: auto;
+}
 .ptpb40 {
   padding: 40px 0;
 }
