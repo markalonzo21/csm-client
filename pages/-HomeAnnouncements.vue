@@ -106,7 +106,7 @@
           <div class="panel">
             <div class="panel-heading p0">
               <img
-                :src="article.media[0]"
+                :src="$utils.cloudinaryTransform(article.media[0], 'w_300,h_120')"
                 alt
                 class="img-responsive mrgnauto"
               >
@@ -116,9 +116,9 @@
               <p class="basic">{{ article.description.substring(0, 202) }}</p>
             </div>
             <div class="panel-footer p0">
-              <a
+              <nuxt-link
+                :to="`/articles/${article.slug}`"
                 class="btn btnmore pull-right"
-                href="#"
               >
                 More
                 <svg
@@ -140,7 +140,7 @@
                     id="XMLID_4_"
                   ></path>
                 </svg>
-              </a>
+              </nuxt-link>
             </div>
           </div>
         </div>

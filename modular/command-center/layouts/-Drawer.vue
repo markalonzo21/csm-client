@@ -63,16 +63,6 @@
           </nuxt-link>
         </a-menu-item>
         <a-menu-item
-          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/contents' }"
-          key="/command-center/contents"
-          v-if="$store.getters['auth/hasPermission']('view banners') || $store.getters['auth/hasPermission']('view articles')"
-        >
-          <nuxt-link to="/command-center/contents">
-            <a-icon type="bars"/>
-            <span>Contents</span>
-          </nuxt-link>
-        </a-menu-item>
-        <a-menu-item
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/areas' }"
           key="/command-center/areas"
           v-if="$store.getters['auth/hasPermission']('view areas') || $store.getters['auth/hasSpecificArea']"
@@ -112,16 +102,7 @@
             <span>Report Types</span>
           </nuxt-link>
         </a-menu-item>
-        <a-menu-item
-          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/advertisements' }"
-          key="/command-center/advertisements"
-          v-if="$store.getters['auth/hasPermission']('view advertisements')"
-        >
-          <nuxt-link to="/command-center/advertisements">
-            <a-icon type="bars"/>
-            <span>Advertisements</span>
-          </nuxt-link>
-        </a-menu-item>
+
         <a-menu-item
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/canned-responses' }"
           key="/command-center/canned-responses"
@@ -132,6 +113,46 @@
             <span>Canned Responses</span>
           </nuxt-link>
         </a-menu-item>
+        <a-menu-item
+          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/banners' }"
+          key="/command-center/banners"
+          v-if="$store.getters['auth/hasPermission']('view banners')"
+        >
+          <nuxt-link to="/command-center/banners">
+            <a-icon type="bars"/>
+            <span>Banners</span>
+          </nuxt-link>
+        </a-menu-item>
+        <a-menu-item
+          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/articles' }"
+          key="/command-center/articles"
+          v-if="$store.getters['auth/hasPermission']('view articles')"
+        >
+          <nuxt-link to="/command-center/articles">
+            <a-icon type="bars"/>
+            <span>Articles</span>
+          </nuxt-link>
+        </a-menu-item>
+        <!-- <a-menu-item
+          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/news' }"
+          key="/command-center/news"
+          v-if="$store.getters['auth/hasPermission']('view news')"
+        >
+          <nuxt-link to="/command-center/news">
+            <a-icon type="bars"/>
+            <span>News</span>
+          </nuxt-link>
+        </a-menu-item>
+        <a-menu-item
+          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/advertisements' }"
+          key="/command-center/advertisements"
+          v-if="$store.getters['auth/hasPermission']('view advertisements')"
+        >
+          <nuxt-link to="/command-center/advertisements">
+            <a-icon type="bars"/>
+            <span>Advertisements</span>
+          </nuxt-link>
+        </a-menu-item>-->
       </a-menu>
     </a-drawer>
   </div>

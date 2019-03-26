@@ -1,25 +1,16 @@
-const hasPermission = (user, permissionName) => {
-  if (!user) {
-    return false
+const cloudinaryTransform = (src, values) => {
+  if (!src) {
+    return 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png'
   }
 
-  if (permissionName === null) {
-    return true
+  if (!src.includes('res.cloudinary.com')) {
+    return src
   }
 
-  return user.role.permissions.some(
-    permission => permission.name === permissionName
-  )
-}
-
-const hasSpecificArea = user => {
-  if (!user) {
-    return false
-  }
-
-  return user.role.permissions.some(permission => {
-    return permission.category === 'specific area management'
-  })
+  src = src.split('/')
+  src.splice(6, 0, values)
+  src = src.join('/')
+  return src
 }
 
 const isImage = src => {
@@ -81,8 +72,7 @@ const serialize = obj => {
 // Refactor this later to dynamically load helpers based on file name
 export default function (ctx, inject) {
   ctx.$utils = {
-    hasPermission,
-    hasSpecificArea,
+    cloudinaryTransform,
     isImage,
     getHumanIcon,
     getIcon,
@@ -90,8 +80,7 @@ export default function (ctx, inject) {
   }
 
   inject('utils', {
-    hasPermission,
-    hasSpecificArea,
+    cloudinaryTransform,
     isImage,
     getHumanIcon,
     getIcon,

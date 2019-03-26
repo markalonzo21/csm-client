@@ -11,7 +11,7 @@
       v-for="(banner, index) in banners"
     >
       <img
-        :src="banner.image"
+        :src="$utils.cloudinaryTransform(banner.image, 'w_1920,h_700')"
         alt
         class="img-responsive"
       >
