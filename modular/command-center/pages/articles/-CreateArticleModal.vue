@@ -10,7 +10,7 @@
         key="back"
       >Cancel</a-button>
       <a-button
-        :disabled="form.media.length === 0"
+        :disabled="form.title.trim().length < 4"
         :loading="loadingCreateArticle"
         @click="handleOk"
         key="submit"

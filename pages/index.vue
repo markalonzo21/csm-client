@@ -50,11 +50,28 @@
         </div>
       </div>
     </section>-->
-    <div class="ads ptpb40">
+    <div
+      class="ads ptpb40"
+      v-if="advertisement"
+    >
+      <a
+        :href="advertisement.link"
+        target="_blank"
+        v-if="advertisement.link"
+      >
+        <img
+          :src="$utils.cloudinaryTransform(advertisement.image, 'w_978,h_125')"
+          alt
+          class="img-responsive mrgnauto"
+          style="max-height: 125px; max-width: 978px;"
+        >
+      </a>
       <img
+        :src="$utils.cloudinaryTransform(advertisement.image, 'w_978,h_125')"
         alt
         class="img-responsive mrgnauto"
-        src="/img/wide-ads.png"
+        style="max-height: 125px; max-width: 978px;"
+        v-else
       >
     </div>
   </div>
@@ -74,11 +91,13 @@ export default {
     HomeNews
   },
   asyncData({ $axios }) {
-    // return $axios.$get("/api/v1/advertisements").then(response => {
-    //   return {
-    //     advertisements: response.data
-    //   };
-    // });
+    return $axios
+      .$get("/api/v1/advertisements?placement=home-page")
+      .then(response => {
+        return {
+          advertisement: response.data[0]
+        };
+      });
   }
 };
 </script>

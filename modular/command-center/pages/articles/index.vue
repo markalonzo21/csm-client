@@ -28,11 +28,13 @@
         slot-scope="media"
       >
         <img
-          :src="$utils.cloudinaryTransform(media, 'w_300,h_120')"
+          :src="$utils.cloudinaryTransform(media[0], 'w_300,h_120')"
           alt="article-img"
           class="img-responsive"
           style="max-height: 120px;"
+          v-if="media.length > 0"
         >
+        <span v-else>No Image</span>
       </template>
       <template
         slot="actions"

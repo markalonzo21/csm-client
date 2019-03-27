@@ -7,10 +7,10 @@
       :fixed-top="true"
       class="user-menu h-65"
     >
-      <a
+      <nuxt-link
         class="navbar-brand"
-        href="/"
         slot="brand"
+        to="/"
       >
         <img
           :src="$store.state.settings.logo"
@@ -18,7 +18,7 @@
           alt="logo"
           class="responsive mrgnauto"
         >
-      </a>
+      </nuxt-link>
       <template slot="collapse">
         <navbar-nav
           left

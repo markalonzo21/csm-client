@@ -133,16 +133,6 @@
             <span>Articles</span>
           </nuxt-link>
         </a-menu-item>
-        <!-- <a-menu-item
-          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/news' }"
-          key="/command-center/news"
-          v-if="$store.getters['auth/hasPermission']('view news')"
-        >
-          <nuxt-link to="/command-center/news">
-            <a-icon type="bars"/>
-            <span>News</span>
-          </nuxt-link>
-        </a-menu-item>
         <a-menu-item
           :class="{ 'ant-menu-item-selected': $route.path === '/command-center/advertisements' }"
           key="/command-center/advertisements"
@@ -152,7 +142,7 @@
             <a-icon type="bars"/>
             <span>Advertisements</span>
           </nuxt-link>
-        </a-menu-item>-->
+        </a-menu-item>
       </a-menu>
     </a-drawer>
   </div>

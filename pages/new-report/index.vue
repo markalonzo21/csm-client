@@ -133,11 +133,26 @@
             </div>
           </section>
         </div>
-        <div class="col-sm-3 right-content">
+        <div
+          class="col-sm-3 right-content"
+          v-if="advertisement"
+        >
+          <a
+            :href="advertisement.link"
+            target="_blank"
+            v-if="advertisement.link"
+          >
+            <img
+              :src="$utils.cloudinaryTransform(advertisement.image, 'w_262,h_217')"
+              class="img-responsive mb20"
+              style="max-height: 217px; max-width: 262px;"
+            >
+          </a>
           <img
-            alt
+            :src="$utils.cloudinaryTransform(advertisement.image, 'w_262,h_217')"
             class="img-responsive mb20"
-            src="/img/square-ads.png"
+            style="max-height: 217px; max-width: 262px;"
+            v-else
           >
         </div>
       </div>
@@ -150,10 +165,15 @@ export default {
   asyncData({ $axios, error }) {
     const getCategories = $axios.$get("/api/v1/report-categories");
     const getAreas = $axios.$get("/api/v1/areas");
-    return Promise.all([getCategories, getAreas]).then(
-      ([categories, areas]) => {
+    const getAdvertisement = $axios.$get(
+      "/api/v1/advertisements?placement=new-report"
+    );
+
+    return Promise.all([getCategories, getAreas, getAdvertisement]).then(
+      ([categories, areas, advertisement]) => {
         return {
           areas: areas.data,
+          advertisement: advertisement.data[0],
           loadingSubmitReport: false,
           reportCategories: categories.data,
           category: 0,
