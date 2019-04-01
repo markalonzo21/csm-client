@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "dev:live": "cross-env API_URL=https://csm.now.sh API_URL_BROWSER=https://csm.now.sh nuxt",
+    "dev:live": "cross-env API_URL=https://csm-api.now.sh API_URL_BROWSER=https://csm-api.now.sh nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",

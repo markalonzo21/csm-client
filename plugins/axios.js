@@ -1,8 +1,8 @@
 require('dotenv').config()
 
-export default function ({ $axios, app }) {
+export default function({ $axios, app }) {
   $axios.onRequest(config => {
-    // console.log(config.url)
+    console.log(config.url)
     if (!process.env.API_URL) {
       config.url = `${config.url}`
     }
@@ -17,6 +17,7 @@ export default function ({ $axios, app }) {
     ) {
       app.$auth.reset()
     }
-    // console.log({ 'error-response': error.response })
+    // console.log({ 'error-response': error })
+    console.log({ 'error-response': error.response.data })
   })
 }
