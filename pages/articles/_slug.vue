@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <pre>{{ article }}</pre>
+  <div class="main-content">
+    <div class="container">
+      <h1 class="title__black mt0 uppercase mb-10">{{article.title}}</h1>
+      <img :src='article.media' alt="" srcset="" class="img-responsive pull-left mr20 mb20">
+      <p class="basic">{{article.description}}</p>
+      <pre>{{ article }}</pre>
+    </div>
   </div>
 </template>
 
