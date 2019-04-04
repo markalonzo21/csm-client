@@ -2,7 +2,12 @@
   <div class="main-content">
     <div class="container">
       <h1 class="title__black mt0 uppercase mb-10">{{article.title}}</h1>
-      <img :src='article.media' alt="" srcset="" class="img-responsive pull-left mr20 mb20">
+      <img
+        :src="article.media"
+        alt
+        class="img-responsive pull-left mr20 mb20"
+        srcset
+      >
       <p class="basic">{{article.description}}</p>
       <pre>{{ article }}</pre>
     </div>
@@ -11,6 +16,7 @@
 
 <script>
 export default {
+  auth: false,
   asyncData({ $axios, params, error }) {
     return $axios
       .$get(`/api/v1/articles/${params.slug}`)

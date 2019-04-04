@@ -28,12 +28,12 @@
         type="password"
         v-model="form.password"
       >
-      <small>
+      <!-- <small>
         <a
           class="tiny pull-right mb20"
           href="#"
         >Forgot password</a>
-      </small>
+      </small>-->
       <div class="clearfix"></div>
       <button
         :disabled="loading"
