@@ -134,13 +134,13 @@
           </nuxt-link>
         </a-menu-item>
         <a-menu-item
-          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/advertisements' }"
-          key="/command-center/advertisements"
-          v-if="$store.getters['auth/hasPermission']('view advertisements')"
+          :class="{ 'ant-menu-item-selected': $route.path === '/command-center/promotions' }"
+          key="/command-center/promotions"
+          v-if="$store.getters['auth/hasPermission']('view promotions')"
         >
-          <nuxt-link to="/command-center/advertisements">
+          <nuxt-link to="/command-center/promotions">
             <a-icon type="bars"/>
-            <span>Advertisements</span>
+            <span>Promotions</span>
           </nuxt-link>
         </a-menu-item>
       </a-menu>

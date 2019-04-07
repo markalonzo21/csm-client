@@ -97,7 +97,7 @@ export default {
   },
   asyncData({ $axios }) {
     const getBanners = $axios.$get("/api/v1/banners");
-    const getAds = $axios.$get("/api/v1/advertisements?placement=home-page");
+    const getAds = $axios.$get("/api/v1/promotions?placement=home-page");
 
     return Promise.all([getBanners, getAds]).then(
       ([bannersResponse, adsResponse]) => {
