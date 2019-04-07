@@ -10,34 +10,33 @@
       :key="`${banner}-${index}`"
       v-for="(banner, index) in banners"
     >
-      <img
+      <v-lazy-image
         :src="$utils.cloudinaryTransform(banner.image, 'w_1920,h_700')"
-        alt
         class="img-responsive"
-      >
+      />
     </slide>
   </carousel>
 </template>
 
 <script>
 export default {
+  props: ["banners"],
   data() {
     return {
       interval: 5000,
       indicators: false,
-      controls: true,
-      banners: []
+      controls: true
     };
-  },
-  mounted() {
-    this.$axios
-      .$get("/api/v1/banners")
-      .then(response => {
-        this.banners = response.data;
-      })
-      .catch(error => {
-        alert("Something went wrong! please reload the page.");
-      });
   }
+  // mounted() {
+  //   this.$axios
+  //     .$get("/api/v1/banners")
+  //     .then(response => {
+  //       this.banners = response.data;
+  //     })
+  //     .catch(error => {
+  //       alert("Something went wrong! please reload the page.");
+  //     });
+  // }
 };
 </script>

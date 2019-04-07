@@ -1,7 +1,10 @@
 <template>
   <div>
     <section class="banner">
-      <HomeBanner/>
+      <no-ssr>
+        <HomeBannerPlaceholder slot="placeholder"/>
+        <HomeBanner :banners="banners"/>
+      </no-ssr>
       <HomeFab/>
     </section>
     <HomeNews/>
@@ -63,14 +66,14 @@
           :src="$utils.cloudinaryTransform(advertisement.image, 'w_978,h_125')"
           alt
           class="img-responsive mrgnauto"
-          style="max-height: 125px; max-width: 978px;"
+          style="max-height: 125px; "
         >
       </a>
       <img
         :src="$utils.cloudinaryTransform(advertisement.image, 'w_978,h_125')"
         alt
         class="img-responsive mrgnauto"
-        style="max-height: 125px; max-width: 978px;"
+        style="max-height: 125px; "
         v-else
       >
     </div>
@@ -78,6 +81,7 @@
 </template>
 <script>
 import HomeBanner from "./-HomeBanner";
+import HomeBannerPlaceholder from "./-HomeBannerPlaceholder";
 import HomeFab from "./-HomeFab";
 import HomeAnnouncements from "./-HomeAnnouncements";
 import HomeNews from "./-HomeNews";
@@ -86,18 +90,23 @@ export default {
   layout: "public",
   components: {
     HomeBanner,
+    HomeBannerPlaceholder,
     HomeFab,
     HomeAnnouncements,
     HomeNews
   },
   asyncData({ $axios }) {
-    return $axios
-      .$get("/api/v1/advertisements?placement=home-page")
-      .then(response => {
+    const getBanners = $axios.$get("/api/v1/banners");
+    const getAds = $axios.$get("/api/v1/advertisements?placement=home-page");
+
+    return Promise.all([getBanners, getAds]).then(
+      ([bannersResponse, adsResponse]) => {
         return {
-          advertisement: response.data[0]
+          banners: bannersResponse.data,
+          advertisement: adsResponse.data[0]
         };
-      });
+      }
+    );
   }
 };
 </script>

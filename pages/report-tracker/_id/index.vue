@@ -140,7 +140,7 @@
             <div class="panel panel-notes">
               <div class="panel-body">
                 <div class="bluelabel">Notes</div>
-                <p class="basic">{{ report.description }}</p>
+                <p class="basic whitespace-pre-wrap">{{ report.description }}</p>
               </div>
             </div>
 

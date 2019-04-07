@@ -8,8 +8,7 @@
         class="img-responsive pull-left mr20 mb20"
         srcset
       >
-      <p class="basic">{{article.description}}</p>
-      <pre>{{ article }}</pre>
+      <p class="basic whitespace-pre-wrap">{{article.description}}</p>
     </div>
   </div>
 </template>

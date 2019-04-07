@@ -2,7 +2,7 @@ require('dotenv').config()
 
 export default function({ $axios, app }) {
   $axios.onRequest(config => {
-    console.log(config.url)
+    // console.log(config.url)
     if (!process.env.API_URL) {
       config.url = `${config.url}`
     }

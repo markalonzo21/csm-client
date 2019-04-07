@@ -5,7 +5,7 @@
   >
     <div class="container">
       <div class="active-report">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <div class="border rounded bg-white py-6 px-6">
             <div class="clearfix">
               <span class="font-semibold text-blue-dark float-left">Date</span>
@@ -68,7 +68,7 @@
 
             <div class="clearfix mt-4">
               <div class="font-semibold text-blue-dark">Notes</div>
-              <p>{{ report.description }}</p>
+              <p class="whitespace-pre-wrap">{{ report.description }}</p>
             </div>
           </div>
           <div
@@ -104,7 +104,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
           <div
             class="row border rounded bg-white py-6 px-6 mb-2"
             v-if="report.location !== null"

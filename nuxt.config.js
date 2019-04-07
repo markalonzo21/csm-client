@@ -5,6 +5,7 @@ dotenv.config()
 module.exports = {
   mode: 'universal',
   serverMiddleware: ['~/serverMiddleware/selectiveSsr.js'],
+  // ignorePrefix: '@',
   env: {
     APP_NAME: process.env.APP_NAME,
     NODE_ENV: process.env.NODE_ENV,
@@ -63,7 +64,8 @@ module.exports = {
     '~/plugins/vue2-leaflet.client.js',
     '~/plugins/socket.client.js',
     '~/plugins/vue-geolocation.client.js',
-    '~/plugins/leaflet-draw.client.js'
+    '~/plugins/leaflet-draw.client.js',
+    '~/plugins/v-lazy-image.client.js'
   ],
 
   /*
@@ -152,14 +154,14 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend (config, ctx) {
+    extend(config, ctx) {
       ;(config.node = {
         fs: 'empty'
       }),
-      (config.resolve.alias['leaflet'] = path.join(
-        __dirname,
-        'node_modules/leaflet'
-      ))
+        (config.resolve.alias['leaflet'] = path.join(
+          __dirname,
+          'node_modules/leaflet'
+        ))
     }
   }
 }

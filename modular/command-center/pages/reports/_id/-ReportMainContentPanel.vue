@@ -29,10 +29,10 @@
         </div>
       </div>
       <div class="row notes">
-        <div class="col-md-4">
+        <div class="col-md-12">
           <label for>Notes</label>
           <br>
-          <span class="basic">{{ report.description }}</span>
+          <span class="basic whitespace-pre-wrap">{{ report.description }}</span>
         </div>
       </div>
       <div
