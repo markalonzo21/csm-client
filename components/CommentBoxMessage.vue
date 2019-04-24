@@ -35,6 +35,12 @@
 </template>
 
 <script>
+import Vue from "vue";
+import Tooltip from "ant-design-vue/lib/tooltip";
+Vue.component(Tooltip.name, Tooltip);
+if (process.client) {
+  require("ant-design-vue/lib/tooltip/style/css");
+}
 export default {
   props: {
     message: {

@@ -117,13 +117,12 @@ import {
   Icon,
   Input,
   Layout,
-  message,
   Menu,
   Modal,
-  notification,
   Pagination,
   Popconfirm,
   Popover,
+  Popup,
   Row,
   Select,
   Spin,
@@ -131,7 +130,9 @@ import {
   Table,
   Tooltip,
   Upload,
-  Drawer
+  Drawer,
+  notification,
+  message
 } from "ant-design-vue/lib";
 
 Vue.use(Button);
@@ -182,6 +183,12 @@ Vue.use(Upload);
 import "ant-design-vue/lib/upload/style/css";
 Vue.use(Switch);
 import "ant-design-vue/lib/switch/style/css";
+
+Vue.prototype.$notification = notification;
+import "ant-design-vue/lib/notification/style/css";
+
+Vue.prototype.$message = message;
+import "ant-design-vue/lib/message/style/css";
 
 export default {
   components: {

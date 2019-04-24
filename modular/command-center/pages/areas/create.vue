@@ -1,3 +1,4 @@
+
 <template>
   <div class="container">
     <h3 class="mt-0 text-center mb-4">Create Area</h3>
@@ -48,6 +49,13 @@
 </template>
 
 <script>
+import Vue from "vue";
+import { LMap, LTileLayer } from "vue2-leaflet";
+import L from "leaflet";
+
+Vue.component("l-map", LMap);
+Vue.component("l-tile-layer", LTileLayer);
+
 function formatNumber(value) {
   value += "";
   const list = value.split(".");

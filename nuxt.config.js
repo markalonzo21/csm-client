@@ -58,7 +58,7 @@ module.exports = {
     '~/plugins/utils.js',
     '~/plugins/vue-svgicon.js',
     '~/plugins/uiv.js',
-    '~/plugins/vue2-leaflet.client.js',
+    // '~/plugins/vue2-leaflet.client.js',
     '~/plugins/socket.client.js',
     '~/plugins/vue-geolocation.client.js',
     '~/plugins/v-lazy-image.client.js'
@@ -125,10 +125,6 @@ module.exports = {
             propertyName: 'data.token'
           },
           logout: false,
-          // logout: {
-          //   url: '/api/v1/auth/logout',
-          //   method: 'post'
-          // },
           user: {
             url: '/api/v1/auth/me',
             method: 'get',
@@ -143,37 +139,25 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    // cache: true, // experimental
-    // hardSource: true, // experimental
-    // parallel: true, // experimental
-
     splitChunks: {
       layouts: true,
       pages: true,
       commons: true
     },
-
     postcss: {
       plugins: [
         require('tailwindcss')(path.resolve(__dirname, './tailwind.js')),
         require('autoprefixer')
       ]
-      // plugins: {
-      //   tailwindcss: path.resolve(__dirname, './tailwind.js'),
-      //   'postcss-nested': {}
-      // }
     },
-    /*
-     ** You can extend webpack config here
-     */
     extend(config, ctx) {
-      ;(config.node = {
+      config.node = {
         fs: 'empty'
-      }),
-        (config.resolve.alias['leaflet'] = path.join(
-          __dirname,
-          'node_modules/leaflet'
-        ))
+      }
+      // config.resolve.alias['leaflet'] = path.join(
+      //   __dirname,
+      //   'node_modules/leaflet'
+      // )
     }
   }
 }

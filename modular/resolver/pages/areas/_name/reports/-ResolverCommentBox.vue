@@ -27,16 +27,18 @@
         @submit.prevent="sendMessage"
         class="input-group"
       >
-        <a-textarea
-          :autosize="{ minRows: 2, maxRows: 12 }"
-          :disabled="report.resolvedAt !== null || loadingGetMessages"
-          @pressEnter="enterIsPressed"
-          class="form-control"
-          placeholder="Write something here ..."
-          ref="chatMessageInput"
-          type="text"
-          v-model="message"
-        />
+        <no-ssr>
+          <a-textarea
+            :autosize="{ minRows: 2, maxRows: 12 }"
+            :disabled="report.resolvedAt !== null || loadingGetMessages"
+            @pressEnter="enterIsPressed"
+            class="form-control"
+            placeholder="Write something here ..."
+            ref="chatMessageInput"
+            type="text"
+            v-model="message"
+          />
+        </no-ssr>
         <div class="input-group-btn">
           <button
             :disabled="report.resolvedAt !== null || loadingSendMessage || loadingGetMessages"
@@ -52,6 +54,12 @@
 <script>
 import CommentBoxMessage from "~/components/CommentBoxMessage";
 import CannedResponseModal from "./-CannedResponseModal";
+import Vue from "vue";
+import Input from "ant-design-vue/lib/input";
+Vue.component(Input.TextArea.name, Input.TextArea);
+if (process.client) {
+  require("ant-design-vue/lib/input/style/css");
+}
 
 export default {
   props: {

@@ -65,6 +65,13 @@
 <script>
 import ActiveReportResolver from "./-ActiveReportResolver";
 import NewReportResolver from "./-NewReportResolver";
+import Vue from "vue";
+import Spin from "ant-design-vue/lib/spin";
+Vue.component(Spin.name, Spin);
+if (process.client) {
+  require("ant-design-vue/lib/spin/style/css");
+  const L = require("leaflet");
+}
 
 export default {
   components: {

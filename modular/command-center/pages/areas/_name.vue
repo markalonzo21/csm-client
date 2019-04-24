@@ -62,7 +62,8 @@
     </div>
     <div class="row mt-12">
       <div class="col-md-12">
-        <h4>Details
+        <h4>
+          Details
           <a-button
             @click="isAddModalVisible = true"
             class="float-right"
@@ -153,9 +154,10 @@
 
 <script>
 import DashboardCard from "~/modular/command-center/components/DashboardCard";
-
 import ReportsPieChart from "~/modular/command-center/components/DashboardCharts/ReportsPieChart";
 import ReportsBarChart from "~/modular/command-center/components/DashboardCharts/ReportsBarChart";
+import L from "leaflet";
+
 export default {
   layout: "command-center/default",
   components: {

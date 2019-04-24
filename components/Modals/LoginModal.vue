@@ -111,7 +111,7 @@ export default {
             this.$router.push("/");
           }
 
-          this.$message.success("Login successful!", 2);
+          // this.$message.success("Login successful!", 2);
         })
         .catch(errors => {
           if (errors.response.status === 403) {

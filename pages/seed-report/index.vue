@@ -36,6 +36,10 @@
 </template>
 
 <script>
+if (process.client) {
+  const L = require("leaflet");
+}
+
 export default {
   asyncData({ $axios, error }) {
     const getCategories = $axios.$get("/api/v1/report-categories");

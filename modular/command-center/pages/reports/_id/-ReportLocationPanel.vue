@@ -6,18 +6,18 @@
     <div class="panel-body">
       <div style="height: 380px; width: 100%;">
         <l-map
-          v-if="map.center.length > 0"
           :center="map.center"
-          :zoom="map.zoom"
-          :minZoom="map.minZoom"
-          :maxZoom="map.maxZoom"
           :maxBounds="map.maxBounds"
           :maxBoundsViscosity="map.maxBoundsViscosity"
+          :maxZoom="map.maxZoom"
+          :minZoom="map.minZoom"
+          :zoom="map.zoom"
           ref="map"
+          v-if="map.center.length > 0"
         >
           <l-marker
-            :lat-lng="[report.location.coordinates[1], report.location.coordinates[0]]"
             :icon="$utils.getIcon(report.type.category.color)"
+            :lat-lng="[report.location.coordinates[1], report.location.coordinates[0]]"
           >
             <l-popup :content="showReportContent(report)"></l-popup>
           </l-marker>
@@ -29,6 +29,13 @@
 </template>
 
 <script>
+import Vue from "vue";
+import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet";
+Vue.component("l-map", LMap);
+Vue.component("l-tile-layer", LTileLayer);
+Vue.component("l-marker", LMarker);
+Vue.component("l-popup", LPopup);
+
 export default {
   props: {
     report: {
@@ -37,13 +44,13 @@ export default {
     }
   },
   data() {
-    const bounds = [120.89287, 14.63956, 121.07483, 14.5565]
+    const bounds = [120.89287, 14.63956, 121.07483, 14.5565];
     const lat = this.report.location
       ? this.report.location.coordinates[1]
-      : 14.59804
+      : 14.59804;
     const lng = this.report.location
       ? this.report.location.coordinates[0]
-      : 120.98385
+      : 120.98385;
 
     return {
       map: {
@@ -54,7 +61,7 @@ export default {
         maxBounds: bounds,
         maxBoundsViscosity: 1.0
       }
-    }
+    };
   },
   methods: {
     showReportContent(report) {
@@ -80,15 +87,15 @@ export default {
           </tr>
           <tr>
             <td>Tenant</td>
-            <td>${report.reporter.tenant ? 'Yes' : 'No'}</td>
+            <td>${report.reporter.tenant ? "Yes" : "No"}</td>
           </tr>
                     <tr>
             <td>Location</td>
-            <td>${report.locationName ? report.locationName : 'N/A'}</td>
+            <td>${report.locationName ? report.locationName : "N/A"}</td>
           </tr>
         </tbody>
-      </table>`
+      </table>`;
     }
   }
-}
+};
 </script>
