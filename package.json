@@ -11,7 +11,8 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "svg": "vsvg -s ./static/svgs -t ./assets/svgs",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "analyze": "nuxt build --analyze"
   },
   "standard": {
     "globals": [
@@ -28,9 +29,9 @@
     "ant-design-vue": "^1.3.4",
     "autoprefixer": "^7.1.6",
     "bootstrap": "^3.3.7",
-    "chance": "^1.0.16",
     "chart.js": "^2.7.3",
     "chartjs-plugin-labels": "^1.1.0",
+    "css-loader": "^2.1.1",
     "dotenv": "^6.2.0",
     "form-backend-validation": "^2.3.4",
     "leaflet-draw": "^1.0.4",
@@ -38,10 +39,12 @@
     "lodash.debounce": "^4.0.8",
     "moment": "^2.23.0",
     "node-sass": "^4.10.0",
-    "nuxt": "^2.5.0",
+    "nuxt": "^2.6.2",
     "nuxt-client-init-module": "^0.1.4",
-    "postcss": "^7.0.7",
+    "nuxt-purgecss": "^0.2.1",
+    "postcss": "^7.0.14",
     "postcss-loader": "^3.0.0",
+    "postcss-nested": "^4.1.2",
     "printd": "^1.0.1",
     "sass-loader": "^7.1.0",
     "socket.io-client": "^2.1.1",

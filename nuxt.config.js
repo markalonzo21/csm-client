@@ -41,7 +41,6 @@ module.exports = {
    */
   css: [
     '~/assets/css/tailwind.css',
-    '~/node_modules/ant-design-vue/dist/antd.css',
     '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
     '~/assets/css/leaflet.css',
     {
@@ -59,8 +58,6 @@ module.exports = {
     '~/plugins/utils.js',
     '~/plugins/vue-svgicon.js',
     '~/plugins/uiv.js',
-    '~/plugins/ant.js',
-    '~/plugins/vue-chance.client.js',
     '~/plugins/vue2-leaflet.client.js',
     '~/plugins/socket.client.js',
     '~/plugins/vue-geolocation.client.js',
@@ -151,6 +148,22 @@ module.exports = {
     // hardSource: true, // experimental
     // parallel: true, // experimental
 
+    splitChunks: {
+      layouts: true,
+      pages: true,
+      commons: true
+    },
+
+    postcss: {
+      plugins: [
+        require('tailwindcss')(path.resolve(__dirname, './tailwind.js')),
+        require('autoprefixer')
+      ]
+      // plugins: {
+      //   tailwindcss: path.resolve(__dirname, './tailwind.js'),
+      //   'postcss-nested': {}
+      // }
+    },
     /*
      ** You can extend webpack config here
      */

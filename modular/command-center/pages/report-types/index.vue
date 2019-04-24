@@ -150,7 +150,6 @@ export default {
       ],
       form: {
         name: "",
-        // color: "",
         description: "",
         category: "",
         milestones: []
@@ -161,11 +160,10 @@ export default {
     this.getReportTypes();
     this.getReportCategories();
     // this.getResponseTypes();
-    this.generateFakeData();
+    this.resetData();
   },
   watch: {
     selectedResponseTypes(value) {
-      // console.log(value)
       this.form.milestones.push(value);
     }
   },
@@ -173,9 +171,8 @@ export default {
     getMilestoneName(id) {
       return this.responseTypes.find(type => type._id === id).name;
     },
-    generateFakeData() {
+    resetData() {
       this.form.name = "";
-      // this.form.color = this.$chance.color({ format: "hex" });
       this.form.description = "";
     },
     getReportTypes() {
@@ -212,7 +209,7 @@ export default {
     createReportType() {
       this.loadingCreateReportType = true;
       this.$axios.$post("/api/v1/report-types", this.form).then(response => {
-        this.generateFakeData();
+        this.resetData();
         this.types.push(response.data);
         this.loadingCreateReportType = false;
         this.isCreateReportTypeModalVisible = false;

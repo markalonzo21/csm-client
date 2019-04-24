@@ -128,13 +128,8 @@ export default {
   },
   mounted() {
     this.getReportCategories();
-    this.generateFakeData();
   },
   methods: {
-    generateFakeData() {
-      this.form.name = ``;
-      this.form.color = this.$chance.color({ format: "hex" });
-    },
     getReportCategories() {
       this.loadingGetReportCategories = true;
       this.$axios.$get("/api/v1/admin/report-categories").then(response => {
@@ -147,7 +142,9 @@ export default {
       this.$axios
         .$post("/api/v1/admin/report-categories", this.form)
         .then(response => {
-          this.generateFakeData();
+          this.form.name = "";
+          this.form.color = "";
+          this.form.description = "";
           this.reportCategories.push(response.data);
           this.loadingCreateReportCategory = false;
           this.isCreateReportCategoryModalVisible = false;

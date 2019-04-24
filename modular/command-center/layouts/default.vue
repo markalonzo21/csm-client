@@ -3,7 +3,7 @@
     id="components-layout-demo-fixed"
     v-if="$store.state.auth.user"
   >
-    <Drawer
+    <LayoutDrawer
       :visible="isDrawerVisible"
       @close="isDrawerVisible = false"
       @open="isDrawerVisible = true"
@@ -101,11 +101,91 @@
 </template>
 
 <script>
-import Drawer from "~/modular/command-center/layouts/-Drawer";
+import LayoutDrawer from "~/modular/command-center/layouts/-Drawer";
+
+// Antd Import all antd components on command center pages
+import Vue from "vue";
+import {
+  Avatar,
+  Breadcrumb,
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Dropdown,
+  Form,
+  Icon,
+  Input,
+  Layout,
+  message,
+  Menu,
+  Modal,
+  notification,
+  Pagination,
+  Popconfirm,
+  Popover,
+  Row,
+  Select,
+  Spin,
+  Switch,
+  Table,
+  Tooltip,
+  Upload,
+  Drawer
+} from "ant-design-vue/lib";
+
+Vue.use(Button);
+import "ant-design-vue/lib/button/style/css";
+Vue.use(Tooltip);
+import "ant-design-vue/lib/tooltip/style/css";
+Vue.use(Table);
+import "ant-design-vue/lib/table/style/css";
+Vue.use(Pagination);
+import "ant-design-vue/lib/pagination/style/css";
+Vue.use(Form);
+import "ant-design-vue/lib/form/style/css";
+Vue.use(Input);
+import "ant-design-vue/lib/input/style/css";
+Vue.use(Icon);
+import "ant-design-vue/lib/icon/style/css";
+Vue.use(Checkbox);
+import "ant-design-vue/lib/checkbox/style/css";
+Vue.use(Spin);
+import "ant-design-vue/lib/spin/style/css";
+Vue.use(Menu);
+import "ant-design-vue/lib/menu/style/css";
+Vue.use(Layout);
+import "ant-design-vue/lib/layout/style/css";
+Vue.use(Drawer);
+import "ant-design-vue/lib/drawer/style/css";
+Vue.use(Breadcrumb);
+import "ant-design-vue/lib/breadcrumb/style/css";
+Vue.use(Dropdown);
+import "ant-design-vue/lib/dropdown/style/css";
+Vue.use(Select);
+import "ant-design-vue/lib/select/style/css";
+Vue.use(Avatar);
+import "ant-design-vue/lib/avatar/style/css";
+Vue.use(Col);
+import "ant-design-vue/lib/col/style/css";
+Vue.use(Row);
+import "ant-design-vue/lib/row/style/css";
+Vue.use(DatePicker);
+import "ant-design-vue/lib/date-picker/style/css";
+Vue.use(Popconfirm);
+import "ant-design-vue/lib/popconfirm/style/css";
+Vue.use(Popover);
+import "ant-design-vue/lib/popover/style/css";
+Vue.use(Modal);
+import "ant-design-vue/lib/modal/style/css";
+Vue.use(Upload);
+import "ant-design-vue/lib/upload/style/css";
+Vue.use(Switch);
+import "ant-design-vue/lib/switch/style/css";
 
 export default {
   components: {
-    Drawer
+    LayoutDrawer
   },
   computed: {
     crumbs() {
@@ -153,3 +233,4 @@ export default {
 <style>
 @import "~assets/sass/antd.scss";
 </style>
+
