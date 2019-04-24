@@ -173,10 +173,10 @@
           >
             <a-select-option value>Any</a-select-option>
             <a-select-option
-              :key="`type-${type._id}`"
-              :value="type._id"
-              v-for="type in selectList.types"
-            >{{ type.name }}</a-select-option>
+              :key="`type-${item._id}`"
+              :value="item._id"
+              v-for="item in selectList.types"
+            >{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
@@ -251,7 +251,11 @@
 </template>
 
 <script>
+import Vue from "vue";
 import LeafletHeatmap from "./-LeafletHeatmap";
+import Vue2LeafletMarkerCluster from "vue2-leaflet-markercluster";
+Vue.component("l-marker-cluster", Vue2LeafletMarkerCluster);
+
 export default {
   layout: "command-center/default",
   components: {

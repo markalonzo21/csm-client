@@ -7,7 +7,6 @@
       title="Navigate"
     >
       <a-menu
-        :defaultOpenKeys="defaultOpenKeys"
         :defaultSelectedKeys="[$route.path]"
         :style="{ height: '100%', borderRight: 0 }"
         theme="dark"
@@ -151,33 +150,6 @@
 <script>
 export default {
   props: ["visible"],
-  computed: {
-    defaultOpenKeys() {
-      return this.list
-        .filter(item => {
-          return this.$route.path.includes(item.link);
-        })
-        .map(item => item.link);
-    }
-  },
-  data() {
-    return {
-      list: [
-        // {
-        //   title: "Resolvers",
-        //   icon: "bars",
-        //   link: "/command-center/resolvers",
-        //   permissionNeeded: ["administrator"]
-        // },
-        // {
-        //   title: "Responders",
-        //   icon: "bars",
-        //   link: "/command-center/responders",
-        //   permissionNeeded: ["administrator"]
-        // }
-      ]
-    };
-  },
   watch: {
     $route() {
       this.$emit("close");
@@ -194,17 +166,17 @@ export default {
 <style>
 .ant-drawer-body {
   padding: 0 !important;
-  font-size: 14px;
-  line-height: 1.5;
-  word-wrap: break-word;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  word-wrap: break-word !important;
 }
 .ant-drawer-header {
-  background-color: #001121;
+  background-color: #001121 !important;
 }
 .ant-drawer-content {
-  background-color: #001121;
+  background-color: #001121 !important;
 }
 .ant-drawer-title {
-  color: white;
+  color: white !important;
 }
 </style>

@@ -61,7 +61,6 @@ module.exports = {
     '~/plugins/vue2-leaflet.client.js',
     '~/plugins/socket.client.js',
     '~/plugins/vue-geolocation.client.js',
-    '~/plugins/leaflet-draw.client.js',
     '~/plugins/v-lazy-image.client.js'
   ],
 

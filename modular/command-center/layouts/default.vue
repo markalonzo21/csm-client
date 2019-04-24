@@ -230,7 +230,33 @@ export default {
 };
 </script>
 
-<style>
-@import "~assets/sass/antd.scss";
+<style lang="postcss">
+.drawer-filter .ant-drawer-body {
+  @apply mx-8 !important;
+  @apply mt-4 !important;
+}
+.drawer-filter .ant-form-item {
+  @apply mb-4 !important;
+}
+.drawer-filter label {
+  @apply text-white !important;
+}
+.drawer-filter .anticon-close {
+  @apply text-white !important;
+}
+
+#components-layout-demo-fixed .logo {
+  width: 120px !important;
+  /* height: 31px !important; */
+  /* background-image: url("/img/sentinel-logo.png") !important; */
+  /* background-size: 120px 31px !important !important; */
+  background-size: cover !important;
+  /* background-color: white !important; */
+  margin: 16px 24px 16px 0 !important;
+  float: left !important;
+}
+.ant-drawer-close {
+  color: white !important;
+}
 </style>
 
