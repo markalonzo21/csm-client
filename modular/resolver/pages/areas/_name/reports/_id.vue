@@ -4,7 +4,7 @@
     v-if="report"
   >
     <!-- MODAL -->
-    <modal
+    <uiv-modal
       :class="{ 'pointer-events-none': loadingAssignResponder }"
       :header="false"
       class="assign-modal"
@@ -42,7 +42,7 @@
           style="width: auto;"
         >Save</button>
       </div>
-    </modal>
+    </uiv-modal>
     <div class="container">
       <div class="active-report">
         <div class="col-md-5">

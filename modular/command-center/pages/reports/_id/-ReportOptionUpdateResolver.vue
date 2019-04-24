@@ -18,7 +18,7 @@
       >Change</button>
     </div>
     <!-- MODAL -->
-    <modal
+    <uiv-modal
       :class="{ 'pointer-events-none': loadingAssignResolver }"
       :header="false"
       class="assign-modal"
@@ -56,7 +56,7 @@
           style="width: auto;"
         >Save</button>
       </div>
-    </modal>
+    </uiv-modal>
   </div>
 </template>
 

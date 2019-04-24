@@ -1,12 +1,12 @@
 <template>
-  <carousel
+  <uiv-carousel
     :controls="controls"
     :indicators="indicators"
     :interval="interval"
     ref="carousel"
     v-if="banners.length > 0"
   >
-    <slide
+    <uiv-slide
       :key="`${banner}-${index}`"
       v-for="(banner, index) in banners"
     >
@@ -14,17 +14,12 @@
         :src="$utils.cloudinaryTransform(banner.image, 'w_1920,h_700')"
         class="img-responsive"
       />
-    </slide>
-  </carousel>
+    </uiv-slide>
+  </uiv-carousel>
 </template>
 
 <script>
-import { Carousel, Slide } from "uiv";
 export default {
-  components: {
-    Carousel,
-    Slide
-  },
   props: ["banners"],
   data() {
     return {

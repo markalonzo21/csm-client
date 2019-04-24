@@ -1,5 +1,5 @@
 <template>
-  <modal
+  <uiv-modal
     :footer="false"
     class="registration text-center mt-32"
     size="sm"
@@ -160,7 +160,7 @@
         type="submit"
       >{{ loadingRegister ? "Loading..." : "Register" }}</button>
     </form>
-  </modal>
+  </uiv-modal>
 </template>
 
 <script>

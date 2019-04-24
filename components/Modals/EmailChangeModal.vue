@@ -1,5 +1,5 @@
 <template>
-  <modal
+  <uiv-modal
     :footer="false"
     class="login text-center mt-32"
     size="sm"
@@ -75,7 +75,7 @@
         >{{ loading ? "Loading..." : "Submit" }}</button>
       </form>
     </template>
-  </modal>
+  </uiv-modal>
 </template>
 
 <script>

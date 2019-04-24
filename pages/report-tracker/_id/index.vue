@@ -210,7 +210,7 @@
         </div>
       </div>
     </div>
-    <modal
+    <uiv-modal
       :footer="false"
       :title="shownRole.toUpperCase()"
       size="sm"
@@ -262,7 +262,7 @@
           </tr>
         </tbody>
       </table>
-    </modal>
+    </uiv-modal>
   </div>
 </template>
 

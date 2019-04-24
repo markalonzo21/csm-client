@@ -1,14 +1,14 @@
 <template>
   <div class="news ads mt30">
     <div class="container">
-      <carousel
+      <uiv-carousel
         :controls="controls"
         :indicators="indicators"
         :interval="interval"
         ref="carousel"
         v-if="news.length > 0"
       >
-        <slide>
+        <uiv-slide>
           <div class="newsitem">
             <!-- <img
               src="/img/megaworld-logo.jpg"
@@ -20,8 +20,8 @@
               <a href="#">Title of the News here</a>
             </h3>
           </div>
-        </slide>
-        <slide>
+        </uiv-slide>
+        <uiv-slide>
           <div class="plugitem">
             <img
               alt
@@ -29,8 +29,8 @@
               src="/img/wide-ads.png"
             >
           </div>
-        </slide>
-      </carousel>
+        </uiv-slide>
+      </uiv-carousel>
     </div>
   </div>
 </template>

@@ -3,7 +3,7 @@
     <LoginModal/>
     <RegistrationModal/>
     <VerificationModal/>
-    <navbar
+    <uiv-navbar
       :fixed-top="true"
       class="user-menu h-65"
     >
@@ -20,7 +20,7 @@
         >
       </nuxt-link>
       <template slot="collapse">
-        <navbar-nav
+        <uiv-navbar-nav
           left
           v-if="$store.state.auth.loggedIn"
         >
@@ -33,13 +33,13 @@
           <li>
             <nuxt-link to="/report-history">Report History</nuxt-link>
           </li>
-        </navbar-nav>
-        <navbar-nav
+        </uiv-navbar-nav>
+        <uiv-navbar-nav
           class="select-none"
           right
           v-if="$store.state.auth.loggedIn"
         >
-          <dropdown tag="li">
+          <uiv-dropdown tag="li">
             <a
               class="dropdown-toggle"
               role="button"
@@ -85,25 +85,25 @@
                 >Log Out</a>
               </li>
             </template>
-          </dropdown>
-        </navbar-nav>
-        <navbar-nav
+          </uiv-dropdown>
+        </uiv-navbar-nav>
+        <uiv-navbar-nav
           right
           v-else
         >
           <li>
-            <btn
-              @click="$store.commit('TOGGLE_LOGIN_MODAL')"
-              class="btnsignin text-uppercase"
-            >Sign In</btn>
+            <button
+              @click.prevent="$store.commit('TOGGLE_LOGIN_MODAL')"
+              class="btnsignin btnblue btn btn-primary text-uppercase"
+            >Sign In</button>
           </li>
-          <btn
-            @click="$store.commit('TOGGLE_REGISTRATION_MODAL')"
-            class="btnblue text-uppercase"
-          >Register</btn>
-        </navbar-nav>
+          <button
+            @click.prevent="$store.commit('TOGGLE_REGISTRATION_MODAL')"
+            class="btnblue btn btn-primary text-uppercase"
+          >Register</button>
+        </uiv-navbar-nav>
       </template>
-    </navbar>
+    </uiv-navbar>
   </div>
 </template>
 

@@ -1,12 +1,12 @@
 <template>
-  <carousel ref="carousel">
-    <slide class="flex justify-center">
+  <uiv-carousel ref="carousel">
+    <uiv-slide class="flex justify-center">
       <img
         alt
         class="img-responsive"
         src="/svgs/spinner.svg"
       >
-    </slide>
-  </carousel>
+    </uiv-slide>
+  </uiv-carousel>
 </template>
 

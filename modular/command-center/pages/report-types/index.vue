@@ -1,6 +1,6 @@
 <template>
   <section class="w-full select-none">
-    <modal
+    <uiv-modal
       :footer="false"
       title="Create Report Type"
       v-model="isCreateReportTypeModalVisible"
@@ -75,7 +75,7 @@
           class="btn btn-primary float-right"
         >{{ loadingCreateReportType ? 'Loading' : 'Save' }}</button>
       </form>
-    </modal>
+    </uiv-modal>
     <div class="clearfix">
       <h3 class="float-left">Report Types</h3>
       <a-button

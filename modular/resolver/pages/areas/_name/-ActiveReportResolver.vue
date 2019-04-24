@@ -92,7 +92,7 @@
     </div>
   </div>
   <!-- <div class="panel shadow">
-    <modal
+    <uiv-modal
       class="assign-modal"
       :header="false"
       v-model="isAssignModalVisible"
@@ -122,7 +122,7 @@
           :disabled="!selectedResponder"
         >Assign Responder</button>
       </div>
-    </modal>
+    </uiv-modal>
     <div class="panel-heading" role="button">
       <table class="table">
         <tr>
@@ -229,9 +229,9 @@ export default {
       this.loadingGetAvailableResponders = true;
       this.$axios
         .$get(
-          `/api/v1/admin/available-responders?type=${this.report.type._id}&areaId=${
-            this.$route.params.id
-          }`
+          `/api/v1/admin/available-responders?type=${
+            this.report.type._id
+          }&areaId=${this.$route.params.id}`
         )
         .then(response => {
           this.loadingGetAvailableResponders = false;

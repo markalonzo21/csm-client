@@ -3,7 +3,7 @@
     class="w-full select-none"
     style="width: 100%"
   >
-    <modal
+    <uiv-modal
       :footer="false"
       title="Create Report Category"
       v-model="isCreateReportCategoryModalVisible"
@@ -43,7 +43,7 @@
           class="btn btn-primary float-right"
         >{{ loadingCreateReportCategory ? 'Loading' : 'Save' }}</button>
       </form>
-    </modal>
+    </uiv-modal>
     <div class="clearfix">
       <h3 class="float-left">Report Categories</h3>
       <a-button

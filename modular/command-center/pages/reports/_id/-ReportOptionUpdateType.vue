@@ -19,7 +19,7 @@
     </div>
 
     <!-- MODAL -->
-    <modal
+    <uiv-modal
       :class="{ 'pointer-events-none': loadingUpdate }"
       :header="false"
       class="assign-modal"
@@ -57,7 +57,7 @@
           style="width: auto;"
         >Save</button>
       </div>
-    </modal>
+    </uiv-modal>
   </div>
 </template>
 
