@@ -25,7 +25,12 @@ export const actions = {
   logout() {
     this.$auth.logout().then(() => {
       this.$router.replace('/')
-      // this.$message.success('Logout successful!')
+      this.$notify({
+        title: 'You have been logged out successfully',
+        type: 'success',
+        duration: 2000,
+        placement: 'top-left'
+      })
       this.$socket.disconnect()
     })
   }

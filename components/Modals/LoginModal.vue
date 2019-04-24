@@ -111,7 +111,12 @@ export default {
             this.$router.push("/");
           }
 
-          // this.$message.success("Login successful!", 2);
+          this.$notify({
+            title: "You have been logged in successfully",
+            type: "success",
+            duration: 2000,
+            placement: "top-left"
+          });
         })
         .catch(errors => {
           if (errors.response.status === 403) {

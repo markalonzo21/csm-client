@@ -19,7 +19,12 @@
 </template>
 
 <script>
+import { Carousel, Slide } from "uiv";
 export default {
+  components: {
+    Carousel,
+    Slide
+  },
   props: ["banners"],
   data() {
     return {

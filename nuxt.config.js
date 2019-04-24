@@ -5,7 +5,6 @@ dotenv.config()
 module.exports = {
   mode: 'universal',
   serverMiddleware: ['~/serverMiddleware/selectiveSsr.js'],
-  // ignorePrefix: '@',
   env: {
     APP_NAME: process.env.APP_NAME,
     NODE_ENV: process.env.NODE_ENV,
@@ -54,11 +53,9 @@ module.exports = {
    */
   plugins: [
     '~/plugins/axios.js',
-    '~/plugins/globals.js',
     '~/plugins/utils.js',
     '~/plugins/vue-svgicon.js',
     '~/plugins/uiv.js',
-    // '~/plugins/vue2-leaflet.client.js',
     '~/plugins/socket.client.js',
     '~/plugins/vue-geolocation.client.js',
     '~/plugins/v-lazy-image.client.js'

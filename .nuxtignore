@@ -1,5 +1,0 @@
-# ignore pages with - prefix
-#pages/-*.vue
-#modular/-*.vue
-#pages/-*.js
-#modular/-*.js

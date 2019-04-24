@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import AppNavbar from "~/layouts/-AppNavbar";
 import AppFooter from "~/layouts/-AppFooter";
 
