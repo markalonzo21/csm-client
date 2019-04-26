@@ -19,8 +19,8 @@
         class="title__white--large"
         v-text="labelValue"
       ></h2>
-      <div class="w-1/8">Resolve Duration Avg.</div>
-      <div class="w-1/4">
+      <div class="w-full">Resolve Duration Avg.</div>
+      <div class="w-full">
         <select
           class="relative text-black form-control"
           v-model="currentType"
@@ -66,10 +66,15 @@ export default {
   },
   watch: {
     currentType(value) {
+      this.loading = true;
       this.$axios
         .$get(`/api/v1/admin/reports-resolved-average?type=${this.currentType}`)
         .then(response => {
           this.labelValue = response.data;
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = true;
         });
     }
   }
