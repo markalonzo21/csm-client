@@ -39,11 +39,7 @@
         />
       </div>
       <div class="col-md-3">
-        <DashboardCard
-          :labelValue="dashboardDetails.resolvingReportAverageTime"
-          :loading="fetchingDashboardDetails"
-          label="resolving report avg. time"
-        />
+        <AverageReportResolvedCard/>
       </div>
     </div>
     <div class="row mt-5">
@@ -72,6 +68,7 @@
 
 <script>
 import DashboardCard from "~/modular/command-center/components/DashboardCard";
+import AverageReportResolvedCard from "~/modular/command-center/components/AverageReportResolvedCard";
 import ReportsPieChart from "~/modular/command-center/components/DashboardCharts/ReportsPieChart";
 import ReportsBarChart from "~/modular/command-center/components/DashboardCharts/ReportsBarChart";
 
@@ -79,6 +76,7 @@ export default {
   layout: "command-center",
   components: {
     DashboardCard,
+    AverageReportResolvedCard,
     ReportsPieChart,
     ReportsBarChart
   },
