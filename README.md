@@ -1,24 +1,27 @@
 # CSM Report Application Frontend
 
-> My good Nuxt.js project
+## Tech Stack
 
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+- NuxtJS
+- SocketIO
+- TailwindCSS
+- BootstrapCSS
+- Sass
 
-## Build Setup
+## Development Setup
 
 ```bash
 # install dependencies
-$ yarn install
-
+$ npm install
 # serve with hot reload at localhost:3000
-$ yarn run dev
-
-# build for production and launch server
-$ yarn run build
-$ yarn start
-
-# generate static project
-$ yarn run generate
+$ npm run dev
 ```
+
+## Production Setup
+
+> Please refer to this documentations
+
+- https://nuxtjs.org/guide/commands/#production-deployment
+- https://nuxtjs.org/faq
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
