@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4>{{ area.name }}</h4>
+    <h4 class="capitalize">{{ area.name }}</h4>
     <div class="row">
       <div class="col-md-3">
         <DashboardCard
@@ -36,6 +36,9 @@
           :loading="fetchingDashboardDetails"
           label="emergency reports"
         />
+      </div>
+      <div class="col-md-3">
+        <AverageReportResolvedCard :area="$route.params.name"/>
       </div>
     </div>
     <div class="row">
@@ -154,6 +157,7 @@
 
 <script>
 import DashboardCard from "~/modular/command-center/components/DashboardCard";
+import AverageReportResolvedCard from "~/modular/command-center/components/AverageReportResolvedCard";
 import ReportsPieChart from "~/modular/command-center/components/DashboardCharts/ReportsPieChart";
 import ReportsBarChart from "~/modular/command-center/components/DashboardCharts/ReportsBarChart";
 import L from "leaflet";
@@ -162,6 +166,7 @@ export default {
   layout: "command-center/default",
   components: {
     DashboardCard,
+    AverageReportResolvedCard,
     ReportsPieChart,
     ReportsBarChart
   },

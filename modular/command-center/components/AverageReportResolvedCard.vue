@@ -2,7 +2,6 @@
   <div class="panel">
     <div
       class="panel-body flex items-center justify-center"
-      style=" height: 119px;"
       v-if="loading"
     >
       <a-icon
@@ -19,10 +18,9 @@
         class="title__white--large"
         v-text="labelValue"
       ></h2>
-      <div class="w-full">Resolve Duration Avg.</div>
       <div class="w-full">
         <select
-          class="relative text-black form-control"
+          class="relative text-black form-control mb-2"
           v-model="currentType"
         >
           <option :value="null">All</option>
@@ -33,16 +31,27 @@
           >{{ type.name }}</option>
         </select>
       </div>
+      <div class="w-full uppercase">Resolved Duration Avg.</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    area: {
+      type: String,
+      default: null
+    }
+  },
   async mounted() {
     this.loading = true;
     const [averageTime, reportCategories] = await Promise.all([
-      this.$axios.$get("/api/v1/admin/reports-resolved-average"),
+      this.$axios.$get(`/api/v1/admin/reports-resolved-average`, {
+        params: {
+          areaName: this.area
+        }
+      }),
       this.$axios.$get("/api/v1/report-categories")
     ]);
 
@@ -68,13 +77,22 @@ export default {
     currentType(value) {
       this.loading = true;
       this.$axios
-        .$get(`/api/v1/admin/reports-resolved-average?type=${this.currentType}`)
+        .$get(`/api/v1/admin/reports-resolved-average`, {
+          params: {
+            type: this.currentType,
+            areaName: this.area
+          }
+        })
         .then(response => {
-          this.labelValue = response.data;
-          this.loading = false;
+          setTimeout(() => {
+            this.labelValue = response.data;
+            this.loading = false;
+          }, 200); // timeout is used for loading not to appear buggy.
         })
         .catch(error => {
-          this.loading = true;
+          setTimeout(() => {
+            this.loading = true;
+          }, 200);
         });
     }
   }
@@ -86,6 +104,7 @@ export default {
   background-image: linear-gradient(to right, #354fa3, #34c3e5);
   color: white;
   border-radius: 0.5rem;
+  height: 14rem;
 }
 .invert-gradient {
   background-image: linear-gradient(to right, #34c3e5, #354fa3) !important;
