@@ -11,7 +11,7 @@
     "API_URL_BROWSER": "https://csm-api.now.sh"
   },
   "scale": {
-    "sfo1": {
+    "sin1": {
       "min": 1,
       "max": 1
     }
