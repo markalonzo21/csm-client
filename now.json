@@ -2,7 +2,7 @@
   "name": "csm",
   "alias": "csm.now.sh",
   "github": {
-    "enabled": true
+    "enabled": false
   },
   "env": {
     "APP_NAME": "CSM Report",
