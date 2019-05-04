@@ -1,1 +1,1 @@
-now --public && now alias && now rm csm --safe --yes
+now --public --target production && now rm csm --safe --yes
