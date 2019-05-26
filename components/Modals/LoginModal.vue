@@ -76,6 +76,7 @@ export default {
           }
         })
         .then(() => {
+          this.$socket.disconnect();
           this.$nextTick(() => {
             this.socketConnect();
           });
