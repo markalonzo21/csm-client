@@ -161,6 +161,10 @@
 </template>
 
 <script>
+if (process.client) {
+  const L = require("leaflet");
+}
+
 export default {
   asyncData({ $axios, error }) {
     const getCategories = $axios.$get("/api/v1/report-categories");
@@ -220,10 +224,16 @@ export default {
         enableHighAccuracy: true,
         timeout: Infinity,
         maximumAge: 0
-      }).then(coordinates => {
-        this.form.location.coordinates.lng = coordinates.lng;
-        this.form.location.coordinates.lat = coordinates.lat;
-      });
+      })
+        .then(coordinates => {
+          this.form.location.coordinates.lng = coordinates.lng;
+          this.form.location.coordinates.lat = coordinates.lat;
+        })
+        .catch(err => {
+          alert(
+            "Could not access your location. Please enable your location tracking"
+          );
+        });
     },
     processFile(event) {
       this.form.media = [];
@@ -263,6 +273,16 @@ export default {
       return false;
     },
     report() {
+      if (
+        !this.form.location.coordinates.lng &&
+        !this.form.location.coordinates.lat
+      ) {
+        alert(
+          "Could not access your location. Please enable your location tracking"
+        );
+        return;
+      }
+
       this.loadingSubmitReport = true;
 
       // Validate Location
@@ -285,8 +305,14 @@ export default {
           }, 500);
         })
         .catch(err => {
-          if (err.response.code === 422) {
+          if (err.response.status === 422) {
             // Show Validation Errors
+            let readableError = "";
+            console.log(Object.keys(err.response.data.errors));
+            Object.keys(err.response.data.errors).forEach((key, item) => {
+              readableError += `${err.response.data.errors[key]} \n`;
+            });
+            alert(readableError);
           } else {
             // Logger
           }
